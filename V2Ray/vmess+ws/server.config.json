@@ -1,4 +1,7 @@
 {
+  "log": {
+    "loglevel": "debug"
+  },
   "inbounds": [
     {
       "port": 40000,
@@ -18,13 +21,14 @@
   ],
   "outbounds": [
     {
+      "tag": "direct",
       "protocol": "freedom",
       "settings": {}
     },
     {
+      "tag": "blocked",
       "protocol": "blackhole",
-      "settings": {},
-      "tag": "blocked"
+      "settings": {}      
     }
   ],
   "routing": {
