@@ -1,0 +1,22 @@
+购买 VPS:
+    https://www.vultr.com/                                  # Vultr VPS
+    https://bwh88.net/clientarea.php?action=products        # 搬瓦工 VPS  
+
+
+安装并配置 V2ray:
+ 
+安装并配置 Nginx:
+    
+申请免费域名：
+    https://www.freenom.com/zh/freeandpaiddomains.html      # 注册免费域名，隐藏 IP 地址
+
+申请免费 CDN 不要使用国内的 CDN，跟裸奔没啥区别:
+    https://www.cloudflare.com/                             # 最好挂美国代理访问，进一步隐藏 IP 地址
+
+配置 CDN (CloudFlare) 上面 DNS 的 A, AAAA, CNAME 等记录到 VPS 的地址上
+
+将 CDN 中的 NS(域名解析服务器) 配置到申请域名的网址中
+
+将 CDN 中的 云朵 点亮，表示使用 CDN 进行流量转发，而不是仅仅用作解析域名
+   
+    
