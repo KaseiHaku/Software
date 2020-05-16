@@ -8,6 +8,8 @@
      */
     "servers": [
       { "address": "8.8.8.8", "port": 53, "domains": [ "geosite:google", "geosite:facebook", "geosite:geolocation-!cn" ] },
+      { "address": "64.6.64.6", "port": 53, "domains": [ "domain:raw.githubusercontent.com"] },
+      "176.103.130.130",
       { "address": "223.5.5.5", "port": 53, "domains": [ "geosite:cn" ] },                  
       "1.1.1.1",
       "localhost"                   // localhost dns 请求流量，不受 v2ray 控制，需要额外的配置才能使用 v2ray 转发
@@ -118,19 +120,19 @@
      * IPIfNonMatch 当域名没有匹配任何规则时，将域名解析成 IP（A 记录或 AAAA 记录）再次进行匹配；
      * IPOnDemand 碰到基于 ip 的规则时，立马解析成 ip 
      */
-    "domainStrategy": "IPOnDemand", 
+    "domainStrategy": "IPIfNonMatch", 
     "rules": [
       /** TODO 劫持 dns 流量，走 v2ray 内建 dns */
       {
         "type": "field",
-        "network": "udp",
+        "network": "tcp,udp",
         "inboundTag": [ "transparentIn" ],
         "port": "53", // 基于 udp 协议的 dns 解析请求目标端口为 53
         "outboundTag": "dnsOut"
       },
       {
         "type": "field",
-        "network": "tcp",
+        "network": "tcp,udp",
         "inboundTag": [ "transparentIn" ],
         "port": "5353", // 基于 udp 协议的 dns 解析请求目标端口为 5353
         "outboundTag": "dnsOut"
