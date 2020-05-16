@@ -13,11 +13,18 @@
 申请免费 CDN 不要使用国内的 CDN，跟裸奔没啥区别:
     https://www.cloudflare.com/                             # 最好挂美国代理访问，进一步隐藏 IP 地址
 
-配置 CDN (CloudFlare) 上面 DNS 的 A, AAAA, CNAME 等记录到 VPS 的地址上
+CDN DNS 配置：
+    配置 CDN (CloudFlare) 上面 DNS 的 A, AAAA, CNAME 等记录到 VPS 的地址上
+    将 CDN 中的 NS(域名解析服务器) 配置到申请域名的网址中
+    将 CDN 中的 云朵 点亮，表示使用 CDN 进行流量转发，而不是仅仅用作解析域名
+    
+CDN Network 配置：
+    配置 CDN 上 Network 中打开 Websocket 
+    
+CDN Crypt 配置:
+    配置 CDN 上 SSL/TLS 上打开加密
 
-将 CDN 中的 NS(域名解析服务器) 配置到申请域名的网址中
 
-将 CDN 中的 云朵 点亮，表示使用 CDN 进行流量转发，而不是仅仅用作解析域名
 
 坑：CDN 配置完后不一定立马生效
    
