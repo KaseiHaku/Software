@@ -33,10 +33,10 @@ iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p tcp ! --dport 53,5353 -j R
 iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p udp ! --dport 53,5353 -j RETURN # 直连局域网，53 端口除外（因为要使用 V2Ray 解析 DNS）
 iptables -t mangle -A V2RAY_MASK -m set --match-set vps4 dst -j RETURN    # 如果目标 ip 地址在名为 vps4 的 ipset 中，那么放行
 iptables -t mangle -A V2RAY_MASK -m mark --mark 255 -j RETURN    # 直连 SO_MARK 为 0xff 的流量(0xff 是 16 进制数，数值上等同与上面V2Ray 配置的 255)，此规则目的是避免代理本机(网关)流量出现回环问题
-iptables -t mangle -A V2RAY_MASK -p udp -j MARK --set-mark 1   # 给 UDP 打标记,重路由
-iptables -t mangle -A V2RAY_MASK -p tcp -j MARK --set-mark 1   # 给 TCP 打标记，重路由
+iptables -t mangle -A V2RAY_MASK -p udp -j MARK --set-mark 2   # 给 UDP 打标记,重路由
+iptables -t mangle -A V2RAY_MASK -p tcp -j MARK --set-mark 2   # 给 TCP 打标记，重路由
 iptables -t mangle -A OUTPUT -j V2RAY_MASK # 应用规则))
 
 # 设置策略路由
-ip rule add fwmark 1 pref 1024 table 100     # 匹配防火墙标记为 1 的数据包,优先级(preference)为 1024，用 100 号路由表路由
+ip rule add fwmark 2 pref 1024 table 100     # 匹配防火墙标记为 1 的数据包,优先级(preference)为 1024，用 100 号路由表路由
 ip route add table 100 local 0.0.0.0/0 dev lo  # 为 100 号路由表添加路由策略: 目标IP为 0.0.0.0/0(default 所有地址) 的数据包，使用网卡 lo 发送数据，
