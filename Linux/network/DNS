@@ -22,3 +22,9 @@ DNS 服务器配置：
     Format Pattern = nameserver *.*.*.*
     nameserver 42.120.21.30         # 配置 DNS 服务器
     nameserver 8.8.8.8
+
+/etc/NetworkManager/NetworkManager.conf 
+[main]
+plugins=ifcfg-rh
+dns=none
+
