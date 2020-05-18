@@ -1,2 +1,6 @@
 shell> tcpdump -D               # 查看可以抓包的网卡
 shell> tcpdump -i eth0          # 抓取指定网卡的包
+shell> tcpdump -i eth0 -n       # 不将 ip 转换成 domain
+shell> tcpdump -i eth0 -nn      # 不将 port 转换成协议
+shell> tcpdump -i lo -nnfvvX port 53
+
