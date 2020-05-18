@@ -1,5 +1,14 @@
 DNS = Domain Name System = 域名系统
 
+DNS 解析过程 {
+    1. Browser 查看本地缓存有没有对应 Domain 的 IP ，有则直接返回
+    2. 查看 /etc/hosts 文件中有没有对应 Domain 的 IP ，有则直接返回
+    3. 使用 /etc/resolv.conf 文件中的 DNS 服务器对 Domain 进行解析
+    4. 
+}
+
+
+
 本地域名解析配置：
     shell> vim /etc/hosts
     以下是该文件的内容：
