@@ -1,0 +1,11 @@
+[Unit]
+Description=autoExeBeforeShutdown
+DefaultDependencies=no
+Before=shutdown.target reboot.target halt.target      
+
+[Service]
+Type=oneshot
+ExecStart=/root/Script/autoExeBeforeShutdown.sh         
+
+[Install]
+WantedBy=halt.target reboot.target shutdown.target 
