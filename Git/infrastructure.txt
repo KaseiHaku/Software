@@ -15,12 +15,15 @@ Git 的本质：
 
 
 Git 基本概念介绍：
-    工作区 -> 缓存区 -> Local Repository -> Remote Repository 
+    WorkArea = untracked + indexed: 就是当前正在编辑的版本
+        untracked: 没有被 git 管理跟踪的文件
+        indexed: 已经被 git 管理跟踪的文件，
+    Staging Area: 缓存区：从工作区提交，但是还没有放入到本地仓库的版本
+    LocalRepository: 本地仓库：存储在本地仓库中的版本
+    RemoteRepository:  远程仓库：存储在远程仓库中的版本，比如：存储在 GitHub 服务器中的版本 
     
-    工作区：就是当前正在编辑的版本
-    缓存区：从工作区提交，但是还没有放入到本地仓库的版本
-    本地仓库：存储在本地仓库中的版本
-    远程仓库：存储在远程仓库中的版本，比如：存储在 GitHub 服务器中的版本 
+    
+   
 
 
     
