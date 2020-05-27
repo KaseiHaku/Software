@@ -23,6 +23,10 @@ Query {
 
     # 配置 git log 打印格式 及 日期显示格式，具体参考官方文档
     shell> git log --pretty=format:"[%h][%t][%p][%an:%ae:%ad][%cn:%ce:%cd][%s]" --date=format:"%Y-%m-%d %H:%M:%S %z"
+    
+    
+    shell> git merge-base branch1 branch2       # 前提，当前分支不是 branch1 branch2
+    shell> git merge-base --fork-point branch1  # 在当前分支找 branch1 的分叉点
 
 }
 
