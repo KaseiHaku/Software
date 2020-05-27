@@ -39,3 +39,12 @@ Rollback {
     shell> git revert 
 }
 
+Diff {
+    # path = dir + file
+    shell> git diff -- path                     # 查看当前 work area 和 stage area 之间的区别
+    shell> git diff -- path1 path2              # 查看文件系统中的两个 path 之间的文件区别
+    shell> git diff commit1 commit2 -- path     # 比较指定路径下所有文件，在两个指定 commit 之间的不同
+    shell> git diff --name-only commit1 commit2 -- path     # 比较指定路径下所有文件，在两个指定 commit 之间的不同
+    
+}
+
