@@ -27,6 +27,9 @@ Query {
     
     shell> git merge-base branch1 branch2       # 前提，当前分支不是 branch1 branch2
     shell> git merge-base --fork-point branch1  # 在当前分支找 branch1 的分叉点
+    
+    # 查看文件中每一行是哪个 commit 提交的
+    shell> git blame -- file                
 
 }
 
