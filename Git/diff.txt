@@ -1,0 +1,24 @@
+# 查看两个 commit 之间改动的文件（默认一个 commit 会跟上一个 commit 进行对比）
+shell> 
+
+# 查看 workare stage(cache) repository 之间改动的文件
+shell> git status
+
+# 查看两个 commit 之间指定文件改动了哪些内容
+shell> 
+
+# 查看 workarea 跟 local repository 指定文件改动了哪些内容
+shell> 
+
+# 查看 stage(cache) 跟 local repository 指定文件改动了哪些内容
+shell> 
+
+# 查看 workarea 跟 stage(cache) 指定文件改动了哪些内容
+shell> 
+
+
+# 查看跟指定文件相关的 commit 有哪些
+shell>
+
+# 查看文件中某一行代码相关的 commit 有哪些
+shell> 
