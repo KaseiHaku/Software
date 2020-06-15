@@ -30,7 +30,22 @@ SecurityContext ( SC ) {
     当 进程安全上下文 和 文件安全上下文 匹配时,进程才能访问文件,是否匹配由 Policy 里面的 Rule 决定
     
     格式: USER:ROLE:TYPE[LEVEL[:CATEGORY]]
-    SC              User            Role            Type            Level           Category
+    User: 
+        指示登录系统的用户类型,如root,user_u,system_u,多数本地进程都属于自由（unconfined ）进程
+    Role: 
+        定义文件，进程和用户的用途：文件:object_r ，进程和用户：system_r
+    Type: 
+        指定数据类型，规则中定义何种进程类型访问何种文件Target策略基于type实现, 多服务共用：public_content_t
+    Sensitivity(Level):
+        限制访问的需要，由组织定义的分层安全级别, 如unclassified, secret,top,secret,
+        一个对象有且只有一个sensitivity,分0-15级，s0最低,Target 策略默认使用s0
+    Category：
+        对于特定组织划分不分层的分类，如FBI Secret，NSA secret,
+        一个对象可以有多个categroy，c0-c1023共1024个分类，Target策略不使用category
+
+    
+    
+    SC              User            Role            Type            Sensitivity(Level)           Category
     ProcessSC:      system_u        system_r                        MLS Only
                     unconfined_u    unconfined_r                    MLS Only
     FileSC:         system_u        object_r                        MLS Only
