@@ -35,6 +35,7 @@ SecurityContext ( SC ) {
                     unconfined_u    unconfined_r                    MLS Only
     FileSC:         system_u        object_r                        MLS Only
                     unconfined_u    object_r                        MLS Only
+    UserSC:         user_u          system_r        unconfined_t
                     
     解释：
         ProcessSC 中 
@@ -73,6 +74,14 @@ SELinux Self {
     shell> ls /etc/selinux              # 查看所有 selinux type ，该目录下的 子目录名 就是 selinux 的类型名
 }
 
+SELinux 目录结构释义 {
+    /etc/selinux/targeted/                  targeted 策略根目录
+    /etc/selinux/targeted/policy/           二进制策略文件  policy.<xx> 保存位置
+    /etc/selinux/targeted/contexts/         安全上下文配置信息及配置文件路径
+    /etc/selinux/targeted/contexts/files/   保存整个文件系统默认的安全上下文，restorecon  命令会使用该目录
+    /etc/selinux/targeted/contexts/users/   用户安全上下文保存目录
+    /etc/selinux/targeted/modules/active/booleans*      Rule 保存目录
+}
 
 
 
