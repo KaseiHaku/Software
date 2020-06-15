@@ -9,6 +9,7 @@
     
 申请免费域名：
     https://www.freenom.com/zh/freeandpaiddomains.html      # 注册免费域名，隐藏 IP 地址
+    https://www.namesilo.com/                               # 好用的付费域名注册商
 
 申请免费 CDN 不要使用国内的 CDN，跟裸奔没啥区别:
     https://www.cloudflare.com/                             # 最好挂美国代理访问，进一步隐藏 IP 地址
