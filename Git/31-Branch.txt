@@ -17,6 +17,8 @@ Query {
 
 Create {
     shell> git branch debug                  # 创建一个 debug 分支
+    shell> git branch debug HEAD             # 同上
+    shell> git branch debug origin/debug     # 基于指定分支（远程分支）创建新分支
 }
 
 Delete {
