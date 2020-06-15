@@ -16,7 +16,7 @@ SecurityContext {
             -l                          # --range=范围：设置指定范围的目标安全环境
             path                        # 表示要修改 上下文 的文件或目录
     
-    shell> restorecon  -v file          # 恢复当前文件为本应该有的安全环境
+    shell> restorecon  -Rv file         # 恢复当前文件为本应该有的安全环境，-R 递归
     shell> semanage fcontext -a -t httpd_sys_content_t "/html(/.*)?"    # 修改文件或目录的 安全上下文
     
     重新标记整个文件系统 {
@@ -45,13 +45,19 @@ Log {
 }
 Policy {
     shell> getsebool -a                     # 查看当前 Policy（策略）的布尔值
-    shell> setsebool context on             # 修改某一项 Policy 的布尔值, off 表示禁止
+    shell> setsebool context on             # 修改某一项 Policy 的布尔值, off 表示禁止， -P 重启仍然生效
 
     shell> yum install setools-console      # 安装查看工具，才有以下命令
     shell> seinfo                           # 查看 policy 里面的各种信息
     shell> sesearch --help                  # 查找 policy 中包含的规则
     
     自定义 SELinux 策略 {
+    
+        请谨慎使用 audit2allow 这个命令。
+        这个命令的作用非常简单粗暴，就是强制允许所遇到的错误然后封装成一个 SELinux 模块，
+        接着让 SELinux 加载这个模块来达到消除错误的目的。
+        不到万不得已建议不要随便使用 audit2allow。
+    
         Creating Custom SELinux Policy Modules with audit2allow {
             shell> grep ipset /var/log/audit/audit.log | audit2allow -m ipset       # 生成 .te 文件到标准输出
             shell> grep ipset /var/log/audit/audit.log | audit2allow -M ipset       # 生成 .te 和 .pp 文件到当前目录
