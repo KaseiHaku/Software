@@ -18,7 +18,7 @@ dnsmasq {
 NetworkManager 配置 {
     shell> vim /etc/NetworkManager/NetworkManager.conf      # 编辑 NM 的配置文件
         [main]
-        dns=dnsmasq             # 添加或修改该行
+        dns=dnsmasq             # 添加或修改该行，需要处理 SELinux 安全策略问题
         
     shell> touch /etc/NetworkManager/dnsmasq.d/vps.conf     # 由于通过 NM 使用 dnsmasq 所以要将配置文件配置在这个地方
     shell> vim /etc/NetworkManager/dnsmasq.d/vps.conf       # 编辑配置文件，格式跟原生配置文件一样
