@@ -14,6 +14,11 @@ Personalize Settings {
             export LANG="zh_CN.UTF-8"
             export LC_ALL="zh_CN.UTF-8"
         }
+        
+        将 terminal 切换成 %GIT_HOME%\bin\bash.exe 后 Maven INFO 信息前面出现其他字符，比如 ?[1; 啥的 {
+            原因：这些字符是 terminal 用于标识不同颜色的字符，相当于 css，由于 bash.exe 不支持包含颜色的输出，所以出现了这些 标识颜色的代码
+            解决方案：暂时没有找到
+        }
     }
     
 
@@ -51,6 +56,7 @@ Personalize Settings {
         3. 运行tomcat时，控制台乱码 {
             Run -> Edit Configurations... -> 选择当前项目的部署环境 Tomcat 或其他 —> Server -> VM options 设置为 -Dfile.encoding=UTF-8 ，重启tomcat
         }
+        
     }
     
     
