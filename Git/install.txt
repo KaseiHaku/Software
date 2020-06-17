@@ -20,6 +20,12 @@
 
     
 
+
+Terminology&Vocabulary&Glossary
+    TTY: TeleType       电输入，键盘，现在指终端（键盘和显示器）
+    MinTTY：一种 TTY
+    winpty: 是一个 Windows 软件包，提供了类似 Unix pty-master 一样的接口，用于实现控制台程序之间的通讯。
+
 安装
     Linux：
         shell> apt-get install git
@@ -29,10 +35,12 @@
         exe 文件直接安装
         注意点：
         [勾选] 使用 vim 编辑
+        [勾选] Git from the command line and alse from 3rd-party software
         [勾选] 使用 OpenSSL
-        [勾选] 只安装 git bash
-        [勾选] 提交时将 CRLF 转成 LF
-        [不勾选] file system cache
+        [勾选] 检出时 LF 转 CRLF，提交时 CRLF 转成 LF
+        [勾选] Use MinTTY
+        [勾选] Default(fast-forward or merge)
+        [勾选] file system cache
         [不勾选] Credential Manager
 
         环境变量配置：
