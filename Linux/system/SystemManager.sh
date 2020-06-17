@@ -27,7 +27,7 @@ Ctrl+X，就进入单用户模式了，
     shell> ls /sysroot/         # 查看我们正常系统中的文件
     shell> chroot /sysroot/     # 切换到正常系统中去
     shell> passwd root          # 可以修改 root 密码了
-    shell> touch /.autorelabel  # 修改 root 密码后，必须执行该命令，不然会导致系统无法正常登陆
+    shell> touch /.autorelabel  # 修改 root 密码后，必须执行该命令，不然会导致系统无法正常登陆，该命令让 selinux 重新标记文件
     shell> exec /sbin/init      # 退出单用户模式
     
     
