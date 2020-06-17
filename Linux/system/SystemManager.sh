@@ -18,8 +18,19 @@ startx      # 启动图形界面
 
 
 # 进入单用户模式 
-开机按space进入内核条目
-选中对应条目，按e进入编辑
+开机进入内核选项时，按 e 进入编辑
+找到 linux16 开头的行，按向右的方向键，定位到 ro， 把 ro 改成 "rw init=/sysroot/bin/sh"
+Ctrl+X，就进入单用户模式了，
+
+单用户模式：
+    其实是一个安全模式下的内存系统，并不是平常使用的 linux 系统，
+    shell> ls /sysroot/         # 查看我们正常系统中的文件
+    shell> chroot /sysroot/     # 切换到正常系统中去
+    shell> passwd root          # 可以修改 root 密码了
+    
+    
+    
+# 老版进单用户模式
 找到 linux16 开头并带有 ro 的行，删除 rhgb 和 quiet，并添加init=/bin/sh
 ctrl+x      # 启动
 touch /.autorelabel
