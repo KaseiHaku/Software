@@ -1,0 +1,1 @@
+shell> lsblk -a           # 列出所有块设备
