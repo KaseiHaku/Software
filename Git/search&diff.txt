@@ -34,5 +34,13 @@ shell>
 # 查看文件系统中的两个 path 之间的文件区别
 shell> git diff -- path1 path2              
 
+# 二分查找
+shell> git bisect 
 
+git log master ^feature --ancestry-path
+git log <SHA-1_for_c>..master --ancestry-path --merges
+
+
+git rev-list <SHA-1_for_c>..master --ancestry-path
+git rev-list <SHA-1_for_c>..master --first-parent
 
