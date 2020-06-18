@@ -1,4 +1,17 @@
 # path = dir + file
+
+# 查找具有指定 commit -m 'pattern' 的 commit
+shell> git log --grep=pattern --since='2020-06-20' --until='2020-06-20'
+# 查看跟指定文件相关的 commit 有哪些
+shell> git log -- file
+# 查看文件中某一行代码相关的 commit 有哪些
+shell> git blame -- file     
+
+
+# 查看指定行的变动
+shell> git log -L 4,5:file
+
+
 # 查看两个 commit 之间改动的文件（默认一个 commit 会跟上一个 commit 进行对比）
 shell> git diff commit1 commit2
 
@@ -22,8 +35,4 @@ shell>
 shell> git diff -- path1 path2              
 
 
-# 查看跟指定文件相关的 commit 有哪些
-shell>
 
-# 查看文件中某一行代码相关的 commit 有哪些
-shell> git blame -- file     
