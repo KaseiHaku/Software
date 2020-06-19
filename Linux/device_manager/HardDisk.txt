@@ -32,7 +32,7 @@ shell> lsblk -a           # 列出所有块设备
 # 扩展 /var 分区大小
 shell> 创建一个新的大点的分区
 shell> cd / && mkdir varbak
-shell> cp -a /var /varbak
+shell> cp -a /var/* /varbak
 shell> vim /etc/fstab           # 将老的 /var 挂载的分区删掉，并将 /var 添加到新分区上
 shell> shutdown -h now          # 重启即可
 
