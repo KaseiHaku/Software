@@ -29,6 +29,7 @@ Ctrl+X，就进入单用户模式了，
     shell> passwd root          # 可以修改 root 密码了
     shell> touch /.autorelabel  # 修改 root 密码后，必须执行该命令，不然会导致系统无法正常登陆，该命令让 selinux 重新标记文件
     shell> exec /sbin/init      # 退出单用户模式
+    shell> reboot               # 重启方式退出单用户模式
     
     
 # 老版进单用户模式
