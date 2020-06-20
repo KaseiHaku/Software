@@ -12,6 +12,8 @@
       "streamSettings": {
         "network": "ws",
         "wsSettings": { "path": "/ws" },
+        "security": "none",
+        /** 由于 tls 配置在 nginx 上，所以此处的 tls 配置需要删除
         "security": "tls",
         "tlsSettings": {
           "serverName": "1291114093.ml",
@@ -25,6 +27,7 @@
             { "usage": "encipherment", "certificateFile": "/path/to/certificate.crt", "keyFile": "/path/to/key.key" }           
           ],
         },
+        */
       }
     }
   ],
