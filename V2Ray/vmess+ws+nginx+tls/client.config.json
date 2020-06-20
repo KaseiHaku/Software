@@ -27,7 +27,7 @@
           {
             "address": "66.*.*.*",
             // "port":40000 ,
-            "port": 443     // 这里必须由原先的 v2ray server 端口，改成 nginx 的接受端口，否则连不上
+            "port": 443,     // 这里必须由原先的 v2ray server 端口，改成 nginx 的接受端口，否则连不上
             "users": [
               { "id":"f45499fa-6c4b-3e55-adbb-bd50bc4137b8", "alterId":64, "security":"auto", "level":1 }
             ]
