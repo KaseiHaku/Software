@@ -36,7 +36,6 @@
       "streamSettings": {
         "network": "ws",
         "wsSettings": { "path": "/ws" },
-        // 坑：如果使用 CDN 代理，不管 CDN 有没有使用 TLS，只要 v2ray 服务器没有使用，那么这里就不能使用
         "security": "none"          
       }
     }
