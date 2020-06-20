@@ -26,8 +26,9 @@
         "vnext": [
           {
             "address": "66.*.*.*",
+            // 这里必须由原先的 v2ray server 端口，改成 nginx 的接受端口，否则连不上
             // "port":40000 ,
-            "port": 443,     // 这里必须由原先的 v2ray server 端口，改成 nginx 的接受端口，否则连不上
+            "port": 443,     
             "users": [
               { "id":"f45499fa-6c4b-3e55-adbb-bd50bc4137b8", "alterId":64, "security":"auto", "level":1 }
             ]
@@ -38,6 +39,7 @@
         "network": "ws",
         "wsSettings": { "path": "/ws" },
         // 虽然 v2ray server 端的 security=none ，但是 tls 在 nginx 上配置了，所以此处的 security 不能配置为 none，必须是 tls
+        // "security": "none", 
         "security": "tls", 
         // 此处 tlsSettings 可以删除
         // 因为 TLS 握手过程是：客户端拿本地 CA(根) 证书，去校验服务器发过来的证书是否正确的过程，除非是双向校验，否则根本用不到
