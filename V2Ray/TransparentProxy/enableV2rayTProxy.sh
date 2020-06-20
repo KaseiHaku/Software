@@ -13,7 +13,8 @@
 
 # todo 新版本，基于 tproxy 方式的透明代理
 # 代理局域网设备
-iptables -t mangle -N V2RAY
+iptables -t mangle -N V2RAY 
+iptables -t mangle -A V2RAY -p udp -m multiport --dports 123 -j RETURN  # 放行 ntp 协议
 iptables -t mangle -A V2RAY -d 127.0.0.0/8 -j RETURN       # 回环地址
 iptables -t mangle -A V2RAY -d 192.168.0.0/16 -p tcp -m multiport ! --dports 53,5353 -j RETURN # 直连局域网，53 端口除外（因为要使用 V2Ray 解析 DNS），避免 V2Ray 无法启动时无法连网关的 SSH，如果你配置的是其他网段（如 10.x.x.x 等），则修改成自己的
 iptables -t mangle -A V2RAY -d 192.168.0.0/16 -p udp -m multiport ! --dports 53,5353 -j RETURN # 直连局域网，53 端口除外（因为要使用 V2Ray 解析 DNS）
@@ -24,6 +25,7 @@ iptables -t mangle -A PREROUTING -j V2RAY # 应用规则
 
 # 代理网关本机
 iptables -t mangle -N V2RAY_MASK 
+iptables -t mangle -A V2RAY_MASK -p udp -m multiport --dports 123 -j RETURN  # 放行 ntp 协议
 iptables -t mangle -A V2RAY_MASK -d 127.0.0.0/8 -j RETURN       # 回环地址
 iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p tcp -m multiport ! --dports 53,5353 -j RETURN # 直连局域网，53 端口除外（因为要使用 V2Ray 解析 DNS）
 iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p udp -m multiport ! --dports 53,5353 -j RETURN # 直连局域网，53 端口除外（因为要使用 V2Ray 解析 DNS）
