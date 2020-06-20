@@ -26,7 +26,7 @@
         "vnext": [
           {
             "address": "66.*.*.*",
-            // 这里必须由原先的 v2ray server 端口，改成 nginx 的接受端口，否则连不上
+            // 这里必须由原先的 v2ray server 端口，改成 nginx 的接收端口，否则连不上
             // "port":40000 ,
             "port": 443,     
             "users": [
