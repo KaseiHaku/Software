@@ -37,6 +37,8 @@
         "network": "ws",
         "wsSettings": { "path": "/ws" },
         "security": "tls",
+        // 此处 tlsSettings 可以删除
+        // 因为 TLS 握手过程是：客户端拿本地 CA(根) 证书，去校验服务器发过来的证书是否正确的过程，除非是双向校验，否则根本用不到
         "tlsSettings": {
           "serverName": "1291114093.ml",
           "allowInsecure": false,
@@ -44,9 +46,8 @@
           "disableSystemRoot": false,
           "certificates": [
             // verify: 当前证书用于验证服务器端传过来的 TLS 证书，当前证书必须是 CA 证书
-            { "usage": "verify", "certificateFile": "/path/to/certificate.crt", "keyFile": "/path/to/key.key" },
-            // encipherment: 当前证书用于 TLS 认证和加密
-            { "usage": "encipherment", "certificateFile": "/path/to/certificate.crt", "keyFile": "/path/to/key.key" }  
+            // 其实此配置的作用相当于在 windows 中安装一个 CA 根证书，用于验证 服务器证书用的，所以除了自建 CA 以外，根本用不到
+            { "usage": "verify", "certificateFile": "/path/to/certificate.crt", "keyFile": "/path/to/key.key" }
           ],
         },
       },
