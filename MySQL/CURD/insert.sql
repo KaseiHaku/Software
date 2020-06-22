@@ -18,3 +18,10 @@ from(
 	select t2.f1, t3.f2 
   from tb2 t2 join tb3 t3 on t2.col=t3.col and t2.col2=2
 ) as t2;
+
+/* 存在则更新，不存在则插入 */
+insert into t_stock_chg(f_market, f_stockid, f_name) 
+values('sh', '600000', '白云机场')
+on duplicate key update f_market='sh', f_name='浦发银行'; 
+-- 语句含义：如果该记录不存在则，插入该条记录，如果存在，则更新 f_market='sh', f_name='浦发银行'
+-- 规则：f_market, f_stockid, f_name 这三列中，必须有一列是 unique 索引的，根据 unique 列判断是否重复
