@@ -1,0 +1,27 @@
+/* 适用于 更新值 相同的更新 */
+update t
+set col1=123, col2='fwef'
+where ;
+
+/* 适用于 更新值 随条件变化的更新 */
+update t 
+    set 
+    col1 = 
+    case id 
+        when 1 then 3 
+        when 2 then 4 
+        when 3 then 5 
+    end, 
+    title = 
+    case id 
+        when 1 then 'new title 1' -- else 'new title 1-1'
+        when 2 then 'new title 2'
+        when 3 then 'new title 3'
+    end
+where id in (1,2,3); -- 没有作用，只是确保只有3行数据执行
+
+
+/* 骚操作 */
+update tb1 left join tb2 on col1=col2 and col3=col4 
+set
+where
