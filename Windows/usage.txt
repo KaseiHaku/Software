@@ -69,4 +69,9 @@
 11. 查看系统字符集
     Win+R -> chcp       可以查看当前活动的代码页，代码页是字符集的别名，也有人称“内码表”，然后网上查当前 代码页 对应的 字符集
     
+12. PowerShell 的使用
+    PS> Get-Command         # 获取当前 session 中所有可用命令
+    PS> Get-Help            # 获取一个命令的帮助
+    PS> Get-Member
+    
 
