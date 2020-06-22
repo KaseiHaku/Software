@@ -24,4 +24,9 @@ where id in (1,2,3); -- 没有作用，只是确保只有3行数据执行
 /* 骚操作 */
 update tb1 left join tb2 on col1=col2 and col3=col4 
 set
-where
+where;
+
+/* 骚操作: 创建临时表 */
+create temporary table tmp(id int(4) primary key, dr varchar(50));
+insert into tmp values  (0,'gone'), (1,'xx'),...(m,'yy');
+update test_tbl, tmp set test_tbl.dr=tmp.dr where test_tbl.id=tmp.id;
