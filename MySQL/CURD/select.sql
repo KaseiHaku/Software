@@ -1,3 +1,11 @@
+/* MySQL 表连接类型 */
+from tb1, tb2 on 
+from tb1 full join tb2 on       -- 不支持，使用 left join union right join 替代
+from tb1 left join tb2 on 
+from tb1 right join tb2 on 
+from tb1 inner join tb2 on 
+
+
 /* 查询 */
 select col1, col2 
 from t 
