@@ -41,7 +41,7 @@
     shell>set HELLO=1234                                    # 修改环境变量的值，如果没有值，那么值为 null
     
 7. 引用环境变量
-    export path=$path:/path1:/path2:/pahtN                  # 引用自己，则表示追加值
+    export path=/path1:/path2:/pahtN:$path                  # 引用自己，则表示追加值，$path 最好方最后，这样自定义路径会先搜索
     
     
 8. 使环境变量生效
