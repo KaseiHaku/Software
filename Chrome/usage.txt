@@ -57,3 +57,9 @@
 # Chrome 手动安装 crx 插件文件
     1. chrome://extentions -> 托动 crx 文件到扩展界面即可
     2. 把 .crx 文件改成 .rar 或者 .zip 文件 -> 解压 -> chrome://extentisons -> 开发者模式 -> 添加已经解压的扩展文件
+
+# Chrome 手动同步书签等信息
+    chrome://sync-internals/ 点击页面中的 "Trigger GetUpdates" 按钮即可，找不到 Ctrl+F
+    
+# Chrome 隐藏设置
+    chrome://flags
