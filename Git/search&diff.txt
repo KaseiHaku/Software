@@ -20,20 +20,29 @@ shell> git status
 
 
 
+# 查看文件系统中的两个 path 之间的文件区别
+shell> git diff -- path1 path2    
+
+# 查看 workarea 跟 stage(cache) 指定文件改动了哪些内容
+shell> git diff -- ./path    
+
+# 查看 workarea 跟 local repository 中指定 commit 的区别
+shell> git diff HEAD -- ./path
+
+# 查看 stage(cache) 跟 local repository 中指定 commit 的区别
+shell> git diff --cached HEAD -- ./path 
+shell> git diff --cached -- ./path          # 同上
+
 
 # 查看两个 commit 之间指定文件改动了哪些内容
 shell> git diff commit1 commit2 -- path
 shell> git diff --name-only commit1 commit2 -- path
+
 # 查看指定行的变动
 shell> git log -L 4,5:file
-# 查看 workarea 跟 local repository 指定文件改动了哪些内容
-shell> 
-# 查看 stage(cache) 跟 local repository 指定文件改动了哪些内容
-shell> 
-# 查看 workarea 跟 stage(cache) 指定文件改动了哪些内容
-shell> 
-# 查看文件系统中的两个 path 之间的文件区别
-shell> git diff -- path1 path2              
+
+
+         
 
 
 
