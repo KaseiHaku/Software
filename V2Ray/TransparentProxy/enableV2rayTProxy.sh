@@ -37,4 +37,4 @@ iptables -t mangle -A OUTPUT -j V2RAY_MASK # 应用规则
 
 # 设置策略路由
 ip rule add fwmark 2 pref 1024 table 100     # 匹配防火墙标记为 1 的数据包,优先级(preference)为 1024，用 100 号路由表路由
-ip route add table 100 local 0.0.0.0/0 dev lo  # 为 100 号路由表添加路由策略: 目标IP为 0.0.0.0/0(default 所有地址) 的数据包，使用网卡 lo 发送数据，
+ip route add table 100 local 0.0.0.0/0 dev lo  # 为 100 号路由表添加路由策略: 目标IP为 0.0.0.0/0(default 所有地址) 的数据包，使用网卡 lo 发送数据，坑：当网卡重起时，该配置失效
