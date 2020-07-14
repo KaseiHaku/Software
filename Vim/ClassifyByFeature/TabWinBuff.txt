@@ -35,6 +35,7 @@ Win 窗口操作 {
     新建窗口 {
         :new                    # 新建一个未命名的窗口
         :new winName            # 新建一个名为 winName 的窗口，保存后文件名就是 winName
+        :vnew                   # 新建一个未命名的窗口，并纵向分隔当前窗口
         :split                  # 横向分割当前窗口，内容和当前窗口相同
         :split winName          # 横向分割当前窗口，新窗口名为 winName，别名 sp
         :vsplit                 # 纵向分割当前窗口，内容和当前窗口相同
