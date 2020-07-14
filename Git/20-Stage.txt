@@ -1,21 +1,7 @@
-查看缓存区中的文件 {
-    shell> git status       
-}
+shell> git status      # 查看当前工作区 和 缓存区 的文件状态
 
-清空缓存区 {
-    shell> git reset --mixed HEAD       # 使用当前版本库中的 HEAD 指针的指向的版本，重置缓存区
-}
-
-修改缓存区 {
-    shell> git reset -- .               # 使用本地库中 HEAD 指向的版本覆盖当前缓存区
-}
-
-
-查看缓存区文件版本差异 {
-    shell> git diff --cached                    # 比较缓存区和版本库之间的差别
-}
-
-
+shell> git reset --mixed HEAD       # 使用当前版本库中的 HEAD 指针的指向的版本，重置缓存区
+shell> git reset --mixed HEAD -- ./path     # 重置缓存区指定文件的内容
 
 提交缓存区中的修改到本地库 {
     shell> git commit . -m 'comment'            # 提交 缓存区 内容到 本地仓库，并输入 -m 为本次提交的 说明
