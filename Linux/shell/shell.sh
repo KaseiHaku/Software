@@ -72,7 +72,9 @@ Linux 三个标准输入、输出文件：
 
 
     
-
+# alias 指令别名
+shell> alias                                    # 查看当前所有别名
+shell> alias ls='ls --color=auto'               # 设置别名 
 
 
 
