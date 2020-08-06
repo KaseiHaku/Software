@@ -39,7 +39,7 @@ shell> id userName                      # 查看指定用户的 UID
 
 # 用户组相关命令 #######################
 shell> cat /etc/group               # 查看所有用户组， 格式 = group_name:passwd:GID:user_list    
-shell> cat /etc/gshadow             # 存储所有组账号的密码， 格式 = 
+shell> cat /etc/gshadow             # 存储所有组账号的密码， 格式 = group_name:passwd:管理员账号1,管理员账号2:组成员1,组成员2
 	
 shell> groupadd -g 128 dba          # 新建用户组 dba，并指定 GID 为 128，如果 128 存在，则新建失败
 shell> groupadd -g 128 -o dba       # 新建用户组 dba，并指定 GID 为 128，如果 128 存在，则复用
