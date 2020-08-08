@@ -35,6 +35,17 @@ Linux 执行脚本文件的方式：
     shell> sh /etc/profile              # 同上
     shell> /etc/profile                 # 创建子进程，需要文件有执行权限
 
+Linux 查看当前 Terminal 所有可以运行的命令
+    shell> compgen -c                   # 列出所有可运行的命令
+    shell> compgen -a                   # 列出所有可运行的 alias
+    shell> compgen -b                   # 列出所有可运行的 build-in
+    shell> compgen -k                   # 列出所有 keyword
+    shell> compgen -A function          # 列出所有可运行的 function
+
+
+# alias 指令别名
+shell> alias                                    # 查看当前所有别名
+shell> alias ls='ls --color=auto'               # 设置别名 
 
 重定向：
     # 左边的命令应该有标准输出 > 右边只能是文件
@@ -72,9 +83,7 @@ Linux 三个标准输入、输出文件：
 
 
     
-# alias 指令别名
-shell> alias                                    # 查看当前所有别名
-shell> alias ls='ls --color=auto'               # 设置别名 
+
 
 
 
