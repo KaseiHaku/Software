@@ -1,5 +1,5 @@
 Concept:
-    iptables: 不是真正的防火墙，只是一个操作防火墙的工具，位于用户空间
+    iptables: 不是真正的防火墙，只是一个操作防火墙的工具，位于用户空间，计划要被 nftables 替代
     netfilter: linux 中真正的防火墙，位于内核空间
     
     Table 表： 相似功能规则的集和
