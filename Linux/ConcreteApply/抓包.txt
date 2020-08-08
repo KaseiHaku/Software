@@ -2,5 +2,67 @@ shell> tcpdump -D               # 查看可以抓包的网卡
 shell> tcpdump -i eth0          # 抓取指定网卡的包
 shell> tcpdump -i eth0 -n       # 不将 ip 转换成 domain
 shell> tcpdump -i eth0 -nn      # 不将 port 转换成协议
-shell> tcpdump -i lo -nnfvvX port 53
 
+
+shell> tcpdump -A               # 使用 ascii 码展示内容
+shell> tcpdump -d               # 将包匹配规则打印为人类可读的文字
+shell> tcpdump -dd              # 将包匹配规则打印为 c 语言片段
+
+shell> tcpdump -J               # 列出当前网卡可以展示的时间戳类型
+shell> tcpdump --time-stamp-precision=micro     # 表示当前时间戳精度为 毫秒 nano 表示纳秒
+
+shell> tcpdump -l > ~/networkCard.dump & tail -f  ~/networkCard.dump             # 想在捕获的同时打印捕获的内容到终端上
+shell> tcpdump -n               # 不转换 ip address 为 domain name
+shell> tcpdump -#               # 打印行号
+shell> tcpdump -Q               # 要捕获的数据流向 in out inout
+shell> tcpdump -S               # 打印绝对的 tcp 包序号，而不是相对的
+shell> tcpdump -e               # 打印 ip 包头，可以查看源地址，目标地址
+
+
+# filter expression  详情可以 man pcap
+# type qualifiers 类型限定符
+shell> tcpdump host google.com
+shell> tcpdump net 192.0
+shell> tcpdump port 20
+shell> tcpdump portrange 20-25
+
+# dir qualifiers 方向限定符
+shell> tcpdump src 
+shell> tcpdump dst 
+shell> tcpdump src or dst
+shell> tcpdump src and dst
+shell> tcpdump src 
+
+# proto qualifiers 协议限定符
+shell> tcpdump ether
+shell> tcpdump fddi
+shell> tcpdump tr
+shell> tcpdump wlan
+shell> tcpdump ip
+shell> tcpdump ip proto icmp            # 可用的协议：icmp,  icmp6,  igmp, igrp,  pim,  ah,  esp,  vrrp,  udp, or tcp
+shell> tcpdump ip6
+shell> tcpdump ip6 proto icmp
+shell> tcpdump arp
+shell> tcpdump rarp
+shell> tcpdump decnet
+shell> tcpdump tcp
+shell> tcpdump udp
+shell> tcpdump tcp or udp
+
+# 其他限定符
+shell> tcpdump gateway
+shell> tcpdump broadcast
+shell> tcpdump less
+shell> tcpdump greater
+shell> tcpdump arithmetic-expressions
+
+# 运算符
+&&
+||
+!
+              
+
+
+# 常用
+shell> tcpdump -i ens33 -n -e -S -# -l -Q out  > ~/networkCard.dump & tail -f  ~/networkCard.dump
+shell> tcpdump -i lo -nnfvvX port 53
