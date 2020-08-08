@@ -64,5 +64,5 @@ shell> tcpdump arithmetic-expressions
 
 
 # 常用
-shell> tcpdump -i ens33 -n -e -S -# -l -Q out  > ~/networkCard.dump & tail -f  ~/networkCard.dump
+shell> tcpdump -i ens33 -SQ out -#enl > ~/networkCard.dump & tail -f  ~/networkCard.dump
 shell> tcpdump -i lo -nnfvvX port 53
