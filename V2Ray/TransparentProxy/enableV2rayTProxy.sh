@@ -1,7 +1,16 @@
 #!/bin/bash
 # TODO 基于 tproxy 方式的透明代理
 # 基于 nftables 的脚本
-
+nft add table inet T_V2RAY
+nft add chain inet T_V2RAY C_V2RAY {type filter hook prerouting device ens33 priority 0\; policy return \;} 
+nft add rule inet T_V2RAY C_V2RAY udp dport {123} return
+nft add rule inet T_V2RAY C_V2RAY ip daddr 127.0.0.0-127.255.255.255 return 
+nft add rule inet T_V2RAY C_V2RAY ip daddr 192.168.0.0-192.168.255.255 tcp dport {53,5353} return 
+nft add rule inet T_V2RAY C_V2RAY ip daddr 192.168.0.0-192.168.255.255 udp dport {53,5353} return 
+nft add rule inet T_V2RAY C_V2RAY ip daddr 127.0.0.0-127.255.255.255 return 
+nft add rule inet T_V2RAY C_V2RAY ip daddr 127.0.0.0-127.255.255.255 return 
+nft add rule inet T_V2RAY C_V2RAY ip daddr 127.0.0.0-127.255.255.255 return 
+nft add rule inet T_V2RAY C_V2RAY ip daddr 127.0.0.0-127.255.255.255 return 
 
 
 
