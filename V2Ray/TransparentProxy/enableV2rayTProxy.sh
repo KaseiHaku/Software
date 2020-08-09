@@ -1,17 +1,11 @@
 #!/bin/bash
-# todo 老版本 redirect 方式的 透明代理 
-# iptables -t nat -N V2RAY_LOCAL                         
-# iptables -t nat -A OUTPUT -p tcp -j V2RAY_LOCAL       
-# iptables -t nat -A OUTPUT -p udp -j V2RAY_LOCAL      
-# iptables -t nat -A V2RAY_LOCAL -m set --match-set vps4 dst -j RETURN      # 如果目标 ip 地址在名为 vps4 的 ipset 中，那么放行
-# iptables -t nat -A V2RAY_LOCAL -d 192.168.0.0/16 -j RETURN                # 如果目标 ip 地址是私有地址，那么放行
-# iptables -t nat -A V2RAY_LOCAL -d 127.0.0.0/8 -j RETURN
-# iptables -t nat -A V2RAY_LOCAL -p tcp -j REDIRECT --to-ports 12345  
-# iptables -t nat -A V2RAY_LOCAL -p udp --dport 53 -j REDIRECT --to-ports 12345 
+# TODO 基于 tproxy 方式的透明代理
+# 基于 nftables 的脚本
 
 
 
-# todo 新版本，基于 tproxy 方式的透明代理
+
+# 基于 iptables 的脚本
 # 代理局域网设备
 iptables -t mangle -N V2RAY 
 iptables -t mangle -A V2RAY -p udp -m multiport --dports 123 -j RETURN  # 放行 ntp 协议
