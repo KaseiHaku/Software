@@ -28,6 +28,7 @@ iptables -t mangle -A PREROUTING -j V2RAY # 应用规则
 # 代理网关本机
 iptables -t mangle -N V2RAY_MASK 
 iptables -t mangle -A V2RAY_MASK -p udp -m multiport --dports 123 -j RETURN  # 放行 ntp 协议
+# 跳过 D 类 和 E 类地址，即 224.0.0.0 朝上的地址，其中 255.255.255.255 为 全局广播地址
 iptables -t mangle -A V2RAY_MASK -d 127.0.0.0/8 -j RETURN       # 回环地址
 iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p tcp -m multiport ! --dports 53,5353 -j RETURN # 直连局域网，53 端口除外（因为要使用 V2Ray 解析 DNS）
 iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -p udp -m multiport ! --dports 53,5353 -j RETURN # 直连局域网，53 端口除外（因为要使用 V2Ray 解析 DNS）
