@@ -28,6 +28,7 @@ NetworkManager 配置 {
 
 ipset 配置 {
     shell> ipset create vps4 hash:ip        # 创建一个名为 vps ，类型为 hash:ip 的 ipset
+    shell> ipset create vps6 hash:ip family inet6   # 创建一个名为 vps6，类型为 hash:ip 的 ipset, 保存 i=IPv6 类型的地址
     shell> ipset destory vps4               # 删除一个名为 vps 的 ipset
     shell> ipset save > /etc/ipset.conf     # 将当前所有 ipset 信息持久化到 /etc/ipset.conf
     可以创建一个开机自执行服务 和 关机自执行服务，来对 ipset 做持久化处理，具体操作见 Linux/service 操作手册
