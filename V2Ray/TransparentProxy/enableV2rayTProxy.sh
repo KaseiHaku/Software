@@ -18,6 +18,7 @@ nft add rule inet T_V2RAY C_V2RAY ip daddr 127.0.0.0-127.255.255.255 return
 # 代理局域网设备
 iptables -t mangle -N V2RAY 
 iptables -t mangle -A V2RAY -p udp -m multiport --dports 123 -j RETURN  # 放行 ntp 协议
+iptables -t mangle -A V2RAY_MASK -m iprange --dst-range 224.0.0.0-255.255.255.255 -j RETURN  # 跳过 D 类 和 E 类地址，即 224.0.0.0 朝上的地址，其中 255.255.255.255 为 全局广播地址
 iptables -t mangle -A V2RAY -d 127.0.0.0/8 -j RETURN       # 回环地址
 iptables -t mangle -A V2RAY -d 192.168.0.0/16 -p tcp -m multiport ! --dports 53,5353 -j RETURN # 直连局域网，53 端口除外（因为要使用 V2Ray 解析 DNS），避免 V2Ray 无法启动时无法连网关的 SSH，如果你配置的是其他网段（如 10.x.x.x 等），则修改成自己的
 iptables -t mangle -A V2RAY -d 192.168.0.0/16 -p udp -m multiport ! --dports 53,5353 -j RETURN # 直连局域网，53 端口除外（因为要使用 V2Ray 解析 DNS）
