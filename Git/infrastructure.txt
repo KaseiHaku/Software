@@ -18,12 +18,12 @@ Git 的本质：
         git 是以 commit 为节点，组成的一个有向无环图(DAG)，所有 commit 之间形成一颗提交树
 
 Git Terminology:
-    Workarea = untracked + indexed: 就是当前正在编辑的版本
+    Workarea(WorkTree) = untracked + indexed: 就是当前正在编辑的版本
         untracked: 没有被 git 管理跟踪的文件
         indexed: 已经被 git 管理跟踪的文件，
-    Cached(Staging) : 缓存区：从工作区提交，但是还没有放入到本地仓库的版本
+    Cached(Staging, Index) : 缓存区：从工作区提交，但是还没有放入到本地仓库的版本
     LocalRepository: 本地仓库：存储在本地仓库中的版本
-    RemoteRepository:  远程仓库：存储在远程仓库中的版本，比如：存储在 GitHub 服务器中的版本 
+    RemoteRepository: 远程仓库：存储在远程仓库中的版本，比如：存储在 GitHub 服务器中的版本 
     Stash: 临时保存工作区的状态
 
     
