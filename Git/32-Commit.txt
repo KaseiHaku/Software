@@ -32,7 +32,7 @@ Query {
     shell> git blame -- file                
     
     # 查看 reset 之后的，其他的 commit
-    shell> git reflog show          # 跟 shell> git log 参数一样
+    shell> git reflog show          # 跟 shell> git log 参数一样，该命令会记录所有 HEAD 指针的指向的 commit 的变动日志
     
 
 }
