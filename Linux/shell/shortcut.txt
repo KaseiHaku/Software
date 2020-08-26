@@ -8,7 +8,6 @@ Ctrl+E              # 行尾
 
 Ctrl+U              # 删除光标左边所有
 Ctrl+K              # 删除光标右边所有
-Ctrl+&              # 撤销删除
 Ctrl+Shift+C        # 复制（相当于鼠标左键拖拽）
 Ctrl+Shift+V        # 粘贴（相当于鼠标中键）
 
