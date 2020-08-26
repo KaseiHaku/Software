@@ -30,6 +30,10 @@ Query {
     
     # 查看文件中每一行是哪个 commit 提交的
     shell> git blame -- file                
+    
+    # 查看 reset 之后的，其他的 commit
+    shell> git reflog show          # 跟 shell> git log 参数一样
+    
 
 }
 
