@@ -12,6 +12,8 @@ HEAD 指针移动 {
     shell> git reset --soft HEAD    # 缓存区和工作区里面的内容都不会改变，仅仅会移动 HEAD 指针到指定的 commit 
     shell> git reset --mixed HEAD   # 清空缓存区里面的所有内容，但是工作区的内容不会变，移动 HEAD 指针到指定的 commit 
     shell> git reset --hard HEAD    # 清空缓存区里面的所有内容，移动 HEAD 指针到指定的 commit，将工作区的内容恢复到 HEAD 指针指向的 commit 状态
+    shell> git reset --merge HEAD   # 清空缓存区，更新工作区跟 HEAD 不同的文件，保留工作区未 commit 的数据
+    shell> git reset --keep commit1 # 清空缓存区，重置工作区中，当前 HEAD 指针指向的 commit 和 commit1 不同的文件
     
     
     shell> git checkout commit1     # 会导致 HEAD 指针成为 detached 状态
