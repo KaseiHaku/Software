@@ -23,6 +23,8 @@ shell> vim
 # neo4j 配置修改后，使配置生效的命令 
     shell>neo4j update-service 
 
+# 能使用服务启动的不要用命令行启动
+shell> systemctl start neo4j
 
 
 
