@@ -10,3 +10,4 @@ create database dbName          -- 创建指定数据库，dbName 规则：[a..z
 drop database dbName            -- 删除指定数据库
 
 
+:use dbName                     -- 切换当前使用的数据库
