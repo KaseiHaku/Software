@@ -50,7 +50,8 @@ create table t(
 	col6 timestamp comment '列的注释',
 	constraint t_pk primary key(col1, col2),  -- 联合主键
 	constraint t_fk foreign key(col4) references t2(id),
-	constraint t_uk unique key(col4, col5)  -- 联合唯一索引
+	constraint t_uk unique key(col4, col5),  -- 联合唯一索引
+    index indexName col3(65535)
 )AUTO_INCREMENT=1 comment='表的注释'; -- 编码方式：默认的是utf8，  自增长量：可以在这里初始化
 
 -- 删除表
@@ -104,6 +105,10 @@ alter table t
 modify column col varchar(20) not null comment '';
 
 
+/* Index */
+show index from tableName;
+create unique index indexName using btree on tableName(colName(16) asc, col2(32) desc);
+drop index indexName on tableName;
 
 
 
