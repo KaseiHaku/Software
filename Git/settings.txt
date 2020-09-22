@@ -116,7 +116,11 @@ Git 控制台字符配置
     shell> git config --global core.whitespace tab-in-indent        # 监视在行头表示缩进的 tab，默认关闭
     shell> git config --global core.whitespace cr-at-eol            # 告诉 Git 忽略行尾的回车，默认关闭
     
-    
+Credential Manager：
+    shell> git config [--local|--global|--system] --unset credential.helper     # 清除各个级别的 git 凭证
+
+
+
 gitignore 文件配置
     # 在 .gitignore 文件使用过程中出现修改，需要使更新后的 gitignore 文件生效，按序执行如下命令
     shell> git rm -r --cached .                     # 清除缓存
