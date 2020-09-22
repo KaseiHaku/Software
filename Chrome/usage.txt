@@ -63,3 +63,10 @@
     
 # Chrome 隐藏设置
     chrome://flags
+    
+# 特殊 Google 搜索条件
+    site:github.com             # 指定网站搜索
+    before:2020-01-01           # 指定时间之前
+    after:2020-01-01            # 指定时间之后
+    "mandatory involve"         # 必须存在
+    filetype:rtf                # 查询指定文件
