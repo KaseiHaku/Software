@@ -46,15 +46,6 @@ Git 控制台字符配置
         shell> vim ~/.git-credentials
         添加以下内容：
         https://{username}:{passwd}@github.com
-        
-        shell> git config --global credential.helper "store --file ~/.my-credentials"  # 凭据永远明文保存在硬盘
-        shell> git config --global credential.helper "cache --timeout 3600"         # 不保存在硬盘，过期时间为 900 秒
-        
-        shell> cat ~/.gitconfig         # 查看 git 配置文件的变化 
-        [credential]
-            helper = store
-            
-
 
     # 使用 SSH 协议配置远程仓库
     # 查看目录下有没有 id_rsa 和 id_rsa.pub (或者是 id_dsa 和 id_dsa.pub 之类成对的文件)，有 .pub 后缀的文件就是公钥，另一个文件则是私钥
@@ -78,7 +69,16 @@ Git 控制台字符配置
     The authenticity of host 'github.com (192.30.253.113)' can't be established.
     RSA key fingerprint is SHA256:dfakdfwoefkqwemgqweegfqweg.
     Are you sure you want to continue connecting (yes/no)? yes  # 提示如上信息， 直接输入 yes 即可
-    
+
+
+Credential Manager：
+    shell> cat ~/.gitconfig         # 查看 git 配置文件的变化 
+        [credential]
+            helper = store
+
+    shell> git config --global credential.helper "store --file ~/.my-credentials"  # 凭据永远明文保存在硬盘
+    shell> git config --global credential.helper "cache --timeout 3600"         # 不保存在硬盘，过期时间为 900 秒  
+    shell> git config [--local|--global|--system] --unset credential.helper     # 清除各个级别的 git 凭证       
     
     
 修改本地仓库拉去数据协议：
@@ -115,11 +115,7 @@ Git 控制台字符配置
     shell> git config --global core.whitespace indent-with-non-tab  # 揪出以空格而非 tab 开头的行，默认关闭
     shell> git config --global core.whitespace tab-in-indent        # 监视在行头表示缩进的 tab，默认关闭
     shell> git config --global core.whitespace cr-at-eol            # 告诉 Git 忽略行尾的回车，默认关闭
-    
-Credential Manager：
-    shell> git config [--local|--global|--system] --unset credential.helper     # 清除各个级别的 git 凭证
-    shell> git config --global credential.helper cache                          # 将凭证保证在缓存中，一定时间内不用重新输入
-    shell> git config --global credential.helper 'store --file ~/.my-credentials'       # 将凭证保存在文件中
+
 
 
 
