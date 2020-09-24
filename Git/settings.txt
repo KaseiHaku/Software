@@ -118,6 +118,8 @@ Git 控制台字符配置
     
 Credential Manager：
     shell> git config [--local|--global|--system] --unset credential.helper     # 清除各个级别的 git 凭证
+    shell> git config --global credential.helper cache                          # 将凭证保证在缓存中，一定时间内不用重新输入
+    shell> git config --global credential.helper 'store --file ~/.my-credentials'       # 将凭证保存在文件中
 
 
 
