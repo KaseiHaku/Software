@@ -2,6 +2,8 @@
     1. 千万不能用 window 记事本编辑文本文件，下载 UltraEdit 修改默认编码格式为： UTF-8 without BOM
     2. 所有版本控制系统都只能跟踪 txt 文件的改动，二进制文件虽然能管理，但是不能跟踪改动
     3. 假如 remoteRepository 有个分支叫 branchDev，localRepository 也有个分支叫 branchDev ，注意这两个分支虽然同名但是不是一个分支，在 git push 的时候，还是会进行 merge 操作
+       git pull = git fetch + git merge origin/branchId
+       git push = git fetch + git merge origin/branchId + git push 
 
 
 
