@@ -37,6 +37,7 @@ shell> git diff --cached -- ./path          # 同上
 # 查看两个 commit 之间指定文件改动了哪些内容
 shell> git diff commit1 commit2 -- path
 shell> git diff --name-only commit1 commit2 -- path
+shell> git diff --name-only commit1 HEAD -- path      # 查看 commmit1 到当前 HEAD 提交之间改动了哪些东西
 
 # 查看指定行的变动
 shell> git log -L 4,5:file
