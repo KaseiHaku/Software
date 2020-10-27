@@ -35,7 +35,7 @@ find / exp1 -print                  # 默认 action 为 print
 find . ! -iregex '.*.cnf' ! -iregex '.*' -print
 find . ! -iregex '.*.cnf' ! -iregex '.*' -exec command {} \;  # 注意最后的 \;
 
-find -regextype egrep . -iregex 'regex'              # 使用 egrep 类型的正则表达式匹配
+find . -regextype egrep -iregex '.*[a-z].*'              # 使用 egrep 类型的正则表达式匹配
 
 
 
