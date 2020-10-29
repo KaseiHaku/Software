@@ -18,8 +18,8 @@
 
 清理未跟踪的文件 {
     shell> git clean -n         # dry-run 
-    shell> git clean -i         # interactive
-    shell> git clean -d         # 删除整个未跟踪的目录
+    shell> git clean -ni         # interactive
+    shell> git clean -nd         # 删除整个未跟踪的目录
 }
 
 
