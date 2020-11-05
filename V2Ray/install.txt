@@ -1,6 +1,6 @@
 V2Ray 安装：  
     Linux：
-        shell> bash <(curl -L -s https://install.direct/go.sh)      # 执行下载下来的脚本
+        shell> bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)      # 执行下载下来的脚本
         脚本运行后，文件系统的变动：
             新增：
             /usr/bin/v2ray/v2ray：V2Ray 程序；
