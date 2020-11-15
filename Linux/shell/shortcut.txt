@@ -11,7 +11,7 @@ Ctrl+K              # 删除光标右边所有
 Ctrl+Shift+C        # 复制（相当于鼠标左键拖拽）
 Ctrl+Shift+V        # 粘贴（相当于鼠标中键）
 
-Ctrl+R              # 历史命令查找
+Ctrl+R              # 历史命令查找，再次 Ctrl+R 搜索上一个
 
 Ctrl+L              # 清屏
 
