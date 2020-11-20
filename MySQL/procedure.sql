@@ -140,7 +140,7 @@ begin
         LEAVE label1;
     END LOOP label1;
 	
-
+    dbms_output.put_line(re); -- 输出到控制台日志
 end;
 $$
 delimiter ;
