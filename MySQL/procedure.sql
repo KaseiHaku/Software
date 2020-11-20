@@ -1,5 +1,4 @@
- 
-/************************************************* mysql 存储过程 ***********************************************************/
+ /************************************************* mysql 变量 ***********************************************************/
 -- 变量主要有以下几种类型：local, user, session, global
 
 -- Local Variable
@@ -53,6 +52,7 @@ set @@global.var1 = 1;
 select @@global.globalVar1;
 show global variables like '%global%';
 
+
 /************************************************* mysql 存储过程 ***********************************************************/
 -- 查看所有存储过程、存储函数
 show procedure status;
@@ -82,14 +82,16 @@ create procedure param(
 	out var6 datetime		/* */
 )
 begin
-	
-	declare var7 int(7) default 8; -- 定义变量
-	set var7 = 9; -- 给变量赋值
-	
+    /* 定义变量 */
+	declare var7 int(7) default 8; 
+    
+    /* 给变量赋值 */ 
+	set var7 = 9; 
 	select name into var3 from order where id=1; -- 订单表
     select price into var4 from order where id=1; 
-    select avg(price) into var5 from order; 
+    select avg(price) into var5 from order; -- 给变量赋值
     
+    /* 流程控制 及 变量使用 */
     -- if 语句格式
     if var7>9 then
     elseif var7<9 then
