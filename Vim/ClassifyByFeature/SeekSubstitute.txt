@@ -36,6 +36,8 @@
     {-n,m}            # 非贪婪(greedy)模式
     
     ?                 # ?pattern 向前搜索
+    
+    /\v\cpattern\_.pattern   # 跨行匹配，\_. 包含换行符
 }
 
 替换 {
