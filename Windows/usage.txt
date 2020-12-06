@@ -78,3 +78,6 @@
     shell> netstat -ano | findstr "port"
     shell> tasklist | findstr "PID"
     shell> taskkill /f /t /pid PID 
+    
+14. cmd 命令提示符使用
+    shell> command /?       # 查看帮助，或者 /h
