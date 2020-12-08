@@ -19,7 +19,7 @@ shell> dos2unix a.theirs.txt
 shell> git merge-file -p a.ours.txt a.common.txt a.theirs.txt > a.txt       # 使用修改后的 a.theirs.txt 进行合并，并输出到最初的文件名中
 
 
-# 合并指定 commit 到另一个分支
+# 合并另一个分支的指定 commit 到当前分支
 shell> git cherry-pick commitA    
 shell> git cherry-pick commitA commitB
 shell> git cherry-pick commitA..commitB             # 该命令会 merge (A,B] 之间的所有 commit， 不包括 A 但包括 B
