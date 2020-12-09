@@ -1,7 +1,7 @@
 Maven 命令格式：
     shell> mvn mvn [options] goal1 goal2 phase1 phase2      # goal=plugin:goal;  phase=clean, package, install 
     shell> mvn -h       # 查看 mvn 命令本身的 options
-    shell> mvn help:help  # 运行  "help" plugin 的 help "goal"
+    shell> mvn help:help  # 运行  "help" plugin 的 "help" goal
     
 
 Maven Trap:
