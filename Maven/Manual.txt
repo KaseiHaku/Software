@@ -1,3 +1,18 @@
+Maven 命令格式：
+    shell> mvn mvn [options] goal1 goal2 phase1 phase2      # goal=plugin:goal;  phase=clean, package, install 
+    shell> mvn -h       # 查看 mvn 命令本身的 options
+    shell> mvn help:help  # 运行  "help" plugin 的 help "goal"
+    
+
+Maven Trap:
+    maven 拉取不到 私有仓库 中新增的 artificate：
+        原因：当 local repository 中包含新增的 artificate 的目录（但是该目录中没有 jar 包）时，maven 就不会从 私有仓库 中拉取 artificate
+        解决方案：删除 artificate 目录
+
+    Maven 包冲突处理策略:
+        最短路径优先
+        如果路径长度相同，则最先声明优先
+
 Maven 项目目录结构{  
 
 	MavenWeb
