@@ -1,3 +1,0 @@
-maven 拉取不到 私有仓库 中新增的 artificate：
-    原因：当 local repository 中包含新增的 artificate 的目录（但是该目录中没有 jar 包）时，maven 就不会从 私有仓库 中拉取 artificate
-    解决方案：删除 artificate 目录
