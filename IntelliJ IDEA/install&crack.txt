@@ -15,7 +15,9 @@ Preset {
     # Intellij IDEA 2020.2.3 插件仓库破解
     File -> Settings -> Plugins -> Manage Plugins Reposito -> 添加仓库地址 https://repo.idechajian.com
     -> 搜索插件 "BetterIntellij" 并安装
-    Help -> Register... -> Add New License -> Active Code -> 粘贴上述激活码即可（无前后空格） -> 激活即可
+    Help -> Register... -> Add New License -> Active Code -> 粘贴上述激活码即可（无前后空格） -> 激活即可 
+    -> 如果不行打开 idea64.exe.vmoptions 文件看看，删掉多余的，还不行 shell> find /  删除掉所有 IDEA 的配置文件及目录
+     
     
     
 }
