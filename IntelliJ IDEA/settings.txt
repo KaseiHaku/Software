@@ -1,6 +1,10 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
-
+    Debug 配置 {
+        debug 窗口，左下角齿轮 
+        -> [勾选] Show values Inline
+        -> [勾选] Show Method Return Values
+    }
 
     换行符配置 {
          File -> Settings -> Editor -> Code Style -> Line Separator：Unix and macOS(\n)
