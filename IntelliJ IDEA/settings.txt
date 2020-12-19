@@ -1,5 +1,10 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
+    
+    行内编辑 Json Xml 等字符串 {
+        输入 String str = ""; -> 光标移动到双引号内部 -> Alt+Enter -> 选择 Inject language or reference -> 选择 json 即可，
+    }
+
     Debug 配置 {
         debug 窗口，左下角齿轮 
         -> [勾选] Show values Inline
