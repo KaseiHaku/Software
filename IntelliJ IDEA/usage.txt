@@ -1,3 +1,15 @@
+行内编辑 Json Xml 等字符串 {
+    输入 String str = ""; -> 光标移动到双引号内部 -> Alt+Enter -> 选择 Inject language or reference -> 选择 json 
+    -> 光标移动到双引号内部 -> 再次 Alt+Enter -> Edit JSON Fragment -> 可以看到编辑 json 文件的界面了 -> 编辑完后关闭即可
+}
+
+查看当前 工作空间 和 Git 仓库中分支中所有不同的文件列表 {
+    VCS -> VCS Operations Popup... -> Branchs -> 选择指定的分支 -> 选择 Show Diff with Working Tree 
+    -> 就可查看所有不同的文件 (注意：到底是以 工作空间 为基准对比，还是以 指定分支 为基准进行对比的),蓝：改，灰：删，绿：增
+}
+
+
+
 1. 创建一个 gradle 项目，并包含多个子模块，即目录结构为 gradle_project { gradle_module1, gradle_module2}
     File -> New -> Project -> 选择 Gradle -> 不勾选任何东西，包括 java -> Next
     -> GroupId: kasei.gradle_project 
