@@ -26,7 +26,8 @@ mysql> use mydb;                                                -- 使用 mydb �
 mysql> show global variables where variable like '%a%';         -- 查询 mysql 所有配置信息
 mysql> show variables where variable like '%a%';                -- 查询 mysql 所有配置信息
 mysql> show global status;                                      -- 查询 mysql 运行状态
-
+mysql> show character set;                                      -- 查看所有支持的字符集
+    
 
 /****************************** Privilege Manager *****************************/
 -- Global Privilege
