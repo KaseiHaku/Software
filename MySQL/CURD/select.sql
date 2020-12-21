@@ -10,6 +10,7 @@ from tb1 inner join tb2 on
 select col1, col2 
 from t 
 where 
+order by convert(chinese using gbk) asc  -- mysql 中文排序需要使用 gbk 编码才是对的，否则会乱序
 limit 100, 10; -- 从 100 行开始读取，一共读取 10 行
 
 
