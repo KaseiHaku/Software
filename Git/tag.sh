@@ -4,7 +4,7 @@
 
 # 创建 tag
 shell> git tag -am 'tag message' tagName commitId   # 如果没有 commitId，默认取当前 beanch 的 HEAD 作为 commitId  
-
+shell> git tag -am "`echo -e 123\n456`" tagName commitId # 添加多行 message
 
 # 删除 tag
 shell> git tag -d tag1 tag2 ...
