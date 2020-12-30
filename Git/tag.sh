@@ -11,6 +11,7 @@ shell> git tag -d tag1 tag2 ...
 
 # 查看 tag
 shell> git tag -l           # 查看所有 tag
+shell> git tag -l -n2       # 查看所有 tag，并显示 message 且最多显示 2 行 
 shell> git tag -v tagName   # 查看指定 tagName 的详细信息
 
 # 将标签提交到 remote repository
