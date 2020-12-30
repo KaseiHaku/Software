@@ -8,6 +8,7 @@ shell> git tag -am "`echo -e 123\n456`" tagName commitId # 添加多行 message
 
 # 删除 tag
 shell> git tag -d tag1 tag2 ...
+shell> git push origin :refs/tags/tagName   # 删除 remote repo tag
 
 # 查看 tag
 shell> git tag -l           # 查看所有 tag
