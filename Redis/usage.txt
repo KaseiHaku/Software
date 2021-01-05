@@ -11,6 +11,7 @@ Redis Data Type {
 
 Connection {
     shell> redis-cli -h 127.0.0.1 -p 6379 -a "mypass"       # 登录远程机 redis 服务，不加主机默认当前服务器
+    shell> redis-cli -c -h 127.0.0.1 -p 6379 -a 'pwd'       # -c 表示集群
     redis> auth password                                    # 用于连接了主机，但是没有登录时，用于登录的命令
     redis> ping 
     redis> select 15                                        # 默认有 0~15 个 database ，具体有多少查看 redis 配置，默认连接到 0 号库
@@ -33,7 +34,8 @@ Transaction {
 }
 
 Key {
-    redis> keys *                                           # 查找所有 key
+    shell> redis-cli -c -h 127.0.0.1 -p 6379 -a 'pwd' --scan --pattern '*key*'  # 查询所有集群中，符合 patrern 的 key
+    redis> keys *                                           # 查找当前主机中所有 key
     redis> exists key1 key2                                 # 判断 key 是否存在
     redis> type key                                         # 查看指定 key 的类型
     redis> expire key seconds                               # 设置指定 key 的过期时间
