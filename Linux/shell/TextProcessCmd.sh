@@ -67,9 +67,9 @@ shell> paste file1 file2  # 将 file1 file2 按列合并
 # 行及字符统计工具
 
 # sed 
-# 文本替换工具
-shell> sed      # 类似 vim 的替换，但是不需要打开文件
-
+# 文本替换工具，类似 vim 的替换，但是不需要打开文件
+shell> sed 's/regex/replacement/g' file1        # 替换每一行首次匹配的文本
+shell> sed 's/regex/replacement/g' file1        # 全局替换匹配的文本
 
 
 # awk
