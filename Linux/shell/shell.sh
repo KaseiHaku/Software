@@ -82,44 +82,6 @@ Linux 三个标准输入、输出文件：
 
 
 
-    
-
-
-
-
-
-# grep 命令简介
-# 作用： 只显示包含指定 pattern 的行
-shell> grep -i pattern file1 file2                     # 忽略大小写
-grep -n pattern file1 file2                     # 输出匹配串在文件中的行号
-grep -r pattern file1 file2                     # 递归搜索子目录
-grep --color=auto pattern file1 file2           # 匹配字符串高亮显示
-grep -E pattern file1 file2                     # 表示 pattern 是一个正则表达式
-grep -f fileRegexp file1 file2                  # 从文件中读取 pattern ，文件中一行为一个 pattern， 命令匹配所有文件中的 pattern
-grep -v 反选
-
-
-    
-    
-
-
-# xargs 命令简介
-# 作用： 将标准输入转换成命令的参数，默认拼接在命令的最后
-# 定界符： 默认定界符是 空格， xargs 命令会把输入的字符串中的 换行 和 其他空白字符 替换成空格
-xargs [option] command [command-option]
-    -a file         # 从指定文件读入输入，而不是标准输入中
-    -d ,            # 修改分隔符
-    -i              # 使用 {} 作为占位符标记，可以使用 --replace=[R] 替换默认的占位符 {}
-    -n 1            # 一次命令使用多少个分隔符
-    -l 1            # 一个 xarg 命令最多使用输入中的多少个非空行
-    
-    
-echo 1 2 3 | xargs -n 1 touch                       # 每行输出 1 个，然后将每行的字符串作为后面命令的参数
-echo ggXaaXhh | xargs -d X -n 1 echo                # 修改定界符为 'X'
-echo kasei | xargs -I {} ./sk.sh -p {} -l           # -I 指定占位符为 {}， 命令行中的 {} 将被传入的参数所替代 
-
-
-
 # 查看控制台命令历史
 shell> history      # 快捷键 Ctrl+R 反向搜索命令，再次 Ctrl+R 搜索上一个
     
