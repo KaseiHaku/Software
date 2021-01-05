@@ -20,7 +20,7 @@ shell> grep -v 反选
 shell> xargs [option] command [command-option]
     -a file         # 从指定文件读入输入，而不是标准输入中
     -d ,            # 修改分隔符
-    -i              # 使用 {} 作为占位符标记，可以使用 --replace=[R] 替换默认的占位符 {}
+    -I              # 使用 {} 作为占位符标记，可以使用 --replace=[R] 替换默认的占位符 {}
     -n 1            # 一次命令使用多少个分隔符
     -l 1            # 一个 xarg 命令最多使用输入中的多少个非空行
     
