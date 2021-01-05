@@ -19,10 +19,15 @@ shell> grep -v 反选
 # 定界符： 默认定界符是 空格， xargs 命令会把输入的字符串中的 换行 和 其他空白字符 替换成空格
 shell> xargs [option] command [command-option]
     -a file         # 从指定文件读入输入，而不是标准输入中
+    -0              # 
     -d ,            # 修改分隔符
+    -E
     -I              # 使用 {} 作为占位符标记，可以使用 --replace=[R] 替换默认的占位符 {}
+    -L 1            # 一个 xarg 命令最多使用输入中的多少个非空行
     -n 1            # 一次命令使用多少个分隔符
-    -l 1            # 一个 xarg 命令最多使用输入中的多少个非空行
+    -p              # 交互执行
+    -r              # 如果参数为空，则不执行命令，不加至少执行一次命令
+    -t              # 执行命令前，先打印命令
     
 shell> echo 1 2 3 | xargs -n 1 touch                       # 每行输出 1 个，然后将每行的字符串作为后面命令的参数
 shell> echo ggXaaXhh | xargs -d X -n 1 echo                # 修改定界符为 'X'
