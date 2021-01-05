@@ -44,12 +44,7 @@ shell> sort unsort.txt | uniq -c      # 统计各行在文件中出现的次数
 shell> sort unsort.txt | uniq -d      # 找出重复行
 
 
-# tr
-# translate，squeeze，delete 字符串
-shell> echo 12345 | tr '2' 'q'        # 将 2 替换成 q
-shell> echo 12345 | tr -c '2' 'q'     # 逆向匹配，将 非2 替换成 q
-shell> echo 12345 | tr -d '2'         # 删除 字符2
-shell> echo 12225 | tr -s '2'         # 压缩重复字符2
+
 
 
 
@@ -66,8 +61,15 @@ shell> paste file1 file2  # 将 file1 file2 按列合并
 # wc
 # 行及字符统计工具
 
+# tr
+# translate，squeeze，delete 单字符工具
+shell> echo 12345 | tr '2' 'q'        # 将 2 替换成 q
+shell> echo 12345 | tr -c '2' 'q'     # 逆向匹配，将 非2 替换成 q
+shell> echo 12345 | tr -d '2'         # 删除 字符2
+shell> echo 12225 | tr -s '2'         # 压缩重复字符2
+
 # sed 
-# 文本替换工具，类似 vim 的替换，但是不需要打开文件
+# 字符串工具，类似 vim 的替换，但是不需要打开文件
 shell> sed 's/regex/replacement/g' file1        # 替换每一行首次匹配的文本
 shell> sed 's/regex/replacement/g' file1        # 全局替换匹配的文本
 
