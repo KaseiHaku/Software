@@ -34,9 +34,10 @@ Transaction {
 }
 
 Key {
-    shell> redis-cli -c -h 127.0.0.1 -p 6379 -a 'pwd' --scan --pattern '*key*'  # 查询所有集群中，符合 patrern 的 key
+    shell> redis-cli -c -h 127.0.0.1 -p 6379 -a 'pwd' --scan --pattern '*key*'  # 查询当前主机中，符合 patrern 的 key
     redis> keys *                                           # 查找当前主机中所有 key
-    redis> exists key1 key2                                 # 判断 key 是否存在
+    redis> scan 0 match *pattern* count 100000              # 遍历 key
+    redis> exists key1 key2                                 # 判断 key 是否存在，支持集群
     redis> type key                                         # 查看指定 key 的类型
     redis> expire key seconds                               # 设置指定 key 的过期时间
     redis> expire key timestamp                             # 设置指定 key 的过期时间
