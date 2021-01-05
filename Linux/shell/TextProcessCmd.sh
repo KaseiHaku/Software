@@ -19,19 +19,50 @@ shell> grep -v 反选
 # 定界符： 默认定界符是 空格， xargs 命令会把输入的字符串中的 换行 和 其他空白字符 替换成空格
 shell> xargs [option] command [command-option]
     -a file         # 从指定文件读入输入，而不是标准输入中
-    -0              # 
-    -d ,            # 修改分隔符
-    -E
-    -I              # 使用 {} 作为占位符标记，可以使用 --replace=[R] 替换默认的占位符 {}
-    -L 1            # 一个 xarg 命令最多使用输入中的多少个非空行
-    -n 1            # 一次命令使用多少个分隔符
     -p              # 交互执行
     -r              # 如果参数为空，则不执行命令，不加至少执行一次命令
     -t              # 执行命令前，先打印命令
+    -E
+    
+    # 分割命令
+    # 无参数         # 
+    -d ,            # 修改分隔符
+    -0              # 
+    
+    
+    # 分批命令
+    -L 1            # 一个 xarg 命令最多使用输入中的多少个非空行
+    -n 1            # 一次命令使用多少个分隔符
+    
+    # 参数传递
+    -I              # 使用 {} 作为占位符标记，可以使用 --replace=[R] 替换默认的占位符 {}
+    
     
 shell> echo 1 2 3 | xargs -n 1 touch                       # 每行输出 1 个，然后将每行的字符串作为后面命令的参数
 shell> echo ggXaaXhh | xargs -d X -n 1 echo                # 修改定界符为 'X'
 shell> echo kasei | xargs -I {} ./sk.sh -p {} -l           # -I 指定占位符为 {}， 命令行中的 {} 将被传入的参数所替代 
+
+# xargs Demo
+# 假设输入的字符串为 A：  '1 2\t3\n4\\5'
+# 不要相信 Console 的输出格式，查看处理前的内容必须使用 cat 命令
+# 注意：在 xargs 中 转换前的 A 和 转换后的 A' 是同时存在的，不同的命令会选取不同的串进行操作
+shell> echo '1 2\t3\n4\\5' | cat        
+
+# 使用 xargs 转换
+# 将所有 空格 制表符 换行符 都替换成 空格，单双引号 反斜杠 会被 xargs 去除
+# 转换后 A1： '1 2 3 45'    
+shell> echo '' | cat | xargs       
+
+# 使用 xargs -d 转换
+# 转换后 A2： '1 2\t3\n' '\\5'
+shell> echo '' | cat | xargs -d4   
+
+# 使用 xargs -0 转换，等价于 xargs -d'\0'
+# 转换后 A3：
+shell> echo '' | cat | xargs -0
+
+
+
 
 # sort
 # 排序
