@@ -46,7 +46,7 @@ Key {
     redis> pttl key                                         # 查看 key 的过期时间
     redis> del key1 key2                                    # 删除 key
     
-    shell> redis-cli -c -p 7001 cluster nodes| cut -d' ' -f2| cut -d'@' -f1| sed 's/:/ -p /g'| xargs -d'\n' printf ' -h %s\n' | xargs -d'\n' -I{} redis-cli -c {} kyes ZUU*
+    shell> redis-cli -c -p 7001 cluster nodes| cut -d' ' -f2| cut -d'@' -f1| sed 's/:/ -p /g'| xargs -d'\n' printf ' -h %s\n' | xargs -d'\n' -n1 -I{} redis-cli -c {} kyes ZUU* > redis-cli.sh && ./redis-cli.sh
    
 }
 
