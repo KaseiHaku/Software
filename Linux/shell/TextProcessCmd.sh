@@ -79,3 +79,7 @@ shell> sed      # 类似 vim 的替换，但是不需要打开文件
 # 表达式
 shell> expr     # 字符串截取
 
+
+# printf
+# 格式化输出
+shell> printf 'aa%s' bb     
