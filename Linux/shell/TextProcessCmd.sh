@@ -80,6 +80,7 @@ shell> sed 's/regex/replacement/g' file1        # 全局替换匹配的文本
 shell> expr     # 字符串截取
 
 
-# printf
+# printf echo
 # 格式化输出
 shell> printf 'aa%s' bb     
+shell> echo -e 'as\ndsa' 
