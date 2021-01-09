@@ -1,9 +1,13 @@
 下载当前目录下的安装文件，打开二进制编辑器，去掉第一个字节，第一个自己为 20， 即空格
 
 注册码：用户名随便填
+    Standard Edition
     5EZ8G-C3WL5-B56YG-SCXM9-6QZAP
     G3ZC7-7YGPY-FZD3A-FMNF9-ENTJB
     YTZGN-FYT53-J253L-ZQZS4-YLBN9
+    
+    Portable Edition 
+    L6Z8A-XY2J4-BTZ3P-ZZ7DF-A2Q9C
 
 配置步骤：
     1. 代理服务器配置：
