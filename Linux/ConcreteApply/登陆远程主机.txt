@@ -1,1 +1,1 @@
-shell> ssh root@ip
+shell> ssh -p root@ip 
