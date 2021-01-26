@@ -1,1 +1,1 @@
-shell> ssh -p root@ip 
+shell> ssh -l root -p 22 ip    # 使用用户名 root 和端口 22 登陆远程主机 ip  
