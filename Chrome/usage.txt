@@ -70,3 +70,4 @@
     after:2020-01-01            # 指定时间之后
     "mandatory involve"         # 必须存在
     filetype:rtf                # 查询指定文件
+    -"mandatory not involve"    # 必须不包含
