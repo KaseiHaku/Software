@@ -1,6 +1,11 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
 
+    Webpack 配置 {
+        File -> Settings -> Languages & Frameworks -> JavaScript -> Webpack 
+        -> 配置 webpack.config.babel.js 的路径，否则 import xxx from 'alias'; 时会提示找不到路径
+    }
+
     Debug 配置 {
         debug 窗口，左下角齿轮 
         -> [勾选] Show values Inline
