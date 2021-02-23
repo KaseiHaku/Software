@@ -159,7 +159,13 @@ under the License.
     </mirror>
      -->
     <mirror>
-      <id>alimaven</id> <!-- 当前镜像的 id  -->
+      <id>companyMirror</id>
+      <name>Company Maven Mirror</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <mirrorOf>nexus</mirrorOf><!-- 此处的 nexus 必须是 profile - repositories - repository - id 中的 maven 私服仓库的 id 值 -->
+    </mirror> 
+    <mirror>
+      <id>aliMirror</id> <!-- 当前镜像的 id  -->
       <name>aliyun maven</name><!-- 当前镜像的 name  -->
       <url>http://maven.aliyun.com/nexus/content/groups/public/</url><!-- 当前镜像的 url  -->
       <!-- 表示当前镜像是哪个 repository 的镜像, central 是 maven 中央仓库的 id,所以表示当前镜像是 maven 中央仓库的镜像  -->
@@ -274,7 +280,7 @@ under the License.
           <layout>default</layout> <!-- 当前仓库布局, maven 1 和 2 不同, 2之后都是 default -->
           <snapshotPolicy>always</snapshotPolicy>
           <releases> <!-- 表示当前仓库作为 生产仓库时 的配置 -->
-            <enabled>false</enabled><!-- 表示当前仓库是否开启,作为  生产仓库 -->
+            <enabled>true</enabled><!-- 表示当前仓库是否开启,作为  生产仓库 -->
             <updatePolicy>always</updatePolicy><!-- 表示当前仓库的更新策略 -->
             <checksumPolicy>warn</checksumPolicy><!-- 校验和  策略 -->
           </releases>
