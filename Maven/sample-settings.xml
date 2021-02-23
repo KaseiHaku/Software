@@ -159,21 +159,10 @@ under the License.
     </mirror>
      -->
     <mirror>
-        <id>mvnrepository.com</id>
-        <mirrorOf>central</mirrorOf>
-        <name>repo in china</name>
-        <url>http://central.maven.org/maven2/</url>
-    </mirror>
-    <mirror>
-      <id>central</id>
-      <name>central repository</name>
-      <url>http://repo1.maven.org/maven2/</url>
-      <mirrorOf>central</mirrorOf>
-    </mirror>
-    <mirror>
-      <id>alimaven</id>
-      <name>aliyun maven</name>
-      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <id>alimaven</id> <!-- 当前镜像的 id  -->
+      <name>aliyun maven</name><!-- 当前镜像的 name  -->
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url><!-- 当前镜像的 url  -->
+      <!-- 表示当前镜像是哪个 repository 的镜像, central 是 maven 中央仓库的 id,所以表示当前镜像是 maven 中央仓库的镜像  -->
       <mirrorOf>central</mirrorOf>
     </mirror>     
   </mirrors>
@@ -264,6 +253,49 @@ under the License.
       </properties>
     </profile>
     -->
+    <profile>
+      <id>env-dev</id> <!-- profile id -->
+      
+      <!-- 当前  profile 激活条件,每种子标签都是一种独立的条件判断 -->
+      <activation>
+        <activeByDefault>false</activeByDefault> <!-- 如果 profile 没有指定默认使用当前 profile -->
+        <property>
+          <name>target-env</name>
+          <value>dev</value>
+        </property>
+      </activation>
+      
+      <!-- 配置当前 profile 的仓库 -->
+      <repositories>
+        <repository>
+          <id>jdk14</id>
+          <name>Repository for JDK 1.4 builds</name>
+          <url>http://www.myhost.com/maven/jdk14</url>
+          <layout>default</layout> <!-- 当前仓库布局, maven 1 和 2 不同, 2之后都是 default -->
+          <snapshotPolicy>always</snapshotPolicy>
+          <releases> <!-- 表示当前仓库作为 生产仓库时 的配置 -->
+            <enabled>false</enabled><!-- 表示当前仓库是否开启,作为  生产仓库 -->
+            <updatePolicy>always</updatePolicy><!-- 表示当前仓库的更新策略 -->
+            <checksumPolicy>warn</checksumPolicy><!-- 校验和  策略 -->
+          </releases>
+          <snapshots> <!-- 表示当前仓库作为 快照(开发)仓库时 的配置 -->
+            <enabled>true</enabled><!-- 表示当前仓库是否开启,作为  开发仓库 -->
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+        </repository>
+      </repositories>
+      
+      <!-- 插件仓库 -->
+      <pluginRepositories>
+        <pluginRepository>
+        </pluginRepository>
+      </pluginRepositories>
+        
+      <properties>
+        <tomcatPath>/path/to/tomcat/instance</tomcatPath>
+      </properties>
+    </profile>
   </profiles>
 
   <!-- activeProfiles
@@ -274,4 +306,9 @@ under the License.
     <activeProfile>anotherAlwaysActiveProfile</activeProfile>
   </activeProfiles>
   -->
+  <!-- 表示默认激活的 profile -->
+  <activeProfiles>
+    <activeProfile>alwaysActiveProfile</activeProfile>
+    <activeProfile>anotherAlwaysActiveProfile</activeProfile>
+  </activeProfiles>
 </settings>
