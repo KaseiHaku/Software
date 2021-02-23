@@ -163,7 +163,7 @@ under the License.
       <name>aliyun maven</name><!-- 当前镜像的 name  -->
       <url>http://maven.aliyun.com/nexus/content/groups/public/</url><!-- 当前镜像的 url  -->
       <!-- 表示当前镜像是哪个 repository 的镜像, central 是 maven 中央仓库的 id,所以表示当前镜像是 maven 中央仓库的镜像  -->
-      <mirrorOf>central</mirrorOf>
+      <mirrorOf>central</mirrorOf><!-- 如果是 * 代表是所有仓库的镜像, 坑: mirror 第一个拉取不到,不会继续从第二个 mirror 拉取  -->
     </mirror>     
   </mirrors>
 
@@ -268,9 +268,9 @@ under the License.
       <!-- 配置当前 profile 的仓库 -->
       <repositories>
         <repository>
-          <id>jdk14</id>
-          <name>Repository for JDK 1.4 builds</name>
-          <url>http://www.myhost.com/maven/jdk14</url>
+          <id>nexus</id> <!-- 公司 maven 私服仓库 id, 取这个 id 是因为 maven 私服的服务器端软件的名字叫 nexus -->
+          <name>Repository for Company</name>
+          <url>http://192.168.1.142:8081/nexus/content/groups/public</url>
           <layout>default</layout> <!-- 当前仓库布局, maven 1 和 2 不同, 2之后都是 default -->
           <snapshotPolicy>always</snapshotPolicy>
           <releases> <!-- 表示当前仓库作为 生产仓库时 的配置 -->
