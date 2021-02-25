@@ -46,8 +46,8 @@ CentOS7:
         shell> docker kill -s KILL mysql                    # 杀死容器中的 mysql 进程
         
         # 在容器内部执行一条命令
-        shell> docker exec -d containerId /bin/bash
-        shell> docker exec -it containerId /bin/bash
+        shell> docker exec -d containerId /bin/bash         # 
+        shell> docker exec -it containerId /bin/bash        # 开启伪终端, 推荐
         shell> /# exit                                      # 退出
         
         # 运行一个容器
