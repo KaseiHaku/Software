@@ -32,12 +32,57 @@ Git 控制台字符配置
     }
 
 
-配置 user.name 和 user.email
+Git 初始化配置 {
     shell> git config --global user.name "KaseiHaku"            # 配置当前用户的所有 git 仓库的用户名，保证唯一性
     shell> git config --global user.email "****@qq.com"         # 配置当前用户的所有 git 仓库的邮箱，保证唯一性
-  
-配置 core.editor
-    shell> git config --global core.editor "vim"        # 表示当前用户的所有 git 需要文本编辑的地方都使用 vim 作为编辑器
+    shell> git config --global core.editor "vim"                # 表示当前用户的所有 git 需要文本编辑的地方都使用 vim 作为编辑器
+    shell> git config --global --add merge.ff false             # 禁用 fast forward 模式合并分支
+    shell> git config --global merge.conflictstyle diff3        # 配置 git 冲突展示样式
+    
+    各个操作系统下的换行符一致性配置：默认值为 Win=\r\n; Linux=\n; Mac=\r
+    # core.autocrlf 配置，有如下值，及其含义
+    shell> git config --global core.autocrlf false  # 提交检出均不转换，推荐使用
+    shell> git config --global core.autocrlf input  # 提交时转换为LF，检出时不转换
+    shell> git config --global core.autocrlf true   # 提交时转换为LF，检出时转换为CRLF
+    
+    # core.safecrlf 配置，有如下值，及其含义
+    shell> git config --global core.safecrlf true   # 拒绝提交包含混合换行符的文件，推荐使用
+    shell> git config --global core.safecrlf false  # 允许提交包含混合换行符的文件
+    shell> git config --global core.safecrlf warn   # 提交包含混合换行符的文件时给出警告
+
+    空白符检查配置
+    shell> git config --global core.whitespace blank-at-eol         # 检查行尾的空格，默认打开
+    shell> git config --global core.whitespace blank-at-eof         # 检查文件底部的空行，默认打开
+    shell> git config --global core.whitespace space-before-tab     # 警惕行头 tab 前面的空格，默认打开
+    shell> git config --global core.whitespace indent-with-non-tab  # 揪出以空格而非 tab 开头的行，默认关闭
+    shell> git config --global core.whitespace tab-in-indent        # 监视在行头表示缩进的 tab，默认关闭
+    shell> git config --global core.whitespace cr-at-eol            # 告诉 Git 忽略行尾的回车，默认关闭
+    
+    
+    字符编码格式配置
+    shell> git config --global i18n.commitencoding utf-8    # 设置 commit log 提交时使用 utf-8 编码，可避免服务器上乱码，同时与linux上的提交保持一致！
+    shell> git config --global i18n.logoutputencoding utf-8 # 使得在 git log 时将 utf-8 编码转换成指定的编码，解决 Msys bash 中 git log 乱码。
+    shell> git config --global core.quotepath false         # git bash 中文件名乱码
+    shell> git config --global svn.pathnameencoding gbk     # 设置路径名称编码格式，windows 下需要设置 gbk 才能不乱码
+    shell> git config --global gui.encoding utf-8           # 设置 git gui 的界面编码
+    
+    export LESSCHARSET=utf-8                                # 该环境变量是指定 less 命令查看文件时，使用的编码格式
+    alias ls='ls --show-control-chars --color=auto'         # 强制让 ls 命令的输出字符编码格式为 控制台配置的格式
+
+    打开 git-bash.exe 后，对窗口右键 -> Options -> Text -> Locale:zh_CN, Charactor set: UTF-8
+    
+    
+    Credential Manager：
+    shell> cat ~/.gitconfig         # 查看 git 配置文件的变化 
+        [credential]
+            helper = store
+
+    shell> git config --global credential.helper "store --file ~/.my-credentials"  # 凭据永远明文保存在硬盘
+    shell> git config --global credential.helper "cache --timeout 3600"         # 不保存在硬盘，过期时间为 900 秒  
+    shell> git config [--local|--global|--system] --unset credential.helper     # 清除各个级别的 git 凭证       
+}
+
+
 
 清楚登录缓存：
     shell> git config --system --unset credential.helper        # 清除登录缓存
@@ -74,53 +119,9 @@ Git 控制台字符配置
     RSA key fingerprint is SHA256:dfakdfwoefkqwemgqweegfqweg.
     Are you sure you want to continue connecting (yes/no)? yes  # 提示如上信息， 直接输入 yes 即可
 
-
-Credential Manager：
-    shell> cat ~/.gitconfig         # 查看 git 配置文件的变化 
-        [credential]
-            helper = store
-
-    shell> git config --global credential.helper "store --file ~/.my-credentials"  # 凭据永远明文保存在硬盘
-    shell> git config --global credential.helper "cache --timeout 3600"         # 不保存在硬盘，过期时间为 900 秒  
-    shell> git config [--local|--global|--system] --unset credential.helper     # 清除各个级别的 git 凭证       
-    
     
 修改本地仓库拉去数据协议：
     shell> git remote set-url origin git@github.com:yourusername/yourrepositoryname.git     # 修改为 ssh 协议
-
-字符编码格式配置
-    shell> git config --global i18n.commitencoding utf-8    # 设置 commit log 提交时使用 utf-8 编码，可避免服务器上乱码，同时与linux上的提交保持一致！
-    shell> git config --global i18n.logoutputencoding utf-8 # 使得在 git log 时将 utf-8 编码转换成指定的编码，解决 Msys bash 中 git log 乱码。
-    shell> git config --global core.quotepath false         # git bash 中文件名乱码
-    shell> git config --global svn.pathnameencoding gbk     # 设置路径名称编码格式，windows 下需要设置 gbk 才能不乱码
-    shell> git config --global gui.encoding utf-8           # 设置 git gui 的界面编码
-    
-    export LESSCHARSET=utf-8                                # 该环境变量是指定 less 命令查看文件时，使用的编码格式
-    alias ls='ls --show-control-chars --color=auto'         # 强制让 ls 命令的输出字符编码格式为 控制台配置的格式
-
-    打开 git-bash.exe 后，对窗口右键 -> Options -> Text -> Locale:zh_CN, Charactor set: UTF-8
-
-
-各个操作系统下的换行符一致性配置：默认值为 Win=\r\n; Linux=\n; Mac=\r
-    # core.autocrlf 配置，有如下值，及其含义
-    shell> git config --global core.autocrlf false  # 提交检出均不转换，推荐使用
-    shell> git config --global core.autocrlf input  # 提交时转换为LF，检出时不转换
-    shell> git config --global core.autocrlf true   # 提交时转换为LF，检出时转换为CRLF
-    
-    # core.safecrlf 配置，有如下值，及其含义
-    shell> git config --global core.safecrlf true   # 拒绝提交包含混合换行符的文件，推荐使用
-    shell> git config --global core.safecrlf false  # 允许提交包含混合换行符的文件
-    shell> git config --global core.safecrlf warn   # 提交包含混合换行符的文件时给出警告
-
-空白符检查配置
-    shell> git config --global core.whitespace blank-at-eol         # 检查行尾的空格，默认打开
-    shell> git config --global core.whitespace blank-at-eof         # 检查文件底部的空行，默认打开
-    shell> git config --global core.whitespace space-before-tab     # 警惕行头 tab 前面的空格，默认打开
-    shell> git config --global core.whitespace indent-with-non-tab  # 揪出以空格而非 tab 开头的行，默认关闭
-    shell> git config --global core.whitespace tab-in-indent        # 监视在行头表示缩进的 tab，默认关闭
-    shell> git config --global core.whitespace cr-at-eol            # 告诉 Git 忽略行尾的回车，默认关闭
-
-
 
 
 gitignore 文件配置
@@ -130,9 +131,8 @@ gitignore 文件配置
     shell> git commit -m "update .gitignore"        # 提交和注释
     shell> git push origin master                   # 可选，如果需要同步到 remote 上的话
     
+
     
-设置分支合并冲突处理策略
-    git merge --no-ff -m "merge with no-ff" dev         # 禁止使用 Fast forward 模式合并分支
     
     
     
