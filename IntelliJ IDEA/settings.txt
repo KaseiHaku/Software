@@ -8,6 +8,7 @@ Personalize Settings {
             File -> Project Structure... -> Libraries -> 点击 "+" -> Java -> 在当前文件系统中选择 自己开发的源码 目录
         全局添加源码路径(对所有项目生效):
             File -> Project Structure... -> Global Libraries -> 点击 "+" -> Java -> 在当前文件系统中选择 自己开发的源码 目录
+            -> Choose Modules 选择 "Cancel" (不将添加的源码目录添加到当前项目选中的 Module 中, 可以在 Global Libraries 页面中右键 Add to Modules... 进行修改)
     }
 
     Project 源码路径配置 {
