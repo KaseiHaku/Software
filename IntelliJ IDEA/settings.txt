@@ -1,6 +1,16 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
 
+    Project Module 配置第三方 jar 包源码路径, 即: Attach Sources {
+        File -> Project Structure... -> Libraries -> 选中指定的 jar -> 点击 "+" -> 在当前文件系统中选择 源码路径
+    }
+
+    Project 源码路径配置 {
+        @trap 该项配置会把加入到 Content Root 当中的代码, 在当前 Module 进行编译, 
+              相当于把代码加入到当前 Module 中的 src/main/java 目录下, 这和 Attach Sources 是两个概念
+        File -> Project Structure... -> Modules -> Sources -> Add Content Root(在 Exclude 下面) 
+    }
+
     Webpack 配置 {
         File -> Settings -> Languages & Frameworks -> JavaScript -> Webpack 
         -> 配置 webpack.config.babel.js 的路径，否则 import xxx from 'alias'; 时会提示找不到路径
