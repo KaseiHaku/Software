@@ -2,7 +2,12 @@
 Personalize Settings {
 
     Project Module 配置第三方 jar 包源码路径, 即: Attach Sources {
-        File -> Project Structure... -> Libraries -> 选中指定的 jar -> 点击 "+" -> 在当前文件系统中选择 源码路径
+        为指定的 jar 包添加源码路径:
+            File -> Project Structure... -> Libraries -> 选中指定的 jar -> 点击 "+" -> 在当前文件系统中选择 源码路径
+        为指定当前项目添加源码路径:
+            File -> Project Structure... -> Libraries -> 点击 "+" -> Java -> 在当前文件系统中选择 自己开发的源码 目录
+        全局添加源码路径(对所有项目生效):
+            File -> Project Structure... -> Global Libraries -> 点击 "+" -> Java -> 在当前文件系统中选择 自己开发的源码 目录
     }
 
     Project 源码路径配置 {
