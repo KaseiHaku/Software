@@ -39,3 +39,9 @@ npm 配置：
 
 初始化：
     shell> npm init             # 初始化当前目录为 npm 目录，相当于 shell> git init
+    
+npm 配置代理:
+    shell> npm install -g http-proxy-to-socks           # 该包可以将 http 包封装成 socks5 包
+    shell> hpts -p 1081 -s localhost:1080               # 运行该包, 监听 1081 端口,将 1081 端口接收到的 http 请求, 转成 socks5 请求,发送到 localhost:1080
+    shell> npm config set proxy "http://localhost:1081"         # 配置 npm 的代理, 将请求 发送到 hpts 监听的 1081 端口上
+    shell> npm config set https-proxy "http://localhost:1081"   # 配置 npm 的代理, 将请求 发送到 hpts 监听的 1081 端口上
