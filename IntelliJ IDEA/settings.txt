@@ -2,10 +2,15 @@
 Personalize Settings {
 
     Project Module 配置第三方 jar 包源码路径, 即: Attach Sources {
-        为指定的 jar 包添加源码路径:
+        为指定的 jar 包添加源码路径, 适用于所有类型的项目, 包括 maven, gradle: 
             File -> Project Structure... -> Libraries -> 选中指定的 jar -> 点击 "+" -> 在当前文件系统中选择 源码路径
+            
         为指定当前项目添加源码路径:
             File -> Project Structure... -> Libraries -> 点击 "+" -> Java -> 在当前文件系统中选择 自己开发的源码 目录
+            -> Choose Modules 选择 "Cancel" (不将添加的 lib(源码目录) 添加到指定 Module 的 Dependencies 中, 可以在 Libraries 页面中右键 Add to Modules... 进行修改)
+            
+            不将 lib 添加到 Module 的 Dependencies 中,是因为项目 Dependencies 是通过 maven 管理的,maven 重新导入会覆盖原来 Module 的 Dependencies
+            
         全局添加源码路径(对所有项目生效):
             File -> Project Structure... -> Global Libraries -> 点击 "+" -> Java -> 在当前文件系统中选择 自己开发的源码 目录
             -> Choose Modules 选择 "Cancel" (不将添加的源码目录添加到当前项目选中的 Module 中, 可以在 Global Libraries 页面中右键 Add to Modules... 进行修改)
