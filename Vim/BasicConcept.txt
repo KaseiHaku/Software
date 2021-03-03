@@ -27,19 +27,30 @@
 
 
 " Vim 所有模式
-Normal Mode                     nnoremap                        键入的字符是 命令, <ESC> 进入该模式
-Operator Pending Mode           onoremap                        例如: Normal Mode 中按 d 光标会变成 半个, 这是就是这种模式 
+" 单模式
+Normal                          nnoremap                        键入的字符是 命令, <ESC> 进入该模式
+OperatorPending                 onoremap                        例如: Normal Mode 中按 d 光标会变成 半个, 这是就是这种模式 
 
-Insert Mode                                                     i a o 进入该模式
-Replace Mode
-Insert and Replace Mode         inoremap
+Insert                          inoremap                        i a o 进入该模式
+Replace                         inoremap
 
-Visual Mode                     xnoremap                        键入的字符是 命令, v 进入该模式, V 进入行模式, Ctrl+V 进入块模式
-Select Mode                     snoremap                        类似于 Visual Mode 但是键入的字符会替换 选区
-Visual and Select Mode          vnoremap
+Visual                          xnoremap                        键入的字符是 命令, v 进入该模式, V 进入行模式, Ctrl+V 进入块模式
+Select                          snoremap                        类似于 Visual Mode 但是键入的字符会替换 选区
 
-Command-line Mode               cnoremap
-Ex Mode                                                         多行 Command-line, Q 或 gQ 进入该模式, :vi 或 :q 退出该模式
+
+CommandLine                     cnoremap
+Ex                                                              多行 Command-line, Q 或 gQ 进入该模式, :vi 或 :q 退出该模式
+
+Lang-Arg                                                        任何输入的字符是缓冲区文本的一部分而非一个 Vim 命令字符的时候
+
+Terminal                        tnoremap
+
+" 组合模式
+Normal, Visual, Select, Operator Pending        noremap
+Insert, Replace                                 inoremap
+Visual, Select                                  vnoremap
+Insert, CommandLine                             noremap!
+Insert, CommandLine, Lang-Arg                   lnoremap
 
 
 
