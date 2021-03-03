@@ -60,6 +60,13 @@ inoremap { {<CR>}<ESC>O
 inoremap ‘ ‘’<ESC>i
 inoremap “ “”<ESC>i
 
+" iminsert=0	:lmap is off and IM(Input Method) is off
+" iminsert=1	:lmap is ON and IM(Input Method) is off
+" iminsert=2	:lmap is off and IM(Input Method) is ON
+" 离开插入模式时, 自动设置 iminsert=0
+inoremap <ESC> <ESC>:set iminsert=0<CR>
+
+
 " 插入模式下，粘贴系统剪贴板的内容，以下两个 map 效果相同
 inoremap <S-Insert> <ESC>:set paste<CR>gi<C-R>+<ESC>:set nopaste<CR>gi
 inoremap <C-v> <ESC>"+p`]a
