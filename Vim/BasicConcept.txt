@@ -27,14 +27,19 @@
 
 
 " Vim 所有模式
-nnoremap, nunmap          Normal mode
-inoremap, iunmap          Insert and Replace mode
-vnoremap, vunmap          Visual and Select mode
-xnoremap, xunmap          Visual mode
-snoremap, sunmap          Select mode
-cnoremap, cunmap          Command-line mode
-onoremap, ounmap          Operator pending mode
+Normal Mode                     nnoremap                        键入的字符是 命令, <ESC> 进入该模式
+Operator Pending Mode           onoremap                        例如: Normal Mode 中按 d 光标会变成 半个, 这是就是这种模式 
 
+Insert Mode                                                     i a o 进入该模式
+Replace Mode
+Insert and Replace Mode         inoremap
+
+Visual Mode                     xnoremap                        键入的字符是 命令, v 进入该模式, V 进入行模式, Ctrl+V 进入块模式
+Select Mode                     snoremap                        类似于 Visual Mode 但是键入的字符会替换 选区
+Visual and Select Mode          vnoremap
+
+Command-line Mode               cnoremap
+Ex Mode                                                         多行 Command-line, Q 或 gQ 进入该模式, :vi 或 :q 退出该模式
 
 
 
