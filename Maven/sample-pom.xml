@@ -103,7 +103,27 @@
 
 
 
-
+    <!-- profile 配置 -->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>  <!-- 表示默认激活该配置文件 -->
+                <jdk>1.5</jdk> <!-- 当 jdk 为指定版本时, 激活当前配置文件 -->
+                <os>...</os> <!-- 当 操作系统类型 符合要求时,激活当前配置文件 -->
+                <!-- 当指定的 key 的值符合当前配置的值时, 激活当前配置文件,可以在 pom.xml 中以 ${key} 的形式引用 -->
+                <property>
+                    <name>mavenVersion</name>
+                    <value>2.0.3</value>
+                </property> 
+                
+                <file>
+                  <exists>${basedir}/file2.properties</exists><!-- 当存在指定的名称的文件时激活当前配置文件 -->
+                  <missing>${basedir}/file1.properties</missing><!-- 当不存在指定的名称的文件时激活当前配置文件 -->
+                </file>
+            </activation>
+        </profile>      
+    </profiles>
 
 
 
@@ -221,27 +241,7 @@
     <repositories>...</repositories>
     <pluginRepositories>...</pluginRepositories>
     <distributionManagement>...</distributionManagement>
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>  <!-- 表示默认激活该配置文件 -->
-                <jdk>1.5</jdk> <!-- 当 jdk 为指定版本时, 激活当前配置文件 -->
-                <os>...</os> <!-- 当 操作系统类型 符合要求时,激活当前配置文件 -->
-                <!-- 当指定的 key 的值符合当前配置的值时, 激活当前配置文件,可以在 pom.xml 中以 ${key} 的形式引用 -->
-                <property>
-                    <name>mavenVersion</name>
-                    <value>2.0.3</value>
-                </property> 
-                
-                <file>
-                  <exists>${basedir}/file2.properties</exists><!-- 当存在指定的名称的文件时激活当前配置文件 -->
-                  <missing>${basedir}/file1.properties</missing><!-- 当不存在指定的名称的文件时激活当前配置文件 -->
-                </file>
-            </activation>
-        </profile>      
-    </profiles>
-
+    
 
 
 </project>
