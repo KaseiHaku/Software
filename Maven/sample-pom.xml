@@ -103,7 +103,7 @@
 
 
 
-    <!-- profile 配置 -->
+    <!-- profile 配置: IDEA 中 除了全局 settings.xml 的私有仓库 profile 外, pom.xml 中的 profile 最好只选一个, 如果编译报错, 手工取消所有 profile 后再勾选 -->
     <profiles>
         <profile>
             <id>dev</id>
