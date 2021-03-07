@@ -20,83 +20,84 @@ limit 100, 10; -- 从 100 行开始读取，一共读取 10 行
 -- left join 右表具有多个值 只取一个值的操作
 select * 
 from b as t3 left join (
-    select max(id) as id 
-    from b as t1 
-    group by t1.b
-    ) as t2 on t2.id=t3.id 
+  select max(id) as id 
+  from b as t1 
+  group by t1.b
+  ) as t2 on t2.id=t3.id 
 where t2.id is not null;
 
 
 -- group by 后，获取没有 group by 的列
-    select A.col0
-    from t1 as A 
-        inner join (
-            select col1, col2
-            from t1
-            group by col1, col2) as B
-        on (A.col1=B.col1 and A.col2=B.col2);
+select A.col0
+from t1 as A 
+  inner join (
+    select col1, col2
+    from t1
+    group by col1, col2) as B
+  on (A.col1=B.col1 and A.col2=B.col2);
 
 -- 从一张表中选择数据插入到另一张表中，如果插入数据要对应，那么通过表连接生成新的表即可
-    insert into target_table(col1, col2, col3)
-    select col4, col5, col6
-    from source_table
-    where ;
+insert into target_table(col1, col2, col3)
+select col4, col5, col6
+from source_table
+where ;
 
 -- 删除符合子查询条件的行
-    -- 方案一：最佳
-    create table temp (col1 int(9)); -- 先建立中间表
+  -- 方案一：最佳
+  create table temp (col1 int(9)); -- 先建立中间表
 
-    insert into temp
-    select 
-    from t1
-    where;
+  insert into temp
+  select 
+  from t1
+  where;
 
 
-    delete from t1 as A
-    where A.id in (
-        select col1
-        from temp
-        where 
-    );
-    
-    -- 方案二 次佳
-    DELETE e.*
-    FROM tableE e
-    WHERE id IN (SELECT id
-                 FROM (SELECT id
-                       FROM tableE
-                       WHERE arg = 1 AND foo = 'bar') as x);
-    -- 方案三                   
-    DELETE th
-    FROM term_hierarchy AS th
-    WHERE th.parent = 1015 AND th.tid IN (
-            SELECT DISTINCT(th1.tid)
-            FROM term_hierarchy AS th1
-            INNER JOIN term_hierarchy AS th2 ON (th1.tid = th2.tid AND th2.parent != 1015)
-            WHERE th1.parent = 1015
-        );
-        
-    -- 方案四
-    DELETE FROM `secure_links` WHERE `secure_links`.`link_id` IN 
-            (
-            SELECT
-                `sl1`.`link_id` 
-            FROM 
-                (
-                SELECT 
+  delete from t1 as A
+  where A.id in (
+    select col1
+    from temp
+    where 
+  );
 
-                    `sl2`.`link_id` 
+  -- 方案二 次佳
+  DELETE e.*
+  FROM tableE e
+  WHERE id IN (
+    SELECT id
+    FROM (SELECT id
+      FROM tableE
+      WHERE arg = 1 AND foo = 'bar') as x);
+  -- 方案三                   
+  DELETE th
+  FROM term_hierarchy AS th
+  WHERE th.parent = 1015 AND th.tid IN (
+    SELECT DISTINCT(th1.tid)
+    FROM term_hierarchy AS th1
+    INNER JOIN term_hierarchy AS th2 ON (th1.tid = th2.tid AND th2.parent != 1015)
+    WHERE th1.parent = 1015
+  );
 
-                FROM 
-                    `secure_links` AS `sl2` 
-                    LEFT JOIN `conditions` ON `conditions`.`job` = `sl2`.`job` 
+  -- 方案四
+  DELETE FROM `secure_links` WHERE `secure_links`.`link_id` IN 
+          (
+          SELECT
+              `sl1`.`link_id` 
+          FROM 
+              (
+              SELECT 
 
-                WHERE 
+                  `sl2`.`link_id` 
 
-                    `sl2`.`action` = 'something' AND 
-                    `conditions`.`ref` IS NULL 
-                ) AS `sl1`
-            )
+              FROM 
+                  `secure_links` AS `sl2` 
+                  LEFT JOIN `conditions` ON `conditions`.`job` = `sl2`.`job` 
+
+              WHERE 
+
+                  `sl2`.`action` = 'something' AND 
+                  `conditions`.`ref` IS NULL 
+              ) AS `sl1`
+          )
 
 
 -- 查找表中重复的字段，多列
@@ -174,6 +175,13 @@ select
     max(case subject when 'english' then score else 0 end) as '英语'
 from aa
 group by name, gender;
+         
+-- 按指定分隔符拆分一列为多列
+select 
+   substring_index(substring_index(t1.a, ',', help_topic_id+1), ',', -1) as Id
+from (
+   select '82,83,84,85,86' as a from dual
+) t1 left join mysql.help_topic t2 on t2.help_topic_id < (length(t1.a) - length(replace(t1.a, ',', '')) + 1) or t2.help_topic_id = 0;
 
 /*############################################### Row and Column Convert : End ####################################################*/
 
