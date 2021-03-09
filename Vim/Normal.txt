@@ -148,7 +148,7 @@ Ctrl+D                          # 下半一页
 Ctrl+U                          # 上半一页
 Ctrl+F                          # 下一页
 Ctrl+B                          # 上一页
-Ctrl+R                          # 恢复撤销的操作 
+Ctrl+R                          # 恢复撤销的操作, 重做, redo
 Ctrl+U                          # 向上翻半页
 Ctrl+D                          # 向下翻半页
 9Ctrl+F                         # 向下翻页, 9 表示翻 9 页
