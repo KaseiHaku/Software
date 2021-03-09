@@ -77,8 +77,8 @@ nnoremap ? <ESC>:set iminsert=2<CR>:set hlsearch<CR>?
 nnoremap * :set hlsearch<CR>*
 
 " 插入模式下，粘贴系统剪贴板的内容，以下两个 map 效果相同
-inoremap <S-Insert> <ESC>:set paste<CR>gi<C-R>+<ESC>:set nopaste<CR>gi
-inoremap <C-v> <ESC>"+p`]a
+inoremap <S-Insert> X<BS><ESC>:set paste<CR>gi<C-R>+<ESC>:set nopaste<CR>gi
+inoremap <C-v> X<BS><ESC>"+p`]a
 nnoremap <S-Insert> "+p
    
 
