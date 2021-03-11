@@ -1,3 +1,10 @@
+Concept:
+    Docker = Repository + Image + Container 
+    Repository: 用来存储 Image , 想当于 git 的 repository 
+    Image: 一个配置好的 Linux 环境
+    Container: Image 的一个运行实例
+
+
 CentOS7:
     启动 Docker：
         shell> systemctl list-unit-files | grep docker
