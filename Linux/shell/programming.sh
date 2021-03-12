@@ -46,22 +46,26 @@
 
 # 4. 流程控制
     # if(){}
-    if [] then
+    if [] 
+    then
         echo "w"
         echo "d"
     fi
     
     # if(){} else {}
-    if condition1 then
+    if condition1 
+    then
         command1
     else
         commandN
     fi
 
     # if(){} else if(){} else{}
-    if condition1 then
+    if condition1 
+    then
         command1
-    elif condition2 then 
+    elif condition2 
+    then 
         command2
     else
         commandN
@@ -89,17 +93,22 @@
     esac
     
     # while
-    while () do
+    while () 
+    do
         command
+        break           #跳出所有循环不是一层
+        continue        #跳过此次循环，跟C用法一样
     done
     
     # do while
-    until condition do
+    until condition 
+    do
         command
     done
     
     # for
-    for var in 1 2 3 do
+    for var in 1 2 3 
+    do
         echo "value = ${var}"
     done
 
@@ -117,6 +126,24 @@
     funname we # 调用函数,we是函数的参数
     val=$? # 函数返回值在调用该函数后通过 $? 来获得
     
+
+
+
+
+# 各种 bracket
+#()
+(cmd1;cmd2;cmd3)
+$(cmd)              # 等价于 `cmd`
+ary=(1,2,3)         # 数组初始化
+
+#(())
+
+#[]
+
+#[[]]
+
+#{}
+
 
 
 
