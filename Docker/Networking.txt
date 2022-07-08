@@ -1,0 +1,27 @@
+Docker Container Networking:
+    mode:
+        bridge: 
+            通过宿主机中指定的虚拟网卡进行通信，docker 安装时，在宿主机中自动安装一个 bridge 虚拟网卡，IP=172.17.0.1 
+            可以通过 shell> docker network create --driver bridge alpine-net  命令在 宿主机 中创建一张名叫 alpine-net 的虚拟网卡
+        host: 直接使用 宿主机 的网卡，不使用默认的 bridge 网卡
+        overlay: 用于在两个 docker 服务进程间通信
+        macvlan: 用于映射 MAC 地址
+        none: 容器没有任何网络，只有 loopback 网卡，即：127.0.0.1
+    summary:
+        1. 连接扫同一 桥接网卡 上的 container 内部可以通过 container 内部的 ip 地址进行通信，
+           即：container> ping 172.17.0.2  可以通，172.17.0.2 是另一个 contanier 的 ip 地址
+        2. 连接扫同一 桥接网卡 上的 container 内部以通过 containerId 或 containerName 进行通信，即：container1> ping container2Name 可以通
+        3. Container 中访问 Host，可以直接 shell> ping docker0 的网卡地址 或者 host 本身的网卡地址;
+           一般 shell> docker run --add-host=host.docker.internal:docker0   绑定 Host 到 host.docker.internal 域名上
+
+
+User defined bridge network:
+    shell> docker network ls        # 查看当前宿主机中的所有网卡
+    shell> docker network create --driver bridge alpine-net   # 在 宿主机 中创建一张名叫 alpine-net 的虚拟网卡用于桥接
+    shell> docker network rm alpine-net         # 删除一个用户自定义 网卡
+    shell> docker network inspect alpine-net        # 查看指定网卡 container 的连接信息
+    shell> docker run -dit --name containerName --network alpine-net image cmd      # 将启动的 container 连接到 alpine-net 网卡，而不是默认 bridge 网卡
+    shell> docker network connect bridge container            # 将已经运行的 container 连接到 bridge 网卡上
+    
+
+    

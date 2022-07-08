@@ -1,0 +1,34 @@
+Install:
+  硬盘分区时下一步前要选择安装系统的分区，否则默认装的最后一个格式化的分区
+Crack:
+  KMSPico
+  下载网址：https://www.getkmspico.com/download
+  解压密码：getkmspico.com
+
+Office 2019 Pro Plus {
+    
+    active {
+        新建一个文件 aa.txt 并粘贴以下内容后保存
+        @echo off
+        (cd /d "%~dp0")&&(NET FILE||(powershell start-process -FilePath '%0' -verb runas)&&(exit /B)) >NUL 2>&1
+        title Office 2019 Activator r/Piracy
+        echo Converting... & mode 40,25
+        (if exist "%ProgramFiles%\Microsoft Office\Office16\ospp.vbs" cd /d "%ProgramFiles%\Microsoft Office\Office16")&(if exist "%ProgramFiles(x86)%\Microsoft Office\Office16\ospp.vbs" cd /d "%ProgramFiles(x86)%\Microsoft Office\Office16")&(for /f %%x in ('dir /b ..\root\Licenses16\ProPlus2019VL*.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%%x" >nul)&(for /f %%x in ('dir /b ..\root\Licenses16\ProPlus2019VL*.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%%x" >nul)
+        cscript //nologo ospp.vbs /unpkey:6MWKP >nul&cscript //nologo ospp.vbs /inpkey:NMMKJ-6RK4F-KMJVX-8D9MJ-6MWKP >nul&set i=1
+        :server
+        if %i%==1 set KMS_Sev=kms7.MSGuides.com
+        if %i%==2 set KMS_Sev=kms8.MSGuides.com
+        if %i%==3 set KMS_Sev=kms9.MSGuides.com
+        cscript //nologo ospp.vbs /sethst:%KMS_Sev% >nul
+        echo %KMS_Sev% & echo Activating...
+        cscript //nologo ospp.vbs /act | find /i "successful" && (echo Complete) || (echo Trying another KMS Server & set /a i+=1 & goto server)
+        pause >nul
+        exit
+        
+        修改 aa.txt 为 aa.bat
+        管理员权限运行 aa.bat
+        等待黑屏两三分钟即可破解成功
+        
+        激活密钥使用 W8W6K-3N7KK-PXB9H-8TD8W-BWTH9
+    }
+}

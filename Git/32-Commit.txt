@@ -1,0 +1,68 @@
+Query {
+    shell> git log --pretty=oneline             # 当行显示每个 commit
+    shell> git log --oneline                    # 同上
+    shell> git log --graph                      # 图形结构显示
+    shell> git log --decorate=short             # 显示该次 commit 对应的分支 或 Tag 信息
+    shell> git log --abbrev-commit              # 仅显示 SHA-1 的前几个字符，而非所有的 40 个字符
+    shell> git log --pretty=oneline  --graph --decorate=short  
+    shell> git log -- foo.py bar.py             # 按文件过滤 commit
+    
+    
+    shell> git log -p                           # 显示每次提交的差异
+    shell> git log -p --word-diff -U4           # 显示每次提交的差异，并打印哪里的文本被改变了， -U4 表示打印修改文本的上下文，为前后 4 行上下文
+    shell> git log --name-status -- .           # 查看提交的文件列表
+    shell> git show commitId                    # 查看某一次提交修改了哪些文件
+    
+    shell> git log --graph --pretty='format:%h %an %as %B' 
+        # 打印格式
+        # %h            # abbreviated commit hash 
+        # %an           # author name
+        # %ae           # author email
+        # %as           # author date
+        # %B            # commit body
+
+
+    # 配置 git log 打印格式 及 日期显示格式，具体参考官方文档
+    shell> git log --pretty=format:"[%h][%t][%p][%an:%ae:%ad][%cn:%ce:%cd][%s]" --date=format:"%Y-%m-%d %H:%M:%S %z"
+    
+    
+    shell> git merge-base branch1 branch2       # 前提，当前分支不是 branch1 branch2
+    shell> git merge-base --fork-point branch1  # 在当前分支找 branch1 的分叉点
+    
+    # 查看文件中每一行是哪个 commit 提交的
+    shell> git blame -- file                
+    
+    # 查看 reset 之后的，其他的 commit
+    shell> git reflog show          # 跟 shell> git log 参数一样，该命令会记录所有 HEAD 指针的指向的 commit 的变动日志
+    
+
+}
+
+Create {
+    shell> git commit -m ''
+}
+
+
+Rollback {
+    shell> git reset --hard HEAD^               # HEAD^ 上个版本， HEAD^^ 上上个版本， HEAD~100 上100个版本
+    shell> git reset --hard [commit id]         # 指定回到未来某个版本 
+    shell> git reset --hard origin/master       # 回到 origin 远程库的 master 分支的 HEAD 上
+    
+    shell> git revert 
+}
+
+Diff {
+    # path = dir + file
+    shell> git diff -- path                     # 查看当前 work area 和 stage area 之间的区别
+    shell> git diff -- path1 path2              # 查看文件系统中的两个 path 之间的文件区别
+    shell> git diff commit1 commit2 -- path     # 比较指定路径下所有文件，在两个指定 commit 之间的不同
+    shell> git diff --name-only commit1 commit2 -- path     # 比较指定路径下所有文件，在两个指定 commit 之间的不同
+    
+}
+
+Modify {
+    shell> git filter-branch --tree-filter 'rm -f ./password.txt' -- commit-ish   # 删除当前 commit 及其 父commit 指定的文件, 并重新提交
+    shell> git filter-branch --tree-filter 'rm -f ./password.txt' -- --all        # 删除所有 commit 中指定的文件, 并重新提交
+
+}
+

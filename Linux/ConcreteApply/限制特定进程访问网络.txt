@@ -1,0 +1,32 @@
+方式1：
+    新增一个 User，名叫 noInternet
+    使用 noInternet 这个 User 去启动这个进程
+    配置 iptables 限制 noInternet 这个用户的网络访问规则
+    坑：不能是 GUI 进程，GUI 进程只有启动 User 才能看得到
+
+方式2：
+    SELinux
+
+方式3：
+    如果软件自带 代理，那么设置代理 为一个不存在的代理，那么该软件所有网络请求就会被发送到 代理服务器而导致请求失败
+
+方式4：
+    linux 网络虚拟化: 让特定软件在指定的 network namespaces 中运行
+    使用 network namespaces 配置一个无外网环境的 网络命名空间
+        shell> ip netns help            # 查看 network namespaces 配置帮助信息
+        shell> ip netns ls              # 查看现有的所有  network namespaces
+
+        # 添加新的  network namespaces，ip netns 命令创建的 network namespace 会出现在 /var/run/netns/
+        # 对于每个 network namespace 来说，它会有自己独立的网卡、路由表、ARP 表、iptables 等和网络相关的资源
+        shell> ip netns add nsName      
+
+        # 在指定 network namespaces 中执行 网络命令，其他命令也行，但是其他命令和其在外部执行没区别，只有 网络命令 是针对某一个 networkNamespaces 的
+        shell> ip netns exec nsName ip addr 
+    
+    network namespace 之间通信：
+        veth pair 双向通信 pipe: 相当于 专线连接
+            shell> ip link add type veth # 创建一对 veth pair 出来，需要记住的是 veth pair 无法单独存在，删除其中一个，另一个也会自动消失
+            shell> ip link set DEV netns NAME   # 将 veth pair 配置到各自的 networkNamespaces 中
+            shell> 给 veth pair 分配 ip 地址，就完成了一个 本机网络拓扑图的构建
+        使用 bridge 连接不同的 namespace: 相当于 交换机连接
+            

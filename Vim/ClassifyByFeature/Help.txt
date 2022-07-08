@@ -1,0 +1,23 @@
+帮助文档命名格式 {
+    {xxx}           # 表示必填
+    [xxx]           # 表示可填可不填
+}
+
+查看帮助的帮助 {
+    :h[elp] help
+}
+
+关闭帮助 {
+    :helpc[lose]
+}
+
+查看其它帮助 {
+    :h[elp] subject          # 查看 subject 的帮助
+    :h[elp]! subject         # 查看非英文帮助，语言自动继承上一次帮助的语言
+    :helpg[rep] {pattern}[@xx]      # 在帮助文档中查找 pattern，@xx 表示查找某一种语言，cnext 查找下一个 
+                                    # :cnext        查找下一个
+                                    # :cwindow      打开 quickfix window，quickfix window 可以双击 或 回车 或 :.cc 可以跳转到指定的位置
+    :lh[elpgrep] {pattern}[@xx]     # 列出匹配项
+    :exu[sage]	                    # 查看 ex 模式下 vi 不支持的命令
+    :viu[sage]                      # 查看 normal 模式下 vi 不支持的命令
+}

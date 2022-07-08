@@ -1,0 +1,21 @@
+! 注释
+! 以下匹配到的都走 代理，没有匹配到的 直连
+
+
+@@.example.com/                 ! @@ 表示 符合后面模式的 域名 不走代理
+
+
+||ip138.com^                    !注意末尾不要忘记 ^ 符号，意思是要么在这个符号的地方结束，要么后面跟着?,/等符号。 
+||example.com                   ! || 表示忽略协议匹配： http://example.com 、 https://example.com 、 ftp://example.com 等地址均满足条件
+
+*.baidu.com/                    ! 匹配该域名及其子域名
+
+
+\[\w]+:\/\/example.com\         ! '\' 反斜杠开始和结束的字符串，表示 中间的内容是 正则表达式
+
+|http://example.com             ! 匹配以 http://example.com 开始的地址
+example.com|                    ! 匹配以 example.com 结束的地址 
+
+
+
+ 

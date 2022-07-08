@@ -1,0 +1,15 @@
+Infrustructure {
+    官网： https://redis.io/
+}
+
+Install {
+    shell> curl http://download.redis.io/releases/redis-5.0.7.tar.gz -o redis-5.0.7.tar.gz
+    shell> cp ~/Downloads/redis-5.0.7.tar.gz /opt/Redis
+    shell> cd /opt/Redis
+    shell> tar -zxvf redis-5.0.7.tar.gz
+    shell> cd redis-5.0.7
+    shell> make
+    shell> cd src
+    shell> ./redis-server       # 启动服务
+    shell> ./redis-cli          # 启动客户端
+}

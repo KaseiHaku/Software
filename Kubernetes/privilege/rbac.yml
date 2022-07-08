@@ -1,0 +1,33 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: xxx-role
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: xxx-cluster-role
+  
+---
+---
+# RoleBinding + ClusterRole + Subject = 获取 RoleBinding 所在命名空间中 ClusterRole 中定义的所有 permission，并授予指定 命名空间中的 Subject
+# 以下配置为：将 kube-system 命名空间下，xxx-cluster-role 指定的 permission，授予 default 命名空间中的 filebeat 账号
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: filebeat-kubeadm-config
+  namespace: kube-system
+subjects:
+  - kind: ServiceAccount
+    name: filebeat
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: xxx-cluster-role
+  apiGroup: rbac.authorization.k8s.io

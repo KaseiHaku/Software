@@ -1,0 +1,252 @@
+/** 
+ * Pipeline: 管道，一系列支持 CD 集成的 jenkins plugin 的有序排列组合 
+ *      
+ * Jenkinsfile: 主要用于描述一个 jenkins pipeline，即： pipeline 的配置文件，其实就是一个 Groovy 脚本
+ *      Jenkinsfile 分为两种：
+ *          Declarative Pipeline: 声明式管道 
+ *          Scripted Pipeline: 脚本式管道
+ * 
+ * Pipline 编写：
+ *      Snippet Generator: 用于生成 steps 
+ *      Declarative Directive Generator: 用于生成  Declarative directive 声明式指令
+ * 
+ * @Caution 
+ *      Jenkins 本身并不是 Build Tool，只是把已有的 build tool(Maven,Gradle,GNU/Make) glue 到一起，完成 CI/CD 操作
+ *      完成实际 glue 操作的其实是一系列 jenkins plugin
+ * */
+
+/** Declarative Pipeline: 声明式管道  */
+/* 表示一个 管道  */
+pipeline {  
+     /* 命令 jenkins 从当前 jenkins 集群环境中 任意一个节点 分配一个 执行器 给当前 pipe */
+    agent any         
+    /* 当前 pipeline 自定义环境变量 */
+    environment { 
+        CC = 'clang'
+        PATH = "/hot/new/bin:$PATH"
+    }
+    /* parameters 用于在 pipeline 运行前传入用户自定义参数 */
+    parameters {
+        string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
+    }
+    options {
+        timeout(time: 32, unit: 'MINUTES')  // 当前 pipeline 构建超过 32 分钟，自动结束
+        timestamps()  // 打印时间戳
+        disableConcurrentBuilds()       // 关闭并行构建
+        buildDiscarder logRotator (
+            artifactDaysToKeepStr: '32', // 产物保存的天数
+            artifactNumToKeepStr: '4', // 产物最多保存几个
+            daysToKeepStr: '16',     // build 保存的天数 
+            numToKeepStr: '2'       // build 最多保存几个  
+        )
+    }
+    /* 工具集 */
+    tools {
+        maven 'JenkinsMaven'   // 工具名称必须是 Manage Jenkins → Global Tool Configuration 预先定义好的
+        nodejs 'JenkinsNode'
+        jdk 'JenkinsJava'
+        git 'JenkinsGit'
+    }
+    /* 触发器：符合指定条件，重新执行当前 pipeline */
+    triggers {
+        // cron('H */4 * * 1-5')       // cron 表达式自动触发 pipeline 执行
+        // pollSCM('H */4 * * 1-5')    // 当 SCM 发生变化时，触发执行
+        // upstream(upstreamProjects: 'job1,job2', threshold: hudson.model.Result.SUCCESS)   // 前置 pipeline 执行完 或 指定状态退出时触发
+    }
+    /* 阶段的集合 */
+    stages {  
+        
+        /* 用于演示所有 Basic Steps */
+        stage('Sample'){
+            /* 当前 stage 需要用户输入以下数据 */
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                submitter "alice,bob"
+                parameters {
+                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                }
+            }
+            /* 切换之后命令的工作目录为 subDir */
+            dir('subDir'){              
+                deletDir                // 删除当前目录
+                echo 'print msg'        // 打印信息
+                error 'error msg'       // 直接抛出异常，并结束，但是没有异常栈
+                fileExists              // 判断文件是否存在
+                isUnix
+                mail
+                pwd
+                readFile
+                retry
+                stash
+                step
+                timeout
+                tool
+                unstable
+                unstash
+                waitUntil
+                warnError
+                withEnv
+                wrap
+                writeFile
+                archive
+                getContext
+                unarchive
+                withContext
+            }
+            /* 里面的 stage 并行执行 */
+            parallel {
+                stage{'Parallel Stage1'}
+                stage{'Parallel Stage2'}
+                stage{'Parallel Stage3'}
+            }
+            
+        }
+        
+        /* 一个明确的阶段 */
+        stage('Checkout') {
+            /* stage 级别的 executor */
+            agent {label 'linux'}
+            /* 当前 stage 自定义环境变量 */
+            environment { 
+                DEBUG_FLAGS = '-g'
+            }
+            options {
+                
+            }
+            /* 步骤的集合 */
+            steps {
+                /* console 打印时间，需要 Timestamper 插件支持 */
+                timestamps {
+                    /* 一个明确的步骤 */
+                    echo 'Checkouting ...'   // 打印控制台
+                    checkout scm                                        // checkout 检出，scm(Source Code Manager) 表名是从 源码管理器 中检出代码
+                    checkout([$class: 'GitSCM', branches: [[name: 'develop_uat']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'lfcp-tzxbjj-pages']], userRemoteConfigs: [[credentialsId: '3d9232ff-429d-4b69-9379-a1d990beebb2', url: 'http://10.2.25.70:8088/tzxb001/lfcp-tzxbjj-pages.git']]])
+                }
+                
+                /* 使用 nvm-wrapper 插件，配置指定的 node 版本进行打包，
+                 * @deprecated 使用 NodeJS 插件替代
+                 * */
+                nvm ('version':'v10.24.1',              // 要使用的 node 版本
+                        'nvmInstallURL':'https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh',     // nvm 下载 url
+                        'nvmNodeJsOrgMirror':'https://npm.taobao.org/mirrors/node',     // node 从哪里下载
+                        'nvmIoJsOrgMirror':'https://iojs.org/dist') {                      // iojs 从哪里下载
+                    echo 'use nvm to manager node version ...'
+                    sh label: '', script: 'env'
+                    sh label: '', script: 'node -v'
+                }
+            }
+        }
+        /** 当前 stage 超过 5 分钟直接构建失败 */
+        timeout(time: 5, unit: 'MINUTES') {
+            stage('Build') {
+                steps {
+                    echo 'Building ...'  
+                    sh 'make'                   // sh 表明其后是一个 shell 命令，windows 用 bat，sh 只有当 shell 命令退出码为 0 时才继续执行，否则整个管道失败
+                    archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true    // 该命令用于捕捉 workspace 中符合 pattern 的文件，并展示到 jenkins 界面
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'            // 当 Test 失败时， jenkins 会把当前 pipeline 标记为 unstable，界面显示为 黄色的球，而不是 蓝色的
+                sh 'make check || true'     // GUN/Make 的测试
+                junit '**/target/*.xml'     // 需要 JUnit plugin.
+            }
+        }
+        stage('Archive') {
+            steps {
+                echo 'Archive ...'
+            }
+        }
+        stage('Archive') {
+            steps {
+                echo 'Archive ...'
+            }
+        }
+        stage('Deploy') {
+             when {  // when 表示符合条件，当前 stage 才执行，否则不执行
+                expression {
+                    // currentBuild.result 用于获取当前 build 的结果，可能值有 null, SUCCESS, UNSTABLE
+                    currentBuild.result == null || currentBuild.result == 'SUCCESS'   
+                }
+            }
+            steps {
+                echo 'Deploy ...'
+                sh('tar -czf prod.tar.gz -C ./dist .') // 以 ./dist 为 tar 包的根目录，将 . 文件打包成 prod.tar.gz
+                sh("curl -u ${EXAMPLE_CREDS_USR}:${EXAMPLE_CREDS_PSW} https://example.com/")    // wrong    因为 shell 命令本身就会引用环境变量
+                sh('curl -u $EXAMPLE_CREDS_USR:$EXAMPLE_CREDS_PSW https://example.com/')        // correct
+                sshPublisher(               // 需要 Publish Over SSH 插件支持
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: 'UatBackend',     // Manage Jenkins -> Configure System -> Publish over SSH -> SSH Servers 中配置的服务名
+                            transfers: [
+                                sshTransfer(
+                                    /* 需要上传的文件的 ant patterns, 多个 pattern 英文逗号分隔
+                                     * baseDir 是 jenkins 的workspace
+                                     * */
+                                    sourceFiles: 'gg.tar.gz, **/*.jar',      
+                                    removePrefix: 'target',         // 如果构建结果为 target/images/**/ 但是上传的时候，不需要 target 目录，可以配置移除目录前缀
+                                    remoteDirectory: '\'deployHistory/\'yyyyMMddHHmmss',        // 服务器中的上传目录
+                                    /* 上传完毕执行的命令
+                                     * @trap 注意此处 shell> pwd 的位置为当前登录用户的 $HOME 目录
+                                     * ''' str ''' 为 groovy 
+                                     * */
+                                    execCommand: '''\
+                                                 rm -rf /www/lfcp-tzxbjj-pages/*
+                                                 tar -zxf /www/`date '+%Y%m%d'`/lfcp-pages.tar.gz -C /www/lfcp-tzxbjj-pages
+                                                 chmod -R 777 /www/lfcp-tzxbjj-pages
+                                                 ''',             
+                                    
+
+                                    excludes: '',                   // 需要排除掉的文件 patterns
+                                    
+                                    
+                                    patternSeparator: '[, ]+',      // 配置 sourceFiles 和 excludes 中 patterns 之间的分隔符
+                                    noDefaultExcludes: false,       // 当前插件自带一些默认排除的文件和目录，true：关闭默认排除
+                                    makeEmptyDirs: true,            // 创建空的目录结构 
+                                    flatten: false,                 // true: 只上传文件，不自动创建目录，即：不保持原有的文件目录结构
+                                    cleanRemote: true,              // true: 上传前先清空远程目录
+                                    remoteDirectorySDF: false,      // true: 表示 remoteDirectory 中包含 SimpleDateFormat(SDF) 日期占位符，非日期占位符需要用 单引号包含
+                                    
+                                    execTimeout: 120000,            // 上传超时时间，millisecond
+                                    
+                                    usePty: false,                  // true: 打开一个 pseudo tty 来执行 execCommand 中的命令
+                                    useAgentForwarding: false,      // 不知道，反正 false 就对了  
+                                    /* true: 使用 SFTP 协议替代 SSH 来执行 execCommand 中的命令,
+                                     * SFTP 提供额外的命令，例如：mkdir，ln，symlink, rm, rmdir, cd, get, ls 
+                                     * */
+                                    useSftpForExec: false           
+                                    
+                                    
+                                )
+                            ], 
+                            usePromotionTimestamp: false, 
+                            useWorkspaceInPromotion: false, 
+                            verbose: true               // 显示详细信息
+                        )
+                    ]
+                )
+            }
+        }
+    }
+    /* 用于错误处理，相当于 try-catch-finally 中的 catch 和 finally */
+    post {
+        always {
+            junit '**/target/*.xml'
+        }
+        failure {
+            mail to: team@example.com, subject: 'The Pipeline failed :('
+        }
+    }
+}
+
+
+/** Scripted Pipeline: 脚本式管道，基于 Groovy  */
+node { 
+    stage('Stage 1') {
+        echo 'Hello World' 
+    }
+}
+
+

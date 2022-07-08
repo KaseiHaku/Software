@@ -1,0 +1,75 @@
+# path = dir + file
+
+################################ Search ################################
+# 查找提交记录
+shell> git log commit1 commit2 ^commit3                 # 查找所有 commit1 commit2 的 ancestor commit, subtract commit3 的祖先节点
+shell> git log commit1...HEAD                           # 查找 commit1 到 HEAD 之间的提交，等价于 shell> git log HEAD ^commit1
+
+
+# 查找具有指定 commit -m 'pattern' 的 commit
+shell> git log --grep=pattern --since='2020-06-20' --until='2020-06-20'
+
+# 查看跟指定文件相关的 commit 有哪些
+shell> git log -- file
+
+# 查看文件中某一行代码相关的 commit 有哪些
+shell> git blame -- file   
+
+# 二分查找
+shell> git bisect 
+
+# 查找两个 commit 之间的所有 commit 
+shell> git log master ^feature --ancestry-path
+shell> git log <SHA-1_for_c>..master --ancestry-path --merges --reverse --date-order
+
+# 查看指定行的变动
+shell> git log -L 4,5:file
+
+# 查看指定文件，提交历史中，改动的 string 的内容中包含指定字符串的提交，该对比的 粒度是字符
+shell> git log -S 'str' -- path
+shell> git log -S 'regex' --pickaxe-regex -- path   # regex 匹配
+
+# 查看指定文件，提交历史中，改动的 row 的内容中包含 符合指定 regex 的提交，该对比的 粒度是行
+shell> git log -G 'regex' -- path
+
+# 查看指定文件，提交历史中，改动的内容中包含 object_id 的提交,例如： 新增 或 删除 文件
+shell> git log --find-object=object-id 
+
+
+################################ Diff ################################
+# 查看指定 commit 跟上一个 commit 的改动内容
+shell> git show commit1
+shell> git show commit1 -- file  # 查看指定文件跟上一个 commit 的改动内容
+
+# 查看两个 commit 之间改动的文件（默认一个 commit 会跟上一个 commit 进行对比）
+shell> git diff commit1 commit2
+# 查看 workare stage(cache) repository 之间改动的文件
+shell> git status
+
+
+
+# 查看文件系统中的两个 path 之间的文件区别
+shell> git diff -- path1 path2    
+
+# 查看 workarea 跟 stage(cache) 指定文件改动了哪些内容
+shell> git diff -- ./path    
+
+# 查看 workarea 跟 local repository 中指定 commit 的区别
+shell> git diff HEAD -- ./path
+
+# 查看 stage(cache) 跟 local repository 中指定 commit 的区别
+shell> git diff --cached HEAD -- ./path 
+shell> git diff --cached -- ./path          # 同上
+
+
+# 查看两个 commit 之间指定文件改动了哪些内容
+shell> git diff commit1 commit2 -- path
+shell> git diff --name-only commit1 commit2 -- path
+shell> git diff --name-only commit1 HEAD -- path      # 查看 commmit1 到当前 HEAD 提交之间改动了哪些东西
+
+
+
+         
+
+
+

@@ -1,0 +1,46 @@
+ubuntu-18.04.1-desktop-amd64.iso 安装笔记
+1. 制作 U 盘启动盘
+    查看安装电脑的主板是否支持 UEFI 模式安装操作系统，
+    -> 如果支持，直接解压 .iso 文件到一个空 U 盘中即可，U 盘不空，先格式化为 FAT32 文件格式
+    -> 暂不讨论
+    
+2. 修改 BIOS 启动位置
+    未启动系统时，插入 U 盘
+    -> 开机狂按 F2 进入 BIOS，如果原系统为 win10 先进入系统，关闭快速启动，
+    -> 调整 Boot 选项，第一启动方式为 U 盘
+    -> 保存配置，并退出（具体操作看 BIOS 上的操作说明）
+
+3. 开始安装
+    启动电脑，自动进入 安装选择界面 -> 选择 试用 Ubuntu，看下效果
+    -> 如果效果可以，则关机，再次启动进入 安装选择界面
+    -> 选择安装 Ubuntu
+    -> 根据图形界面提示安装即可
+    -> 如果无法进入图形界面，或者进入图形界面键盘及鼠标点击失效（原因： Ubuntu 对 NVIDIA 显卡支持不好）
+    -> 重启进入 安装选择界面 按 e 进入 grub
+    -> 找到 quiet slash ---， 在 --- 在前面加上 nomodeset
+    -> 保存并退出，并在此选择试用，知道能试用位置
+    
+    最新的内核已经把视频模式设置嵌入内核中，所以所有显卡硬件程序的指定时钟和寄存器当图形服务器启动时在内核进行而不是图形设备运行，
+    这使得我们在启动时可以看到不闪的和高分辨率的好看的启动界面，但是，在某些视频卡它不能正常工作而现实黑屏，
+    增加nomodeset参数则告诉内核不要加载显卡而用BIOS模式直到图形界面运行
+    
+4. 选择 安装 Ubuntu 进入 图形界面
+    选择语言 English -> Continue
+    -> 选择键盘 English(US) -> Continue
+    -> 网络选择 I don't want to connect to a wifi network right now -> Continue
+    -> 选择软件安装模式  Minimal installation -> Continue
+    -> 安装模式其他选项 不要勾选 Install third-party software for Graphics and Wifi hardware and addition media formats
+    -> 选择硬盘安装模式 Something else -> Continue
+    -> 硬盘分区：
+    -> 挂载点          大小
+    -> /swap         跟电脑内存一样大
+    -> /boot        1G
+    -> /home        256G
+    -> /            剩下的所有空间
+    -> Continue 安装即可
+
+
+
+
+
+

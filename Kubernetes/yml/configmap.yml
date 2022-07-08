@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-registry-hosting
+  namespace: kube-public
+
+# key 命名规范： 同 data
+# value 中的值必须是 base64-encoded 字符串
+# binaryData 中的 key 不能和 data 中的 key 有重叠
+binaryData:
+  _-.az09: Base64Encoded
+
+# key 命名规范： key 由  alphanumeric, '-', '_', '.' 组成
+# value 的值如果不是 UTF-8 字节序列，则必须使用 binaryData 字段来配置
+# data 中的 key 不能和 binaryData 中的 key 有重叠
+data:
+  az09._-: string
+  
+  # 这里的 5050 端口是指 宿主机 的端口
+  localRegistryHosting.v1: |
+    host: "localhost:5050"
+    help: "https://kind.sigs.k8s.io/docs/user/local-registry/"
+immutable: false   # true: 当前 ConfigMap 定义后不能修改
+
+  

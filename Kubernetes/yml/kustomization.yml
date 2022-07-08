@@ -1,0 +1,22 @@
+# 提供 Secret 和 ConfigMap 对象的 生成器， 
+# 优点：不用对 value 进行 base64 编码 
+
+
+secretGenerator:
+  
+  # 引用其他文件
+  - name: db-user-pass
+    files:
+      - username.txt
+      - password.txt
+      
+  # 使用字面量
+  - name: db-user-pass
+    literals:
+      - username=admin
+      - password=1f2d1e2e67df
+  
+  # 使用 .env 文件
+  - name: db-user-pass
+    envs:
+      - .env.secret

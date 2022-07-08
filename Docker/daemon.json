@@ -1,0 +1,87 @@
+/** 
+ * 当前文件默认位置
+ *  Linux：/etc/docker/daemon.json
+ *  Windows: %programdata%\docker\config\daemon.json
+ * @trap: 当前文件中的配置，如果跟 命令行中的重复，那么 dockerd 服务会启动失败
+ *        shell> systemctl cat docker           # 找到 docker.service 文件所有在的位置，在第一行
+ *        shell> vim                            # 删除所有命令行参数
+ *        shell> systemctl daemon-reload        # 重新加载
+ * @doc https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file
+ * */
+{
+  
+  "containerd": "/run/containerd/containerd.sock",  
+    
+    
+  
+  /**
+   * 开启 docker daemon 远程访问，格式: tcp://[host]:[port][path]  
+   * 端口 2375 一般是不加密的，2376 就是加密的，
+   */
+  "hosts": [
+    "tcp://0.0.0.0:2375",               // 0.0.0.0 表示任何 IP 都可以访问，一般改成固定 IP 可以访问，生产环境禁用
+    "tcp://127.0.0.1:2375",             // 适用于 本地开发环境
+    "unix:///var/run/docker.sock",      // 用于本地 shell 访问 docker daemon
+    "fd://"                             // 基于 systemd 的操作系统中，可以通过 Systemd socket activation 来和 dockerd 进行连接
+  ],
+    
+  
+  
+  // 开启 IPv6
+  "ipv6": true,
+  "fixed-cidr-v6": "2001:db8:1::/64",
+   
+  // 配置 docker daemon 使用的 dns 服务器
+  "dns": ["8.8.8.8", "8.8.4.4"],
+
+  // 配置镜像库
+  "registry-mirrors": [
+    // 登录 阿里云: https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors 镜像工具 -> 镜像加速器 复制地址
+    "https://erx91ph6.mirror.aliyuncs.com",
+    "https://hub-mirror.c.163.com",
+    "https://mirror.baidubce.com",
+    "https://registry.cn-hangzhou.aliyuncs.com"
+  ],
+  
+  // docker console 日志配置  
+  "log-driver": "json-file",
+  "log-level": "info",
+  "log-opts": {
+    "cache-disabled": "false",
+    "cache-max-file": "5",
+    "cache-max-size": "20m",
+    "cache-compress": "true",
+    "env": "os,customer",
+    "labels": "somelabel",
+    "max-file": "2",          // 最多 5个 日志文件
+    "max-size": "10m"         // 每个日志文件最大 10m
+  },
+    
+    
+  // 镜像库配置
+  "insecure-registries": [
+    // 格式1: HOST:IP
+    "192.168.1.210:5050",
+    "harbor.longer:5000",
+    // 格式2：CIDR; 表示 任何镜像库域名 解析出来的 IP 地址，在指定范围内，都认为是 不安全 的
+    "10.0.0.0/8",
+    "127.0.0.0/8",
+    "172.16.0.0/12",
+    "192.168.0.0/16"
+    
+  ],
+  
+  // 修改 docker-compose 启动的容器的 ip 地址范围
+  "default-address-pools": [
+    {
+      "base": "172.30.0.0/16",
+      "size": 24
+    },
+    {
+      "base": "172.31.0.0/16",
+      "size": 24
+    }
+  ],
+
+  
+}

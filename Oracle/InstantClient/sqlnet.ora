@@ -1,0 +1,15 @@
+# 客户端及服务端
+# 作用类似于linux或者其他unix的nsswitch.conf文件，通过这个文件来决定怎么样找一个连接中出现的连接字符串
+
+例如我们客户端输入：sqlplus sys/oracle@orcl 
+
+假如我的sqlnet.ora是下面这个样子 
+SQLNET.AUTHENTICATION_SERVICES= (NTS)   
+NAMES.DIRECTORY_PATH= (TNSNAMES,HOSTNAME)
+
+那么，客户端就会首先在tnsnames.ora文件中找orcl的记录，如果没有相应的记录则尝试把orcl当作一个主机名，通过网络的途径去解析它的ip地址然后去连接这个ip上GLOBAL_DBNAME=orcl这个实例。当然我这里orcl并不是一个主机名 
+　　 
+如果我是这个样子 
+NAMES.DIRECTORY_PATH= (TNSNAMES)   
+那么客户端就只会从tnsnames.ora查找orcl的记录 
+括号中还有其他选项，如LDAP等并不常用。

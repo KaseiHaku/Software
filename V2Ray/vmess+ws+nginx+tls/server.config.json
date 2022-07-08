@@ -1,0 +1,55 @@
+{
+  "inbounds": [
+    {
+      "port": 40000,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {"id": "f45499fa-6c4b-3e55-adbb-bd50bc4137b8", "level": 1, "alterId": 64, "email": "love@v2ray.com"}
+        ],
+        "disableInsecureEncryption": true
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": { "path": "/ws" },
+        "security": "none",
+        /** 由于 tls 配置在 nginx 上，所以此处的 tls 配置需要删除
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "1291114093.ml",
+          "allowInsecure": false,
+          "alpn": ["http/1.1"],
+          "disableSystemRoot": false,
+          "certificates": [
+            // issue: 当前证书必须是 CA 证书，每个客户端连接都用该证书签发一个适用于当前 serverName 的证书
+            { "usage": "issue", "certificateFile": "/path/to/certificate.crt", "keyFile": "/path/to/key.key" },     
+            // encipherment: 当前证书用于 TLS 认证和加密
+            { "usage": "encipherment", "certificateFile": "/path/to/certificate.crt", "keyFile": "/path/to/key.key" }           
+          ],
+        },
+        */
+      }
+    }
+  ],
+   "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "tag": "blocked",
+      "protocol": "blackhole",
+      "settings": {}      
+    }
+  ],
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "ip": ["geoip:private"],
+        "outboundTag": "blocked"
+      }
+    ]
+  }
+}

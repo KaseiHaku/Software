@@ -1,0 +1,540 @@
+################################################## Intelligent IDEA Settings : Begin ####################################################
+Personalize Settings {
+
+    外观配置 {
+        View -> Appearance -> Status Bar Widgets -> Memory Indicator   # 显示 IDEA 内存使用情况
+        File -> Settings -> Appearance & Behavior -> Appearance 
+        => UI Options -> Use smaller indents in trees           # 树形结构缩进少一点
+    
+    }
+
+    查找一个未知全类名的类在哪个三方依赖下面 {
+        第一种：
+            将 类名 定义为一个 Field -> Alt+Enter -> Add Maven Dependency.../Search for Denpendency... -> 输入类名即可搜索
+        第二种：
+            View -> Tool Windows -> Dependencies -> 输入 类名
+        
+    }
+
+    XML: Schema and DTD: {
+        File -> Settings -> Languages & Frameworks -> Schemas and DTDs 
+        -> "+" 
+        -> URI: DTD 的 url 地址
+           File: 本地 DTD 文件的路径
+    }
+
+    搭建 Docker Develop Environment {
+        1. 安装 docker 和 docker-compose
+        2. IDEA 安装 Docker 插件（一般默认自带）
+        3. File -> Settings -> Build,Execution,Deployment -> Docker -> Tools
+            Docker executable: docker 命令的执行文件的位置
+            Docker Machine executable: 用不到
+            Docker Compose executable: docker-compose 命令执行文件的位置
+            
+        4. File -> Settings -> Build,Execution,Deployment -> Docker
+            点击 "+" 图标，添加一个 docker daemon，       # 该 docker daemon 必须是可以远程连接
+        
+        5. Run -> Edit Configurations... -> "+" 图标 -> Docker -> Docker-compose
+            Server: 配置上一步配置的 docker daemon
+            Compose files: 配置 docker-compose.yml 文件的路径
+    }
+
+    Maven 依赖报红处理 {
+         1. File -> Settings -> Build,Execution,Deployment -> Build Tools -> Maven -> [不勾选] Work offline
+         2. 检查 IDEA Maven 的配置 和 仓库地址是否正确
+         3. View -> Tool Windows -> Maven 窗口左上角的 刷新图标
+         4. View -> Tool Windows -> Maven 根模块 右键菜单，Unlink Maven Projects，
+            移除后，选择项目 pom.xml 文件右键 Add as Maven Project
+         5. 找到 maven 本地仓库，删除 .repositories 文件，再 点击 刷新图标
+         6. 关闭项目，或者 File -> Invalidate Caches...
+         
+    }
+
+    Language Injection {
+        1. 确保 IntelliLang 插件是启用的
+        2. 在指定字符串上面添加  // language=<language_ID> prefix=<prefix> suffix=<suffix>
+    }
+
+    Scope Pattern {
+        @doc https://www.jetbrains.com/help/idea/scope-language-syntax-reference.html#examples
+        
+        Classes: 
+            com.intellij.openapi.MyClass        # 单个类
+            com.intellij.openapi.*              # 单个包，不包括子包
+            com.intellij.openapi..*             # 包及子包下所有类
+        Files:
+            MyDir/MyFile.txt                    # 指定单文件
+            file:src/main/myDir/*               # 指定目录，不包括子目录
+            file:src/main/myDir//*              # 指定目录及子目录下
+            
+        Location modifiers:
+            src:                        # source files
+            lib:java..*                 # library classes
+            test:                       # test code
+            
+        Module Modifiers:
+            src[MyModule]:              # 指定模块下的 src 目录
+            lib[MyModule]:              # 指定模块下的 lib
+            test[MyModule]:             # 指定模块下的 test 目录
+            
+            file[*web*]:src/main/java//*        # 包含 web 的所有 Module 中指定目录下的所有文件
+            
+        Logical operators    
+            @trap 不能带空格
+            
+            && for AND
+            || for OR
+            ! for NOT
+            (<a>||<b>)&&<c>
+        
+        Reference:
+            $MyScope || $MyScope2           # 引用已经存在的 scope
+    }
+
+    IDEA git log 视图配置 {
+        Alt+9(View -> Tool Windows -> Git) 
+        -> [点亮] Turn IntelliSort off: sort commits topologically and by date 
+        -> Presentation Setting 
+            -> [√] Show Long Edges                  # 当 merge 进来的分支有很多提交，导致原始分支有很长的边连接时，默认会使用 箭头 替换掉 长边，打开这个关闭箭头
+            -> [√] Collapse Linear Branches         # 合并一个分支中线性提交的部分
+    }
+
+
+    webpack 前端项目 IDEA debug 配置 {
+        1. 运行 webpack-dev-server 来部署前端项目
+            shell> npm run dev              # 命令行启动 webpack-dev-server
+            Run -> Edit Configurations... -> "+" 图标 -> npm -> dev      # 配置方式启动
+        2. 配置 JavaScript Debug 
+            方法一：
+                Run -> Edit Configurations... -> "+" 图标 -> JavaScript Debug 
+                -> Name: VueDebug
+                   URL: http://localhost:8000       # 该 URL 必须是 webpack-dev-server 启动的地址
+                   [勾选] Ensure breakpoints are detected while loading scripts
+            方法二：
+                按住 Ctrl+Shift，并 鼠标点击 在  Run tool window(Alt+4) or the Terminal(Alt+F12) 中显示的 URL，
+                IDEA 会自动创建 JavaScript Debug Session
+            
+        3. 点击 Debug "虫子" 按钮即可
+        
+        4. 配置跳过 lib 代码
+             File -> Settings -> Build, Execution, Deployment -> Debugger -> Stepping -> 右侧 JavaScript 栏目
+             -> [勾选] Do not step into library scripts
+             -> [勾选] Do not step into scripts:
+                -> 点 "+" 图标 
+                -> 配置 node_modules/*     # 表示跳过符合该路径的 scripts，
+        
+        5. idea 打开的 chrome 页面丢失 书签 插件等信息的问题 
+            File -> Settings -> Tools -> Web Browsers -> 选择 Chrome -> "铅笔" 图标 
+            -> [勾选] Use custom user data directroy:  选择 chrome 的用户数据目录       # chrome://version   页面中的 Profile Path: 就是用户数据保存目录
+            坑：选择 chrome 用户数据目录，不能直接使用 chrome://version 中 Profile Path: 指定的父目录，
+                1. Windows 重命名 C:\Users\Administrator\AppData\Roaming\JetBrains\IntelliJIdea2020.2\chrome-user-data 为 chrome-user-data-bak
+                   Linux: 重命名 /home/kasei/.config/JetBrains/IntelliJIdea2021.2/chrome-user-data 为 chrome-user-data-bak
+                2. 复制 Profile Path: 的父目录 UserData ，到 C:\Users\Administrator\AppData\Roaming\JetBrains\IntelliJIdea2020.2\ 中
+                3. 重命名 UserData 为 chrome-user-data  
+                4. IDEA 中配置 Use custom user data directroy: C:\Users\Administrator\AppData\Roaming\JetBrains\IntelliJIdea2020.2\chrome-user-data 
+    
+    }
+
+    lombok 配置 {
+        1. File -> Settings -> Plugins -> 下载 IDEA lombok 插件
+        2. File -> Settings -> Build, Execution, Deployment -> Compiler -> Annotation Processors 
+           -> [勾选] Enable annotation processing
+           -> [单选] Obtain processors from project classpath
+    }
+
+
+    配置文件保存时,不自动格式化: {
+        File -> Settings -> Editor -> General -> Save Files 栏目 -> 设置 Strap trailing spaces on Save for: None 即可
+    }
+
+    Project Module 配置第三方 jar 包源码路径, 即: Attach Sources {
+        为指定的 jar 包添加源码路径, 适用于所有类型的项目, 包括 maven, gradle: 
+            File -> Project Structure... -> Libraries -> 选中指定的 jar -> 点击 "+" -> 在当前文件系统中选择 源码路径
+            
+        为指定当前项目添加源码路径:
+            File -> Project Structure... -> Libraries -> 点击 "+" -> Java -> 在当前文件系统中选择 自己开发的源码 目录
+            -> Choose Modules 选择 "Cancel" (不将添加的 lib(源码目录) 添加到指定 Module 的 Dependencies 中, 可以在 Libraries 页面中右键 Add to Modules... 进行修改)
+            
+            不将 lib 添加到 Module 的 Dependencies 中,是因为项目 Dependencies 是通过 maven 管理的,maven 重新导入会覆盖原来 Module 的 Dependencies
+            
+        全局添加源码路径(对所有项目生效):
+            File -> Project Structure... -> Global Libraries -> 点击 "+" -> Java -> 在当前文件系统中选择 自己开发的源码 目录
+            -> Choose Modules 选择 "Cancel" (不将添加的源码目录添加到当前项目选中的 Module 中, 可以在 Global Libraries 页面中右键 Add to Modules... 进行修改)
+    }
+
+    Project 源码路径配置 {
+        @trap 该项配置会把加入到 Content Root 当中的代码, 在当前 Module 进行编译, 
+              相当于把代码加入到当前 Module 中的 src/main/java 目录下, 这和 Attach Sources 是两个概念
+        File -> Project Structure... -> Modules -> Sources -> Add Content Root(在 Exclude 下面) 
+    }
+
+    Webpack 配置 {
+        File -> Settings -> Languages & Frameworks -> JavaScript -> Webpack 
+        -> 配置 webpack.config.babel.js 的路径，否则 import xxx from 'alias'; 时会提示找不到路径
+    }
+
+    Debug 配置 {
+        debug 窗口，左下角齿轮 
+        -> [勾选] Show values Inline
+        -> [勾选] Show Method Return Values
+    }
+
+    换行符配置 {
+         File -> Settings -> Editor -> Code Style -> Line Separator：Unix and macOS(\n)
+    }
+
+    配置 IDEA Terminal 为 Git Bash {
+        File -> Settings -> Tools -> Terminal -> Shell path = E:\Git\Git\bin\bash.exe -> 重启 IDEA
+        
+        %GIT_HOME%\bin\bash.exe> git log 乱码问题 {
+            %GIT_HOME%\etc\bash.bashrc 末行追加一下内容
+            export LANG="zh_CN.UTF-8"
+            export LC_ALL="zh_CN.UTF-8"
+        }
+        
+        将 terminal 切换成 %GIT_HOME%\bin\bash.exe 后 Maven INFO 信息前面出现其他字符，比如 ?[1; 啥的 {
+            原因：这些字符是 terminal 用于标识不同颜色的字符，相当于 css，由于 bash.exe 不支持包含颜色的输出，所以出现了这些 标识颜色的代码
+            解决方案：暂时没有找到
+        }
+    }
+    
+
+    项目编译时，不编译指定目录下的 .java 文件：{
+        File -> Project Structure... -> Project Settings -> Modules -> 选择指定的 Module -> Sources 选项卡 
+        -> 选中指定目录 -> 点击窗口上方 Mark as: Excluded 即可
+    }
+
+    代理配置（如果网页使用代理，name不配置代理将不能下载 jar 包）：{
+        File -> Settings -> Appearance & Behavior -> System Settings -> HTTP Proxy 
+        -> Manual proxy configuration 
+        -> [单选] HTTP 或 SOCKS   // 根据自己的代理类型选择， ShadowSocks 选择 SOCKS
+        -> 配置代理所需要的参数
+    }
+    
+    
+    字符集编码格式配置/乱码(garbled)处理： {
+        IDEA 很多会默认以 windows-1252 打开文件。
+    
+        0. IDEA 启动编码设置： 打开IDEA安装目录找到 idea.exe.vmoptions 和 idea64.exe.vmoptions 文件， 分别在文件末尾加上 -Dfile.encoding=UTF-8
+    
+        1. 设置源码文件编码格式： {
+            File -> Settings -> Editor -> File Encodings 
+            -> Global Encoding : [UTF-8]
+            -> Project Encoding : [UTF-8]
+            -> Default encoding for properties files : [UTF-8]
+            /* 巨坑：新项目不勾选该配置，因为打成 jar 包后，中文全变成 unicode 码了，看不懂是啥
+             * 勾选表示：将 .properties 文件中所有 在 ISO 8859-1 中没有定义的字符， 通通转换成 Unicode序列码(即: \u5B9A) 保存到实际文件中
+             * 转换后，.properties 文件中的所有字符都是 ascii 码，所以 Default encoding for properties files 中配置的编码格式就无所谓了，因为保存的字符都是ascii码表中的字符
+             * 而当 Java 去读取 properties 时，会将自动将 \uxxx 的 Unicode 转成对应的 char。
+             * */
+            -> [不勾选] Transparent native-to-ascii conversion  
+            -> Create UTF-8 files : [with NO BOM]  // 巨神坑啊！！：如果勾选，那么 Chrome 识别不了该文件，造成乱码，所以 html 要带 BOM
+        }
+        
+        2. 执行 main 函数、控制台乱码 {
+            File -> Settings -> Build,Execution,Deployment -> Compiler -> Java Compiler
+            -> 设置 Additional command line parameters 选项为 -encoding utf-8 ，然后rebuild下，重新运行
+        }
+        
+        3. 运行tomcat时，控制台乱码 {
+            Run -> Edit Configurations... -> 选择当前项目的部署环境 Tomcat 或其他 —> Server -> VM options 设置为 -Dfile.encoding=UTF-8 ，重启tomcat
+        }
+        
+    }
+    
+    
+    字体设置： {
+        1. 编辑器字体设置： {
+            File -> Settings -> Editor -> Font 
+            -> Font : [Consolas]
+            -> Size : [13]
+        }
+        
+        2. 控制台字体设置： {
+            字体设置： 
+            File -> Settings -> Editor -> Color Scheme -> Console Font 
+            -> [勾选] Use console font instead of the deafualt
+            -> Font = Consolas
+            -> Size = 13
+            -> Line spaceing = 1.0
+            -> Fallback font = Monospaced  如果主字体没有该符号的字型，则采用这个
+            
+            字体颜色设置： 
+            File -> Settings -> Editor -> Color Scheme -> Console Colors 
+            -> Scheme : [Darcula] 
+            => Console 
+            => Standard output 
+            => 右侧 Foregroud : [8C65BB]
+        }
+    }
+
+
+    JDK 配置： {
+        1. 平台 JDK {
+            File -> Project Structure... -> Platform Settings -> SDKs -> 添加本地 JDK 的安装目录
+        }
+
+        2. 项目 JDK {
+            File -> Project Structure... -> Project Settings -> Project => Project SDK => 点击 "New..." -> 选择本地 JDK 的安装目录 
+        }
+    }
+    
+
+    
+    配置代码自动补充不区分大小写 {
+        File -> Settings -> Editor -> General -> Code Completion => Case sensitive completion : [None]
+    }
+
+    修改代码模板 {
+        File -> Settings -> Editor -> Live Templates -> 展开 iterations -> 找到 iter -> 查看或修改模板，保存即可
+    }
+    
+    配置单行注释在代码前面，而不是在第一列 {
+        
+        File
+            Settings
+                Editor
+                    Code Style
+                        Java
+                            Wrapping and Braces
+                                Keep when reformatting
+                                    Comment at first column [不勾选]
+                            Code Generation
+                                Comment Code 选项卡
+                                    [不勾选] Line conmment at first column 
+                                    [勾选] Add a space at comment start
+                                    [不勾选] Block comment at first column
+        
+                        JavaScript
+                            Wrapping and Braces
+                                Keep when reformatting
+                                    Comment at first column [不勾选]
+                            Code Generation
+                                Comments
+                                    [勾选] Add a space at comment start
+                        XML
+                            Code Generation
+                                [不勾选] Line conmment at first column
+                                [不勾选] Block conmment at first column
+        
+    }
+    
+    
+    配置项目运行必要的插件{
+        IDEA 自行安装的插件保存位置: 
+            manjaro: /home/kasei/.local/share/JetBrains/IntelliJIdea2020.2/
+        File -> Settings -> Plugins -> 选择必要的插件 -> Install JetBrains plugins -> reboot Idea
+    }
+
+
+    配置 idea 运行前不检查其他类的错误 {
+        File -> Settings -> Build,Execution,Deployment -> Compiler -> Java Compiler 
+        -> Use Compiler: Eclipse
+        -> Eclipse Options 栏目下
+        -> [勾选] Generate debugging info
+        -> [勾选] Report use of deprecated features
+        -> [不勾选] Generate no warnnings
+        -> [勾选] Proceed on errors
+
+
+        # 整体配置
+        Run -> Edit Configurations... -> Templates 
+        -> Application -> Before launch：隐藏树下 -> 点击'+' -> 选择 Build, no error check -> 删除掉其他的 Build
+        -> Junit -> Before launch：隐藏树下 -> 点击'+' -> 选择 Build, no error check -> 删除掉其他的 Build
+
+        # 单个配置
+        Run -> Edit Configurations... -> -> Application -> 选择具体的 Run 
+        -> Before launch：隐藏树下 -> 点击'+' -> 选择 Build, no error check -> 删除掉其他的 Build
+
+    }
+
+
+
+    配置插件 {
+        IdeaVim {
+            作用： 模拟 vim 编辑模式
+            插件配置 {
+                File -> Settings -> Vim Emulate -> 解决快捷键冲突问题
+            }
+        }
+        IdeaVimExtension {
+            作用：在使用 esc 退出到 vim normal 模式的时候，自动切换输入法为 英文模式
+            配置： {
+                ~/.ideavimrc 文件中添加 keep-english-in-normal-and-restore-in-insert 
+                Windows 需要开启 en_US英语(美国) -- 键盘 -- 美式键盘
+            }
+            
+        }
+        
+    }
+
+
+    为 web 应用创建虚拟目录 {
+        Run -> Edit Configurations... 
+        -> Tomcat Server 
+        -> Deployment 选项卡 
+        -> "+" 图标
+        -> External Source...
+        -> 选中存放上传文件的路径
+        -> Application context:[/upload]
+        -> 确定即可
+
+    }
+
+    配置快捷键 {
+        File -> Settings -> Keymap -> 点击右上角放大镜（按快捷键搜索）
+        -> Alt+/ 
+        -> 在筛选出的条目中双击或者右键 
+        -> 删除原来的绑定 
+        -> 然后再筛选找到 Ctrl+Space 对应的项 
+        -> 双击或右键添加快捷键 Alt+/ 
+        -> Apply  
+
+        同样方法配置：
+        Basic = Alt+/
+        SmartType = Ctrl+Alt+/
+    }
+
+
+    配置在 html 文件 <script> 标签中添加 html 代码不报错的设置 {
+        File -> Settings -> Editor -> Inspections -> HTML -> Malformed content of <script> tag [不勾选] -> Apply
+    }
+
+
+
+    配置 Maven ： {
+        关联配置：
+        File -> Settings -> Build,Execution,Deployment -> Build Tools -> Maven 
+        => Output level: Debug          # 表示 maven 本身的日志级别调整为 debug
+        => Maven home directory : [Maven 安装目录]
+        => User settings files : [Maven 用户配置文件]
+        => Local repository : [Maven 本地仓库]
+
+        Maven 自动下载 Sources 和 Documentation 配置： 
+        File -> Settings -> Build,Execution,Deployment -> Build Tools -> Maven -> Importing
+        Automatically download: [勾选]Sources [勾选]Documentation
+    }
+
+
+    配置 Gradle {
+        File -> Settings -> Build,Execution,Deployment -> Build Tools -> Gradle
+        => [单选选中] Use local gradle distribution
+        => Gradle home : [Gradle 安装目录]
+        => Gradle JVM : [JDK 安装目录]
+    }
+
+    配置 Tomcat {
+        File -> Settings -> Build,Execution,Deployment -> Application Servers 
+        => 点击 "+" 图标 => 配置
+    }
+
+    配置自定义样板代码 {
+        File -> Settings -> Editor -> Live Templates -> "+" 图标 
+        => Template Group => [Customized] => OK  // 创建自定义模板组
+        => 选中 Coustomized 模板组 => "+" 图标 => Live Template
+        => Abbreviation : [输入缩写]
+        => Description : [输入描述]
+        => Template text : [输入生成文本]
+        => click 底部蓝色 Define
+        => 选择该样板适配的 content 类型
+        => Apply
+    }
+
+
+    配置 DTD 自动提示 {
+        File -> Settings -> Languages & Frameworks -> Schemas and DTDs
+        => External Schemas and DTDs
+        => "+" 图标
+        => URI : [xml 文件上部 <!DOcTYPE> 标签中的 URI]
+        => File : [下载好的 DTD 文件的 Path]
+    }
+
+
+    配置 IDEA 支持 ECMAScript 6(ES6) 语法 {
+    
+        File -> Settings -> Languages & Frameworks -> JavaScript
+        => JavaScript language version: ECMAScript 6
+        => Apply
+              
+        File -> Other Settings -> Settings for New Projects... -> Languages & Frameworks -> JavaScript 
+        => JavaScript language version: ECMAScript 6
+        => Apply 
+    }
+
+
+
+
+    配置快捷键映射 {
+        File -> Settings -> Keymap ->
+    }
+
+    配置目录结构 {
+        树状目录窗口顶部"齿轮按钮" -> Flatten Packages / Compact Empty Middle Packages 两项不勾选 
+    }
+
+
+
+    配置显示行号 {
+        File -> Settings -> Editor -> General -> Appearance => [√勾选] Show line number
+    }
+
+
+
+    Editor Tabs {
+        File -> Settings -> Editor -> General -> Editor Tabs 
+        => [不勾选] Show tabs in single row// 配置多行显示 Tabs
+        => [不勾选] Hide tabs if there is no space// 配置多行显示 Tabs
+        => [勾选] Mark modified tabs with asterisk// 配置 * 标识修改过的文件
+    }
+
+    配置 Tab 键为 4 个空格 {
+        File -> Settings -> Editor -> Code Style 
+        -> {Java, HMTL, JavaScript, JSON, XML, Properties, CSS}
+        -> Tabs and Indents
+        -> [不勾选] Use tab character
+    }
+
+
+    配置代码提示级别 {
+        主界面右下角像企鹅一样的图标 -> 设置为 inspections
+    }
+
+    配置自动导包 {
+        File -> Settings -> Editor -> General -> Auto Import 
+        => Java 栏目
+        => [√勾选] Add unambiguous imports on the fly
+        => [√勾选] Optimize imports on the fly(for current project)
+        => JSP 栏目
+        => [√勾选] Add unambiguous imports on the fly
+    }
+
+    开启单词拼写检查 {
+        File -> Settings -> Editor -> Inspections => Spelling [√勾选] => Typo [√勾选]
+    }
+
+
+
+    配置编辑器打开的时候的动作 {
+        File -> Settings -> Appearance & Behavior -> System Settings
+        => [不勾选] Reopen last project on startup
+        => [选中] Open project in new window
+    }
+
+    查看历史文件 {
+        右击项目名 -> Local History
+    }
+
+    配置最近使用文件的个数 {
+        File -> Settings -> Editor -> General => Recent files limit : [50]
+    }
+
+    配置js jquery 代码自动提示 {
+        File -> Settings -> Languages & Frameworks -> JavaScript -> Libraries 
+        -> Add 
+        -> "+" 图标 
+        -> Attach Files
+        -> Name : [jquery-3.2.1.js]   //输入库名称
+        -> Framework type : [jQuery]  // 选择框架类型
+    }
+}
+################################################## Intelligent IDEA Settings : End ######################################################

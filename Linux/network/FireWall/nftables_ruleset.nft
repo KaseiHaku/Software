@@ -1,0 +1,30 @@
+#!/usr/sbin/nft -f
+# 上面一行必须加
+
+
+# 注释
+
+
+# Import: 导入
+# include a single file using the default search path
+include "ipv4-nat.ruleset"
+
+# include all files ending in *.nft in the default search path
+include "*.nft"
+
+# include all files in a given directory using an absolute path
+# 按字典序，加载脚本文件
+include "/etc/nftables/"
+
+
+
+# Variable: 变量
+define google_dns = 8.8.8.8
+define ntp_servers = { 84.77.40.132, 176.31.53.99, 81.19.96.148, 138.100.62.8 }
+add rule filter input ip saddr $ntp_servers counter       # 使用变量
+
+
+# Format: 文件格式
+# 格式和 shell> nft list table 的输出一样
+
+

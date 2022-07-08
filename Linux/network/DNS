@@ -1,0 +1,63 @@
+DNS = Domain Name System = 域名系统
+
+DNS 解析过程 {
+    1. Browser 查看本地缓存有没有对应 Domain 的 IP ，有则直接返回
+    2. 查看 /etc/hosts 文件中有没有对应 Domain 的 IP ，有则直接返回
+    3. 使用 /etc/resolv.conf 文件中的 DNS 服务器对 Domain 进行解析
+    4. 
+}
+
+常用 DNS 服务器：
+    Cloudflare DNS:     1.1.1.1             1.0.0.1             2606:4700:4700::1111    2606:4700:4700::1001     
+    OpenDNS:            208.67.222.222      208.67.220.220      2620:119:35::35         2620:119:53::53             # 支持 ECS(用于 CDN 就近选择)
+    Google Public DNS:  8.8.8.8             8.8.4.4             2001:4860:4860::8888    2001:4860:4860::8844        # 支持 ECS(用于 CDN 就近选择)
+    Alibaba             223.5.5.5           223.6.6.6           2400:3200::1            2400:3200:baba::1
+    
+本地域名解析配置：
+    shell> vim /etc/hosts
+    以下是该文件的内容：
+    Formate Pattern = ip     domain1     alias1      domain2     alias2
+    127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 # ipv4 本地环路地址，即回送地址
+    ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6 # ipv6 本地环路地址，即回送地址
+
+DNS 服务器配置：
+    shell> vim /etc/resolv.conf      
+    以下是该文件的内容：
+    Format Pattern = nameserver *.*.*.*
+    nameserver      2606:4700:4700::1111
+    nameserver      2606:4700:4700::1001
+    nameserver      2400:3200::1
+    nameserver      42.120.21.30         # 配置 DNS 服务器
+    nameserver      8.8.8.8
+    
+    search          domain1 domain2     # 
+    domain          localdomain         # 在 search 没有配置时，默认使用 domain 的值
+    
+    sortlist        IP/netmask IP       # 允许将得到的域名结果进行特定的排序     
+    
+    # 用于配置 resolver 的内置变量
+    # ndots:1           设置调用res_query()解析域名时域名至少包含的点的数量
+    # timeout:5         设置等待dns服务器返回的超时时间，单位秒
+    options         ndots:1  timeout:5           
+
+/etc/NetworkManager/NetworkManager.conf 
+[main]
+plugins=ifcfg-rh
+dns=none
+
+相关命令：
+    shell> nslookup -timeout=10 -port=5353 -type=A baidu.com 8.8.8.8
+    
+    # 前一个 [] 是全局配置，后一个 [] 是 host1 的配置
+    shell> dig [@dnsSever domain q-type q-class q-opt d-opt]    [host1 @dnsServer local-d-opt]
+    
+
+反向 DNS:
+    shell> host 123.0.0.1 8.8.8.8
+    shell> nslookup 123.0.0.1 8.8.8.8       # 查看 123.0.0.1 在 8.8.8.8 域名服务器中对应的域名
+    shell> dig @8.8.8.8 -x 123.0.0.1
+    
+    
+    
+    
+    

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- saved from url=(0021)https://free-ss.site/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>免费上网账号</title>
+    <style type="text/css">
+        body {font-size:0.9rem;}
+        div.container {margin:0 auto;min-width:760px;max-width:900px;text-align:center;}
+        div.banner {text-align:center;color:red;}
+        div.ticker {width:100%;text-align:left;height:20px;margin-top:15px;}
+        div.affdiv {height: 40px;}
+        ul {list-style-type:none;padding-left:0;}
+        li.aff {float:left;margin-left:6px;margin-right:6px;}
+        li.q {font-weight:bold;}
+        li.red {color:red;}
+        td {text-align:left;}
+        div.footer {text-align:left;}
+        div.incap_page-tooltip {display:none;}
+    </style>
+    <link rel="stylesheet" href="./免费上网账号_files/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="./免费上网账号_files/dataTables.foundation.min.css">
+    <link rel="stylesheet" href="./免费上网账号_files/font-awesome.min.css">
+    <script src="./免费上网账号_files/hm.js.download"></script><script type="text/javascript" async="" src="./免费上网账号_files/recaptcha__en.js.download"></script><script src="./免费上网账号_files/jquery.min.js.download" type="text/javascript"></script>
+    <script src="./免费上网账号_files/jquery.dataTables.min.js.download" type="text/javascript"></script>
+    <script src="./免费上网账号_files/dataTables.foundation.min.js.download" type="text/javascript"></script>
+    <script src="./免费上网账号_files/jquery.qrcode.min.js.download" type="text/javascript"></script>
+    <script src="./免费上网账号_files/layer.js.download" type="text/javascript"></script>
+    <script src="./免费上网账号_files/crypto-js.min.js.download" type="text/javascript"></script>
+    <script src="./免费上网账号_files/jquery.ticker.min.js.download" type="text/javascript"></script>
+    <script src="./免费上网账号_files/encc.min.js.download" type="text/javascript"></script>
+    <script src="./免费上网账号_files/api.js.download" type="text/javascript"></script>
+    <script type="text/javascript">
+grecaptcha.ready(function(){
+grecaptcha.execute('6LfEr5MUAAAAACiN9ZgH4842Va__LHuZTbX7ztl0', {action: 'homepage'}).then(function(token) {
+var a='1ac559412db0fe78';var b='e68c24a9d0573f1b';var c='ba14f06ef4bb1d85';
+  $.post("data.php",{a:a,b:b,c:encc(c),t:token},function(d){
+    var x=CryptoJS.enc.Latin1.parse(a);var y=CryptoJS.enc.Latin1.parse(b);
+    eval(function(p,a,c,k,e,d){e=function(c){return(c<a?"":e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)d[e(c)]=k[c]||e(c);k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1;};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p;}('1 2=\'h\'+\'8\'+\'4\'+\'9\'+\'a\';1 5=\'6\'+\'3\';1 7=0.b.g(d,i,{c:e,2:0.2.4,f:0.5.3});',19,19,'CryptoJS|var|mode|ZeroPadding|CTR|pad|Pkcs7|dec|CFB|ECB|OFB|AES|iv||y|padding|decrypt|CBC|x'.split('|'),0,{}))
+    var tbdt = $.parseJSON(dec.toString(CryptoJS.enc.Utf8));
+    var table = $('#tbss').DataTable({
+      "data":tbdt.data,
+      "dom":"t",
+      "paging":false,
+      "order":[7,"asc"],
+      "columnDefs":[{"targets":-1,"data":null,"defaultContent":'<i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i>'}]
+    });
+  $('#tbss tbody').on('click','i',function(){
+    var data = table.row($(this).closest('tr')).data();
+    var str = 'ss://'+CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(data[4]+':'+data[3]+'@'+data[1]+':'+data[2]));
+    var qrcode = $('#qrcode');
+    qrcode.children('canvas').remove();
+    qrcode.children('br').remove();
+    qrcode.children('a').remove();
+    qrcode.qrcode({background:'#FFFFFF',ecLevel:'M',text:str});
+    qrcode.append('<br /><a href="'+str+'">URI</a>');
+    layer.open({type:1,title:data[1]+' ('+data[6]+')',closeBtn:0,shade:0.1,area:'24em',shadeClose:true,content:qrcode,});
+  });
+});
+});
+  var tablev = $('#tbv2').DataTable({
+    "data":[
+            ['20', 'www.kernels.bid','80','5a6120f9-b4d8-1ad0-e0c3-bc3208f2fc2f','ws','/ws','none','<span><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></span>','<a href="v/80.json"  download="config.json"><i class="fa fa-cogs" aria-hidden="true"></i></a>'],
+            ['8', 'www.kernels.bid', '443','6d32cdae-f77b-83f9-fcac-5e862241a49c','ws','/ws','tls', '<span><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></span>','<a href="v/443.json" download="config.json"><i class="fa fa-cogs" aria-hidden="true"></i></a>'],
+           ],
+    "dom":"t"
+  });
+  $('#tbv2 tbody').on('click','span',function(){
+    var data = tablev.row($(this).closest('tr')).data();
+    var str = 'vmess://'+CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse('{"ps":"free-ss.site","add":"'+data[1]+'","port":"'+data[2]+'","id":"'+data[3]+'","aid":"0","net":"'+data[4]+'","type":"none","host":"'+data[5]+'","tls":"'+data[6]+'"}'));
+    var qrcode = $('#qrcode');
+    qrcode.children('canvas').remove();
+    qrcode.children('br').remove();
+    qrcode.children('a').remove();
+    qrcode.qrcode({background:'#FFFFFF',ecLevel:'M',text:str,width:300,height:300});
+    qrcode.append('<br /><a href="'+str+'">URI</a>');
+    layer.open({type:1,title:data[1]+':'+data[2],closeBtn:0,shade:0.1,area:'28em',shadeClose:true,content:qrcode});
+  });
+});
+var _0xfc9d=["\x73\x63\x72\x69\x70\x74","\x63\x72\x65\x61\x74\x65\x45\x6C\x65\x6D\x65\x6E\x74","\x73\x72\x63","\x2F\x2F\x68\x6D\x2E\x62\x61\x69\x64\x75\x2E\x63\x6F\x6D\x2F\x68\x6D\x2E\x6A\x73\x3F\x32\x35\x37\x65\x66\x62\x63\x63\x63\x65\x33\x65\x61\x32\x65\x65\x62\x63\x35\x61\x35\x66\x36\x63\x39\x34\x33\x37\x36\x36\x36\x35","\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x73\x42\x79\x54\x61\x67\x4E\x61\x6D\x65","\x69\x6E\x73\x65\x72\x74\x42\x65\x66\x6F\x72\x65","\x70\x61\x72\x65\x6E\x74\x4E\x6F\x64\x65"];var _0x4d33=[_0xfc9d[0],_0xfc9d[1],_0xfc9d[2],_0xfc9d[3],_0xfc9d[4],_0xfc9d[5],_0xfc9d[6]];var _hmt=_hmt|| [];(function(){var _0x8034x3=document[_0x4d33[1]](_0x4d33[0]);_0x8034x3[_0x4d33[2]]= _0x4d33[3];var _0x8034x4=document[_0x4d33[4]](_0x4d33[0])[0];_0x8034x4[_0x4d33[6]][_0x4d33[5]](_0x8034x3,_0x8034x4)})();
+    </script>
+<link rel="stylesheet" href="./免费上网账号_files/layer.css" id="layuicss-layer"></head>
+<body>
+<div class="container">
+<div class="banner">
+<span>希望大家抽空投个票，帮助我们改进服务。请点击<a href="https://forms.gle/op4T1AryoiBqs47v6">投票地址</a>（需要翻墙）</span>
+</div>
+<div class="main">
+<h3>免费V账号</h3>
+<div id="tbv2_wrapper" class="dataTables_wrapper dt-foundation no-footer"><table id="tbv2" class="compact stripe hover nowrap dataTable no-footer" role="grid" style="width: 900px;">
+<thead>
+<tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="tbv2" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 7px;"></th><th class="sorting" tabindex="0" aria-controls="tbv2" rowspan="1" colspan="1" aria-label="Address: activate to sort column ascending" style="width: 105px;">Address</th><th class="sorting" tabindex="0" aria-controls="tbv2" rowspan="1" colspan="1" aria-label="Port: activate to sort column ascending" style="width: 42px;">Port</th><th class="sorting" tabindex="0" aria-controls="tbv2" rowspan="1" colspan="1" aria-label="UID: activate to sort column ascending" style="width: 280px;">UID</th><th class="sorting" tabindex="0" aria-controls="tbv2" rowspan="1" colspan="1" aria-label="Network: activate to sort column ascending" style="width: 76px;">Network</th><th class="sorting" tabindex="0" aria-controls="tbv2" rowspan="1" colspan="1" aria-label="Path: activate to sort column ascending" style="width: 44px;">Path</th><th class="sorting" tabindex="0" aria-controls="tbv2" rowspan="1" colspan="1" aria-label="TLS: activate to sort column ascending" style="width: 43px;">TLS</th><th class="sorting" tabindex="0" aria-controls="tbv2" rowspan="1" colspan="1" aria-label=": activate to sort column ascending" style="width: 22px;"><i class="fa fa-qrcode" aria-hidden="true"></i></th><th class="sorting" tabindex="0" aria-controls="tbv2" rowspan="1" colspan="1" aria-label=": activate to sort column ascending" style="width: 29px;"><i class="fa fa-cogs" aria-hidden="true"></i></th></tr>
+</thead>
+<tbody><tr role="row" class="odd"><td class="sorting_1">8</td><td>www.kernels.bid</td><td>443</td><td>6d32cdae-f77b-83f9-fcac-5e862241a49c</td><td>ws</td><td>/ws</td><td>tls</td><td><span><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></span></td><td><a href="https://free-ss.site/v/443.json" download="config.json"><i class="fa fa-cogs" aria-hidden="true"></i></a></td></tr><tr role="row" class="even"><td class="sorting_1">20</td><td>www.kernels.bid</td><td>80</td><td>5a6120f9-b4d8-1ad0-e0c3-bc3208f2fc2f</td><td>ws</td><td>/ws</td><td>none</td><td><span><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></span></td><td><a href="https://free-ss.site/v/80.json" download="config.json"><i class="fa fa-cogs" aria-hidden="true"></i></a></td></tr></tbody></table></div>
+<div class="ticker">
+  <div style=""><a href="https://startpage.freebrowser.org/zh/?utm_source=free-ss" target="_blank">【广告】翻墙后看什么？推荐实时更新的GreatFire“自由新闻” https://startpage.freebrowser.org/zh</a>/</div>
+</div>
+<script type="text/javascript">
+$('.ticker').ticker({random:true,itemSpeed:20000,cursorSpeed:0,pauseOnHover:true,finishOnHover:true,fade:true,fadeInSpeed:1000,fadeOutSpeed:1000,cursorOne:'',cursorTwo:''});</script>
+<h3>免费S账号</h3>
+<div id="tbss_wrapper" class="dataTables_wrapper dt-foundation no-footer"><table id="tbss" class="compact stripe hover nowrap dataTable no-footer" role="grid" style="width: 900px;">
+<thead>
+<tr role="row"><th class="sorting" tabindex="0" aria-controls="tbss" rowspan="1" colspan="1" aria-label="V/T/U/M: activate to sort column ascending" style="width: 111px;">V/T/U/M</th><th class="sorting" tabindex="0" aria-controls="tbss" rowspan="1" colspan="1" aria-label="Address: activate to sort column ascending" style="width: 110px;">Address</th><th class="sorting" tabindex="0" aria-controls="tbss" rowspan="1" colspan="1" aria-label="Port: activate to sort column ascending" style="width: 45px;">Port</th><th class="sorting" tabindex="0" aria-controls="tbss" rowspan="1" colspan="1" aria-label="Password: activate to sort column ascending" style="width: 147px;">Password</th><th class="sorting" tabindex="0" aria-controls="tbss" rowspan="1" colspan="1" aria-label="Method: activate to sort column ascending" style="width: 162px;">Method</th><th class="sorting" tabindex="0" aria-controls="tbss" rowspan="1" colspan="1" aria-label=": activate to sort column ascending" style="width: 50px;"><i class="fa fa-clock-o" aria-hidden="true"></i></th><th class="sorting" tabindex="0" aria-controls="tbss" rowspan="1" colspan="1" aria-label=": activate to sort column ascending" style="width: 26px;"><i class="fa fa-globe" aria-hidden="true"></i></th><th class="sorting_asc" tabindex="0" aria-controls="tbss" rowspan="1" colspan="1" aria-sort="ascending" aria-label=": activate to sort column descending" style="width: 25px;"><i class="fa fa-qrcode" aria-hidden="true"></i></th></tr>
+</thead>
+<tbody><tr role="row" class="odd"><td>9↑/10↑/10↑/10↑</td><td>198.74.61.191</td><td>14540</td><td>f55.fun-08666005</td><td>aes-256-cfb</td><td>01:57:04</td><td>US</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>10↑/10↑/10↑/10↑</td><td>108.160.132.25</td><td>11099</td><td>4XVeP1</td><td>aes-256-cfb</td><td>01:57:15</td><td>JP</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>149.28.20.182</td><td>11099</td><td>4XVeP1</td><td>aes-256-cfb</td><td>01:57:07</td><td>JP</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>5↑/7↑/8↑/5↓</td><td>185.38.15.117</td><td>11103</td><td>4XVeP1</td><td>aes-256-cfb</td><td>01:57:21</td><td>NL</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>51.15.227.177</td><td>81</td><td>namaho.org+LNVTU</td><td>chacha20-ietf-poly1305</td><td>01:57:15</td><td>FR</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>10↑/1↑/0↓/0↓</td><td>5.181.5.8</td><td>443</td><td>nHHpgf23ac3RSC</td><td>aes-256-cfb</td><td>01:57:16</td><td>JP</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>104.192.83.107</td><td>8888</td><td>https://4ss.org</td><td>aes-256-cfb</td><td>01:57:15</td><td>US</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>7↑/10↑/10↑/10↑</td><td>139.162.17.181</td><td>10134</td><td>f55.fun-92260094</td><td>aes-256-cfb</td><td>01:57:07</td><td>SG</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>104.248.152.238</td><td>15537</td><td>isx.yt-22677142</td><td>aes-256-cfb</td><td>01:57:07</td><td>SG</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>3↓/10↑/9↑/9↓</td><td>91.219.237.119</td><td>9001</td><td>getvpn20190501</td><td>aes-256-cfb</td><td>01:47:20</td><td>HU</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>5.189.227.120</td><td>31654</td><td>KZGXzjZw6IxQ</td><td>aes-256-cfb</td><td>01:57:18</td><td>RU</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>10↑/10↑/10↑/9↑</td><td>50.116.55.108</td><td>11645</td><td>f55.fun-34711278</td><td>aes-256-cfb</td><td>01:57:04</td><td>US</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/9↑/10↑</td><td>192.241.205.20</td><td>10208</td><td>isx.yt-79259336</td><td>aes-256-cfb</td><td>01:57:06</td><td>US</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>10↑/10↑/10↑/10↑</td><td>206.189.47.144</td><td>18218</td><td>isx.yt-99026129</td><td>aes-256-cfb</td><td>01:57:07</td><td>SG</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>46.182.110.223</td><td>11099</td><td>4XVeP1</td><td>aes-256-cfb</td><td>01:57:19</td><td>NL</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>10↑/10↑/10↑/10↑</td><td>172.104.90.149</td><td>16341</td><td>YiPbjUeizDxJ</td><td>aes-256-cfb</td><td>01:57:14</td><td>JP</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>46.29.162.169</td><td>8069</td><td>6572767529</td><td>aes-256-cfb</td><td>01:57:09</td><td>RU</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>10↑/10↑/10↑/10↑</td><td>167.99.101.228</td><td>5333</td><td>Hp@digitalocean1(($</td><td>aes-256-cfb</td><td>01:57:14</td><td>US</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>5.181.5.107</td><td>443</td><td>nHHpgf23ac3RSC</td><td>aes-256-cfb</td><td>01:57:13</td><td>JP</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>10↑/10↑/10↑/10↑</td><td>5.183.176.208</td><td>443</td><td>nHHpgf23ac3RSC</td><td>aes-256-cfb</td><td>01:57:14</td><td>JP</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>192.241.206.108</td><td>15861</td><td>ss8.pm-33662577</td><td>aes-256-cfb</td><td>01:57:05</td><td>US</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>8↓/10↑/10↑/10↑</td><td>2.56.240.27</td><td>2133</td><td>www.eieee.cn</td><td>aes-256-cfb</td><td>01:47:19</td><td>RU</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>185.225.139.181</td><td>5678</td><td>nutgeek.com</td><td>rc4-md5</td><td>01:57:11</td><td>US</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>10↑/10↑/10↑/10↑</td><td>188.246.233.159</td><td>31972</td><td>qHE3dZdDn7Pb</td><td>aes-256-cfb</td><td>01:57:15</td><td>RU</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>5.181.5.115</td><td>443</td><td>nHHpgf23ac3RSC</td><td>aes-256-cfb</td><td>01:57:08</td><td>JP</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>10↑/10↑/10↑/10↑</td><td>128.199.170.164</td><td>14876</td><td>ss8.pm-43560439</td><td>aes-256-cfb</td><td>01:57:07</td><td>SG</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="odd"><td>10↑/10↑/10↑/10↑</td><td>198.13.33.175</td><td>11099</td><td>4XVeP1</td><td>aes-256-cfb</td><td>01:57:19</td><td>JP</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr><tr role="row" class="even"><td>10↑/10↑/10↑/10↑</td><td>46.182.110.116</td><td>11100</td><td>4XVeP1</td><td>aes-256-cfb</td><td>01:57:14</td><td>NL</td><td class="sorting_1"><i class="fa fa-qrcode" aria-hidden="true" style="cursor:pointer"></i></td></tr></tbody></table></div>
+<div style="display:none" id="qrcode"></div>
+</div>
+<div class="affdiv">
+<ul>
+<li class="aff"><a href="https://free-ss.site/aff/bwh.html"><img src="./免费上网账号_files/bwh.png" title="VPS 推荐 - 搬瓦工 - 优点：模板一键安装，小白的最爱。"></a></li>
+<li class="aff"><a href="https://free-ss.site/aff/vultr.html"><img src="./免费上网账号_files/vultr.png" title="VPS 推荐 - Vultr - 优点：按小时计费，海量IP随时更换。"></a></li>
+<li class="aff"><a href="https://free-ss.site/aff/linode.html"><img src="./免费上网账号_files/linode.png" title="VPS 推荐 - Linode - 优点：按小时计费，海量IP随时更换。"></a></li>
+<li class="aff"><a href="https://free-ss.site/aff/virmach.html"><img src="./免费上网账号_files/virmach.png" title="VPS 推荐 - Virmach - 优点：超级便宜，一分钱一分货。"></a></li>
+</ul>
+</div>
+<div class="footer">
+<ul>
+<li class="q"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 注意事项 </li>
+<li class="a red"><i class="fa fa-info-circle" aria-hidden="true"></i> 禁止使用免费账号进行黑客攻击，BT下载，滥发垃圾邮件。这些账号来之不易，请珍惜使用。</li>
+<li class="q"><i class="fa fa-question-circle" aria-hidden="true"></i> 如何使用？</li>
+<li class="a"><i class="fa fa-info-circle" aria-hidden="true"></i> 自行摸索。请勿发邮件询问。</li>
+<li class="q"><i class="fa fa-question-circle" aria-hidden="true"></i> 为什么突然就用不了呢？</li>
+<li class="a"><i class="fa fa-info-circle" aria-hidden="true"></i> 应该是众所周知的不可抗拒的原因吧。</li>
+<li class="q"><i class="fa fa-question-circle" aria-hidden="true"></i> 这个和那个是什么意思？</li>
+<li class="a"><i class="fa fa-info-circle" aria-hidden="true"></i> V:Vultr US. T:China Telecom. U:China Unicom. M:China Mobile. 其他请自行摸索。 </li>
+<li class="q"><i class="fa fa-question-circle" aria-hidden="true"></i> 联系方式？</li>
+<li class="a"><i class="fa fa-info-circle" aria-hidden="true"></i> 使用国外邮箱发送邮件到 ss at rohankdd dot com 可自动获取镜像站。申报故障或其他建议也可发信给客服。</li>
+<li class="q"><i class="fa fa-question-circle" aria-hidden="true"></i> 怎样直连主站？</li>
+<li class="a"><i class="fa fa-info-circle" aria-hidden="true"></i> 电脑手机设置直连本站主站<a href="https://free-ss.site/v/direct_access.png">教程</a></li>
+</ul>
+</div>
+</div>
+
+
+<div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px;"><div class="grecaptcha-logo"><iframe src="./免费上网账号_files/anchor.html" width="256" height="60" role="presentation" name="a-f1tn5thj3ryj" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></div></body></html>

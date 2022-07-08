@@ -1,0 +1,38 @@
+下载当前目录下的安装文件，打开二进制编辑器，去掉第一个字节，第一个自己为 20， 即空格
+
+注册码：用户名随便填
+    Standard Edition
+    5EZ8G-C3WL5-B56YG-SCXM9-6QZAP
+    G3ZC7-7YGPY-FZD3A-FMNF9-ENTJB
+    YTZGN-FYT53-J253L-ZQZS4-YLBN9
+    
+    Portable Edition 
+    L6Z8A-XY2J4-BTZ3P-ZZ7DF-A2Q9C
+
+配置步骤：
+    1. 代理服务器配置：
+        Profile -> Proxy Servers -> Add... 
+        Server 栏目
+        -> Address: 127.0.0.1       # 代理服务器地址
+        -> Port: 1080               # 端口
+        Protocol
+        -> [单选] SOCKS Version5
+        -> check     
+    2. 代理规则设置:
+        Profile -> Proxification Rule 
+        -> Rule Name: 表示当前规则的名称，随便取
+        -> Applications: 表示本机中的应用程序，多个用英文 ; 隔开，不填表示任何应用程序
+        -> Target Hosts: 表示的是应用程序访问的主机 ip，不是 shadowsocks 代理的本机的 ip
+        -> Target Port: 同样表示应用程序访问的端口，
+        -> Action: 表示符合上述匹配的场景应该执行什么样的动作
+        例1：Rule Name="LocalHost" Application="" Target Hosts="SS服务器IP;127.0.0.1" Target Port="" Action="Direct"
+        表示：本机的任何应用程序，访问“SS服务器;127.0.0.1;...” 等主机的任意端口时都直接连接不经过代理
+        例2：Rule Name="ShadowSocks" Application="chrome.exe" Target Hosts="" Target Port="" Action="Proxy SOCKS5 127.0.0.1"
+        表示：谷歌浏览器访问任何主机的任意端口都经过 "Proxy SOCKS5 127.0.0.1" 代理       
+        -> 所以一般把 SS 服务器的 IP 配在 LocalHost 中，表示不经过代理
+        坑：如果 Applications 添加了不生效，可以把软件打开，进任务管理器找进程名，然后把进程名添加到 Applications 中，这是因为有些进程名跟文件名不一致导致的
+    3. 域名解析设置:
+        Profile -> Name Resolution
+        -> 选择第二个Resolve hostnames through proxy（通过代理服务器解析域名）
+        -> OK
+        

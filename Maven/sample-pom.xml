@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+
+    <modelVersion>4.0.0</modelVersion><!-- POM 的版本 -->
+
+    <!-- ! Basic -->
+    <groupId>kasei.mavenweb</groupId><!-- 组织名.项目名 -->
+    <artifactId>MavenWeb</artifactId><!-- 项目名-模块名：一般指定为项目名 -->
+    <version>0.0.1-SNAPSHOT</version><!-- 版本：大版本.分支版本.小版本 -->
+    <packaging>war</packaging><!-- 默认为 jar -->
+    <url>http://maven.apache.org</url><!-- 项目地址 -->
+    <name>MavenWeb Maven Webapp</name><!-- 项目描述名 -->
+    <description></description><!-- 项目描述 -->
+    <!-- 父 POM-->
+    <parent>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>my-parent</artifactId>
+        <version>2.0</version>
+        <relativePath>../my-parent</relativePath>
+    </parent>
+    <!-- 定义变量 -->
+    <properties>
+        
+        <!-- env.x 开头的变量，都是引用环境变量-->
+        <var.env>${env.PATH}</var.env>
+        <!--
+            project.x 开头的变量表示当前 pom.xml 文件(包括父 pom )中包含该路径
+            project.basedir == <project><basedir>/opt/Git/LocalRepository</basedir></project>
+        -->
+        <var.project>${project.basedir}</var.project>
+
+        <!-- settings.x 表示 settings.xml 包含的元素 -->
+        <var.settings>${settings.offline}</var.settings>
+
+        <!--java.x 表示 java.lang.System.getProperties() 能访问到的属性-->
+        <var.java>${java.version}</var.java>
+
+
+        <!--x 表示当前 pom.xml <properties> 中包含的属性 -->
+        <!--<var.properties>${var.properties}</var.properties>-->
+        <!--<prop.java.home>/opt/Java/jdk-11.0.5</prop.java.home>-->
+        <prop.sourceEncoding>UTF-8</prop.sourceEncoding>
+        <basedir>.</basedir>
+        <argLine>-Dfile.encoding=UTF-8</argLine>
+        
+        <commons-lang.version>2.6</commons-lang.version>
+        <slf4j.version>1.7.6</slf4j.version>
+        <spring.version>5.0.0.RELEASE</spring.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- More Project Information -->
+    <name>...</name>
+    <description>...</description>
+    <url>...</url>
+    <inceptionYear>...</inceptionYear>
+    <licenses>...</licenses>
+    <organization>...</organization>
+    <developers>...</developers>
+    <contributors>...</contributors>
+
+    <!-- 依赖管理器 -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring.version}</version><!-- 使用变量 -->
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <!-- 该项目中使用到的包 -->
+    <dependencies>
+
+        <!-- 模板 -->
+        <dependency>
+            <groupId>kasei.sample</groupId><!-- 组织名： -->
+            <artifactId>pom</artifactId><!-- 模块名： -->
+            <version>1.0.0</version><!-- 版本： -->
+            <classifier>jdk11</classifier><!-- 相同 jar 包 version, 在不同环境下有特殊的版本, 比如: jdk8 和 jdk11 环境就有很大差别 --> 
+            <type>pom</type><!-- 默认为 jar, 为 pom 时会自动下载 pom 中的所有依赖 -->
+            <scope>test</scope><!-- 指依赖范围 -->
+            <optional>true</optional><!-- 设置依赖是否可选：如果 = true，则子项目必须显示的引用该依赖  -->
+            <executions><!-- 排除依赖传递的列表 -->
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </dependency>
+
+        <!-- Servlet -->
+        <dependency><groupId>javax.servlet</groupId><artifactId>javax.servlet-api</artifactId><version>4.0.0</version><scope>provided</scope></dependency>
+
+    </dependencies>
+
+
+
+    <!-- profile 配置: IDEA 中 除了全局 settings.xml 的私有仓库 profile 外, pom.xml 中的 profile 最好只选一个, 如果编译报错, 手工取消所有 profile 后再勾选 
+        使用 maven profile <filters> 进行占位符替换的时候，要注意 
+        .properties 文件特殊字符的问题
+        .xml 属性的 特殊字符的问题，比如 &amp; 
+            如果使用 PropertyPlaceholderConfigurer 进行 spring 配置文件的占位符替换，则不用管 xml 的特殊字符的问题
+            但是如果使用 maven profile 直接进行替换，则字符 '&' 必须使用字符实体 '&amp;' 进行表示
+    -->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <!-- 当前  profile 激活条件,每种子标签都是一种独立的条件判断，多个条件 and 的关系 -->
+            <activation>
+                <activeByDefault>false</activeByDefault>  <!-- 表示默认激活该配置文件 -->
+                <jdk>1.5</jdk> <!-- 当 jdk 为指定版本时, 激活当前配置文件 -->
+                <os>...</os> <!-- 当 操作系统类型 符合要求时,激活当前配置文件 -->
+                <!-- 当指定的 key 的值符合当前配置的值时, 激活当前配置文件,可以在 pom.xml 中以 ${key} 的形式引用 -->
+                <property>
+                    <name>mavenVersion</name>
+                    <value>2.0.3</value>
+                </property> 
+                
+                <file>
+                  <exists>${basedir}/file2.properties</exists><!-- 当存在指定的名称的文件时激活当前配置文件 -->
+                  <missing>${basedir}/file1.properties</missing><!-- 当不存在指定的名称的文件时激活当前配置文件 -->
+                </file>
+            </activation>
+        </profile>      
+    </profiles>
+
+
+
+
+    <!-- Build Settings -->
+    <build>
+        <finalName>MavenWeb</finalName>
+         <!-- 
+            注意： pluginManagement 中的 plugin 配置， 只要子项目中用到，就会被引用，不管子项目的 pom.xml 是否显式声明 
+            因此在 父 pom.xml 中 <pluginManagement> 中最好只配置 plugin 版本，而 plugin configuration 由子项目自行配置，
+            除非该配置需要在所有子项目中生效
+        -->
+        <pluginManagement>
+            <plugins>
+                <!--用于将 maven 项目的资源打成 jar 包,并配置 jar 包内的内容 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <configuration>
+                        <archive>
+                            <!--自定义 manifest 文件位置
+                            maven 会自动合并生成的 manifest 和 自定义的 manifest
+                            如果 entry 有冲突, 那么以 自定义的为准
+                            -->
+                            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                            <manifest>
+                                <!--新版本 maven-jar-plugin 不自动生成这两个,可以不用配置 -->
+                                <!--<addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
+                                <!--<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>-->
+
+                                <!--指定 main 方法所在的类, 可执行 jar 包必须-->
+                                <mainClass>kasei.bytecode.MyBoot</mainClass>
+                                <!--添加 classpath 到 manifest
+                                Class-Path: plexus-utils-1.1.jar commons-lang-2.1.jar
+                                -->
+                                <addClasspath>true</addClasspath>
+                                <!--指定 manifest 中 classpath 中路径的前缀
+                                Class-Path: lib/plexus-utils-1.1.jar lib/commons-lang-2.1.jar
+                                -->
+                                <classpathPrefix>lib/</classpathPrefix>
+                                <!--指定 classpath 里面 jar 包位置是 maven 仓库的格式
+                                Class-Path: lib/org/codehaus/plexus/plexus-utils/1.1/plexus-utils-1.1.jar lib/commons-lang/commons-lang/2.1/commons-lang-2.1.jar
+                                -->
+                                <classpathLayoutType>repository</classpathLayoutType>
+
+                                <!--需要自定义 classpath 路径格式时, 添加以下两个标签-->
+                                <!--<classpathLayoutType>custom</classpathLayoutType>-->
+                                <!--<customClasspathLayout>WEB-INF/lib/$${artifact.groupIdPath}/$${artifact.artifactId}-$${artifact.version}$${dashClassifier?}.$${artifact.extension}</customClasspathLayout>-->
+                            </manifest>
+
+                            <!--该标签用于添加非标准 manifest entry(条目)-->
+                            <manifestEntries>
+                                <!-- 自定义 Class-Path:   键的值: 该配置会替换 manifest.addClasspath = true 默认添加的 classpath  -->
+                                <Class-Path>.</Class-Path>
+                                <mode>development</mode>
+                                <url>https://kasei.haku</url>
+                            </manifestEntries>
+
+                            <!--该标签用于添加自定义的 manifest section(段落)-->
+                            <manifestSections>
+                                <manifestSection>
+                                    <name>foo</name>
+                                    <manifestEntries>
+                                        <id>nice foo</id>
+                                    </manifestEntries>
+                                </manifestSection>
+                                <manifestSection>
+                                    <name>bar</name>
+                                    <manifestEntries>
+                                        <id>nice bar</id>
+                                    </manifestEntries>
+                                </manifestSection>
+                            </manifestSections>
+                        </archive>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        
+        
+        <!-- 插件列表 -->
+        <plugins>
+
+            <plugin>  <!-- 作用：在 package 过程中打包项目源码 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <port>80</port>
+                    <path>/sshe</path>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <server>tomcat7</server>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.name}/classes</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/classes</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>2.0.0</version>
+                <configuration>
+                    <programs>
+                        <program>
+                            <id>sample-pom</id>
+                            <!-- 启动类 -->
+                            <mainClass>org.ko.web.Application</mainClass>
+                            <jvmSettings>
+                                <extraArguments>
+                                    <extraArgument>-server</extraArgument>
+                                    <extraArgument>-Xmx2G</extraArgument>
+                                    <extraArgument>-Xms2G</extraArgument>
+                                </extraArguments>
+                            </jvmSettings>
+                        </program>
+                    </programs>
+
+                    <!-- 生成linux, windows两种平台的执行脚本 -->
+                    <platforms>
+                        <platform>windows</platform>
+                        <platform>unix</platform>
+                    </platforms>
+                    <!-- 根目录 -->
+                    <assembleDirectory>${project.build.directory}/${project.name}</assembleDirectory>
+                    <!-- 打包的jar，以及maven依赖的jar放到这个目录里面 -->
+                    <repositoryName>lib</repositoryName>
+                    <!-- 可执行脚本的目录 -->
+                    <binFolder>bin</binFolder>
+                    <!-- lib目录中jar的存放规则，默认是${groupId}/${artifactId}的目录格式，flat表示直接把jar放到lib目录 -->
+                    <repositoryLayout>flat</repositoryLayout>
+                    <encoding>UTF-8</encoding>
+                    <logsDirectory>logs</logsDirectory>
+                    <tempDirectory>tmp</tempDirectory>
+
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>...</reporting>
+
+
+    <!-- Environment Settings -->
+    <issueManagement>...</issueManagement>
+    <ciManagement>...</ciManagement>
+    <mailingLists>...</mailingLists>
+    <scm>...</scm>
+    <prerequisites>...</prerequisites>
+    <repositories>...</repositories>
+    <pluginRepositories>...</pluginRepositories>
+    <distributionManagement>...</distributionManagement>
+    
+
+
+</project>

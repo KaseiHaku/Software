@@ -1,0 +1,64 @@
+购买 VPS:
+    https://www.vultr.com/                                  # Vultr VPS
+    https://bwh88.net/clientarea.php?action=products        # 搬瓦工 VPS  
+
+
+安装并配置 V2ray:
+ 
+安装并配置 Nginx:
+    
+申请免费域名：
+    https://www.freenom.com/zh/freeandpaiddomains.html      # 注册免费域名，隐藏 IP 地址
+        uns@protonmail.com
+        
+    https://www.namesilo.com/                               # 好用的付费域名注册商
+        qdsffgrg/f27
+        默认域名    ns1.dnsowl.com, ns2.dnsowl.com, ns3.dnsowl.com
+
+申请免费 CDN 不要使用国内的 CDN，跟裸奔没啥区别:
+    https://www.cloudflare.com/                             # 最好挂美国代理访问，进一步隐藏 IP 地址
+
+CDN DNS 配置：
+    配置 CDN (CloudFlare) 上面 DNS 的 A, AAAA, CNAME 等记录到 VPS 的地址上
+    将 CDN 中的 NS(域名解析服务器) 配置到申请域名的网址中
+    将 CDN 中的 云朵 点亮，表示使用 CDN 进行流量转发，而不是仅仅用作解析域名
+    
+CDN Network 配置：
+    配置 CDN 上 Network 中打开 Websocket 
+    
+CDN Crypt 配置:
+    配置 CDN 上 SSL/TLS 上打开加密
+
+
+
+坑：CDN 配置完后不一定立马生效
+   
+
+假的身份信息：
+    全名            John S Parker
+    性别            male    
+    Firstname       John
+    Lastname        Parker
+    Middle name     S
+    称呼            Mr.
+    生日            9/25/1977
+    州              CA
+    街道地址        3876 Byers Lane
+    城市            Chico
+    电话            530-774-7576
+    邮编            95926
+    州全称          California
+    SSN社会保险号   546-14-7149
+    临时邮箱        zd7oxay03na@claimab.com     这是一个真实的邮箱，点击这里接收邮件
+    网络用户名      Abrount771988
+    随机密码        U4d014a50
+    信用卡类型      MasterCard
+    信用卡号        5544304911090627
+    CVV2            168
+    有效期          08/2022
+    职位（职称）    Stucco mason
+    所属公司        Cavages
+    身高            6' 1" （185厘米）
+    体重            169.0磅（76.8千克）
+
+    

@@ -1,0 +1,28 @@
+:help ins-special-keys      # 查看左右 insert mode 下的 特殊键
+
+# 返回普通模式
+ESC                         # 返回普通模式
+Ctrl+[                      # 返回普通模式，:help i_CTRL-[
+
+# 删除
+Ctrl+H                      # 删除前一个字符，相当于回格键backspace
+Ctrl+W                      # 删除前一个单词
+Ctrl+U                      # 删除至行首
+
+# 缩进
+Ctrl+T                      # 增加缩进
+Ctrl+D                      # 减少缩进
+
+# 复制
+Ctrl+Y                      # 复制上一行的相同列的字符
+Ctrl+E                      # 复制下一行的相同列的字符
+
+# 插入
+Ctrl+R                      # 插入上次 复制 或删除的内容
+Ctrl+R+*                    # 插入 * 寄存器中的内容，如果 autoindent 开启会自动缩进
+Ctrl+R Ctrl+P *             # 原样插入 * 寄存器中的内容
+Ctrl+R+=+ exp + Enter       # 插入执行结果
+Shift+Insert                # 插入系统剪贴板的内容，在 paste 模式下不生效
+
+# 特殊字符
+Ctrl+V+u+00a9                  # 输入 unicode 码为 00a9 的字符

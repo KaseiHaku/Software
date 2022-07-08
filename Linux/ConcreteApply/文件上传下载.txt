@@ -1,0 +1,61 @@
+wget {
+    protocol: 基于 HTTP 协议
+    
+    # 安装软件
+    shell> yum install wget
+    
+    # 下载文件
+    shell> wget http://www.google.com       # 下载文件，默认保存位置为当前工作目录
+    shell> wget -P ~/Download http://www.google.com # 下载文件，指定文件保存位置
+}
+
+curl {
+    protocol: 基于 HTTP 协议
+    
+    # 安装软件
+    shell> yum install curl
+    
+    # POST 发送 json 数据，POST 必须大写
+    shell> curl -X POST -H 'Content-Type:application/json' -d '{"tags":["bpm","unitmail"],"logLevel":2,"msg":"test"}'  http://localhost:8190/Log
+
+
+    # 下载文件
+    shell> curl -C - -o output.zip url      # 其中 -C 后面的 - 是表示从原来位置断点续传
+    shell> curl url -O -J         # 下载文件，使用自带的文件名，单单 -O 默认以 url 最后一个路径为文件名
+}
+
+ftp {
+    protocol:  基于 FTP 协议
+}
+
+sftp {
+    protocol:  基于 SSH 协议
+    
+    可以进行文件管理
+}
+
+scp {
+    protocol:  基于 SSH 协议
+    
+    # 其中 user1 为源地址，user2 为目标地址，如果是本地地址，user1@hostname 可以省略
+    # -r 递归复制目录下的所有内容
+    # -p 保留源文件 创建 修改等信息
+    shell> scp -r -p -i ~/.ssh/id_rsa -P 12345 user1@hostname:/opt/aa.txt user2@hostname:/opt/bb.txt     
+}
+
+lrzsz {
+    protocol: 基于 ZModem 传输协议
+    
+    前提是window端需要有能够支持ZModem的telnet或者SSH客户端
+    shell> yum install lrzsz
+    shell> rz -be     # 上传
+    shell> sz     # 下载
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,83 @@
+1.下载Tomcat，并解压到D:\Tomcat目录下
+
+2.环境变量配置{
+	CATALINA_HOME = D:/Tomcat/apache-tomcat7;
+	PATH = D:/Tomcat/apache-tomcat7/bin;
+}
+
+3.把 Tomcat 和 Eclipse 关联在一起{
+	Window - Preferences - Server - Runtime Environment - 点击Add按钮 - 选择与安装的Tomcat对应的Tomcat版本，点击 next
+	- 选择Tomcat安装目录%CATALINA_HOME% - 选择安装的 JRE 环境 - finish
+}
+
+4 tomcat 中部署 web 项目的三种方式：{
+	4.1 第一种：针对 war 包或解压后的 war 包可用：{
+		4.1.1 把完整的 war 包直接放到 %TOMCAT_HOME%/webapps 目录下即可，tomcat 启动时会自动解压 war 包到同名文件夹，访问路径: http://localhost:8080/war 包名/
+		4.1.2 修改 webapps 目录所在位置：{
+			%TOMCAT_HOME%/conf/server.xml 中 
+			<Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true">	
+			标签中的 appBase 属性值修改为 D:/JavaWeb/webapps , 那么启动tomcat后会在配置的目录下自动解压 war 包。			
+		}
+	}
+	4.2 第二种：针对未打包的工程或war或解压后的war包可用，不会在 webapps 目录生成文件：{
+		在 %TOMCAT_HOME%/conf/server.xml 中，在 <Host> 标签内部添加子标签 <Context> 
+		<Context path="/test" docBase="D:\project\XXX" debug="0" reloadable="true" crossContext="true" privileged="true"/>
+		path 指出你的url访问路径： http://localhost:8080/test/
+		docBase 指出你的本地磁盘存放路径
+		debug 为设定debug的等级0提供最少的信息,9提供最多的信息
+		reloadable="true" 表示当web.xml或者class有改动的时候都会自动重新加载不需要从新启动服务
+		crosscontext="true" 表示配置的不同context共享一个session
+		privileged="true" 表示允许Tomcat的Web应用使用容器内的Servlet
+	}
+	4.3 第三种：针对未打包的工程或war或解压后的war可用：{
+		%TOMCAT_HOME%/conf/Catalina/localhost 目录下添加 tty.xml 文件，
+		文件内容如下：
+		<?xml version="1.0" encoding="UTF-8"?>
+		<Context docBase="D:\project\XXX" debug="0" reloadable="true" privileged="false"/>
+		设定path无效，默认将xml名称将作为虚拟路径，访问路径：http://localhost:8080/tty/
+		此种方式也会将war包自动解压至webapps下，若非war包则不会有操作。
+	}
+	4.4 在 eclipse 的 tomcat 中使用虚拟路径：{
+		1、在Eclipse中，console 窗口，双击 Servers 选项卡中的Tomcat实例：
+		2、点击下面的 Modules
+		3、点击 add external web module,并添加相应的组件
+		4、打开在 Servers 工程下的tomcat文件夹下的 server.xml 文件
+		5、在<Host>标签中添加子标签 <Context crossContext="true" docBase="E:\aa" path="/upload" reloadable="true" debug="0"/>
+	}
+}
+
+
+5 查看 tomcat 所使用 servlet 和 jsp 版本 {
+	
+	进入Tomcat根目录下的lib，找到servlet-api.jar/jsp-api.jar
+	双击使用WinRAR打开，找到META-INF\MANIFEST.MF文件，其中便包含了其版本信息；
+}
+
+6 %TOMCAT%/conf/server.xml 文件内容详解 {
+	
+	// tomcat shutdown poart
+	<Server port="8105" shutdown="SHUTDOWN">  
+	// http 协议连接的端口，即 普通的 web 访问端口
+	<Connector port="8180" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443" /> 
+	// ajp 协议连接端口，什么是 ajp 看下面
+	<Connector port="8109" protocol="AJP/1.3" redirectPort="8443" />
+	
+	1. Apache会拦截所有请求，将servlet和JSP（.jsp结尾）请求通过AJP交给Tomcat处理，然后再把结果拿到Apache然后返回
+	2. 将静态资源的访问，（类似.html/.css/.jpg等之类的结尾）自己直接处理不交给tomcat，直接返回
+	3. Apache和Tomcat结合之后：Tomcat的HTTP Connector永远不会被用到了，可以没有
+}
+
+7 Tomcat 配置 https 协议 {
+    1. 使用 java 创建一个 keystore {
+        1.1 cd %JAVA_HOME%/bin
+        1.2 keytool -genkey -v -alias tomcat -keyalg RSA -keystore e:\tomcat.keystore -validity 36500
+    }
+    2. 修改 tomcat server.xml 文件 {
+        2.1 %TOMCAT_HOME%/conf/server.xml
+        2.2 Ctrl+F <SSLHostConfig> 标签所在的 <Connector> , 取消掉注释
+    }
+    3.
+    4.
+    5.
+    
+}

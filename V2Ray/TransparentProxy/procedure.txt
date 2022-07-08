@@ -1,0 +1,48 @@
+安装 ipset :
+    作用：
+        用于保存 dnsmasq 解析域名后得到的 ip 地址
+    配置：
+        root> ipset create vps hash:ip          # 创建一个名为 vps 的 ipset，类型为 hash:ip
+        root> ipset list vps                # 查看名为 vps 的 ipset 中的内容
+        root> ipset list        # 查看所有 ipset 
+安装 dnsmasq ：
+    作用：
+        dnsmasq 在接收一个 DNS 查询请求时，首先匹配配置文件中的域名列表，如果匹配成功某域名，就把IP的查询结果存储在一个或几个 ipset 集合中，
+        然后使用 iptable s对这个 ipset 中的全部 ip 进行匹配并做相应的处理，如 DROP 或者 REDIRECT
+    配置：
+        shell> vim /etc/dnsmasq.conf
+        添加如下行
+        ipset=/1291114093.ml/www.1291114093.com/vps         # 将 1291114093.ml 和 www.1291114093.ml 这两个域名的解析结果放入名为 vps 的 ipset 中
+        
+        shell> dnsmasq --test   # 查看配置文件语法是否正确
+        
+
+
+内核参数配置：
+    shell> sysctl -a | grep net.ipv4.ip_forward          // 查看 ip 转发是否开启， 1 表示已开启
+    如果没有开启：
+    shell> vim /etc/sysctl.d/*.conf                  // 追加或修改以行： net.ipv4.ip_forward = 1
+    shell> sysctl -p    // 使 /etc/sysctl.d/*.conf 文件中的配置生效
+
+
+V2Ray 客户端配置：
+    配置在当前目录下的 client-config.json 文件
+
+iptables 配置：
+    TCP 透明代理的规则：
+    shell> iptables -t nat -N V2RAY # 新建一个名为 V2RAY 的链
+    shell> iptables -t nat -A V2RAY -d 192.168.0.0/16 -j RETURN # 直连 192.168.0.0/16 
+    shell> iptables -t nat -A V2RAY -p tcp -j RETURN -m mark --mark 0xff # 直连 SO_MARK 为 0xff 的流量(0xff 是 16 进制数，数值上等同与上面配置的 255)，此规则目的是避免代理本机(网关)流量出现回环问题
+    shell> iptables -t nat -A V2RAY -p tcp -j REDIRECT --to-ports 12345 # 其余流量转发到 12345 端口（即 V2Ray）
+    shell> iptables -t nat -A PREROUTING -p tcp -j V2RAY # 对局域网其他设备进行透明代理
+    shell> iptables -t nat -A OUTPUT -p tcp -j V2RAY # 对本机进行透明代理
+    
+    UDP 透明代理的规则：
+    shell> ip rule add fwmark 1 table 100
+    shell> ip route add local 0.0.0.0/0 dev lo table 100
+    shell> iptables -t mangle -N V2RAY_MASK
+    shell> iptables -t mangle -A V2RAY_MASK -d 192.168.0.0/16 -j RETURN
+    shell> iptables -t mangle -A V2RAY_MASK -p udp -j TPROXY --on-port 12345 --tproxy-mark 1
+    shell> iptables -t mangle -A PREROUTING -p udp -j V2RAY_MASK
+
+   

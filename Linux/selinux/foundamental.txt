@@ -1,0 +1,103 @@
+访问控制类型 {
+    DAC:（Discretionary Access Control，自主访问控制）
+    MAC:（Mandatory Access Control，强制访问控制）
+        MCS: 类别安全模式
+        MLS: 多级安全模式
+}
+
+    
+
+
+Concept {
+    Subject             # 就是操作系统中运行的程序
+    Object              # 就是程序运行过程中所需要的资源，例如文件，端口等
+    Policy              # 由于程序和文件数量庞大，selinux 预先制订了很多权限 rule ，来制定不同的程序，可以使用哪些资源
+    SecurityContext     # 格式: USER:ROLE:TYPE[LEVEL[:CATEGORY]]
+    Authentication      # 鉴权: Subject(程序) -> 分析 Policy 规则 -> SecurityContext 对比 -> rwx 对比 -> 完成鉴权
+}
+
+Policy {
+    可以在 /etc/selinux/config 文件中配置
+    自带以下三种 policy 
+        1. targeted：对大部分网络服务进程进行管制。这是系统默认使用的政策（下文均使用此政策）
+        2. minimum：以 targeted 为基础，仅对选定的网络服务进程进行管制。一般不用。
+        3. mls：多级安全保护。对所有的进程进行管制。这是最严格的政策，配置难度非常大。一般不用，除非对安全性有极高的要求
+}
+
+
+SecurityContext ( SC ) {
+    
+    当 进程安全上下文 和 文件安全上下文 匹配时,进程才能访问文件,是否匹配由 Policy 里面的 Rule 决定
+    
+    格式: USER:ROLE:TYPE[LEVEL[:CATEGORY]]
+    User: 
+        指示登录系统的用户类型,如root,user_u,system_u,多数本地进程都属于自由（unconfined ）进程
+    Role: 
+        定义文件，进程和用户的用途：文件:object_r ，进程和用户：system_r
+    Type: 
+        指定数据类型，规则中定义何种进程类型访问何种文件Target策略基于type实现, 多服务共用：public_content_t
+    Sensitivity(Level):
+        限制访问的需要，由组织定义的分层安全级别, 如unclassified, secret,top,secret,
+        一个对象有且只有一个sensitivity,分0-15级，s0最低,Target 策略默认使用s0
+    Category：
+        对于特定组织划分不分层的分类，如FBI Secret，NSA secret,
+        一个对象可以有多个categroy，c0-c1023共1024个分类，Target策略不使用category
+
+    
+    
+    SC              User            Role            Type            Sensitivity(Level)           Category
+    ProcessSC:      system_u        system_r                        MLS Only
+                    unconfined_u    unconfined_r                    MLS Only
+    FileSC:         system_u        object_r                        MLS Only
+                    unconfined_u    object_r                        MLS Only
+    UserSC:         user_u          system_r        unconfined_t
+                    
+    解释：
+        ProcessSC 中 
+            system_u        表示当前进程是 系统服务进程，受到管制
+            unconfined_u    为不管制的进程，通常是用户自己开启的，比如 bash
+            system_r        表示当前进程是 系统服务进程，受到管制
+            unconfined_r    为不管制的进程，通常是用户自己开启的，比如 bash
+            MLS Only        表示仅在 MLS 模式下才有意义
+        FileSC 中
+            system_u        表示当前文件是系统服务创建的文件
+            unconfined_u    表示当前文件是用户自己创建的文件
+            object_r        表示当前 SC 角色是一个文件
+            MLS Only        表示仅在 MLS 模式下才有意义
+            
+        
+}
+
+SELinux 工作模式 {
+    1. enforcing：强制模式。违反 SELinux 规则的行为将被阻止并记录到日志中。
+    2. permissive：宽容模式。违反 SELinux 规则的行为只会记录到日志中。一般为调试用。
+    3. disabled：关闭 SELinux。
+    
+    可以在 /etc/selinux/config 文件中配置
+    
+    如果想从 disabled 切换到 enforcing 或者 permissive 的话，需要重启系统。反过来也一样。
+    enforcing 和 permissive 模式可以通过 setenforce 1|0 命令快速切换。
+    
+    disabled 切换到 enforcing 或者 permissive 重启可能需要 10几分钟，因为要为所有文件构建 安全上下文
+    
+    SELinux 日志的记录需要借助 auditd.service 这个服务，请不要禁用它。
+}
+
+SELinux Self {
+    shell> sestatus                     # 查看当前 selinux 的状态
+    shell> vim /etc/selinux/config      # 查看 selinux 的配置文件
+    shell> ls /etc/selinux              # 查看所有 selinux type ，该目录下的 子目录名 就是 selinux 的类型名
+}
+
+SELinux 目录结构释义 {
+    /etc/selinux/targeted/                  targeted 策略根目录
+    /etc/selinux/targeted/policy/           二进制策略文件  policy.<xx> 保存位置
+    /etc/selinux/targeted/contexts/         安全上下文配置信息及配置文件路径
+    /etc/selinux/targeted/contexts/files/   保存整个文件系统默认的安全上下文，restorecon  命令会使用该目录
+    /etc/selinux/targeted/contexts/users/   用户安全上下文保存目录
+    /etc/selinux/targeted/modules/active/booleans*      Rule 保存目录
+}
+
+
+
+

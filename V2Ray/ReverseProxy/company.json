@@ -1,0 +1,132 @@
+{
+  "log": { "loglevel": "debug" },
+  "dns": {
+    "tag": "dnsIn",                 // v2ray 内建 DNS 服务器发出的流量的标签，用于 routing 匹配
+    "servers":[
+      {
+        "address": "10.72.66.36",   
+        "port": 53,
+        "domains": [
+          "domain:h3c.com"          // 指定域名使用指定 DNS 服务器解析
+        ]
+      },      
+      "223.5.5.5",
+      "localhost"
+    ]
+  },
+  "inbounds":[
+    {
+      "tag": "ladderSocksIn",
+      "protocol": "socks",
+      "port": 12345,
+      "listen": "127.0.0.1",
+      "settings": {
+        "auth": "noauth"
+      }
+    }
+  ],
+  "outbounds": [    
+    
+    {
+      "tag": "wsLadderOut",
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "1291114093.ml",
+            "port": 443,
+            "users": [
+              { "id":"d45499fa-6c4b-3e55-adbb-bd50bc4137b8", "security":"chacha20-poly1305", "alterId":4, "level":0 }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/v2ray/ladder/ws",
+           "headers": {
+            "Host": "1291114093.ml"
+            }        
+        },
+        "security": "tls", 
+        "tlsSettings": {
+          "serverName": "1291114093.ml"
+        }
+      }
+    }, 
+    /** todo 用于将 bridge 流量转发到 vps */
+    {
+      "tag":"companyReverseOut", 
+      "protocol":"vmess",
+      "settings":{  
+        "vnext":[  
+          {  
+            "address":"1291114093.ml",
+            "port":443,
+            "users":[  
+              { "id":"d45499fa-6c4b-3e55-adbb-bd50bc4137b8", "security":"chacha20-poly1305", "alterId":4, "level":0 }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/v2ray/reverse/ws/company",
+          "headers": {
+            "Host": "1291114093.ml"
+          }
+        },
+        "security": "tls", 
+        "tlsSettings": {
+          "serverName": "1291114093.ml"
+        }
+      }
+    },
+    /** todo 直连出口 */
+    {
+      "tag": "freedomOut",
+      "protocol": "freedom",
+      "settings": {"domainStrategy": "UseIP"} 
+    },
+  ],
+  "reverse":{
+    "bridges":[
+      /** todo bridge 数据处理过程，
+       * 以下 client(home), portal(vps), bridge(company)
+       * 1. bridge 发送一个 domain 标识的请求到 portal，
+       * 2. portal 识别到该 domain 标识，并不直接返回响应信息，而是持有该请求，并等待 client 请求的到来
+       * 3. client 发送请求到 portal，portal 将该请求当作第 1 步 bridge 请求的响应信息返回，该响应信息不使用 domain 标识
+       * 4. bridge 接收到响应，并发现该响应没有用指定的 domain 标识，所以 bridge 将该响应当做请求信息发送到内网服务器
+       * 5. 内网服务器响应请求，并返回响应信息到 bridge，bridge 标识该信息，发送给 portal 
+       * 6. portal 将响应信息返回给对应的 client 
+       * @trap 注意只能是 bridge 先发送请求，portal 只能通过对请求响应，返回数据，而不能直接访问 bridge，因为 bridge 没有公网 ip，无法直接访问
+       * */
+      {"tag":"bridge1", "domain":"ksf.reverse.kasei.haku"} // bridge 和 portal 通信，会使用该域名进行标识
+    ]
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",   // 域名策略：直接使用系统的 DNS 解析域名
+    "rules":[  
+      {
+        "type":"field", 
+        "inboundTag":["ladderSocksIn"],
+        "outboundTag":"wsLadderOut"
+      },
+      /** todo bridge1 流入的数据，domain == ksf.reverse.kasei.haku 的流量，转发到 vps */
+      {
+        "type": "field",
+        "inboundTag": ["bridge1"],
+        "domain": ["full:ksf.reverse.kasei.haku"],    
+        "outboundTag": "companyReverseOut"
+      },
+      /** todo bridge1 流入的数据，domain != ksf.reverse.kasei.haku 的流量直连 */
+      {
+        "type": "field",
+        "inboundTag": ["dnsIn", "bridge1"],              
+        "outboundTag": "freedomOut"
+      }    
+    ] 
+  }
+}

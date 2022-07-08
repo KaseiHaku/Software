@@ -1,0 +1,47 @@
+Internet Download Manager Install and Crack {
+
+    1. 官网下载 idman631build5.exe
+    2. 断网
+    3. 关闭杀毒软件
+    4. 安装，注意不要修改安装目录   
+    5. 安装破解软件 64bit Patch build 5.exe，注意不要修改安装目录
+    6. 破解完成 
+}
+
+
+Usage {
+    6. Chrome 中安装 IDM 扩展插件 {
+        1. 找到如下文件: <IDM Install Path>/Internet Download Manager/IDMGCExt.crx
+        2. 打开 Chrome 的扩展程序安装页面
+        3. 将 IDMGCExt.crx 文件拖放到页面中，系统会提示安装插件
+    } 
+
+}
+
+
+
+
+Fundamental Settings {
+
+    1. 配置浏览器集成：Options -> use advance browser integration -> capture downloads from following browsers -> Google Chrome
+    2. 配置自动下载的文件类型：Options -> file types -> automatically start downloading the following file types -> 添加文件类型即可
+    3. 配置不自动下载的站点：在第二条选项下面配置
+    4. 配置文件保存路径：Options -> Sava to -> Category -> General 路径改为桌面，其他类型绑定的文件类型全部清空
+    
+}
+
+
+
+
+IDM Useful Skill {
+
+    1. 按住 Alt 键，然后点击下载连接，IDM 将不接管下载，直接采用浏览器下载
+    2. 如果 IDM 不接管任何下载，尝试按住 Ctrl 键，再点击链接
+}
+
+
+
+
+
+
+

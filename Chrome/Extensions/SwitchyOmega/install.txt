@@ -1,0 +1,15 @@
+离线安装(翻不了墙的情况)：
+    下载插件： 
+        打开：https://github.com/FelisCatus/SwitchyOmega 
+        查找 README.md 文件中 Releases Page 字样的链接，点击进入
+        下载最新版的 SwitchyOmega_Chromium.crx，目前（2020-12-06）最新版为 2.5.20
+        将 SwitchyOmega_Chromium.crx 文件扩展名改为 zip 并解压到 /tmp/SwitchyOmega_Chromium 目录下
+       
+    安装：
+        打开 Chrome -> 点击右上角三竖点菜单按钮 -> More Tools -> 开启右上角 Developer Mode 
+        -> 点击 Load unpacked -> 选择 /tmp/SwitchyOmega_Chromium 目录即可
+    
+    使用:
+        打开插件选项 -> Protocol: 使用 SOKCS5 用于跟 V2ray 连接，因为我的 V2ray 入站协议是 socks 的
+                    -> 配置 Host 和 Port
+     

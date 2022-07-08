@@ -1,0 +1,169 @@
+################################ Capture Package 是 Network 的终极解决方案，可以解决任何网络问题 ################################
+shell> tcpdump  -A                          # 减去 link level(链路层) 包头后，将每一个 packet 转换成 ASCII 码打印
+                -B 1024, --buffer-size=1024 # 捕获缓存，单位 KB
+                -c 100                      # 如果没有设置该选项，tcpdump 会一直捕获 packet 直到接收到 SIGINT 或 SIGTERM 信号，设置了则只捕获设定数量的 packet
+                -C 100                      # 指定 -w 文件大小限制，以 1000*1000 Byte ~= 1 MB
+                -d                          # 将编译后的 包匹配代码 ，以 人类可读 的方式打印出来
+                -dd                         # 将编译后的 包匹配代码 ，以 C 语言代码片段 的方式打印出来
+                -ddd                        # 将编译后的 包匹配代码 ，以 十进制数 的方式打印出来(在 count 之前)
+                -D,--list-interfaces        # 列出 tcpdump 可以 捕获的所有网卡。输出的 interface number 和 name 可以提供给 -i 参数使用
+                -e                          # 每个 导出行 都打印 link-level(链路层) 包头，可以打印 MAC 地址
+                -E                          # 用于设置 secret，解密 IP 内容
+                -f                          # 以 数字格式 打印 no-local IPv4 地址
+                -F file                     # 从文件中读取 expression
+                -G rotate_seconds           # 当使用 -w 时，每过 n 秒，轮换写入到新文件中
+                -h, --help
+                --version
+                -H                          # 尝试检测 802.11s draft mesh headers
+                -i interface, --interface=interface     # 监听指定网卡
+                -I, --monitor-mode                      # 将网卡置为 "monitor mode", 只支持 IEEE 802.11 Wi-Fi 网卡 和 部分操作系统
+                --immediate-mode                        # capture 使用 immediate mode，即: 不使用 -B 缓存，
+                -j tstamp_type, --time-stamp-type=tstamp_type       # 配置 timestamp 类型 
+                -J, --list-time-stammp-types                        # 列出当前 interface 支持的所有 timestamp 类型
+                --time-stamp-precision=tstamp_precision             # timestamp 精度，可用值: micro, nano
+                -K, --dont-verify-checksums                         # 不验证 IP, TCP, UDP 的 校验和
+                -l                                                  # stdout 输出 使用 缓冲区
+                -L, --list-data-link-types                          # 列出指定 网卡的 data-link-types
+                -m module                                           # 从 module 文件中 load SMI MIB module 定义
+                -M secret                                           #  TCP-MD5 消息摘要什么鬼的
+                -n                                                  # 不转换 ip address 为 domain name
+                -nn                                                 # 不将 port 转换为对应 protocol
+                -N                                                  # 不打印全 主机名，即: aa.bb.cc  只打印 aa
+                -#, --number                                        # 在行首打印一个 可选的 包号
+                -O, --no-optimize                                   # 不优化，suspect(怀疑) optimizer(优化器) 有 bug 的时候使用
+                -p, --no-promiscuous-mode                           # 不使用 混杂(promiscuous) 模式
+                -Q direction, -P direction, --direction=direction   # 选择包传递方向，可用值: in, out, inout
+                -q                                                  # 少打点 协议相关的信息
+                -r file                                             # 从文件中读取 expression 要过滤的数据，该文件一般是 -w 导出来的
+                -S, --absolute-tcp-sequence-numbers                 # 打印绝对 tcp 序列号，而不是相对的
+                -s snaplen, --snapshot-length=snaplen               # 从每个 packet 中最多捕获 snaplen 个 byte，默认 262144，设置为 0 相当于设置 262144
+                -T type                                             # 指定类型的 packet 才会被 expression 匹配
+                -t                                                  # 不打印 timestamp
+                -tt                                                 # 打印从 1970-01-01 00:00:00 开始的 精度为 十分之一秒的 timestamp
+                -ttt                                                # 打印当前 dump line 和 上一 dump line 之间的时间间隔，单位 micro-second
+                -tttt                                               # 打印从 00:00:00 开始的 精度为 十分之一秒的 timestamp，前缀为当前 date
+                -ttttt                                              # 打印当前 dump line 和 first duump line 之间的时间间隔，单位 micro-second
+                -u                                                  # 打印未解码的 NFS handles
+                -U, --packet-buffered                               # 开启 packet 缓冲
+                -v                                                  # 详细信息
+                -vv                                                 # 更详细
+                -vvv                                                # 最详细
+                -V file                                             # 读取 file 中指定的所有 file， - 表示 stdin
+                -w file                                             # 将捕获的包数据写入 packetFile 中
+                -W                                                      
+                -x                                                  # 打印包头，排除 链路层包头，hex 格式
+                -xx                                                 # 打印包头，包含 链路层包头，hex 格式
+                -X                                                  # 打印包头，排除 链路层包头，hex 和 ASCII 格式
+                -XX                                                 # 打印包头，包含 链路层包头，hex 和 ASCII 格式
+                -y datalinktype, --linktype=datalinktype            # 捕获时，使用指定的 数据链接类型
+                -z postrotate-command                               
+                -Z user, --relinquish-privileges=user               # 指定 -w file 的 own
+                expression                                          # shell> man 7 pcap-filter
+                
+
+
+
+# filter expression  详情可以 man pcap
+# type qualifiers 类型限定符
+shell> tcpdump host google.com
+shell> tcpdump net 192.0
+shell> tcpdump port 20
+shell> tcpdump portrange 20-25
+
+# dir qualifiers 方向限定符
+shell> tcpdump src 
+shell> tcpdump dst 
+shell> tcpdump src or dst
+shell> tcpdump src and dst
+shell> tcpdump src 
+
+# proto qualifiers 协议限定符
+shell> tcpdump ether
+shell> tcpdump fddi
+shell> tcpdump tr
+shell> tcpdump wlan
+shell> tcpdump ip
+shell> tcpdump ip proto icmp            # 可用的协议：icmp,  icmp6,  igmp, igrp,  pim,  ah,  esp,  vrrp,  udp, or tcp
+shell> tcpdump ip6
+shell> tcpdump ip6 proto icmp
+shell> tcpdump arp
+shell> tcpdump rarp
+shell> tcpdump decnet
+shell> tcpdump tcp
+shell> tcpdump udp
+shell> tcpdump tcp or udp
+
+# 其他限定符
+shell> tcpdump gateway
+shell> tcpdump broadcast
+shell> tcpdump less
+shell> tcpdump greater
+shell> tcpdump arithmetic-expressions
+
+# 运算符
+&&
+||
+!
+              
+
+# 常用
+shell> tcpdump -D               # 查看可以抓包的网卡
+shell> tcpdump -i eth0 -J       # 列出当前网卡可以展示的时间戳类型
+shell> tcpdump -i eth0          # 抓取指定网卡的包
+shell> tcpdump -i eth0 -n -nn -A -tttt
+
+
+shell> tcpdump -vvvi ens33 -ASQ out -#enl > ~/networkCard.dump & tail -f  ~/networkCard.dump
+shell> tcpdump -i lo -nnfvvX port 53
+
+
+
+
+
+
+################################ util-linux 工具包中的 nsenter 工具 ################################
+# 命令格式： nsenter [options] [program [arguments]]   
+# 作用：在指定的 命名空间 中执行 program ，如果 program 没有指定，那么 ${SHELL} 会执行，默认为 /bin/sh
+# 命名空间：
+#   文件命名空间（mount namespace）、主机名命名空间（UTS namespace)、IPC 命名空间（IPC namespace）、
+#   网络命名空间（network namespace）、进程命名空间（pid namespace）和用户命名空间（user namespace）
+# 该工具可以在 不使用 docker 内置的 exec 命令的情况下，直接进入容器，进行文件读取、修改、抓包等各种操作
+        
+shell> lsns                             # 查看当前系统中所有 namespace
+shell> nsenter -t pid                   # 根据 pid 来获取要进入 namespace
+               -m, --mount              # 进入 mount namespase
+               -u, --uts                # 进入 UTS namespace(包含主机名称)
+               -i, --ipc                # 进入 System V IPC 名字空间
+               -n, --net                # 进入 network 命名空间
+               -p, --pid                # 进入 PID 命名空间
+               -C, --cgroup             # 进入 cgroup 命名空间
+               -U, --user               # 进入 User 命名空间
+
+shell> nsenter -t pid -u -i -n -p       # 进入 pid 的 网络 命名空间，相当于进入容器里面的 shell，
+                                        # 坑：但是进去的时候 shell 标识符不会变； 
+                                        # 坑: 有 -m 参数就不能使用 宿主机 中的命令了
+                                        # exit 退出命名空间
+shell> nsenter -n -t `docker container inspect -f {{.State.Pid}} container` ping 8.8.8.8
+
+################ 使用 nsenter 对 docker 容器进行抓包
+shell> docker ps -a | grep pattern           # 获取容器名称
+shell> docker inspect --format "{{.State.Pid}}" containerId         # 获取 container 在 host 中的 PID
+shell> nsenter -t pid -n                     # 进入 pid 的命名空间
+shell> ip address                       # 查看的就是 命名空间 中的 地址信息，而不是 host 的
+shell> exit                     # 退出 nsenter，因为 nsenter 没有指定 program 时，默认运行一个 ${SHELL} (/bin/sh) , 而 shell 的退出命令为 exit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

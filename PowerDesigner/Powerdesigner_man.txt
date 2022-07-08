@@ -1,0 +1,54 @@
+JDBC 连接数据库
+1. 创建目录 E:/PowerDesignerWorkSpace 用于保存 PowerDesigner 的数据
+2. 打开 PowerDesigner File -> New Project... 创建一个工程 project1
+3. 在 project1 中 File -> New Model... 创建一个模型 db
+4. 在 db 模型中 DataBase -> Configure Connections... -> 选择 Connection Profiles -> 点击图标 Add Data Source
+    -> Connection profile name: xingaokao_connection_profile
+    -> Directory: 选择你想要保存的目录
+    -> Discription: 描述
+    -> Connection type: JDBC
+    -> DBMS type: MySQL 5
+    -> User name: 要连接数据库的用户名
+    -> JDBC driver class:
+    -> JDBC connection URL: 数据库连接 URL
+    -> JDBC driver jar files: 选择下载好的 MySQL 驱动包
+    -> 点击 Test Connection... 按钮，测试是否连接成功
+
+/*************************************** PowerDesigner Oracle 反向工程操作 *********************************/
+0、进入oracle服务端安装目录，查看Oracle数据库的版本
+
+1、如果想要进行反向工程则需先下载以下驱动（注意跟自己Oracle数据库的版本一致）
+base包：instantclient-basic-windows.x64-11.2.0.3.0.zip
+ODBC包：instantclient-odbc-windows.x64-11.2.0.3.0.zip
+下载地址：
+http://www.oracle.com/technetwork/topics/winsoft-085727.html   32位
+http://www.oracle.com/technetwork/topics/winx64soft-089540.html  64位
+
+2、把以上两个压缩包解压到同一目录，不是分别解压到不同目录
+
+3、使用管理员权限打开CMD，进入该目录，运行odbc_install.exe进行安装（可以看到安装的信息）或 直接双击odbc_install.exe一闪而过。
+
+4、控制面板 -> 所有控制面板项 -> 管理工具 中查看是否有【数据源(ODBC)】项，有则表示安装成功
+
+5、配置ODBC数据源，
+进入【数据源(ODBC)】中【用户DSN】选项卡，点击【添加按钮】
+在弹出窗口内，选择数据源的驱动程序为 oracle in instantclient_11_2，点击完成
+在弹出窗口内输入：
+Data Source Name（数据源名称）：随便填
+Description（数据源描述）：随便填
+TNS Service Name（tnsnames）：ip:端口/Oracle SID    例如：192.168.224.127:1521/ora11g
+点击Test Connection
+【测试成功后保存】
+
+6、进入PowerDesigner，file -> Reverse Engineer -> Database
+
+7、DBMS 选择自己安装的版本 点击确定
+
+8、在弹出窗口中，点击Using a data source框右侧的数据库图标
+9、Data source 表单项中选ODBC machine data source，并在下拉菜单中选择上面配置好的数据源
+然后在login表单中输入用户名密码，点击connect
+
+
+
+
+

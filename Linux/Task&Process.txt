@@ -1,0 +1,276 @@
+进程基本概念：
+    Linux Process Status
+        # D 不可中断 uninterruptible sleep (usually IO)(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)
+        # R 运行 runnable (on run queue)(正在运行或在运行队列中等待)
+        # S 中断 sleeping(休眠中, 受阻, 在等待某个条件的形成或接受到信号)
+        # T 停止 traced or stopped(进程收到SIGSTOP, SIGTSTP, SIGTTIN, SIGTTOU信号后停止运行运行)
+        # Z 僵死 a defunct ("zombie") process(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)
+
+
+查看进程打开的文件：
+    shell> lsof -h              # 获取帮助信息
+ 
+    shell> lsof -a              # 显示所有进程打开的所有文件
+    
+    shell> lsof aa.txt          # 显示在使用 aa.txt 文件的所有进程
+    shell> lsof -d 4            # 显示在使用文件描述符为 4 的文件的 所有进程
+    shell> lsof +d /usr/local   # 显示该目录下被进程打开的文件
+    shell> lsof +D /usr/local   # 显示该目录及其子目录下被进程打开的所有文件
+       
+    
+    shell> lsof -c abc          # 显示 abc 进程当前打开的所有文件
+    shell> lsof -p 1234         # 显示 进程号为 1234 的进程所打开的所有文件
+    
+    
+    
+    shell> lsof -u 12           # 显示 UID 为 12 的用户的所有进程
+    shell> lsof -g 12           # 显示 GID 为 12 的用户组内用户的所有进程
+
+
+    shell> lsof -i[46] [protocol][@hostname|hostaddr][:service|port]
+        46 --> IPv4 or IPv6
+        protocol --> TCP or UDP
+        hostname --> Internet host name
+        hostaddr --> IPv4 地址
+        service --> /etc/service中的 service name (可以不止一个)
+        port --> 端口号 (可以不止一个)
+
+进程前后台切换：
+    shell> ping 8.8.8.8 &           # 命令最后的 & 表示把这个命令放到后台执行，关闭当前终端，这个后台执行的命令也会被 kill 掉
+    Ctrl+Z                          # 将当前终端正在前台执行的命令放到后台，并处于暂停状态
+    shell> jobs                     # 查看当前有多少在后台运行的命令
+    shell> fg %jobnumber            # 将指定的 命令号 的命令调到前台运行
+    shell> bg %jobnumber            # 将指定的 命令号的 后台暂停的命令，变成后台执行
+    
+将进程放入后台执行，且不受当前终端关闭影响
+    # 不挂断的运行，注意并没有后台运行的功能，即 nohup 运行命令不会受终端关闭的影响，需要配合输出重定向使用
+    # 不挂断的运行命令，并将 标准输出 和 标准错误输出 重定向到 /dev/null 文件，且该条命令在后台运行
+    shell> nohup command 1>/dev/null 2>&1 &  
+    
+    shell> setsid command       # 在一个新会话中执行该命令
+    
+    shell> (command &)          # 将命令放在一个子shell 的后台去执行，这会造成该命令的父进程为 init(1) 进程，所以不会被关闭
+    
+    # 用于使已经运行的后台 job，忽略 HUP 信号
+    shell> disown -h %jobnumber  # 使某个 job 忽略 HUP 信号
+    shell> disown -ah           # 使所有 job 忽略 HUP 信号
+    # 如果某个进程已经在前台运行了，需要这个进程忽略 HUP 信号
+    Ctrl+Z   # 将前台命令放到后台，再执行 disown 命令即可
+    shell> disown -h %jobnumber
+    
+    
+    
+杀死进程：
+    Ctrl+C                          # 终止前台正在执行的命令
+    shell> kill %jobnumber          # 通过 job 命令查看 job 号，然后 kill
+    
+    shell> kill -l                         # 显示信号列表
+    shell> kill [-信号] <PID>                # kill -9 1234：终止PID(进程号)为1234 的进程
+    
+    # 图形界面 kill 窗口
+    shell> xkill                # 然后点击窗口即可
+    
+    shell> ps -ef| grep 'sshd: root@pts' | grep -v 'grep'| cut -c 10-15 | xargs kill -9 
+
+    
+查看进程：
+    # @trap 坑 ps 里面的 PID 和 top 里面的 PID 不是一个东西。PID(ps) = TGID = TaskGroupID, PID(top) = TID = TaskID
+    shell> ps   # 进程筛选参数
+                -e                  # 查看所有进程
+                -p 123,456          # 只显示 pid 为列表中指定的进程
+                --ppid 123,456      # 只显示 父 PID 为列表中指定的进程
+                
+                # 输出格式化参数
+                -f                              # 显示所有进程信息，连同命令行
+                --forest                        # 树形结构显示进程
+                -H                              # 树形结构显示进程
+                --context                       # 显示 selinux 信息
+                --format format                 # 自定义显示哪些内容
+                -j                              # jobs 格式
+                -l                              # 长格式
+                -ly                             # 长格式，不显示 flags
+                -M                              # 添加 selinux 列
+                --headers                       # 列头每页重复打印
+                --sort=uid,-ppid,+pid           # 排序：uid 增序，ppid 减序，pid 增序
+                -w                              # 宽格式，
+                -ww                             # 无限宽格式
+                
+                # 线程显示
+                -L                              # 显示线程，LWP 或 NLWP 列
+                -m                              # 显示线程，在进程后面
+                -T                              # 显示线程，SPID 列
+                
+    shell> pstree                               # 树形结构显示进程
+                -a                              # 打印进程启动参数
+                -h                              # 高亮当前进程所在的 树路径
+                -H PID                          # 高亮指定 PID 所在的树路径
+                -g                              # 打印进程 groupID
+                -l                              # 不裁剪超长行
+                -n                              # 根据 PID 排序
+                -N TYPE                         # ipc, mnt, net, pid, user, uts   根据以上类型排序
+                -p                              # 打印 PID
+                PID                             # 以 PID 为 root 打印进程树
+                USER                            # 打印当前用户为 root 的进程树
+                
+    # top 命令头部信息
+    # top - 当前系统时间 up 系统总共运行时间, 当前登录的用户数量 users, load average: 5分钟, 10分钟，15分钟 平均负载(空载=0,满载=1; n 个 CPU 满载=n)
+    # Tasks: 总进程数 total, 运行进程数 runing, 睡眠进程数 sleeping, 停止进程数 stopped, 僵尸进程数 zombie
+    # %Cpu(s):  
+    #       user 运行(未调整优先级的) 用户进程的CPU时间 us, 
+    #       system 运行内核进程的CPU时间 sy, 
+    #       niced 运行已调整优先级的用户进程的CPU时间 ni,
+    #       IO wait: 用于等待IO完成的CPU时间 wa,
+    #       Hard Interrupts 处理硬件中断的CPU时间 hi,
+    #       Software Interrupts 处理软件中断的CPU时间 si,
+    #       这个虚拟机被 hypervisor 偷去的CPU时间 st
+    # Mem: 总量 total, 空闲(未纳入内核管理的内存) free, 已用(纳入内核管理的内存) used, 缓冲/缓存 buff/cache     @trap 这里的 已用 不代表真正在使用
+    # Swap: 总量(纳入内核管理的) total, 空闲(已纳入未使用) free, 已用 used, 总大小 avail Mem                  @trap 这里的 已用 代表真正在使用    
+    #       
+    # Options:
+    #   shell> top  -h                          帮助
+    #               -v                          version
+    #               -b                          批处理模式，不是间隔输出的
+    #               -c                          切换 COMMAND 列显示 command-line/program-name
+    #               -d  3.2                     指定屏幕每次更新的时间间隔为 3.2 秒
+    #               -H                          显示线程，而不是进程
+    #               -i                          如果是 off 状态：不显示自上次刷新后没有使用 CPU 资源的任务
+    #               -n  2                       最多迭代刷新 2 次
+    #               -o +fieldName               指定对 fieldName 进行排序；+fieldName high2Low; -fieldName low2High                
+    #               -O                          在每一行上打印 字段名
+    #               -p12 -p34                   只监控指定的 PID, 0 表示 top 进程自身
+    #               -p12,34                     同上
+    #               -s                          安全模式开启 top
+    #               -S                          列出每个进程的 CPU 总使用时间
+    #               -u userName/userId          只显示指定 userName/userId 的进程，仅匹配 effective user                                          
+    #               -U userName/userId          只显示指定 userName/userId 的进程，仅匹配 (real,effective,saved,filesystem) user  
+    #               -w 512                      批处理模式中，设置 top 输出的最大宽度为 512，不能超过 512
+    #
+    shell> top                      # 实时显示进程状态，q 退出该程序
+                                    # top  命令各个列的含义
+                                        PID             内核视角 PID(Task Process ID),内核执行 task 的标识，可以是 进程ID，也可以是 线程ID
+                                        USER            进程所有者
+                                        PR              进程优先级
+                                        NI              nice值。负值表示高优先级，正值表示低优先级
+                                        VIRT            virtual memory usage(虚拟内存使用量)，单位kb。VIRT=SWAP+RES
+                                        RES             resident memory usage(常驻内存使用量)，单位kb。RES=CODE+DATA
+                                        SHR             shared memory(共享内存大小)，单位kb。进程实际占用内存 = RES - SHR
+                                        S               进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程
+                                        %CPU            上次更新到现在的CPU时间占用百分比
+                                        %MEM            进程使用的物理内存百分比
+                                        TIME+           进程使用的CPU时间总计，单位1/100秒
+                                        COMMAND         进程名称（命令名/命令行）
+                                    
+                                    # Interactive Commands
+                                        Global Command:
+                                            <Enter>                         # 刷新
+                                            <Space>                         # 刷新
+                                            ?, h                            # 帮助
+                                            =                               # 退出 task 限制
+                                            0                               # 是否显示 0 值
+                                            A                               # 交替显示模式
+                                            B                               # 加粗 开/关
+                                            d, s                            # 改变刷新间隔
+                                            E                               # 扩展 Summary Area 区域 Memory 单位，KB, MB, GB, TB, EB
+                                            e                               # 扩展 Task Area 区域 Memory 单位
+                                            g                               # 选择其他 Field-Group, 一共有 1-4 个组
+                                            H                               # Thread 模式
+                                            I                               # Irix/Solaris-Mode 开关
+                                            k                               # kill a task
+                                            q                               # 退出
+                                            r                               # renice a task，调整一个 task 的优先级
+                                            W                               # 将当前配置写入 top 的配置文件
+                                            X                               # 修改一部分 Field 的宽度
+                                            Y                               # 检查其他输出
+                                            Z                               # 修改 Color Mapping
+                                        Summary Area Command:
+                                            C                               # 显示第一行和第一列的坐标
+                                            l                               # Load-Average/Uptime 切换开关 
+                                            t                               # Task/Cpu-States 切换开关
+                                            m                               # Memory/Swap-Usage 切换开关
+                                            1                               # Single/Separate-Cpu-States 切换开关
+                                            2                               # NUMA-Nodes/Cpu-Summary 切换开关
+                                            3                               # Expand-NUMA-Node
+                                        Task Area Command:
+                                            Appearance: 
+                                                b                           # 加粗 开关
+                                                J                           # 调整列的对齐方式，数字方式表示列
+                                                j                           # 调整列的对齐方式，字符方式表示列
+                                                x                           # 列高亮 开关
+                                                y                           # 行高亮 开关
+                                                z                           # Color/Monochrome 切换开关
+                                            Content:
+                                                c                           # Command-Line/Program-Name 切换开关
+                                                f, F                        # 显示 Field 的管理
+                                                o, O                        # 过滤
+                                                S                           # 时间累积模式 开关
+                                                u, U                        # 只显示指定 User 的 task
+                                                V                           # 树形图展示进程之间的关系
+                                            Size:
+                                                #, n                        # 设置显示多少个 task 
+                                                i                           # Idle-Process 开关
+                                            Sorting:
+                                                >                           # Move-Sort-Field-Left，其实是移动选中列
+                                                <                           # Move-Sort-Field-Right，其实是移动选中列
+                                                f, F                        # Fields-Management
+                                                R                           # Reverse/Normal-Sort-Field 切换排序，正序 or 倒序
+                                        Color Mapping:
+                                            <Ret>
+                                            a, w                            # 应用并下一个, 应用并上一个
+                                            B                               # 加粗开关
+                                            b                               # 正在运行的 task 加粗
+                                            H                               # 
+                                            M
+                                            q                               # 放弃当前修改
+                                            S
+                                            T
+                                            z                               # color/mono  彩色/单色
+                                            0-7
+                                            
+                                        Commands for Windows:
+                                            -,                              # window 显示隐藏开关
+                                            =, +                            # 重新初始化 window
+                                            A                               # 切换 window 显示模式
+                                            a, w                            # 上一个 window, 下一个 window
+                                            g                               # 选择另一个 window
+                                            G                               # 修改当前 window 的 FiledGroup
+                                        Scrolling a Window:
+                                            C                               # 显示当前滚动条坐标
+                                            <Up>
+                                            <Down>
+                                            <Left>
+                                            <Right>
+                                            <PageUp>
+                                            <PageDown>
+                                            <Home>
+                                            <End>
+                                        Searching in a Window:
+                                            L                               # 定位一个 字符串
+                                            &                               # 查找下一个
+
+
+# 查看 PID 相关信息
+    shell> ll /proc/PID         # 包含该 PID 所有数据
+              cwd               # 符号链接的是进程运行目录；
+              exe               # 符号连接就是执行程序的绝对路径；
+              cmdline           # 就是程序运行时输入的命令行命令；
+              environ           # 记录了进程运行时的环境变量；
+              fd                # 目录下是进程打开或使用的文件的符号连接
+        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+
+
+
+

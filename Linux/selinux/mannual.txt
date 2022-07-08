@@ -1,0 +1,87 @@
+SecurityContext {
+    shell> ls -Z                # 查看文件或目录的 selinux security context
+    shell> ps -Z                # 查看程序的
+    shell> id -Z                # 查看用户的
+    
+    
+    shell> chcon                        # 改变文件或文件夹的 context 标记
+            --reference=file1           # 表示将当前文件的 selinux security context 设置成跟目标文件一样
+            -R                          # 递归修改
+                -H                      # 如果命令行参数是一个通到目录的符号链接，则遍历符号链接。 
+                -L                      # 遍历每一个遇到的通到目录的符号链接。 
+                -P                      # 不遍历任何符号链接（默认）。
+            -u                          # --user=用户：设置指定用户的目标安全环境
+            -r                          # --role=角色：设置指定角色的目标安全环境
+            -t                          # --type=类型：设置指定类型的目标安全环境
+            -l                          # --range=范围：设置指定范围的目标安全环境
+            path                        # 表示要修改 上下文 的文件或目录
+    
+    shell> restorecon  -Rv file         # 恢复当前文件为本应该有的安全环境，-R 递归
+    shell> semanage fcontext -a -t httpd_sys_content_t "/html(/.*)?"    # 修改文件或目录的 安全上下文
+    
+    重新标记整个文件系统 {
+        shell> touch /.autorelabel
+        shell> reboot 
+    }
+    
+    
+    shell> semanage permissive -a postfix_smtpd_t   # 为 postfix_smtpd_t 类型的程序，selinux 设置为 premissive 模式
+    shell> semanage permissive -d postfix_smtpd_t   # 删除 postfix_smtpd_t 类型的程序的 premissive 模式，回到 enforcing 模式
+    
+    shell> semanage port -l         # 查看所有服务和端口的访问权限
+    shell> semanage port -a -t http_port_t -p tcp 81    # 为 http_port_t 类型的服务（程序） 添加 tcp 81 端口的访问权限
+}
+
+Log {
+    所有 SELinux 相关的日志都会被 AVC 标记，可以使用 grep 筛选
+    shell> cat /var/log/audit/audit.log     # 查看 selinux 日志，通过 linux auditd 服务记录日志
+    shell> cat /var/log/messages            # 如果 auditd 服务没有启动，那么会记录在这个文件中
+    shell> ausearch --checkpoint="./audit-checkpoint" -m AVC,USER_AVC,SELINUX_ERR,USER_SELINUX_ERR -i   # 检查没有再次出现的错误
+    
+    
+    shell> yum install setroubleshoot       # 安装 selinux 故障排除套件
+    shell> sealert -a /var/log/audit/audit.log > /path/to/mylogfile.txt     # 分析日志中的 AVC 日志，结果保存到指定文件
+    shell> audit2why            # 用来分析 audit.log 日志文件，并分析 SELinux 为什么会拒绝进程的访问
+    shell> audit2allow          # 分析日志，并提供允许的建议规则或拒绝的建议规则
+    
+}
+Policy {
+    shell> getsebool -a                     # 查看当前 Policy（策略）的布尔值
+    shell> setsebool context on             # 修改某一项 Policy 的布尔值, off 表示禁止， -P 重启仍然生效
+
+    shell> yum install setools-console      # 安装查看工具，才有以下命令
+    shell> seinfo                           # 查看 policy 里面的各种信息
+    shell> sesearch --help                  # 查找 policy 中包含的规则
+    
+    自定义 SELinux 策略 {
+    
+        请谨慎使用 audit2allow 这个命令。
+        这个命令的作用非常简单粗暴，就是强制允许所遇到的错误然后封装成一个 SELinux 模块，
+        接着让 SELinux 加载这个模块来达到消除错误的目的。
+        不到万不得已建议不要随便使用 audit2allow。
+    
+        Creating Custom SELinux Policy Modules with audit2allow {
+            shell> grep ipset /var/log/audit/audit.log | audit2allow -m ipset       # 生成 .te 文件到标准输出
+            shell> grep ipset /var/log/audit/audit.log | audit2allow -M ipset       # 生成 .te 和 .pp 文件到当前目录
+            shell> shell> semodule -i ipset.pp 
+        }
+    
+        Manually Customizing Policy Modules {
+            shell> grep ipset /var/log/audit/audit.log > seError.log    # 从 audit 日志中提取想要的 SE 错误日志
+            shell> audit2allow -i seError.log -M ipset                  # 从日志中创建可安装的模块包，保存到当前目录下
+            shell> vim ipset.te                                         # 修改由 audit2allow 创建的 TypeEnforcement 文件
+            
+            shell> checkmodule -M -m ipset.te -o ipset.mod              # 编译 .te 文件为 policy 模块文件
+            shell> semodule_package -o ipset.pp -m ipset.mod            # 创建 policy 模块包文件
+            shell> semodule -i ipset.pp                                 # 安装 selinux policy module package
+            shell> semodule -l                                          # 查看所有已经加载的 SE 模块
+        }
+    
+        
+    }
+
+    
+}
+
+
+

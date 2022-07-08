@@ -1,0 +1,11 @@
+[Unit]
+Description=timed task: dig 1291114093.top
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=exec
+# 启动服务执行的命令
+ExecStart=bash /home/kasei/Script/updateVpsIpSet.sh
+

@@ -1,0 +1,136 @@
+帮助 {
+    :h search-commands          # 查找命令帮助    
+    :h search-pattern           # 查找正则表达式帮助
+    
+}
+
+正则表达式 {
+    # 后缀
+    g               # 全不匹配，如果没有，只匹配第一个
+    i               # 忽略大小写
+    c               # 每一个替换前都询问
+    
+    # 匹配后操作
+    y               # 替换当前匹配，并继续下一个
+    n               # 不替换当前匹配，并继续下一个
+    a               # 全部替换，并退出
+    q               # 不替换，退出
+    l               # 替换当前匹配后退出
+    ^E              # <Ctrl-e> 页面下滚
+    ^Y              # <Ctrl-y> 页面上滚
+    
+    # Detail    :help regexp
+    pattern     = branch | branch 
+    branch      = concat & concat
+    concat      = piece piece 
+    piece       = atom                  = atom multi        
+    atom        = ordinary-atom         = CharacterClass        = (pattern)
+    
+    engin       \%#=0       regexpengine 来控制使用哪个 正则表达式引擎
+                \%#=1       使用 backtracking engine(回溯引擎) that supports everything
+                \%#=2       NFA 引擎，如果碰到该引擎没有实现的 pattern ，那么正则表达式不会匹配
+                
+    multi       *           0 or more, greedy
+                \+          1 or more, greedy
+                \=          0 or 1, greedy
+                \?          0 or 1, greedy 
+                \{n,m}      n to m, greedy
+                \{n}        n, 
+                \{n,}       >=n, greedy
+                \{,m}       <=m, greedy
+                \{}         0 or more, greedy (same as *)
+                
+                \{-n,m}      n to m, no-greedy
+                \{-n}        n, 
+                \{-n,}       >=n, no-greedy
+                \{-,m}       <=m, no-greedy
+                \{-}         0 or more, no-greedy (same as *)
+    
+    ordinary-atom       ^
+                        \^
+                        \_^
+                        $
+                        \$
+                        \_$
+                        .
+                        \_.
+                        \<
+                        \>
+    
+    CharacterClass      \p
+                        \P
+                        \s
+                        \S
+                        \d
+                        \D
+                        \x
+                        \X
+                        \o
+                        \O
+                        \w
+                        \W
+                        \l
+                        \L
+                        \u
+                        \U
+                        \_x         x 为上述字符，\_ 表示在上述字符类中添加 \n
+                        
+                        [:alnum:]       ASCII 字符 及 数字
+    
+    Special Char        \e          <ESC>
+                        \t
+                        \r
+                        \n
+                        \1, ..., \9
+                        []
+                        \%[]        可以匹配，也可以不匹配
+                        \c          忽略大小写
+                        \C          大小写敏感
+
+}
+
+范围参数 {
+    %               表示整个文本（相当于 1,$)
+    9               表示文件第 9 行行末
+    $               表示文件最后一行
+    .               表示当前光标所在行
+    'm              表示标记 m 所在的行
+    '<              表示选择区的第一行
+    '>              表示选择区的最后一行
+}
+
+查找 {
+    /pattern          # 向后搜索，除了 $ ^ 之外其他元字符都要加反斜杠
+    /\vpattern        # \v 表示 pattern 中除了 _ 0-9 a-z A-Z 之外的所有字符都具有特殊含义
+    /\Vpattern        # \V 表示 pattern 中有且只有 \ 有特殊含义
+    /\cpattern        # \c 大小写不敏感              
+    /\v\cpattern      # \v + \c
+    {-n,m}            # 非贪婪(greedy)模式
+    
+    ?                 # ?pattern 向前搜索
+    
+    /\v\cpattern\_.pattern   # 跨行匹配，\_. 包含换行符
+}
+
+替换 {
+    @trap {
+        \n              正则表达式 匹配的 = 换行，替换时 = 0x00 = null
+        \r              正则表达是 匹配时 = 回车，替换时 = 换行  
+    }
+    
+    @Demo {
+        :s/str1/str2                        # 表示将当前行第一个 str1 替换成 str2
+        :s/\vstr1/str2                      # very magic 模式
+        :s/str1/str2/g                      # 表示将当前行所有 str1 替换成 str2
+        :%s/s1/s2                           # 表示将当前文件中每一行的第一个 str1 替换成 str2
+        :%s/s1/s2/g                         # 表示将当前文件中所有 str1 替换成 str2
+        :9,$s/old/new/g                     # 从第9行到最后一行
+        :.,$s/old/new/g                     # 从当前行到最后一行
+        :1,$s/old/new/g                     # 从第一行到最后一行每一行的第一个   
+        :'<,'>s/old/new/g                   # 在选中区域替换文本
+        :s+vivian/+sky/                     # 把分隔符从 / 替换为 + 这样 / 就能被识别出来    
+        
+        :%s/(pattern)/\U\1/cgi              # 将符合条件的匹配项 转成 大写
+    }
+
+}

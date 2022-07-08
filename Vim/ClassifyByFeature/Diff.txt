@@ -1,0 +1,39 @@
+文件对比 {
+    开启对比模式 {
+        一个 tab 页只能开起一个对比模式
+    
+        shell> vim -d file1 file2 file3     # 打开多个文件进行对比
+        shell> vimdiff file1 file2 file3    # 同上
+        :diffs[plit] file1                  # 打开 file1 跟当前窗口中的文件对比
+        :difft[his]                         # 将当前窗口中的文件加入对比
+        :diffp[atch] file1                  # 使用 file1 给当前缓冲区的内容打补丁
+        :vert[ical] diffsplit file1         # 纵向分割当前窗口做对比
+        :diffupdate                         # 重新执行比较
+        :diffupdate!                        # 如果硬盘中的文件改动过，则重新载入
+    }
+   
+    关闭对比模式 {
+        :diffo[ff]                          # 当前窗口退出对比模式
+        :diffo[ff]!                         # 当前 tab 页的所有窗口退出对比模式
+        
+    }
+    
+    不同点跳转 {
+        [c          # 跳转到上一个不同点
+        ]c          # 跳转到下一个不同点
+    }
+    
+    展开折叠 {
+        zA                      # 展开/关闭 折叠
+        zM                      # 折叠当前 window 所有折叠
+        zR                      # 展开当前 window 所有折叠，'foldlevel'=无穷大， 'foldlevel'=5 表示打开折叠层级 <=5 的所有折叠
+    }
+    
+    复制文本 {
+        :[range]diffg[et] [bufspec]         # 从对比文件中获取数据
+        [count]do                           # diff obtain
+        
+        :[range]diffpu[t] [bufspec]         # 将当前文件中的不同写入到对比文件
+        [count]dp	                        # diff put
+    }
+}

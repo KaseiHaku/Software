@@ -1,0 +1,401 @@
+"""""""""""""""""""""""""""""""""""""""""""""""" 基本概念介绍 """""""""""""""""""""""""""""""""""""""""""""""""""""
+" 该文件放置位置
+" /etc/vimrc                Linux 全局配置
+" ~/.vimrc                  Linux 用户级配置
+" D:\Vim\_vimrc             Windows 全局配置
+" %HOME%\_vimrc             Windows 用户级配置
+
+"""""""""""""""""""""""""""""""""""""""""""""""" UI 界面配置 """""""""""""""""""""""""""""""""""""""""""""""""""""
+set number                                              " 设置显示行号
+set cursorline                                          " 配置当前行高亮
+set ruler                                               " 显示标尺
+set rulerformat=%15(%c%V\ %p%%%)
+set colorcolumn=81                                      " 显示一条竖线表示代码第 81 个字符
+set showtabline=2                                       " 总是显示标签页
+set go=                                                 " 取消菜单栏
+set showcmd                                             " 输入的命令显示出来，看的清楚些
+set showmatch                                           " 括号匹配模式
+set matchtime=1                                         " 匹配括号高亮的时间（单位是十分之一秒）
+set so=3                                                " 设置页面滚动时保留 3 行原屏幕显示的行
+set scrolloff=3                                         " 光标移动到 buffer 的顶部和底部时保持3行距离 
+set nowrap                                              " 关闭 vim 自动换行
+set fo+=mB                                              " 使自动换行对中文也能生效，其中 m 表示允许在两个汉字中间换行，而 B 表示将两行合为一行的时候不要在两个汉字之间加入空格。
+
+"""""""""""""""""""""""""""""""""""""""""""""""" Highlight Settings """""""""""""""""""""""""""""""""""""""""""""""""""""
+" term={attr-list}          逗号分隔，不能有空格
+"       bold
+"       underline
+"       undercurl           波浪状的下划线，不一定总是可用
+"       strikethrough       删除线，不一定总是可用
+"       reverse
+"       inverse             同 reverse
+"       italic
+"       standout
+"       nocombine           覆盖属性而不是混合属性
+"       NONE                不使用属性 (用于复位)
+"
+" cterm={attr-list}         彩色终端
+"   ctermfg=0                 彩色终端，前景色
+"   ctermbg=15                彩色终端，背景色
+"   ctermul=15                彩色终端，下划线颜色，15=7*；* 表示前面数字 +8
+" 
+" gui={attr-list}           GUI 终端
+"   guifg=Yellow              GUI 前景色，支持 颜色名称, #00ff99, 特殊名字(NONE, bg, background, fg, foreground)
+"   guibg=#ff00ff             GUI 背景色
+"   guisp='salmon pink'       GUI 删除线，下划线 颜色
+"
+" 自带高亮组：
+"   DiffAdd             diff 模式：增加的行
+"   DiffChange          diff 模式：有改动的行
+"   DiffDelete          diff 模式：删除的行
+"   DiffText            diff 模式: 改动的行中，改动的文本
+"
+"
+"
+highlight CustomHighlightGroup term=bold,reverse guibg=blue                              " 设置 %1* 开启的高亮分组图形界面背景色为 blue
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""" Fold Settings """"""""""""""""""""""""""""""""""""""""""
+set foldenable                                          " 允许折叠
+set foldmethod=manual                                   " 依据缩进来计算折叠点
+set foldlevelstart=99                                   " 从第 99 层开始折叠
+
+"""""""""""""""""""""""""""""""""""""""""""""""" Different Settings """"""""""""""""""""""""""""""""""""""""""
+" diffopt=  internal                使用内部 diff 库
+"           filler                  显示填充行, 使得文本和在相同位置多出文本的其它窗口同步。
+"           context:6               差异周围不被折叠的行
+"           iblank                  忽略全空白行的改动，注意：差异窗口会失去同步，因为不计算空白行间的区别
+"           icase                   忽略大小写的更改
+"           iwhite                  忽略空白字符数目的改动，忽略行尾空白符，但是不忽略行首的
+"           iwhiteall               忽略所有空白字符的改动
+"           iwhiteeol               忽略行尾的空白字符的改动
+"           horizontal              以水平分割的方式 比较文件
+"           vertical                以垂直分割的方式 比较文件
+"           closeoff                如果同一个 标签(Tab)页 中只有一个 diff 状态的文件，那么该文件自动退出 diff 状态
+"           hiddenoff               不对隐藏缓冲区使用比较模式。
+"           foldcolumn:{n}          启动比较模式时设置 'foldcolumn' 选项为 {n}。如果不存在，用 2。
+"           followwrap              跟随 'wrap' 选项，比较时保持其不变。
+"           indent-heuristic        内部比较库使用缩进启发。
+"           algorithm:{text}        内部比较引擎使用指定的比较算法。
+"                                   目前支持的算法是:
+"                                       myers      缺省算法
+"                                       minimal    花费额外时间来生成最小的可能差异
+"                                       patience   patience 比较算法
+"                                       histogram  histogram 比较算法
+"   
+if &diff
+    " setup for diff mode: 逗号分隔，不能带有空格
+    set diffopt=internal,iwhiteall,filler,closeoff,vertical,iblank,context:6
+else
+    " setup for non-diff mode
+endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""" Status Line Settings """"""""""""""""""""""""""""""""""""""""""
+set laststatus=2                                        " 启动显示状态行(1),总是显示状态行(2)
+" 状态行显示格式   
+" %F            完整文件路径名
+" %m            当前缓冲 只读 或 被修改 标记
+" %h            帮助缓冲标记
+" %w            预览缓冲标记
+" %<            表示当状态栏超过一行时，隐藏的起始位置
+" %( %)         表示一个 item 分组
+" %1*           开始一个高亮分组 
+" %0*           结束一个高亮分组，恢复成正常颜色
+" @trap         vimscript 中 空格需要 \ 进行转义
+" @help         :help statusline
+set statusline=%(%1*%F%m%r%h%w%0*%)\ [Format:%{&fileformat},%{&fileencoding}]\ [POS:%l/%L=%p%%,%v]\ [HEX=%B]\ [Type:%Y]\ [%{strftime(\"%Y-%m-%d\ %T\")}]\ %<
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""" Edit Settings """"""""""""""""""""""""""""""""""""""""""
+set nocompatible                                        " 使用 vim 自己的键盘模式，不使用 vi 的默认键盘布局
+" 将剪贴板寄存器("+) 和 选择寄存器("*) 设置为默认寄存器，如果不设置 p 命令粘贴的是 ""(未命名) 寄存器中的内容
+" @trap Terminal 模式下打开的 vim 时没有 "+ 和 "* 两个寄存器，只有 gvim 才有
+set clipboard^=unnamed,unnamedplus                      
+set mouse=a                                             " 使 vim 支持鼠标操作
+set viminfo='20                                         " 不限制一次最多可以复制的行数
+set backspace=indent,eol,start                          " 使退格键（backspace）正常处理 indent, eol, start 等
+
+" Vim 读取 keymap 和 keycode 的超时时间配置
+" timeout=false && ttimeout=false           永不超时，等待接收到 完整的 keymap 和 key sequence，如果没有 对应的 keymap 会自动清空
+" timeout=true                              keymap 和 keycode 都有超时时间，超时时间为 timeoutlen 选项配置
+" timeout=false && ttimeout=true            keymap 没有超时时间，keycode 有超时时间
+set timeout
+" set ttimeout              " 不能和 timeout 同时为 true
+set timeoutlen=1000         " keymap 和 keycode 的延时值，除非 ttimeoutlen >= 0， default=1000
+set ttimeoutlen=100         " 当该选项值 >=0 时，keycode 使用该值做延时值，default=-1
+
+
+" 自动带出成对的标点符号
+" inoremap ' ''<ESC>i
+" inoremap " ""<ESC>i
+" inoremap ( ()<ESC>i
+" inoremap [ []<ESC>i
+" inoremap { {<CR>}<ESC>O
+inoremap { {}<ESC>i
+" inoremap ‘ ‘’<ESC>i       " 没用，中文
+" inoremap “ “”<ESC>i       " 没用，中文
+
+" iminsert=0	:lmap is off and IM(Input Method) is off
+" iminsert=1	:lmap is ON and IM(Input Method) is off
+" iminsert=2	:lmap is off and IM(Input Method) is ON
+" 离开 Insert 模式时, 自动设置 iminsert=0 关闭输入法, 进入 Insert 模式时, 自动启用输入法
+inoremap <ESC> <ESC>:set iminsert=0<CR>                 " 在 manjaro terminal 中有问题
+nnoremap i  <ESC>:set iminsert=2<CR>i
+nnoremap I  <ESC>:set iminsert=2<CR>I
+nnoremap a  <ESC>:set iminsert=2<CR>a
+nnoremap A  <ESC>:set iminsert=2<CR>A
+nnoremap o  <ESC>:set iminsert=2<CR>o
+nnoremap O  <ESC>:set iminsert=2<CR>O
+nnoremap s  <ESC>:set iminsert=2<CR>s
+nnoremap S  <ESC>:set iminsert=2<CR>S
+nnoremap c  <ESC>:set iminsert=2<CR>c
+nnoremap C  <ESC>:set iminsert=2<CR>C
+nnoremap r  <ESC>:set iminsert=2<CR>r
+nnoremap R  <ESC>:set iminsert=2<CR>R
+
+xnoremap c  c<ESC>:set iminsert=2<CR>a
+xnoremap C  C<ESC>:set iminsert=2<CR>a
+xnoremap s  s<ESC>:set iminsert=2<CR>a
+xnoremap S  S<ESC>:set iminsert=2<CR>a
+" 离开 搜索 模式时, 自动设置 iminsert=0 关闭输入法, 进入 搜索 模式时, 自动启用输入法; 当输入查找命令时，再启用高亮
+nnoremap / <ESC>:set iminsert=2<CR>:set hlsearch<CR>/
+nnoremap ? <ESC>:set iminsert=2<CR>:set hlsearch<CR>?
+nnoremap * :set hlsearch<CR>*
+
+" 插入模式下，粘贴系统剪贴板的内容，以下两个 map 效果相同
+inoremap <S-Insert> X<BS><ESC>:set paste<CR>gi<C-R>+<ESC>:set nopaste<CR>gi
+inoremap <C-v> X<BS><ESC>"+p`]a
+nnoremap <S-Insert> "+p
+
+" 宏
+" 宏录制               q[a-z] command q
+" 调用宏               @[a-z]
+" 临时修改宏            :let @a=' Ctrl+R Ctrl+R a  修改 '  完成 
+let @z='0gUwjj'             " 将 宏 保存在 z 寄存器中
+   
+
+"""""""""""""""""""""""""""""""""""""""""""""""" 通用配置 """""""""""""""""""""""""""""""""""""""""""""""""""""
+set wildmenu                                            " 智能补全命令行
+set history=64                                          " 设置命令行保留的历史命令个数
+set iskeyword=@,48-57,_,128-167,224-235,-               " 在当前列表中的字符都算在一个 word 里面         
+
+
+" 配置多键映射的 leader
+let mapleader = "_"
+" 快速编辑 vimrc 配置文件
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""" 文件配置 """""""""""""""""""""""""""""""""""""""""""""""""""""
+set autoread                                            " 当文件被外部改变时自动读取
+set nobackup                                            " 不要备份文件
+set noswapfile                                          " 禁止使用 swap 文件， 
+                                                        " Vim 在编辑一个文件的时候首先把文件拷贝成一个临时的 swap 文件，只有你使用 :w 保存之后才写入源文件中
+
+
+filetype on                                             " 开启文件类型检测
+filetype plugin on                                      " 根据不同的文件类型载入不同的插件方案
+filetype indent on                                      " 根据不同的文件类型载入不同的缩进方案
+syntax enable                                           " 开启语法高亮功能
+syntax on                                               " 允许用指定语法高亮配色方案替换默认方案
+
+"""""""""""""""""""""""""""""""""""""""""""""""" 语言、字符编码格式配置 """""""""""""""""""""""""""""""""""""""""""""""""""""
+" 1. shell> vim file  vim 根据 encoding 来设置 buffer、寄存器、脚本中 的字符串
+" 2. 读取 file , 根据 fileencodings 中列出的字符编码方式逐一探测该文件编码方式。并设置 fileencoding 为探测到的编码方式，如果没有探测到，那么设置为 latin1(ASCII) 编码
+" 3. 对比 fileencoding 和 encoding 的值，若不同则调用 iconv 将文件内容转换为encoding 所描述的字符编码方式，
+"    并且把转换后的内容放到为此文件开辟的 buffer 里，此时我们就可以开始编辑这个文件了
+" 4. 编辑完成后保存文件时，再次对比 fileencoding 和 encoding 的值。
+"    若不同，再次调用 iconv 将即将保存的 buffer 中的文本转换为 fileencoding 所描述的字符编码方式，并保存到指定的文件中
+
+set encoding=utf-8                                      " vim 内部使用的字符编码方式，即 vim 的 buffer、寄存器、脚本中的字符串，都使用该编码格式
+set fileencodings=ucs-bom,utf-8,cp936,latin1            " vim 从硬盘读取文件时，依次使用值中的编码方式对文件进行解码，如果成功，那么把 fileencoding 设置为当前使用的值，cp936 就是 GBK  
+set fileencoding=utf-8                                  " 当前文件使用的编码格式，无法在文件打开后，再使用该命令解决乱码问题
+set termencoding=utf-8                                  " vim terminal 编码，显示时，vim 会把内部编码转换成 terminal 编码，如果无法转换，则以 ？ 显示
+set langmenu=en_US.UTF-8                                " gvim 设置菜单为英文
+language messages en_US.utf-8                           " 设置 consle 提示信息编码
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""" Tab 键处理方式配置 """"""""""""""""""""""""""""""""""""""""""
+set autoindent                      " 继承上一行的缩进
+set tabstop=4                       " 设置一个 \t 字符对应的列数
+set expandtab                       " 设置 \t 字符用 Space 替代
+set shiftwidth=4                    " 配置使用一次 << 和 >> 命令移动时的宽度为 4
+set softtabstop=4                   " 设置按一次 tab 键输入的列数，软件计算是否插入 \t 符，
+                                    " 假设 tabstop=6，softtabstop=4， softtabstop 比较小的情况
+                                    " 按一次 tab 键， 结果： 4 space
+                                    " 再按一次 tab 键， 结果： 1 \t + 2 space
+                                    " 假设 tabstop=6，softtabstop=8， softtabstop 比较大的情况
+                                    " 按一次 tab 键， 结果： 1 \t + 2 space
+                                    " 按第二次 tab 键， 结果： 2 \t + 4 space
+                                    " 总的意思就是，满足 tabstop 的空格数替换为 \t，剩余的用 空格 填充
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""" 搜索配置 """"""""""""""""""""""""""""""""""""""""""
+set ignorecase                              " 设置匹配的时候忽略大小写
+set ignorecase smartcase                    " 当查找串中有大写时，就大小写敏感，否则不敏感
+set hlsearch                                " 设置高亮搜索
+set incsearch                               " 实时搜索，即边输入边搜索
+set regexpengine=1                          " 使用 traditional regexp engine 
+set magic                                   " 设置 magic
+
+
+   
+autocmd cursorhold * set nohlsearch         " 当光标一段时间保持不动了，就禁用高亮
+
+"""""""""""""""""""""""""""""""""""""""""""""""" Shell 配置 """"""""""""""""""""""""""""""""""""""""""
+if has('win64') || has('win32')                                     " 如果是 window 系统
+    set shell=C:\Software\Git\Git\bin\bash.exe                      " 指定 vim 中 :shell 所使用的 shell 
+    "set shellcmdflag=
+    "set shellpipe=|           
+    "set shellquote=
+    "set shellredir=>
+    "set shellslash=
+    "set shelltemp=true                              " true 表示使用 临时文件 来作为管道命令的数据传递方式，false 表示直接使用 系统管道
+    "set shelltype=
+    "set shellxescape=
+    "set shellxquote=
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""" Vim Script """"""""""""""""""""""""""""""""""""""""""
+" 根据是否是图形界面(GUI)，执行不同的配置
+if has('gui_running')
+    " 是图形界面
+    colorscheme desert                                  " 配置颜色模式，需要 $VIMRUNTIME/rgb.txt
+    source $VIMRUNTIME/menu.vim                         " 解决菜单乱码问题    
+    source $VIMRUNTIME/delmenu.vim                      " 解决菜单乱码问题
+    if has('gui_win32')
+        " 是 Windows 下的图形界面  
+        set guifont=Consolas:h10                        " 设置字体为 Consolas，大小为 10，注意如果有空格，需要用 \ 转义
+        autocmd GUIEnter * simalt ~x                    " Windwos 设置一打开，窗口就最大化
+    else
+        set guifont=Monospace\ 10                       " 设置字体为 Monospace，大小为 10，注意如果有空格，需要用 \ 转义
+    endif
+endif
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""" Plugin 配置 """"""""""""""""""""""""""""""""""""""""""
+" 需要先下载 git ，因为 plug.vim 依赖 git
+" 需要下载 plug.vim 文件放在 $VIMRUNTIME/autoload 文件夹下，vim 中使用 :echo $VIMRUNTIME 查看变量内容
+" 打开 vim 运行 :PlugInstall 即可安装所有列表中的插件
+" vim-plug 默认下载插件保存路径为 '~/.vim/plugged'，Windows 下默认为：%HOME%\vimfiles\plugged 
+if has('win64') || has('win32')
+    call plug#begin()                                                   " 使用插件默认的保存路径
+else
+    call plug#begin('/usr/share/vim/vimfiles/plugged')                  " 修改插件默认保存路径为 '/usr/share/vim/vimfiles/plugged'            
+endif
+Plug 'https://github.com/scrooloose/nerdtree.git'                   " 文件浏览器插件，:NERDTreeToggle 切换该插件
+Plug 'https://github.com/tpope/vim-ragtag.git'                      " xml 格式文件辅助编辑
+Plug 'https://github.com/Shougo/neocomplete.vim.git'                " 自动补全插件
+Plug 'https://github.com/tpope/vim-jdaddy.git'                      " json 格式化
+Plug 'terryma/vim-multiple-cursors'                                 " 多光标操作，@deprecated
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}                 " 多光标操作，
+call plug#end()
+
+
+
+" 快速打开 nerdtree 插件
+noremap <C-n> :NERDTreeToggle<CR>    
+
+autocmd vimenter * NERDTreeToggle           " vim 打开时，自动打开文件浏览器，plug.vim 插件的命令，先运行 :PlugInstall 安装插件
+                                            " 第一次运行时，注释掉该行
+
+
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""" 自定义函数 """"""""""""""""""""""""""""""""""""""""""
+"""""""" 获取 Command 模式下, 命令输出的内容
+" 调用方式      :call KaseiCmd(["echo \"a\"", "echo \"bb\""])
+function! KaseiCmd(cmd)
+    redir @k>
+    let l:var1 = execute(a:cmd, 'silent!')
+    echom l:var1
+    vsplit KaseiCmdResult.txt
+    execute "normal! \"kp"
+    " 换行
+    call execute('%s/\v\^\@/\r\^\@/g')
+    redir END
+endfunction
+
+"""""""" 显示 tab 页编号
+set tabline=%!MyTabLine()  " custom tab pages line
+function! MyTabLine()
+    let s = '' " complete tabline goes here
+    " loop through each tab page
+    for t in range(tabpagenr('$'))
+        " set highlight
+        if t + 1 == tabpagenr()
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
+        " set the tab page number (for mouse clicks)
+        let s .= '%' . (t + 1) . 'T'
+        let s .= ' '
+        " set page number string
+        let s .= t + 1 . ' '
+        " get buffer names and statuses
+        let n = ''      "temp string for buffer names while we loop and check buftype
+        let m = 0       " &modified counter
+        let bc = len(tabpagebuflist(t + 1))     "counter to avoid last ' '
+        " loop through each buffer in a tab
+        for b in tabpagebuflist(t + 1)
+            " buffer types: quickfix gets a [Q], help gets [H]{base fname}
+            " others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
+            if getbufvar( b, "&buftype" ) == 'help'
+                let n .= '[H]' . fnamemodify( bufname(b), ':t:s/.txt$//' )
+            elseif getbufvar( b, "&buftype" ) == 'quickfix'
+                let n .= '[Q]'
+            else
+                let n .= pathshorten(bufname(b))
+            endif
+            " check and ++ tab's &modified count
+            if getbufvar( b, "&modified" )
+                let m += 1
+            endif
+            " no final ' ' added...formatting looks better done later
+            if bc > 1
+                let n .= ' '
+            endif
+            let bc -= 1
+        endfor
+        " add modified label [n+] where n pages in tab are modified
+        if m > 0
+            let s .= '[' . m . '+]'
+        endif
+        " select the highlighting for the buffer names
+        " my default highlighting only underlines the active tab
+        " buffer names.
+        if t + 1 == tabpagenr()
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
+        " add buffer names
+        if n == ''
+            let s.= '[New]'
+        else
+            let s .= n
+        endif
+        " switch to no underlining and add final space to buffer list
+        let s .= ' '
+    endfor
+    " after the last tab fill with TabLineFill and reset tab page nr
+    let s .= '%#TabLineFill#%T'
+    " right-align the label to close the current tab page
+    if tabpagenr('$') > 1
+        let s .= '%=%#TabLineFill#999Xclose'
+    endif
+    return s
+endfunction
+
+
+
+
+
+

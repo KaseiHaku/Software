@@ -1,0 +1,5 @@
+SQL Window 参数配置：
+    Configure -> Preferences -> Window Types -> SQL Window 
+    -> [勾选] Auto Select Statement       // 设置 F8 自动执行单条 sql 语句
+    -> [不勾] Read LF as CR/LF from database      // 取消将数据库中的 \r\n 读取为 \n，保持原样显示
+    -> [不勾] AutoExecute queries     // 取消自动执行查询

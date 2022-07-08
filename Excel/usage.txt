@@ -1,0 +1,9 @@
+打开多个 Excel 文件时，显示多个窗口的方法：
+    Win+R -> HKEY_CLASSES_ROOT -> Excel.Sheet.12 -> shell -> Open 
+    -> command 
+        -> 修改  （默认）  值最后的 /e 或者 /* 改成 %1
+        -> 修改 command 值最后的 /e 或者 /* 改成 %1
+        -> 双击右侧窗格的【默认】将末尾的/dde改成【"%1"】（注意有双引号），再双击【command】，也是将末尾的/dde改成"%1"
+    -> 重命名 Open 文件夹下的 ddeexec 为 ddeexec_bak 即可
+    
+    -> 再定位到【HKEY_CLASSES_ROOT---Excel.Sheet.8---shell---Open】，以同样的方法进行修改。

@@ -1,0 +1,69 @@
+# 命令行参数 优先级比 当前文件高
+apiVersion: kind.x-k8s.io/v1alpha4      # 不同版本 有不同的配置 和 行为，所以必须指定版本
+kind: Cluster
+name: kasei-cluster       # 创建的集群的名称
+featureGates:
+  "CSIMigration": true      # 开启和关闭 kubernetes 特性，true: 开启
+# kube-apiserver 的运行时配置，可以使用当前字段来配置
+runtimeConfig:
+  "api/alpha": "false"
+
+networking:
+  # 在 windows 和 mac 下运行 docker，需要为 API Server 配置一个 ipv4 端口转发，因为这两个系统不支持 ipv6 端口转发
+  ipFamily: ipv6    # [ipv4, ipv6, dual]
+
+  apiServerAddress: 127.0.0.1     # 允许访问 kube-apiserver 的地址
+  apiServerPort: 6443             # kube-apiserver 监听的端口
+
+  podSubnet: "fe80:0:0:0001::/64"      # 指定 pod 所使用的 ip 网段
+  serviceSubnet: "fe80:0:0:0002::/64"   # 指定 k8s service 所使用的 ip 网段
+  disableDefaultCNI: false        # CNI(Container Network Interface, 容器网络接口，容器网卡), true: 不装默认的 CNI(kindnetd)，一般为 false
+  kubeProxyMode: "iptables"           # k8s 代理模式: [iptables, ipvs, none:不使用代理]
+
+# ${kind} = Cluster 时，会存在该属性
+nodes:
+  - role: control-plane     # 如果 ${nodes} 不配置，则仅仅存在该元素
+  - role: worker
+
+    # 指定当前 k8s node 使用指定的 docker image，该 image 需要包含 k8s node 基本的组件，且必须带有 @sha256:imageDigest 用于校验
+    # 所有可用 image 列表: https://github.com/kubernetes-sigs/kind/releases
+    image: kindest/node:v1.16.4@sha256:b91a2c2317a000f3a783489dfb755064177dbc3a0b2f4147d50f04825d016f55
+
+    # 额外挂载点
+    extraMounts:
+      - hostPath: /path/to/my/files/
+        containerPath: /files
+        readOnly: true
+        selinuxRelabel: false           # 是否需要 SELinux 重新打标签
+        propagation: HostToContainer    # 挂载传播模式：None, HostToContainer or Bidirectional
+
+    # 额外端口映射
+    extraPortMappings:
+      - containerPort: 80               # 该端口 必须和 Pod 的 nodePort 一致
+        hostPort: 80
+        listenAddress: "127.0.0.1"      # 当主机有多个 IP 地址时，绑定到主机的哪个地址上，默认值: 0.0.0.0 绑定所有地址
+        protocol: TCP             # [TCP: default, UDP, SCTP]
+
+    # kind 使用 kubeadm 来 配置 cluster node
+    kubeadmConfigPatches:
+      # 当 kind 在 control-plane node 上运行 shell> kubeadm init 时，可以使用该选项进行自定义
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "my-label=true"
+      # 通过 ClusterConfiguration 覆盖 apiserver flags
+      - |
+        kind: ClusterConfiguration
+        apiServer:
+            extraArgs:
+              enable-admission-plugins: NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook
+      # 通过 JoinConfiguration 配置 shell> kubeadm join
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "my-label2=true"
+
+  # another worker
+  - role: worker

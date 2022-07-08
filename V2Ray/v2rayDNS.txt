@@ -1,0 +1,135 @@
+Concept {
+    DNS 查询方式 {
+        1. 本机发送 DNS 请求到 DNS 服务器，如果 DNS 服务器自身不知道当前域名对应的 IP ，那么 DNS 服务器会请求上级 DNS 服务器查询，直到查到为止，并逆向返回 DNS 查询结果
+        2. 本机发送 DNS 请求到 DNS 服务器，DNS 服务器告诉本机，你可以去问另一台 DNS 服务器B，以此类推，直到查到为止
+    }
+}
+
+无代理 {
+    1. Browser 中输入 www.bilibili.com 点击 Enter
+    2. Browser 发起对 www.bilibili.com 这个 Domain 的 DNS 请求( Chrome 会调用系统 API 去发送 DNS 请求，FireFox 使用自己的 API 发送 DNS 请求)
+    3. 假设系统设置的 DNS 服务器为 223.5.5.5
+    4. 承载 DNS 请求的 UDP 数据包，就会从本机发送到 223.5.5.5
+    5. 223.5.5.5 会返回 www.bilibili.com 这个 Domain 对应的 IP 地址给 Browser
+    6. Browser 向查询到的 IP 地址发起 HTTP/HTTPS 连接
+}
+
+开启了 SOCK5 代理 {
+    
+    Browser 中输入 www.bilibili.com 点击 Enter
+    Browser 发现设置了 SOCK5 代理，
+    因为 SOCK5 代理可以直接将 Domain 传给代理服务器处理，所以 Browser 直接把 Domain 放进 SOCKS5 请求中，发送给 LocalV2ray(本地代理服务器)
+    LocalV2ray 接收到 SOCKS5 代理的请求数据包，从 SOCKS5 请求数据包中提取出 Domain
+    
+    if(LocalV2ray routing.domainStrategy == AsIs){
+        LocalV2ray 只使用请求中的 Domain 匹配路由规则
+        if(匹配的出站规则的 tag == freedomOut){
+            freedomOut 发送请求需要 www.bilibili.com 对应的 ip 地址
+            LocalV2ray 使用系统 API 向 系统配置 的 DNS 发送 DNS 请求，并返回 IP
+            freedomOut 获取到 IP 后，向该 IP 发起 TCP 连接
+        } else if(匹配的出站规则的 tag == vmessOut || tag == socksOut){
+            LocalV2ray 会将 Domain 继续转发到 RemoteV2ray 解析
+            RemoteV2ray 会调用如上相同的逻辑解析 Domain
+            并由 RemoteV2ray 向解析后的 IP 地址发送 TCP 连接，返回响应数据回传给 LocalV2ray
+        }
+        
+        
+    } else if(routing.domainStrategy == IPIfNonMatch){
+        在使用 Domian 没有匹配到任何路由规则之后，再执行以下操作
+        使用 V2Ray 内置的 DNS 解析
+    } else if(routing.domainStrategy == IPOnDemand){
+        当遍历匹配规则的时候，碰到任何基于 IP 的路由规则时，执行以下操作
+        使用 V2Ray 内置的 DNS 解析
+    }
+    
+
+}
+
+
+
+
+
+V2ray DNS 解析完整流程 {
+    坑： 只有 Socks5 和 Vmess 协议才支持 DNS 远程解析
+    
+    Application 使用代理，将流量转发到 socksIn 
+    socksIn  开启 sniffing 嗅探 domain
+    使用 domain 匹配路由规则
+    
+    for( 路由规则 routeRule : routeRuleList ){
+        if( routeRule 是基于 IP 的路由规则 && domainStrategy == "IPOnDemand" ){
+            var domainIp = 使用内置 DNS 解析 domain;
+            if( domainIp 和 routeRule 匹配){
+                将流量直接转发到 匹配的 出站协议
+                break;
+            }
+        } else {
+            if( domain 和 routeRule 匹配 ){
+                将流量直接转发到 匹配的 出站协议
+                break;
+            }
+        }
+    }
+    
+    if( 一个路由规则都没匹配到 && domainStrategy == "IPIfNonMatch" ){
+        var domainIp = 使用内置 DNS 解析 domain;
+        使用 domianIp 再次匹配 路由规则列表 中的所有 路由规则
+    }
+}
+
+function v2rayBuildinDnsAnalyze(domain){
+    根据配置的 DNS server 产生 dnsIn 流量
+    dnsIn 流量再次经过 路由规则列表匹配，找到 出站协议，发送 dns 请求
+}
+
+
+
+
+
+
+
+
+
+
+
+
+使用 V2Ray 内置的 DNS 解析 {
+    v2ray 默认配置 {
+        {
+          "dns": {},
+          "inbounds":[
+            {
+              // 需要开启对流量进行域名嗅探，才能使用内置的 DNS
+              "sniffing": { "enabled": true,"destOverride": ["http", "tls"]},
+            }
+          ],
+          "routing":{
+            # 当配置为 AsIs 时，v2ray 只使用域名进行路由选择，直接向 Domain 发出连接
+            # 使用的是：系统的 DNS 来做 DNS 解析
+            "domainStrategy": "AsIs",     
+
+            # 当 Domain 没有匹配任何路由规则时，将 Domian 解析成 IP(A 记录 或 AAAA 记录) 再次匹配路由规则，如果一个 Domain 对应多个 A 记录，会尝试所有 A 记录；解析后的 IP 地址，只用于路由选择，转发的数据包依然使用原始的 Domain
+            # 如果 Domain 匹配到了路由规则，那么直接发送数据包到指定的 outbound ，域名使用 系统的 DNS 来解析
+            # 如果 Domain 没有匹配到路由规则，需要解析成 IP 再匹配时，使用的是：v2ray.dns 中配置的内置 DNS 来做 DNS 解析
+            "domainStrategy": "IPIfNonMatch",  
+
+            # 当碰到任何基于 IP 的路由规则时，将 Domain 立即解析为 IP 进行匹配
+            # 使用的是：v2ray.dns 中配置的内置 DNS 来做 DNS 解析
+            "domainStrategy": "IPOnDemand",    
+          }
+        }
+    }
+
+    1. Browser 中输入 www.bilibili.com 点击 Enter
+    2. Browser 发现设置了 SOCK5 代理，
+    3. 因为 SOCK5 代理可以直接将 Domain 传给代理服务器处理，所以 Browser 直接把 Domain 放进 SOCKS5 请求中，发送给代理服务器
+    4. 代理服务器 VPS(V2Ray) 接收到 SOCKS5 代理的请求数据包，从 SOCKS5 请求数据包中提取出 Domain
+    5. V2Ray 根据 SOCKS5 请求中的 Domain，使用 v2ray 内置的 DNS 来解析域名
+    6. 内置的 DNS 发送 UDP 数据包请求对应的 DNS 服务器解析域名（注意该 UDP 流量也会经过路由选择，由匹配到的路由规则，发送到指定的 outbound 上，因此可以将 DNS 请求发送到 VPS，让 VPS 去解析）
+    7. v2ray 根据返回的 IP ，将该 Domain 的数据包，发送到返回的 IP 中
+
+
+
+}
+
+

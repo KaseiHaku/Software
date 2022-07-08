@@ -1,0 +1,106 @@
+通过 OpenSSL 自建 CA 认证机构 {
+    官网下载最新版 openssl-1.1.1d.tar.gz 并默认安装 { 
+        以下所有 shell> openssl 替换为 shell> /usr/local/bin/openssl，否则使用的是系统自带的 openssl
+    }
+
+    创建 CA 目录结构 {
+        shell> mkdir ~/ca
+        shell> cd ~/ca
+        shell> mkdir private crl certs newcerts 
+        shell> chmod 700 private                # 修改目录权限
+        shell> touch index.txt crlnumber serial private/.rand
+        shell> echo 1000 > serial        
+        shell> touch myOpenssl.conf             # 使用的配置文件   
+        
+    }
+    
+    生成 CA 认证机构根证书（CA 根证书都是 自签名 证书） {
+        
+        # 查看浏览器支持哪些 椭圆曲线： https://www.ssllabs.com/ssltest/clients.html
+    
+    
+        # 列出所有支持的曲线，选择自己浏览器支持的曲线，来生成密钥
+        shell> openssl ecparam -list_curves             
+        
+        # 生成 CA 根证书密钥对，包含公私钥
+        shell> openssl ecparam -genkey -name secp384r1 -outform PEM -out ./rootca.key.pem  
+        shell> mkdir ./private
+        shell> mv ./rootca.key.pem ./private      # 将私钥移动到 ca 的 private 目录下
+        
+        # 创建一个自己的 openssl.cnf 配置文件，可以使用 Software/OpenSSL/openssl.cnf 作为模板修改
+        shell> touch myOpenssl.cnf          
+        
+        # 生成 CA 自签名根证书
+        方式一：分步完成
+        # 生成请求文件时，myOpenssl.cnf 需要修改的地方: 
+        #   注释掉 ${v3_root_ca_ext::authorityKeyIdentifier}  和 ${v3_root_ca_ext::issuerAltName}
+        #   修改 ${req::req_extensions} 为 v3_root_ca_ext
+        #   修改 ${req::distinguished_name} 为 req_distinguished_name_root_ca_req
+        shell> openssl req -new -config ./myOpenssl.cnf -key ./private/rootca.key.pem -outform PEM -out ./rootca.crs.pem 
+        # 签名时，myOpenssl.cnf 需要修改的地方: 
+        #   放出注释掉的 ${v3_root_ca_ext::authorityKeyIdentifier}  和 ${v3_root_ca_ext::issuerAltName}
+        #   修改 ${default_ca::x509_extensions} 为 v3_root_ca_ext
+        shell> openssl ca -config ./myOpenssl.cnf -days 36500 -selfsign -utf8 -in ./rootca.crs.pem -out ./rootca.crt.pem 
+        
+        方式二：一步完成
+        shell> openssl req -new -x509 -days 36500 -config ./myOpenssl.cnf -key ./private/rootca.key.pem -out ./rootca.crt.pem  
+        
+    }
+    
+    生成 Nginx 证书 {
+        shell> openssl ecparam -genkey -name secp384r1 -outform PEM -out ./nginx.key.pem
+        
+        # 生成请求文件时，myOpenssl.cnf 需要修改的地方: 
+        #   注释掉 ${v3_nginx_crt_ext::authorityKeyIdentifier}  和 ${v3_nginx_crt_ext::issuerAltName}
+        #   修改 ${req::req_extensions} 为 v3_nginx_crt_ext
+        #   修改 ${req::distinguished_name} 为 req_distinguished_name_nginx_crt_req
+        shell> openssl req -new -config ./myOpenssl.cnf -key ./nginx.key.pem -outform PEM -out ./nginx.csr.pem         # 生成证书请求文件
+    }
+    
+    使用 CA 证书签署 Nginx 证书 {
+        方法一：
+        # 签名时，myOpenssl.cnf 需要修改的地方: 
+        #   放出注释掉的 ${v3_nginx_crt_ext::authorityKeyIdentifier}  和 ${v3_nginx_crt_ext::issuerAltName}
+        #   修改 ${default_ca::x509_extensions} 为 v3_nginx_crt_ext
+        shell> openssl ca -config ./myOpenssl.cnf -in ./nginx.csr.pem -out ./nginx.crt.pem 
+    
+        方法二：
+        shell> openssl x509 -req -in ./nginx.csr -extfile ./myOpenssl.cnf -extensions crt_ext -days 365 -sha256 \
+                -CA ./rootca.crt.pem -CAkey ./rootca.key.pem -CAcreateserial -out ./nginx.crt.pem
+        
+        shell> openssl x509 -in ./nginx.crt.pem -text   # 查看证书
+    }
+    
+    测试 Nginx 证书可用性 {
+        # 模拟一个 TLS Web 服务端供客户端验证
+        shell> openssl s_server -accept 4433 -HTTP -cert ./nginx.crt.pem -key ./nginx.key.pem
+    }
+    
+    将证书安装到 Windows {
+        把 ./rootca.crt.pem 名称改为 rootca.crt 然后安装为 根证书即可
+    }
+}
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

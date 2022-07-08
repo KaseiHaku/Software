@@ -1,0 +1,21 @@
+CentOS7:
+    shell> su root
+    
+    # 安装依赖的包
+    shell> yum install -y yum-utils device-mapper-persistent-data lvm2
+    
+    # 添加 Docker Repository yum 源
+    shell> yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+    # 安装 docker
+    shell> yum install docker-ce docker-ce-cli containerd.io
+    
+    # 启动 docker 
+    shell> systemctl start docker
+    
+    # 验证 docker 是否安装成功
+    shell> docker run hello-world
+    
+    
+Windows：
+    C:\Users\admin\AppData\Roaming\Docker\settings.json      配置 "wslEngineEnabled": false 

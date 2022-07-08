@@ -1,0 +1,3 @@
+https://www.latoooo.com/xia_zhe_teng/179.htm
+
+Proxifier 软件也可以实现，但是不支持 http 所以采用 SocksCap64

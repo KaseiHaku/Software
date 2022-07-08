@@ -1,0 +1,71 @@
+Format:
+    shell> iptables [-t table] command [match] [target/jump] 
+
+Chain:    
+    # 创建链
+    shell> iptables -t nat -N V2RAY                 // 在 nat 表中创建一个名为 V2RAY 的链
+    
+    # 删除链
+    shell> iptables -t nat -X                       // 删除所有用户定义的链
+    shell> iptables -t nat -X V2RAY                 // 删除自定义链，前提：1.自定义链没有被默认链引用，2.自定义链中没有规则
+    
+    # 修改链
+    shell> iptables -t nat -P V2RAY ACCEPT          // 为指定链配置默认 Target(动作)
+    shell> iptables -t nat -E V2RAY V2RAY_2         // 重命名自定义链
+
+
+Rule:
+    Query:
+    shell> iptables -t nat -S                               // 查看 nat 表所有规则，跟 -L 格式不一样
+    shell> iptables -t nat --line-numbers -L                // 查看 nat 表所有规则
+    shell> iptables -t nat --line-numbers -L V2RAY          // 查看 nat 表中 V2RAY 链中所有的规则
+    shell> iptables -t nat --line-numbers -vnL V2RAY        // 显示行标、不反解析 IP、显示详细信息
+    shell> iptables -t nat -C V2RAY match-pattern           // 查找 nat 表 V2RAY 链中符合 匹配模式 的所有规则
+
+    Create:
+    shell> iptables -t nat -A V2RAY -p tcp -j RETURN        // 给 nat 表中的 V2RAY 链增加一条新规则，插入到最后
+    shell> iptables -t nat -I V2RAY 4 -p tcp -j RETURN      // 给 nat 表中的 V2RAY 链插入一条新规则，插入位置为 4，相当于数组插入，其他规则后移
+    shell> iptables -t nat -R V2RAY 4 -p tcp -j RETURN      // 替换 nat 表 V2RAY 链中的第 4 条规则
+    
+    Delete:
+    shell> iptables -t nat -D match-pattern                 // 删除符合 匹配模式 的所有规则
+    shell> iptables -t nat -D V2RAY 4                       // 删除位置为 4 的规则
+    shell> iptables -t nat -F                               // 删除 nat 表中所有链的所有规则
+    shell> iptables -t nat -F V2RAY                         // 删除 nat 表中 V2RAY 链中所有的规则
+    
+    
+    Update:
+    shell> iptables -t nat -Z V2RAY             // 清空 nat 表 V2RAY 链的计数器，每条链，每条规则，都包含计数器，记录当前规则匹配的 IP 数据包数量
+    shell> iptables -t nat -Z V2RAY 4       // 清空 nat 表 V2RAY 链上第 4 条 rule 的计数器
+    
+Match Pattern:
+    -p 协议名称；可用协议名(如tcp)，或者是协议值（比如6代表tcp）来指定协议。映射关系请查看 /etc/protocols
+    -s 指定数据包源地址；可以使用 ip地址，网络地址，主机名，不指定 -s 那么表示所有源地址
+    -d 目的地址； ! -d 表示取反
+    -i 指定输入网卡；-i eth0 只处理由 eth0 网卡接收的数据， ! -i eth0 处理 eth0 网卡以外的网卡接收的数据， -i eth+ 处理 eth 带头网卡接收的数据
+    -o 指定输出网卡；没有 -o 表示从任意网卡发送; ! -o eth0 表示不从 eth0 网卡发送; -i eth+ 表示从 eth 带头的网卡发送  
+    --sport 源端口； –sport 22:100 表示指定一个端口范围；/etc/services文 件描述了端口号和端口名称的映射关系；
+    --dport
+    --tcp-flags
+    --icmp-type
+    
+Action:
+    
+    
+    -j 指定规则匹配时执行什么动作，可用值如上，还可以指定其他 Chain 作为目标，可以 return
+    -g chain    # 跳转到指定链，不可以 return
+    
+Target:
+    ACCEPT      # 表示继续匹配当前 chain 的下一个 rule
+    DROP        # 表示直接丢弃当前匹配的 ip 数据包
+    RETURN      # 表示返回父 chain，并开始匹配 父 chain 的下一条 rule
+    ChainName   # 表示数据包提交到另一条自定义 chain 去匹配 rule
+    iptables-enxtensions(8)     # 表示执行 这个 man 文档中描述的 target
+    
+
+    
+
+TProxy(Transparent Proxy):
+    shell> iptables -t mangle -A PREROUTING -p tcp -j TPROXY --on-port <12345 | 0> --on-ip <192.168.0.1> --tproxy-mark 16/16
+    shell> iptables -t mangle -A PREROUTING -p udp -j TPROXY --on-port <12345 | 0> --on-ip <192.168.0.1> --tproxy-mark 16/16
+    

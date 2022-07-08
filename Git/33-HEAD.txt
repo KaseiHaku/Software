@@ -1,0 +1,36 @@
+HEAD 指针基本概念 {
+    1. HEAD 指针指向一个 branch 时，HEAD 指针会和 branch 指针绑定，此时 HEAD 相当于 branch 指针的指针（C 中的指针变量）
+       当有新的 commit 时，HEAD 指针和 branch 指针会同时移动到新的 commit
+    2. HEAD 指针指向一个 commit 时，不管该 commit 有没有被 branch 指针指向，当前 HEAD 指针都为 detached 状态，
+}
+
+
+
+
+HEAD 指针移动 {
+    shell> git reset commit1        # 会将 HEAD 指针和当前和 HEAD 绑定的 branch 指针都指向到指定的 commit
+    shell> git reset --soft HEAD    # 缓存区和工作区里面的内容都不会改变，仅仅会移动 HEAD 指针到指定的 commit 
+    shell> git reset --mixed HEAD   # 清空缓存区里面的所有内容，但是工作区的内容不会变，移动 HEAD 指针到指定的 commit 
+    shell> git reset --hard HEAD    # 清空缓存区里面的所有内容，移动 HEAD 指针到指定的 commit，将工作区的内容恢复到 HEAD 指针指向的 commit 状态
+    shell> git reset --merge HEAD   # 清空缓存区，更新工作区跟 HEAD 不同的文件，保留工作区未 commit 的数据
+    shell> git reset --keep commit1 # 清空缓存区，重置工作区中，当前 HEAD 指针指向的 commit 和 commit1 不同的文件
+    
+    
+    shell> git checkout commit1     # 会导致 HEAD 指针成为 detached 状态
+    shell> git checkout branch1     # 将 HEAD 指针指向 branch1 指针，此时 HEAD 指针和 branch 是绑定状态
+    
+    
+    shell> git rebase commit1       # 将当前分支所有的提交拼接到 commit1 后面，如果出现冲突，则需要手工解决冲突 
+    
+    
+}
+
+给没有 branch 指针指向的 detached commit 创建 branch 指针 {
+    shell> git checkout commit1     # 将 HEAD 指针指向一个 detached commit
+    shell> git branch newBranch     # 为当前 HEAD 指针指向的 commit 创建一个新的分支，分支名为 newBranch 
+    shell> git checkout newBranch   # 让 HEAD 指针和 newBranch 指针绑定，就相当于正常的分支了
+}
+
+移动已经存在的 branch 指针到一个 detached commit  {
+    shell> git branch -f master commit1     # 将 master 分支指针移动到 commit 上，原先 master 分支指向的 commit 就变成了 detached commit
+}

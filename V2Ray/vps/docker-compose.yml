@@ -1,0 +1,21 @@
+version: "3.8"    # 表示当前 docker-compose(Compose specification) 的版本，版本 "3.8"  需要 docker 的版本为 19.03.0+
+services:
+  v2ray:
+    #image: v2fly/v2fly-core:v4.44.0
+    image: v2ray/official
+    ports:
+      - '40000:40000'
+    volumes:
+      - ./v2ray/config.json:/etc/v2ray/config.json:ro
+    #entrypoint: [sleep, 1d, 2m]
+    #command: []
+  nginx:
+    image: nginx:1.21.4
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/html:/usr/share/nginx/html:ro
+      - ./nginx/certificate.pem:/etc/nginx/certificate.pem:ro
+      - ./nginx/private.key:/etc/nginx/private.key:ro

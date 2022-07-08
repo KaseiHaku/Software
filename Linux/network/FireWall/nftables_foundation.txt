@@ -1,0 +1,133 @@
+Concept:
+    Table: chain 的容器
+        Address Family: 
+            ip 
+            ip6
+            inet        ip + ip6
+            arp         处理 IPv4 ARP 数据包
+            bridge      处理 穿越 网桥 的数据包
+            netdev      处理 ingress 和 egress 的包
+        
+        
+    Chain: rule 的容器
+        BaseChain: 可以直接挂在 Netfilter Hook 上的 Chain，类似 iptables 中的 内建 Chain
+        RegularChains: 类似 iptables 中的 用户自定义 Chain
+        
+        # 可组合表
+        Families                Type            Hook                    Device          Priority        Policy
+        arp                     filter          input,output                                            accept, drop
+        netdev                  filter          ingress                 ens33                           accept, drop
+        ip,ip6                  route           output                                                  accept, drop
+        ip,ip6,inet             nat             prerouting, input, output, postrouting                  accept, drop
+        ip,ip6,inet,bridge      filter          all                                                     accept, drop
+        
+        # 优先级名称-值 映射表
+        PriorityName    Value       BridgeValue         Family                                  Hook
+        raw             -300                            ip, ip6, inet                           all
+        mangle          -150                            ip, ip6, inet                           all
+        dstnat          -100        -300                ip, ip6, inet, bridge                   prerouting
+        filter          0           -200                ip, ip6, inet, bridge, arp, netdev      all
+        security        50                              ip, ip6, inet                           all
+        out                         100                 bridge                                  output
+        srcnat          100         300                 ip, ip6, inet, bridge                   postrouting
+        
+        
+        
+        Chain Type: 
+            filter      支持 arp, bridge, ip, ip6 and inet table families
+            route       用于标记数据包，支持 ip, ip6
+            nat         用于执行 Network Address Translation，支持 ip, ip6
+            
+        各个 Address Family 可以挂靠的 Netfilter Hook 
+            ip/ip6/inet:
+                ingress
+                prerouting
+                input
+                forward
+                output
+                postrouting
+
+            arp:
+                input
+                output
+
+            bridge:
+                和 ip/ip6/inet 的 Hook 一样
+
+            netdev: 
+                ingress: 在 tcpdump/tc 之后，在第三层(网络层)协议之前
+                egress: 在 第三层(网络层)协议之后，在 tcpdump/tc 之前
+        
+        Device:
+            netdev 类型 必须指定  device
+        
+        Priority:
+            用于指定 chain 之间的优先级
+            NF_IP_PRI_CONNTRACK_DEFRAG (-400), 
+            NF_IP_PRI_RAW (-300), 
+            NF_IP_PRI_SELINUX_FIRST (-225), 
+            NF_IP_PRI_CONNTRACK (-200), 
+            NF_IP_PRI_MANGLE (-150), 
+            NF_IP_PRI_NAT_DST (-100), 
+            NF_IP_PRI_FILTER (0), 
+            NF_IP_PRI_SECURITY (50), 
+            NF_IP_PRI_NAT_SRC (100), 
+            NF_IP_PRI_SELINUX_LAST (225), 
+            NF_IP_PRI_CONNTRACK_HELPER (300).
+        
+        Policy:
+            refers to: BaseChain 中控制流程走向 默认判断语句，
+            可选值有: accept, drop
+        
+    Rule: chain 中配置的 action
+        Handle(柄): rule 的内部编号，唯一标识一个 rule 
+        Position: 内部编号，用于在 某个 handle 之前插入一个 rule
+    
+    Expressions/Matches: 用于访问数据包的流转 线索，并根据线索创建 过滤器
+    
+    
+    Statements: 当数据包符合 Rule 时，执行的动作；分为 终止动作 和 非终止动作，一个 Rule 中可以有多个 非终止动作，但只能有一个 终止动作
+        Verdict statements: 判决声明
+            accept: Accept the packet and stop the remain rules evaluation. 直接跳过 netfilter 内核，发送给网卡
+            drop: Drop the packet and stop the remain rules evaluation.
+            queue: Queue the packet to userspace and stop the remain rules evaluation. 发送回内核空间
+            continue: Continue the ruleset evaluation with the next rule.
+            return: Return from the current chain and continue at the next rule of the last chain. In a base chain it is equivalent to accept
+            jump <chain>: Continue at the first rule of <chain>. It will continue at the next rule after a return statement is issued
+            goto <chain>: Similar to jump, but after the new chain the evaluation will continue at the last chain instead of the one containing the goto statement
+        Log:
+        Reject:
+        Counter:
+        Limit:
+        Nat:
+        Queue:
+    
+    Advanced data structures for performance packet classification: 高级数据结构，用于包分类
+        Intervals
+        Concatenations
+        Math operations
+        Stateful objects
+            Counters
+            Quotas
+            Limits
+            Connlimits (ct count)
+        Other objects
+            Conntrack helpers (ct helper, Layer 7 ALG)
+            Conntrack timeout policies (ct timeout)
+            Conntrack expectations (ct expectation)
+            Synproxy
+            Secmarks
+        Generic set infrastructure
+            Sets
+            Element timeouts
+            Updating sets from the packet path
+            Maps
+            Verdict maps
+            Metering (formerly known as flow tables before nftables 0.8.1)
+        Flowtables (the fastpath network stack bypass)
+        
+        
+    
+    
+        
+

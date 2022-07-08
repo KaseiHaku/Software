@@ -1,0 +1,149 @@
+{
+  "log": { "loglevel": "debug" },
+  "dns": {
+    "tag": "dnsIn",
+    "clientIp": "66.98.122.202",        // VPS IP 地址，主要用于主机区域定位，返回就近的 CDN 网络主机
+    "servers":[
+      "8.8.8.8",
+      "1.1.1.1",
+      "localhost"
+    ]
+  },
+  "inbounds": [
+    {
+      "tag": "h2LadderIn",
+      "protocol": "vmess",
+      "port": 12306,
+      "settings": {
+        "clients":[
+          {"id":"d45499fa-6c4b-3e55-adbb-bd50bc4137b8", "level": 0, "alterId":4, "email":"ksf@kasei.haku"}
+        ],
+        "disableInsecureEncryption": true
+      },
+      "streamSettings":{
+        "network": "http",
+        "httpSettings": {
+            "host": ["qwer.com", "wasd.com", "ijkl.com", "zxcf.com"],
+          "path": "/v2ray/ladder/h2"
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "1291114093.ml",
+          "certificates": [
+            {
+              "usage": "encipherment",
+              "certificateFile": "/root/ca/certs/nginx.crt.pem",
+              "keyFile": "/root/ca/nginx.key.pem"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "tag": "wsLadderIn",
+      "protocol": "vmess",
+      "port": 12307,
+      "settings": {
+        "clients":[
+          {"id":"d45499fa-6c4b-3e55-adbb-bd50bc4137b8", "level": 0, "alterId":4, "email":"ksf@kasei.haku"}
+        ],
+        "disableInsecureEncryption": true
+      },
+      "streamSettings":{
+        "network": "ws",
+        "wsSettings": {
+          "path": "/v2ray/ladder/ws",
+          "headers": {
+            "Host": "1291114093.ml"
+          }
+        },
+        "security": "none"              // 此处 TLS 加密放在 Nginx 端处理
+      }
+    },
+    /** todo 接收 home v2ray 需要通过 company v2ray 发送的请求 */
+    {
+      "tag": "wsPortalIn",
+      "protocol": "vmess",
+      "port": 12360,
+      "settings": {
+        "clients":[
+          {"id":"d45499fa-6c4b-3e55-adbb-bd50bc4137b8", "level": 0, "alterId":4, "email":"ksf@kasei.haku"},
+          {"id":"8fe81842-a5cc-82b2-decb-a65ff1f22fa7", "level": 0, "alterId":4, "email":"lzl@kasei.haku"}
+        ],
+        "disableInsecureEncryption": true
+      },
+      "streamSettings":{
+        "network": "ws",
+        "wsSettings": {
+          "path": "/v2ray/reverse/ws/home",
+          "headers": {
+            "Host": "1291114093.ml"
+          }
+        },
+        "sniffing": { "enabled": true, "destOverride": ["http", "tls"] },
+        "security": "none"
+      }
+    },
+    /** todo 接收 company v2ray 主动发起的请求 */
+    {
+      "tag": "wsBridgeIn",
+      "protocol": "vmess",
+      "port": 12361,
+      "settings": {
+        "clients":[
+          {"id":"d45499fa-6c4b-3e55-adbb-bd50bc4137b8", "level": 0, "alterId":4, "email":"ksf@kasei.haku"},
+          {"id":"8fe81842-a5cc-82b2-decb-a65ff1f22fa7", "level": 0, "alterId":4, "email":"lzl@kasei.haku"}
+        ],
+        "disableInsecureEncryption": true
+      },
+      "streamSettings":{
+        "network": "ws",
+        "wsSettings": {
+          "path": "/v2ray/reverse/ws/company",
+          "headers": {
+            "Host": "1291114093.ml"
+          }
+        },
+        "security": "none"
+      },
+      "sniffing": { "enabled": true,  "destOverride": ["http", "tls"] }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "freedomOut",
+      "protocol": "freedom"
+    }
+  ],
+  "reverse":{
+    "portals":[
+      /** domain 不用真实存在，只用作反向代理的标识，但必须和 company.json 中配置的一样 */
+      {"tag": "portal1", "domain":"ksf.reverse.kasei.haku"},
+      {"tag": "portal2", "domain":"lzl.reverse.kasei.haku"}
+    ]
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",   // 域名策略必须让 DNS 解析放在 company v2ray 上，否则解析不了内网域名
+    "rules": [
+      /** todo 将 home v2ray 需要反向代理的数据转发到 company v2ray 对接 portal 上 */
+      {
+        "type": "field",
+        "inboundTag":["wsPortalIn"],
+        "user":["ksf@kasei.haku"],
+        "outboundTag":"portal1"
+      },
+      /** todo 将 company v2ray 主动发起的请求数据转发到 home v2ray 对接 portal 上 */
+      {
+        "type":"field",
+        "inboundTag":["wsBridgeIn"],
+        "domain":["full:ksf.reverse.kasei.haku"],
+        "outboundTag":"portal1"
+      },
+      {
+        "type": "field",
+        "inboundTag":["h2LadderIn", "wsLadderIn"],
+        "outboundTag": "freedomOut"
+      }
+    ]
+  }
+}

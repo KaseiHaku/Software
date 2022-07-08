@@ -1,0 +1,67 @@
+Redis Data Type {
+    String: 二进制安全的字符串
+    List: 按插入顺序排序的 string
+    Set: 唯一，无序的 string 集合
+    SortedSet: 每个元素都关联一个 float 类型的 score
+    Hashe: 以关联复杂的字段当 key 关联到 value
+    BitArray: 比特位数组
+    HyperLogLog: 
+    Stream: 
+}
+
+Connection {
+    shell> redis-cli -h 127.0.0.1 -p 6379 -a "mypass"       # 登录远程机 redis 服务，不加主机默认当前服务器
+    shell> redis-cli -c -h 127.0.0.1 -p 6379 -a 'pwd'       # -c 表示集群
+    redis> auth password                                    # 用于连接了主机，但是没有登录时，用于登录的命令
+    redis> ping 
+    redis> select 15                                        # 默认有 0~15 个 database ，具体有多少查看 redis 配置，默认连接到 0 号库
+    redis> swapdb 0 1                                       # 将原来链接到 0 号库的所有连接
+    redis> quit                                             # 退出
+}
+
+Server {
+    redis> config get *                                     # 查看当前 redis server 所有配置
+
+}
+
+Transaction {
+    redis> multi                                            # 开始 redis 事务，相当于 begin transaction
+    redis> ...
+    redis> exec                                             # 执行 multi 命令之后声明的所有命令
+    redis> discard                                          # 丢弃 multi 命令之后声明的所有命令
+    redis> watch                                            # 
+    redis> unwatch                                          #
+}
+
+Key {
+    shell> redis-cli -c -h 127.0.0.1 -p 6379 -a 'pwd' --scan --pattern '*key*'  # 查询当前主机中，符合 patrern 的 key
+    redis> keys *                                           # 查找当前主机中所有 key
+    redis> scan 0 match *pattern* count 100000              # 遍历 key
+    redis> exists key1 key2                                 # 判断 key 是否存在，支持集群
+    redis> type key                                         # 查看指定 key 的类型
+    redis> expire key seconds                               # 设置指定 key 的过期时间
+    redis> expire key timestamp                             # 设置指定 key 的过期时间
+    redis> persist key                                      # 删除 key 的过期时间
+    redis> ttl key                                          # 查看 key 的过期时间
+    redis> pttl key                                         # 查看 key 的过期时间
+    redis> del key1 key2                                    # 删除 key
+    
+    shell> redis-cli -c -p 7001 cluster nodes| cut -d' ' -f2| cut -d'@' -f1| sed 's/:/ -p /g'| xargs -d'\n' printf ' -h %s\n' | xargs -d'\n' -n1 -I{} redis-cli -c {} kyes ZUU* > redis-cli.sh && ./redis-cli.sh
+    
+    # 查看 0-16 database 中所有的 key, 及 key 所在 DB，DB index 存在一位的偏移，显示 2 实际 dbindex=1
+    shell> echo {0..16} | xargs -t -I {} -d ' ' redis-cli -h 127.0.0.1 -n {} -a 'pwd' keys '*' | grep -E 'xargs|keyPattern' 
+   
+}
+
+
+String {
+    redis> get key                                          # 获取指定 key 的 value
+}
+
+Geolocation {
+
+
+}
+
+
+

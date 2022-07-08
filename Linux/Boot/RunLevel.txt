@@ -1,0 +1,42 @@
+Linux Run Level:
+    0 = halt                                            系统默认运行级别不能设置为0，否则不能正常启动，一开机就自动关机
+    1 = single-user-mode                                root权限，用于系统维护，禁止远程登陆，就像Windows下的安全模式登录
+    2 = multi-user-mode                                 多用户模式，没有 NFS 网络支持 
+    3 = multi-user-mode+networking                      完整的多用户文本模式，有 NFS，登陆后进入控制台命令行模式 
+    4 = undefined                                       系统未使用，保留一般不用，在一些特殊情况下可以用它来做一些事情。例如在笔记本电脑的电池用尽时，可以切换到这个模式来做一些设置
+    5 = multi-user-mode+networking+displaymanager       陆后进入图形GUI模式或GNOME、KDE图形化界面，如X Window系统
+    6 = reboot                                          默认运行级别不能设为6，否则不能正常启动，就会一直开机重启开机重启
+
+
+各个运行级别进入方式：
+    0
+        shell> shutdown 
+    1
+        进入 grub:
+            如果 formware 是 BIOS 类型：MBR 阶段长按 Shift 进入 grub
+            如果 formware 是 BIOS 类型：MBR 阶段长按 ESC 进入 grub
+        修改启动参数：
+            grub 界面选择 "Manjaro Linux" 选项，按 e 进入编辑
+                找到 linux /boot/vmlinuz-5.4-x86_64 root=UUID=xxx rw quiet ... 行，追加 single 参数到该行末尾
+                    该方式进入的 单用户模式 需要输入 root 密码才能进行操作
+                找到 linux16 开头的行，按向右的方向键，定位到 ro， 把 ro 改成 "rw init=/sysroot/bin/sh"
+                    该方式进入的 单用户模式 可以修改 root 密码
+            F10 启动
+    2
+    3
+    4
+    5
+    6
+        shell> restart
+
+单用户模式使用简介：
+    其实是一个安全模式下的内存系统，并不是平常使用的 linux 系统，
+    shell> ls /sysroot/         # 查看我们正常系统中的文件
+    shell> chroot /sysroot/     # 切换到正常系统中去
+    shell> passwd root          # 可以修改 root 密码了
+    shell> touch /.autorelabel  # 修改 root 密码后，必须执行该命令，不然会导致系统无法正常登陆，该命令让 selinux 重新标记文件
+    shell> exec /sbin/init      # 退出单用户模式
+    shell> reboot               # 重启方式退出单用户模式
+    
+    
+    

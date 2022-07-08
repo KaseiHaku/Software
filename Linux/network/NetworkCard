@@ -1,0 +1,55 @@
+# 简介
+# Linux 所有网卡设备信息都保存在 /etc/sysconfig/network-scripts 目录下
+# 该目录下，每一个 ifcfg- 开头的文件，都是一张网卡的配置文件
+# 比如：/etc/sysconfig/network-scripts/ifcfg-ens33 文件，就是网卡 ens33 的配置文件
+# /etc/sysconfig/network 该文件是所有网卡的全局默认配置，如果 ifcfg-* 文件中没有配置，默认采用该文件中的配置
+
+
+
+# 网卡信息配置
+UUID=3f41063c-d331-4ae4-99ce-d92fb9790896
+NAME=ens33                                  # 必须和 DEVICE 参数一样
+DEVICE=ens33                                # 物理设备名称，必须和 ifcfg-ens33 很杠后面的值对应
+MACADDR=00:24:8C:79:1A:2B                   # 网卡地址即MAC地址
+TYPE=Ethernet                               # 网络类型
+ONBOOT=yes                                  # 开机自启动
+# 启动该网卡时使用哪种协议
+# none(引导时不使用协议)，static(静态分配，手动设置IP时用)，dhcp(DHCP协议，自动设置IP时用)，bootp(bootp协议)
+BOOTPROTO=dhcp            
+MTU=1500                                    # 最大传输单位的设置
+USERCTL=no                                  # 表示是否允许非 root 用户控制该设备，no:只能 root 用户能更改该设备
+
+BROWSER_ONLY=no
+PROXY_METHOD=none
+NM_CONTROLLED=no                            #表示该网卡将通过该配置文件进行设置，而不是通过 NetworkManager 进行管理。
+
+
+
+# IP 地址配置
+IPADDR=192.168.1.153                        # ipv4 地址
+PREFIX=24                                   # 掩码长度，和 NETMASK 参数二选一
+#NETMASK=255.255.255.0                      # 子网掩码
+NETWORK=192.168.1.0                         # 网络地址，主机号全 0
+GATEWAY=192.168.1.1                         # 网关地址
+BROADCAST=192.168.1.255                     # 广播地址
+IPV4_FAILURE_FATAL=no                       # 只要 ipv4 启动失败，就失败
+DEFROUTE=yes                                # 表示 ipv4 默认路由为当前网卡
+
+# IPv6 地址配置
+IPV6INIT=yes                                # 开启 ipv6 支持
+IPV6_AUTOCONF=yes                           # 开启 ipv6 自动配置
+IPV6_DEFROUTE=yes                           # 表示 ipv6 默认路由为当前网卡
+IPV6_FAILURE_FATAL=no                       # 只要 ipv6 启动失败，就失败
+IPV6_ADDR_GEN_MODE=stable-privacy           # 产生 ipv6 地址的方式
+                           
+
+
+
+# 域名解析配置
+DNS1=223.5.5.5                              # 当前网卡的首选 DNS
+DNS2=8.8.8.8                                # 当前网卡第二个 DNS
+PEERDNS=no                                  # 如果 BOOTPROTO 为 dhcp，是否允许 dhcp 服务器分配的 dns 服务器指向信息直接覆盖至 /etc/resolv.conf
+
+
+
+

@@ -1,0 +1,16 @@
+搬瓦工官网：https://bwh88.net/clientarea.php?action=products
+搬瓦工账号：129@qq.com
+密码：f22
+
+搬瓦工 IP 被墙检测网址：
+    官网工具：https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck
+    IP 端口号检测（国内）：http://tool.chinaz.com/update.html
+    IP 端口号检测（国外）：https://www.yougetsignal.com/tools/open-ports/
+
+
+
+
+
+
+
+

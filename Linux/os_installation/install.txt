@@ -1,0 +1,46 @@
+系统镜像下载：
+    官网：https://www.centos.org/download/
+    下载 CentOS-7-x86_64-Minimal-1810.iso 镜像文件
+
+安装 VMware：
+    官网：https://www.vmware.com/
+    官网下载：VMware-workstation-full-15.1.0-13591040.exe
+    安装破解：见 /Software/VMware
+
+新建虚拟机：
+    4 核
+    2 线程
+    256G 硬盘
+    选择稍后安装操作系统，选择 CentOS7
+    选择网络模式为 bridge
+
+安装 CentOS 7:
+    挂载系统镜像文件到虚拟机上
+    配置强制使用 GPT 分区
+        安装界面：即出现 Install CentOS 7 那个界面
+        按 Tab 键，并输入 inst.gpt，注意与前面参数空格隔开
+        回车开始安装
+    配置网络：
+        网络配置
+            宿主机（win）： Super+R -> cmd -> ipconfig -> 查看当前 宿主机 的网卡 IP 地址 和 Gateway （Suppose: IP=192.168.1.5 Gateway=192.168.1.1）
+            虚拟机输入 IP=192.168.1.128  Mask=255.255.255.0   Gateway=192.168.1.1
+    时间配置
+        时区=上海  并开启 NTP(网络时间同步)
+    硬盘分区配置
+        硬盘大小 256G
+        挂载点         文件系统格式      容量          备注
+        biosboot        biosboot        2M      GPT 分区方式必须要的分区
+        /home           xfs             64G
+        /opt            xfs             128G
+        /srv            xfs             2G      提供网络服务，作服务器时可以大点，个人使用没必要太大
+        /usr/local      xfs             16G
+        /var            xfs             4G
+        /tmp            xfs             4G
+        swap            swap            16G     用于内存交换，如果 宿主机 内存小，可以配大一点
+        以上目录独立挂载，其他全部挂载在 / 目录下
+    语言配置
+        选择：英语/美国 和 中文/简体
+    用户配置
+        设置 root 密码，简单密码不通过，连续点两次 Done 即可
+        创建一个用户 kasei ,勾选配置为 Administrator
+    

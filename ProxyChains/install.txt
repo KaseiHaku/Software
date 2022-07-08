@@ -1,0 +1,5 @@
+网址链接：
+    https://github.com/rofl0r/proxychains-ng            // ng 表示是 proxychains 的 New Generation 即新版本
+
+
+

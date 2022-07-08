@@ -1,0 +1,55 @@
+ubuntu-18.04.1-desktop-amd64.iso 安装完成后，系统初始化配置
+
+1. 配置 vi 退格、方向键的功能
+    shell> cd /etc/vim
+    shell> sudo vi vimrc.tiny
+    修改文件中的 set compatible 为 set nocompatible 保存
+    
+
+2. 开启 ubuntu-18.04.1 root 账户
+    shell> sudo passwd root     # 修改 root 账户的密码
+    
+    shell> vi /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf
+    # 在文件末尾添加如下两行
+    greeter-show-manual-login = true
+    all-guest = false
+    
+    shell> cd /etc/pam.d
+    shell> vi gdm-autologin
+    注释掉auth required pam_succeed_if.so user != root quiet_success这一行，保存 
+    shell> vi gdm-password 
+    注释掉 auth required pam_succeed_if.so user != root quiet_success这一行，保存
+    
+    shell> vi /root/.profile
+    将文件末尾的 mesg n || true 这一行修改成tty -s && mesg n || true， 保存
+    
+    shell> shutdown -r now
+    选择 not list 输入 账号 root 输入密码登陆即可 
+
+
+3. 配置 apt-get 源
+    
+    shell> cd /etc/apt
+    shell> mv sources.list ./sources.list.bak
+    shell> touch sources.list
+    
+    从网上下载 源的内容写入到 新建的 sources.list
+
+    shell> sudo apt-get update
+    # 根据 /etc/apt/sources.list 和 /etc/apt/sources.list.d 中列出来的源的地址
+    # 下载最新的软件列表，更新本地软件包缓存信息（包含软件名，版本，校验值，依赖关系等）
+    # 具体下载文件在目录： /var/lib/apt/lists
+                                             
+    shell> sudo apt-get upgrade
+    # 下载最新的软件包，并替换系统上过时的软件
+    # 具体下载文件的保存目录为： /var/cache/apt/archives
+
+3. apt-get 的使用
+    shell> apt-get install packagename # 安装一个新的软件包
+    shell> apt-get remove packagename # 卸载一个已安装的软件包（保留配置文档）
+    shell> apt-get remove --purge packagename # 卸载一个已安装的软件包（删除配置文档）
+    shell> apt-get autoremove packagename # 删除包及其依赖的软件包
+    shell> apt-get autoremove --purge packagname # 删除包及其依赖的软件包+配置文件，比上面的要删除的彻底一点
+    shell> apt-get clean # 清除已安装软件的备份软件包
+    shell> apt-get autoclean # apt 卸载或者安装软件是会有备份，这个命令来删除您已卸载掉的软件的备份
+    

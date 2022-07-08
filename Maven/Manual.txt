@@ -1,0 +1,118 @@
+# Maven 命令格式
+    运行 phase
+        shell> mvn clean            # 删除 target 目录
+        shell> mvn compile          # 对该项目进行编译
+        shell> mvn test             # 执行 MavenWeb/src/test/java 目录下 junit 的测试程序
+        shell> mvn package          # 对项目进行打包，生成的文件在 target 目录下面，把该文件拷贝到 tomcat webapp 路径下即可运行
+        shell> mvn install          # 安装打包好的当前项目的 jar 包到本地仓库中
+        shell> mvn dependency:tree  # 该命令会打印一个当前项目的依赖树
+   
+    运行 Maven 插件 goal
+        shell> mvn groupId:artifactId:version:goal              # 运行指定插件的指定 goal
+        shell> mvn groupId:artifactId:goal                      # 省略 version，默认运行本地仓库中该插件的最高版本
+        shell> mvn artifactId:goal                              # 如果该插件的 groupId=org.apache.maven.plugins 
+                                                                # 或者 该插件的 groupId 在 settings.xml 中的 <pluginGroups> 标签中配置过，那么可以省略 groupId
+        shell> mvn prefix:goal                                  # 如果 artificatId 格式符合以下命名格式：
+                                                                # 官方插件 artificateId 命名格式: maven-${prefix}-plugin
+                                                                # 三方插件 artificateId 命名格式: ${prefix}-maven-plugin
+                                                                # 那么 artifactId 可以使用 prefix 进行替换
+
+# maven 帮助
+    shell> mvn --help                   # 查看 mvn 命令的使用帮助
+    shell> mvn help:help                # 查看 help 插件的 help goal 的帮助
+    shell> mvn help:help -Ddetail=true  # 查看 help 插件的 help goal 的详细帮助
+    shell> mvn help:describe -Ddetail -Dplugin=dependency -Dgoal=run
+    
+    shell> mvn plugin:help  # 查看插件 plugin 的帮助
+    shell> mvn plugin:help -Ddetail=true -Dgoal=goalName  # 查看指定 goal 的详细帮助
+    shell> mvn help:describe -Dplugin=compiler -Dgoal=compile -Ddetail=true     # 查看 指定plugin 指定goal 的详细帮助  
+
+   
+    
+
+Maven Trap:
+    maven 拉取不到 远程仓库 中新增的 artificate：
+        原因：当 local repository 中包含新增的 artificate 的目录（但是该目录中没有 jar 包）时，maven 就不会从 远程仓库 中拉取 artificate
+        解决方案：删除 artificate 目录
+    
+    手动往 maven 本地仓库中添加 定制 jar 包, 但是构建时依然找不到 jar:
+        主要原因是 maven  Verifying availability 
+        只需要删除 *.lastUpdated  和 *.repositories  文件即可
+
+    Maven 包冲突处理策略:
+        最短路径优先
+        如果路径长度相同，则最先声明优先
+        
+    Maven 添加本地 jar 包:
+        1. 将 jar 包 install 到 maven local repository 中
+           shell> mvn install:install-file -Dfile=./xxx.jar -DgroupId=com.longersoftware -DartifactId=hmac -Dversion=1.0 -Dpackaging=jar -Dclassifier=cls
+        2. 将本地目录当做一个 repository , 并在其中部署 jar 包, 然后 pom.xml 中添加该 repository
+           shell> mvn deploy:deploy-file   部署 jar 包到 本地目录, 然后 pom 文件中添加 <repository><url>file:///home/kasei/mvnRepo</url></repository> 引入
+        3. shell> 直接将 jar 包依赖的 <scope> 改成 system, 并配置 <systemPath> 到 jar 包所在位置
+        4. Nexus 私有仓库管理
+        神坑: install-file 时,需要同时 安装 pom 文件, 不然没用
+       
+
+Maven 项目目录结构{  
+
+	MavenWeb
+		├─ pom.xml 
+		├─ target   //存放运行生成的文件
+		└─ src
+			├─ test
+			│	└─ java
+			│		└─ 自定义包
+			│
+			│
+			└─ main
+				├─ webapp   
+				├─ resources   //存放资源文件
+				└─ java
+					└─ 自定义包	
+ 
+	                         
+		注意：所有目录和文件不能缺，缺了会错
+}
+
+
+Maven 构建生命周期 {
+    shell> mvn validate    验证：     验证项目是否正确且所有必须信息是可用的
+    shell> mvn compile     编译：     源代码编译在此阶段完成
+    shell> mvn test        测试：     使用适当的单元测试框架（例如JUnit）运行测试。
+    shell> mvn package     打包：     创建JAR/WAR包如在 pom.xml 中定义提及的包
+    shell> mvn verify      检查：     对集成测试的结果进行检查，以保证质量达标
+    shell> mvn install     安装：     安装打包的项目到本地仓库，以供其他项目使用
+    shell> mvn deploy      部署：     拷贝最终的工程包到远程仓库中，以共享给其他开发人员和工程
+    
+}
+
+# 创建项目目录结构
+    shell> mkdir NewProject && cd NewProject
+    shell> mvn archetype:generate
+
+# 生成 maven wrapper
+    shell> mvn -N io.takari:maven:0.7.7:wrapper -Dmaven=3.5.4
+    
+
+    
+   
+
+Maven 包依赖冲突处理 {
+    shell> mvn dependency:tree -Dverbose        # 查看所有依赖传递
+    shell> mvn dependency:tree -Dverbose | cat -n | grep -P 'jcl-over|spring-jcl'  # 查看冲突在哪一行
+
+    
+}
+
+Maven 运行指定 main 方法 {
+    shell> mvn exec:java -Dexec.mainClass="kasei.Haku" -Dexec.args="arg0 arg1 arg2"  -Dexec.classpathScope=runtime
+}
+Maven 运行测试用例 {
+    shell> mvn test -Dtest=kasei.test.MyClassTest#test*Method*   # 支持统配符
+}
+
+
+
+
+
+

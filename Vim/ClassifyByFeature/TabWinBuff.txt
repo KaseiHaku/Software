@@ -1,0 +1,166 @@
+Vim Tab Win Buffer 概念 {
+    Tab -1:n-> Win -1:n-> Buffer
+}
+
+
+Vim 打开文件 {
+    shell> vim -c 'e ++enc=utf-8' file        # 以指定编码格式打开文件
+}
+
+Vim Shell 切换 {
+    :shell              # 进入 shell 编写命令
+    shell> exit         # 回到 vim 界面
+}
+
+Tab 页操作 {
+    :help tab-page-intro	                # 查询标签页相关命令
+
+    :tabnew file                            # 建立对指定文件新的tab
+    :tabe[dit] file                         # 在当前 tab 页后面，新增一个 tab 页，并打开文件 file
+    :tabc[lose]                             # 关闭当前的tab
+    :tabo[nly]                              # 关闭所有其他的tab
+    :tabs                                   # 查看所有打开的tab
+    
+    :tabp[revious]                          # 切换到前一个 tab
+    gT                                      # 同 :tabp    
+    <C-PageUp>                              # 同 :tabp
+    :tabn[ext]                              # 切换到下一个 tab
+    4gt                                     # 同 :tabn, 跳转到 4号 tab 页上
+    <C-PageDown>                            # 同 :tabn    
+    :tabfir[st]                             # 打开第一个 tab 页
+    :tabr[ewind]                            # 同 tabfir
+    
+    
+    :tabm[ove]2                             # 将当前 tab 移动到 2 号 tab 位
+    :tabm[ove]+3                            # 将当前 tab 右移 3 个 tab 位
+    :tabm[ove]-3                            # 将当前 tab 左移 3 个 tab 位  
+}
+
+Win 窗口操作 {
+    新建窗口 {
+        :new                    # 新建一个未命名的窗口
+        :new winName            # 新建一个名为 winName 的窗口，保存后文件名就是 winName
+        :vnew                   # 新建一个未命名的窗口，并纵向分隔当前窗口
+        :split                  # 横向分割当前窗口，内容和当前窗口相同
+        :split winName          # 横向分割当前窗口，新窗口名为 winName，别名 sp
+        :vsplit                 # 纵向分割当前窗口，内容和当前窗口相同
+        :vsplit winName         # 纵向分割当前窗口，新窗口名为 winName，别名 vsp
+        
+        :Ex                         # 打开目录浏览器
+        :Sex                        # 水平分割当前窗口并打开目录浏览器
+        :Vex                        # 垂直分割当前窗口并打开目录浏览器
+    }
+    关闭窗口 {
+        :quit!                # 强制推出当前窗口，不保存
+        <C-W>q                # 同 :q
+        :qall                 # 关闭所有窗口
+           
+        :close                # 使用close只是暂时关闭窗口，其内容还在缓存中，只有使用q!、w!或x才能真能退出
+        <C-W>c                # 同 :close 
+        
+        :only                 # 关闭所有其他窗口
+        <C-W>o                # 同 :only
+    }
+    切换窗口 {
+        # 可以使用 方向键 替换 hjkl，注意大小写
+        <C-W>w                # 跳转到下一个窗口
+        <C-W>h                # 跳转到左边的窗口
+        <C-W>j                # 跳转到下面的窗口
+        <C-W>k                # 跳转到上面的窗口
+        <C-W>l                # 跳转到右边的窗口
+        <C-W>t                # 跳转到最顶上的窗口
+        <C-W>b                # 跳转到最底下的窗口
+    }
+    移动窗口{
+        # 可以使用 方向键 替换 hjkl，注意大小写
+        <C-W>H                # 把当前窗口移动到最左边
+        <C-W>J                # 把当前窗口移动到最下边
+        <C-W>K                # 把当前窗口移动到最上边
+        <C-W>L                # 把当前窗口移动到最右边
+        <C-W>T                # 把当前移动作为一个新的 tab 页打开
+        <C-W>x                # 交换同列或同行的窗口的位置。vim默认交换当前窗口的与它下一个窗口的位置，如果下方没有窗口，则试着与上一个窗口交换位置
+        <C-W>r                # 向右或向下方 Rotate（旋转）窗口
+        <C-W>R                # 向左或向上方 Rotate（旋转）窗口
+    }
+    窗口大小调整 {
+        <C-W>=                  # 平均各个窗口的宽高
+        <C-W>_                  # 当前窗口高度扩展到最大
+        <C-W>|                  # 当前窗口宽度扩展到最大
+        <C-W>+                  # 纵向扩大，增加行数
+        <C-W>-                  # 纵向缩小，减少行数
+        <C-W>>                  # 横向扩大，增加列数
+        <C-W><                  # 横向缩小，减少列数
+        :resize 5               # 设置当前窗口为 5 行，别名 res
+        :resize+5               # 当前窗口加 5 行
+        :resize-5               # 当前窗口减 5 行
+        :vertical resize 5      # 设置当前窗口为 5 列，别名 vertical res
+    }
+}
+Buffer 缓冲区操作 {
+    增 {
+        shell> vim aa.txt       # shell 打开一个文件
+        :browse e               # 打开一个文件浏览器，选择要编辑的文件
+    }
+
+    删 {
+        :bd[elete] 3            # 删除 3 号缓冲区
+        :bw[ipeout]             # 彻底删除缓冲区
+    
+    }
+
+    查 {
+        :ls                     # 列出目前 缓冲区 中的所有文档。加号 + 表示 缓冲区已经被修改过了。# 代表上一次编辑的文档，% 是目前正在编辑中的文档
+        :files                  # 同 :ls
+        :buffers                # 同 :ls
+        :buffers!               # 查看所有缓冲区，包括被删除的，隐藏的
+    }
+
+    缓冲区切换 {
+        :bn[ext]                # 编辑下一个缓冲区
+        :bp[revious]            # 编辑上一个缓冲区  
+        :bf[irst]               # 编辑第一个缓冲区
+        :bl[ast]                # 编辑最后一个缓冲区
+        :b 3                    # 编辑 3 号缓冲区
+        :b fileName             # 将当前窗口的内容显示为缓冲区 fileName 文件的内容    
+        
+        :e#                     # 将当前窗口的内容显示为缓冲区 上一次编辑的文件
+        <C-6>                   # 同 :e#
+        
+        # 以下命令只适用于多文档编辑
+        :n                      # 跳到下一个文件
+        :2n                     # 跳到第 2 个文件
+        :N                      # 跳到缓冲区上一个文件
+    }
+    
+    
+
+    缓冲区内容变更 {
+        :e                      # 重新加载当前文件
+        :e!                     # 重新加载当前文件，丢弃当前修改
+        :e fileName             # 在当前窗口打开另一个文件
+        :e ++enc=utf-8 myfile.txt           # 以指定编码格式打开文件
+
+
+        
+    }
+    
+    
+    缓冲区保存 {
+        :f                      # 显示当前编辑的文件名
+        :f newWinName           # 重命名窗口
+        :saveas fileName        # 另存为 fileName
+
+        :w                      # 保存当前文件，默认保存的是当前窗口名称
+        :w fileName             # 当前文件另存为 fileName，保存路径为当前路径        
+        :wall                   # 保存所有窗口
+        :x                      # 如果修改过则保存并关闭，否则直接关闭，不更新文件最后修改时间属性
+
+    }
+
+
+    
+
+    
+}  
+
+ 

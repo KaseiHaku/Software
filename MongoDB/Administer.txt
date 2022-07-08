@@ -1,0 +1,61 @@
+Mongo {
+    mongo> help                             # 查看 mongo 支持哪些命令
+    mongo> db               # 查看当前在哪个数据库下
+    mongo> show dbs         # 列出所有数据库
+}
+
+User {
+    mongo> db.system.users.find().pretty();     # 查看 mongo 中所有 user
+    mongo> show users              # 查看当前 db 中的所有 user
+     
+    mongo> db.createUser(       # 创建 user
+       {
+         user: "<name>",
+         pwd: passwordPrompt(),      // Or  "<cleartext password>"
+         customData: { <any information> },
+         roles: [
+           { role: "<role>", db: "<database>" } | "<role>",
+           ...
+         ],
+         authenticationRestrictions: [
+            {
+              clientSource: ["<IP>" | "<CIDR range>", ...]
+              serverAddress: ["<IP>" | "<CIDR range>", ...]
+            },
+            ...
+         ],
+         mechanisms: [ "<SCRAM-SHA-1|SCRAM-SHA-256>", ... ],
+         passwordDigestor: "<server|client>"
+       }, 
+       writeConcern
+    )    
+    
+    mongo> db.updateUser(                # 修改用户密码：
+       "user123",
+       {
+          pwd: "KNlZmiaNUp0B",
+          customData: { title: "Senior Manager" }
+       }
+    )
+    
+    mongo> db.dropUser()
+}
+
+
+Privilege {
+
+}
+
+Database {
+    mongo> show dbs                 # 查看所有数据库
+    mongo> use newDbName            # 创建新数据库
+    mongo> db.dropDatabase()        # 删除当前 database  
+}
+
+Collection {
+    mongo> show collections                         # 查看当前 db 下的所有 collection
+    mongo> db.myCollection.help()                   # 查看当前 collection 能使用哪些方法
+    mongo> db.createCollection(name, options)       # 创建 collection 
+    mongo> db.org.drop()                            # 删除 collection
+}
+

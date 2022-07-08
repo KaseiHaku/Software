@@ -1,0 +1,22 @@
+# 系统版本： CentOS 7.6.1810 
+# Linux 英文环境是没有办法使用中文的，需要额外配置
+
+# 安装 ibus，
+shell> yum install ibus...
+
+# 将中文环境下的 ibus* 文件复制到 英文环境下
+shell> cp /usr/share/locale/zh_CN/LC_MESSAGES/ibus* /usr/share/locale/en_US/LC_MESSAGES
+
+# 将 ibus 设置为英文环境的开机启动项
+shell> vim /etc/X11/xinit/xinitrc.d/50-xinput.sh
+找到 _im_language_list="as bn gu hi ja kn ko ml mr ne or pa si ta te th ur vi zh" 在列表中增加 "en"
+
+# 配置中文输入法
+Applications -> System Tools -> Setting -> Region & Language -> Input Sources 
+-> 点击 '+' 图标 -> Chinese(China) -> Chinese (Intelligent Pinyin) -> 点击 'Add' 按钮
+
+# 选择中文输入法
+屏幕右上角选择中文 或 Super(Win)+Space 快捷键切换
+
+# 使修改生效
+重新进入图形界面即可

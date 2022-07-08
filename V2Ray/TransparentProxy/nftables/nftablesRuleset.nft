@@ -1,0 +1,162 @@
+#!/usr/sbin/nft -f
+
+flush ruleset                           # 清空规则集
+
+define var1 = 1234                      # 定义变量
+define var2 = 1234                      # 定义变量
+define vars = { $var1, $var2}           # 引用变量
+
+
+table ip tb_v2ray {
+    # 根据 域名 解析出来的 VPS 的 IPv4 地址的 集合，
+    # 因为 VPS 使用 CDN 做转发，所以 IPv4 地址会变
+    set vps4 {
+        type            ipv4_addr                   # 表示当前 Set 存放的内容是 IPv4 地址
+        # timeout         1d2h3m4s                    # 整个 Set 中的元素超时时间
+        # flags           interval, timeout           # interval 表示 Set 中包含 IP 地址范围；timeout 表示 Set 中的元素有过期时间
+        # gc-interval     1d2h3m4s                    # 垃圾回收器 执行的 时间间隔
+
+        # Set 初始元素配置
+        elements = {
+            223.5.5.5,
+            223.6.6.6
+        }
+
+        # size            16                   # 当前 Set 最多能保存多少个元素
+        # policy          performance         # 集合选择策略
+        # counter                             # 为集合中 每个元素 分配一个 计数器
+    }
+
+    # IPv4 Transparent Proxy
+    # 代理局域网设备流量
+    chain chain_lan_v2ray {
+        type filter hook prerouting priority -150; policy accept; comment "";
+
+        udp dport { 123 } accept                                # 放行 ntp 协议
+
+        ip daddr 127.0.0.0/8 accept                             # 回环地址
+        ip daddr 10.0.0.0/8 accept                              # 私有地址
+        ip daddr 172.16.0.0/12 accept                           # 私有地址
+        ip daddr 192.168.0.0/16 udp dport != {53,5353} accept   # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS）
+        ip daddr 192.168.0.0/16 tcp dport != {53,5353} accept   # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS），
+                                                                # 避免 V2Ray 无法启动时无法连网关的 SSH，
+                                                                # 如果你配置的是其他网段（如 10.x.x.x 等），则修改成自己的
+        ip daddr 224.0.0.0-255.255.255.255 accept               # 跳过 D 类 和 E 类地址，即 224.0.0.0 朝上的地址，其中 255.255.255.255 为 全局广播地址
+
+
+        ip daddr @vps4 accept                                   # 如果目标 ip 地址在名为 vps4 的 ipset 中，那么放行
+
+        # 给 TCP, UDP 打标记 1，转发至 12345 端口
+        ip protocol { tcp, udp } meta mark set 1 tproxy to :12345 accept
+
+    }
+
+    # 代理本机流量
+    chain chain_local_v2ray {
+        type route hook output priority -150; policy accept; comment "";
+
+        udp dport { 123 } accept                                # 放行 ntp 协议
+
+        ip daddr 127.0.0.0/8 accept                             # 回环地址
+
+        ip daddr 10.0.0.0/8 accept                              # 私有地址
+        ip daddr 172.16.0.0/12 accept                           # 私有地址
+        ip daddr 192.168.0.0/16 udp dport != {53,5353} accept   # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS）
+        ip daddr 192.168.0.0/16 tcp dport != {53,5353} accept   # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS），
+                                                                # 避免 V2Ray 无法启动时无法连网关的 SSH，
+                                                                # 如果你配置的是其他网段（如 10.x.x.x 等），则修改成自己的
+        ip daddr 224.0.0.0-255.255.255.255 accept               # 跳过 D 类 和 E 类地址，即 224.0.0.0 朝上的地址，其中 255.255.255.255 为 全局广播地址
+
+        ip daddr @vps4 accept                                   # 如果目标 ip 地址在名为 vps4 的 ipset 中，那么放行
+
+        # 直连 SO_MARK 为 0xff 的流量(0xff 是 16 进制数，数值上等同与上面V2Ray 配置的 255)，此规则目的是避免代理本机(网关)流量出现回环问题
+        # meta mark 255 accept          # 老写法
+        socket mark 255 accept          # 新写法
+
+        # 打标记，作为 路由表 的分流条件
+        # 坑: 因为这里的配置不是 shell 命令，所以 路由规则 无法写在这里，需要独立写 shell 命令，不能忘
+        ip protocol { tcp, udp }  meta mark set 2               # 给 TCP, UDP 打标记 2，重路由
+    }
+
+
+
+
+}
+
+
+table ip6 tb_v2ray_ip6 {
+
+    # 根据 域名 解析出来的 VPS 的 IPv6 地址的 集合，
+    # 因为 VPS 使用 CDN 做转发，所以 IPv6 地址会变
+    set vps6 {
+        type            ipv6_addr                   # 表示当前 Set 存放的内容是 IPv6 地址
+        # timeout         1d2h3m4s                    # 整个 Set 中的元素超时时间
+        # flags           interval, timeout           # interval 表示 Set 中包含 IP 地址范围；timeout 表示 Set 中的元素有过期时间
+        # gc-interval     1d2h3m4s                    # 垃圾回收器 执行的 时间间隔
+
+        # Set 初始元素配置
+        elements = {
+            ::1
+        }
+
+        # size            16                   # 当前 Set 最多能保存多少个元素
+        # policy          performance         # 集合选择策略
+        # counter                             # 为集合中 每个元素 分配一个 计数器
+    }
+
+    # IPv6 Transparent Proxy
+    # 代理局域网设备流量
+    chain chain_lan_v2ray_ip6 {
+        type filter hook prerouting priority -150; policy accept; comment "";
+
+        udp dport { 123 } accept                                # 放行 ntp 协议
+
+        ip6 daddr ::1/128 accept                                # 回环地址
+        ip6 daddr fc00::/8 accept                               # Unique-local(本地唯一地址) 放行
+        ip6 daddr fd00::/8 accept                               # Unique-local(本地唯一地址) 放行
+        ip6 daddr fe80::/10 accept                              
+        ip6 daddr ff00::/8 accept                               # 组播地址 放行
+        
+        # Link-local(本地链接地址) 放行
+        ip6 daddr fe80::/10 udp dport != {53,5353} accept       # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS）
+        ip6 daddr fe80::/10 tcp dport != {53,5353} accept       # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS），
+                                                                # 避免 V2Ray 无法启动时无法连网关的 SSH，
+                                                                # 如果你配置的是其他网段（如 10.x.x.x 等），则修改成自己的
+
+
+        ip6 daddr @vps6 accept                                   # 如果目标 ip 地址在名为 vps6 的 ipset 中，那么放行
+
+        # 给 TCP, UDP 打标记 1，转发至 12345 端口
+        meta l4proto { tcp, udp } meta mark set 1 tproxy to :12345 accept
+    }
+
+
+    # 代理本机流量
+    chain chain_local_v2ray_ip6 {
+        type route hook output priority -150; policy accept; comment "";
+
+        udp dport { 123 } accept                                # 放行 ntp 协议
+
+        ip6 daddr ::1/128 accept                                # 回环地址
+        ip6 daddr fc00::/8 accept                               # Unique-local(本地唯一地址) 放行
+        ip6 daddr fd00::/8 accept                               # Unique-local(本地唯一地址) 放行
+        ip6 daddr ff00::/8 accept                               # 组播地址 放行
+        
+        # Link-local(本地链接地址) 放行
+        ip6 daddr fe80::/10 udp dport != {53,5353} accept       # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS）
+        ip6 daddr fe80::/10 tcp dport != {53,5353} accept       # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS），
+                                                                # 避免 V2Ray 无法启动时无法连网关的 SSH，
+                                                                # 如果你配置的是其他网段（如 10.x.x.x 等），则修改成自己的
+
+        ip6 daddr @vps6 accept                                   # 如果目标 ip 地址在名为 vps6 的 ipset 中，那么放行
+
+        # 直连 SO_MARK 为 0xff 的流量(0xff 是 16 进制数，数值上等同与上面V2Ray 配置的 255)，此规则目的是避免代理本机(网关)流量出现回环问题
+        # meta mark 255 accept          # 老写法
+        socket mark 255 accept          # 新写法
+
+        # 打标记，作为 路由表 的分流条件
+        # 坑: 因为这里的配置不是 shell 命令，所以 路由规则 无法写在这里，需要独立写 shell 命令，不能忘
+        meta l4proto { tcp, udp }  meta mark set 2               # 给 TCP, UDP 打标记 2，重路由
+    }
+
+}

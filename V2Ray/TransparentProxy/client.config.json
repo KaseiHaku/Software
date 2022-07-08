@@ -1,0 +1,179 @@
+
+
+{
+  "log": { "loglevel": "debug"  },
+  "dns": {
+    "hosts": { 
+        "master.eureka":"127.0.0.1",
+        "replica.eureka":"127.0.0.1",
+        "domain:kasei.haku": "127.0.0.1" 
+    },    // 相当于系统的 hosts 文件
+    /** 
+     * 假设要解析的 domain 在 domains 列表里面，则优先使用指定的 dns 服务器，否则按从上到下解析 
+     * 坑：不要配多个相同地址的 dns，即使是不同类型的，比如 "8.8.8.8" 和 { "address": "8.8.8.8" }
+     */
+    "servers": [
+      // 国内域名，使用阿里的 DNS 服务器解析，这里配上 vps 域名，让 vps 域名使用 223.5.5.5 解析，因为该 ip 不需要经过 vps，否则就造成死循环了
+      { "address": "223.5.5.5", "port": 53, "domains": [ "1291114093.ml", "geosite:cn"] },
+      // 非国内域名，使用谷歌的 DNS 服务器解析
+      { "address": "8.8.8.8", "port": 53, "domains": [ "geosite:google", "geosite:facebook", "geosite:geolocation-!cn"] },
+      "208.67.222.222",  // OpenDNS
+      "208.67.220.220",  // OpenDNS 备  
+      
+      // 保留 使用默认 DNS 服务器的能力，以下两种 任选其一
+      // 这种需要配合  NetworkManager, dnsmasq, ipset 一起使用，还需要处理 SELinux 的安全问题，虽然麻烦，但是用起来最爽
+      { "address": "127.0.0.1", "port": 53, "domains": [ "geosite:cn", "1291114093.ml"] }    
+      //"localhost"                   // localhost dns 请求流量，不受 v2ray 控制，需要额外的配置才能使用 v2ray 转发
+    ],
+    "tag": "dnsIn"                  // 当前内建 dns 发起的 dns 请求流量的标识，可以在路由中使用 inboundTag 进行匹配
+  },
+  "inbounds": [
+    {
+      "tag": "socksIn",             // 普通翻墙，用于测试不挂透明代理时，是否可以翻墙
+      "protocol": "socks",
+      "port": 12346,                // v2ray 代理监听的端口
+      "listen": "0.0.0.0",          // 0.0.0.0: 表示接收所有网卡上的连接
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      },
+      "sniffing": { "enabled": true, "destOverride": ["http", "tls"] }    // 嗅探加密协议的域名
+    },
+    {
+      "tag": "transparentIn",
+      "protocol": "dokodemo-door",
+      "port": 12345,
+      "listen": "0.0.0.0",          // 0.0.0.0: 表示接收所有网卡上的连接
+      "settings": {
+        "network": "tcp,udp",
+        "timeout": 300,
+        "followRedirect": true   // 这里要为 true 才能接受来自 iptables 的流量
+      },
+      "sniffing": { "enabled": true, "destOverride": ["http", "tls"] }, // 透明代理必须开启，否则无法使用域名进行路由选择
+      /** todo inbound 中的 streamSettings 是配置接收到的数据是采用什么样的传输方式的 */
+      "streamSettings": {
+        "sockopt": { 
+          "tcpFastOpen": true,
+          "mark": 1,    // 表示防火墙标记为 1 的都是转发到当前入口的
+          // 表示接收到的数据是使用透明代理传过来的，且透明代理的方式为 TPROXY 方式，这里有 mark 表示接收到的数据包都带有防火墙标记
+          "tproxy": "tproxy"  
+        } 
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "block",
+      "protocol": "blackhole",
+      "settings": {
+        "response": { "type": "http" }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        // 使用 v2ray 内建的 dns ，把 domain 转换成 ip，再向解析后的 ip 发送请求
+        "domainStrategy": "UseIP"        
+      },
+      "streamSettings": {
+        // 所有的 outbound 都需要加 mark，只有 blackhole 不用加，用于表示 v2ray outbound 发送的数据包都带有 255 防火墙标记
+        "sockopt": {"mark": 255}     
+      }  
+    },
+    {
+      "tag": "dnsOut",    
+      // dns 协议类型的 outbound 会将 dns 请求发送给内建 dns,
+      "protocol": "dns",
+      "streamSettings": {
+        "sockopt": { "mark": 255 } 
+      }
+    },
+    {
+      "tag": "wsLadderOut",
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {  
+            "address": "1291114093.ml",
+            // 这里必须由原先的 v2ray server 端口，改成 nginx 的接受端口，否则连不上
+            // "port":40000 ,
+            "port": 443,
+            "users": [
+              { "id":"f45499fa-6c4b-3e55-adbb-bd50bc4137b8", "security":"chacha20-poly1305", "alterId":64, "level":1 }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/ws"
+        },
+        // 
+        //"security": "none",
+        "security": "tls", 
+        "sockopt": {
+          "mark": 255, //这里是 SO_MARK，用于 iptables 识别，每个 outbound 都要配置；255可以改成其他数值，但要与下面的 iptables 规则对应；如果有多个 outbound，最好将所有 outbound 的 SO_MARK 都设置成一样的数值
+          "tcpFastOpen": true,
+          "tproxy": "tproxy"
+        }
+      }
+    }
+  ],
+  "routing": {
+    /** 
+     * IPIfNonMatch 当域名没有匹配任何规则时，将域名解析成 IP（A 记录或 AAAA 记录）再次进行匹配；
+     * IPOnDemand 碰到基于 ip 的规则时，立马解析成 ip 
+     */
+    "domainStrategy": "IPIfNonMatch", 
+    "rules": [
+      /** todo 劫持 dns 流量，走 v2ray 内建 dns */
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "inboundTag": [ "transparentIn" ],
+        "port": "53", // 基于 udp 协议的 dns 解析请求目标端口为 53
+        "outboundTag": "dnsOut"
+      },
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "inboundTag": [ "transparentIn" ],
+        "port": "5353", // 基于 udp 协议的 dns 解析请求目标端口为 5353
+        "outboundTag": "dnsOut"
+      },
+      /** TODO 123 端口 UDP 流量直连，因为该端口是 NTP 协议
+       * 不然的话要是时间误差超出允许范围(90s)，要使用 NTP 校准时间就要先连上代理，
+       * 但是连代理又要确保时间准确，结果就是既连不上代理，也无法自动校准时间；
+       * */
+      { 
+        "type": "field",
+        "inboundTag": [ "transparentIn" ],
+        "port": 123,
+        "network": "udp",
+        "outboundTag": "direct" 
+      }, 
+      /** todo 私有地址，国内域名，223.5.5.5 直连 */
+     {
+        "type": "field",
+        "network": "tcp,udp",
+        "ip": [ "geoip:private", "geoip:cn", "223.5.5.5" ], // 同时配置 domain 和 ip 是且的关系，所以此处要分成两个
+        "outboundTag": "direct"
+     },     
+     {
+        "type": "field",
+        "network": "tcp,udp",
+        "domain": [ "geosite:cn" ], // 同时配置 domain 和 ip 是且的关系，所以此处要分成两个
+        "outboundTag": "direct"
+      },
+      /** todo 走 vps */
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "inboundTag": ["transparentIn", "socksIn", "dnsIn"],
+        "outboundTag": "wsLadderOut"
+      }
+    ]
+  }
+}

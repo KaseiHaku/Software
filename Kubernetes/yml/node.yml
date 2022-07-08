@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Node
+metadata:
+  name: 10.0.0.1
+  labels:
+    # node.kaseihaku.com      表明这是 kaseihaku.com 组织中和 node 相关的 label
+    # cache                   表明当前 node 是用作 cache 的
+    # redis                   表明当前 node cache 的类型为 redis
+    node.k8s.kaseihaku.com/cache: redis   
+    node.k8s.kaseihaku.com/db: mysql
+    node.k8s.kaseihaku.com/ingress: nginx
+    node.k8s.kaseihaku.com/dashboard: kubernetesui/dashboard
+    node.k8s.kaseihaku.com/registry: registry
+    node.k8s.kaseihaku.com/registry-ui: joxit/docker-registry-ui
+    # 以下 label 用于 node 的 topology 定位
+    node.k8s.kaseihaku.com/region: china      
+    node.k8s.kaseihaku.com/zone: zhejiang
+    node.k8s.kaseihaku.com/partition: hangzhou
+    node.k8s.kaseihaku.com/host: host-1
+spec:
+  # true  表示当前 node 暂时脱离 k8s 的 schedule 范围，即：k8s 不能再将 pod 放在当前 node 上运行
+  # 通过 shell> kubectl apply -f node.yml 即可将当前 node 脱离调度范围
+  unschedulable: true         

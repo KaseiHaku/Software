@@ -1,0 +1,18 @@
+基本概念：
+    静态（static）主机名：也称为内核主机名，是系统在启动时从/etc/hostname自动初始化的主机名，只可使用 互联网域名允许的字符
+    瞬态（transient）主机名：是在系统运行时临时分配的主机名，例如，通过DHCP或mDNS服务器分配，只可使用 互联网域名允许的字符
+    灵活（pretty）主机名：允许使用自由形式（包括特殊/空白字符）的主机名，以展示给终端用户
+ 
+主机名管理：
+    配置文件方式：
+        shell> vim /etc/hostname        # 直接修改即可，注意这里只对应静态主机名
+        
+    命令行方式：
+        shell> hostnamectl status       # 查看三种主机名的配置
+        shell> hostnamecctl status [--static|--transient|--pretty]  # 查看对应主机名的配置
+        shell> hostnamectl set-hostname <host-name>     # 同时修改三个主机名
+        shell> hostnamectl --static set-hostname <host-name>    # 修改静态主机名
+        shell> hostnamectl --transient set-hostname <host-name>    # 修改瞬态主机名
+        shell> hostnamectl --pretty set-hostname <host-name>    # 修改灵活主机名
+    
+    

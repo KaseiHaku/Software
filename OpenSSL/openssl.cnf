@@ -1,0 +1,328 @@
+################################################################ Introduce ################################################################
+# @help shell> man 5 config
+#
+# syntax
+#   var1 = val1                         # 如果是字符串最好使用 "" 括起来
+#   ${var1}                             # 引用同一 [ sectionName ] 下的变量
+#   ${sectionName1::var1}               # 引用  [ sectionName1 ] 下的 var1 变量
+#   .include /path                      # 如果 path 是目录：那么 include 所有 .cnf 和 .conf 结尾的文件，path 推荐绝对路径，相对路径是相对命令执行路径，而不是当前文件路径
+#   \                                   # 转义字符(escape character), 如果 \ 作为最后一个字符，那么下一行作为当前行延续
+#   var_.1;2,3  = val                   # 展示 key 中可以使用的 字符
+#
+# 默认配置文件路径 /etc/pki/tls/openssl.cnf
+#   csr = Certificate Signing Request
+#   crl = Certificate Revocation Lists
+#   ca = Certificate Authority
+#   crt = Cetificate
+#
+# Implicit section
+#   ENV                 # 外部 environment 变量，映射到该 section
+################################################################ Default section ################################################################
+# 默认段：从文件开始到第一个 命名 section 之前的部分，没有 section name
+#   默认段中定义一些公共的属性，加载顺序为: named section -> default section
+
+# 如果 HOME 未定义，那么后续代码行会被阻塞
+HOME                    = .
+
+ENV::name               = kasei haku openssl.cnf            # 给环境变量 name 赋值
+openssl_conf            = openssl_init                      # 特殊 key，用于指向 main section
+RANDFILE                = $ENV::HOME/.rnd                   # 随机数种子文件，$ENV::HOME <=> 当前环境变量中的 HOME 变量
+
+[ openssl_init ]
+# Object Indentifiers Section, 对象标识符，又称为物联网域名，唯一标识一个物体，设备等，具有一物一码的特性
+# 与 Domain 的区别:
+#   Domain  经过 DNS 解析后得到一个 IP 地址
+#   OID     经过 DNS 解析后得到某个特定的 物品
+oid_section     = my_oid_section            # 内建 key
+#engines         = engines_section           # 内建 key
+#alg_section     = my_alg_section            # 内建 key
+#ssl_conf        = ssl_conf_section          # 内建 key
+
+
+
+# OID 配置，OID = Object Identifier 对象 IDS
+[ my_oid_section ]
+# 格式
+# oid_short_name              = oid_long_name, numerical_oid
+oid_1                       = 1.2.3.4
+oid_2                       = 1.2.3.8
+
+# TSA 配置， TSA = Timestamp Authority 时间戳认证机构
+tsa_policy1 = 1.2.3.4.1
+tsa_policy2 = 1.2.3.4.5.6
+tsa_policy3 = 1.2.3.4.5.7
+
+
+[ engines_section ]
+[ my_alg_section ]
+[ ssl_conf_section ]
+
+
+################################################################ 证书中的 x509v3 扩展字段配置，shell> man x509v3_config
+######## todo 添加到 root ca （自签名）证书请求文件中的扩展项
+[ v3_root_ca_ext ]
+# Standard Extensions 标准扩展字段
+basicConstraints                = critical, CA:TRUE, pathlen:1                  # pathlen:1 表示只能有一级中间证书
+keyUsage                        = critical, keyCertSign, cRLSign                # 证书用途限制，所有值枚举在 [v3_root_ca_ext_keyUsage]
+extendedKeyUsage                = critical, codeSigning, timeStamping           # 证书公钥的用途限制，所有值枚举在 [v3_root_ca_ext_extendedKeyUsage]
+subjectKeyIdentifier            = hash                                          # 主体键标识符格式，只有 hash 一个值
+
+# 如果 keyid 存在，那么从父证书复制 subjectKeyIdentifier，如果有 always 标记，那么如果父证书没有，则会报错
+# 当 keyid 不存在 或者 获取失败时，从颁发者证书中复制 发行者 和 serial number，如果有 always 标记，则不管 keyid 的前置条件，总是获取 发行者 和 serial number
+# @trap 生成请求文件时，这个扩展项要先注释掉，ca 签名时再放出来
+authorityKeyIdentifier          = keyid,issuer:always                           
+
+subjectAltName                  = @v3_root_ca_ext_subjectAltName                # SAN 
+
+# @trap 生成请求文件时，这个扩展项要先注释掉，ca 签名时再放出来
+issuerAltName                   = issuer:copy                                   # 从发行者那里复制所有 subjectAltName 的内容
+
+#authorityInfoAccess
+#crlDistributionPoints
+#issuingDistributionPoint
+#certificatePolicies
+#policyConstraints
+#inhibitAnyPolicy
+#nameConstraints
+#noCheck
+#tlsfeature
+#1.2.3.4=critical,ASN1:UTF8String:Some random data      # Arbitrary Extensions: 用于添加 OpenSSL 不支持的扩展
+
+
+[ v3_root_ca_ext_keyUsage ]
+# digitalSignature                        # 可用于 数字签名
+# nonRepudiation                          # 可用于 不可否认
+# keyEncipherment                         # 可用于 密钥加密
+# dataEncipherment                        # 可用于 数据加密
+# keyAgreement                            # 可用于 密钥认证
+# keyCertSign                             # 可用于 证书签名
+# cRLSign                                 # 可用于 证书吊销签名
+# encipherOnly                            # 只能用于 加密
+# decipherOnly                            # 只能用于 解密
+
+[ v3_root_ca_ext_extendedKeyUsage ]
+# serverAuth                              # 表示 Client 可以使用该 CA 证书对 Server 提供的证书进行验证
+# clientAuth                              # 表示 Server 可以使用该 CA 证书对 Client 提供的证书进行验证
+# codeSigning                             # 可用于 代码签名
+# emailProtection                         # 可用于 邮件加密
+# timeStamping                            # 可用于 时间戳认证
+
+
+
+[ v3_root_ca_ext_subjectAltName ]
+email.0                         = copy                  # email 的特殊值，表示复制 证书主体 中所有的 email 地址到 扩展中来
+email.1                         = kasei@kasei.haku
+email.2                         = haku@kasei.haku
+
+URI.1                           = https://kasei.haku
+
+DNS.1                           = kasei.haku
+DNS.2                           = *.kasei.haku
+DNS.3                           = localhost
+
+# RID = registered OID =
+RID.2                           = 1.2.3.4.5
+
+IP.1                            = ::1
+IP.2                            = 127.0.0.1
+
+# dirName                         = v3_root_ca_ext_dirName         # 就是一个 distinguished_name
+# otherName                       = 1.2.3.4;UTF8:some other identifier    # Arbitrary Extensions
+
+
+[ v3_root_ca_ext_dirName ]
+C                               = UK
+O                               = "My Organization"
+OU                              = "My Unit"
+CN                              = "My Name"
+
+
+######## todo 添加到 inter ca 证书请求文件中的扩展项
+[ v3_inter_ca_ext ]
+basicConstraints                = critical, CA:true, pathlen:0          # pathlen:0 表示不能有中间证书了，该证书只能直接签署用户证书
+keyUsage                        = critical, cRLSign, keyCertSign        # 使用该项表示该证书只能当作 CA 证书，而不能当作 自签名证书
+extendedKeyUsage                = critical, codeSigning
+subjectKeyIdentifier            = hash
+authorityKeyIdentifier          = keyid:always,issuer:always            # 从父证书复制 subjectKeyIdentifier，如果失败，则从父证书 复制发行者 和 serial number
+subjectAltName                  = email:copy
+issuerAltName                   = issuer:copy                           # 从发行者那里复制所有 subjectAltName 的内容
+proxyCertInfo                   = critical,language:id-ppl-anyLanguage,pathlen:3,policy:foo       # 中间（代理）证书必须的配置项
+
+######## todo 添加到 user 或 服务器（nginx） 证书请求文件中的扩展项
+[ v3_nginx_crt_ext ]
+basicConstraints                = critical, CA:FALSE
+keyUsage                        = critical, digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectKeyIdentifier            = hash
+authorityKeyIdentifier          = keyid:always,issuer:always            # 生成请求文件时，这个扩展项要先注释掉，ca 签名时再放出来
+subjectAltName                  = @v3_nginx_crt_ext_subjectAltName
+
+
+[ v3_nginx_crt_ext_subjectAltName ]
+email.1                         = admin@1291114093.ml
+DNS.1                           = 1291114093.ml
+DNS.2                           = *.1291114093.ml
+DNS.3                           = localhost
+IP.1                            = 66.98.122.202
+IP.2                            = 127.0.0.1
+IP.3                            = ::1
+
+
+
+################################################################ shell> openssl req 命令相关的配置; shell> man req
+[ req ]
+# input_password
+# output_password
+# default_bits
+# default_keyfile
+# oid_fil
+# oid_section
+RANDFILE                        = ${default_ca::RANDFILE}       # 随机数种子文件
+# encrypt_key
+default_md                      = sha256                        # 证书请求文件的默认 消息摘要 算法
+string_mask                     = utf8only                      #
+
+# @trap 根据生成不同的 .csr, 需要修改为不同的配置
+req_extensions                  = v3_nginx_crt_ext              # 加入到普通证书请求文件中的扩展项
+x509_extensions                 = v3_root_ca_ext                # 加入到自签名证书请求文件中的扩展项
+# prompt                        = no                            # 表示不提示，直接取配置文件中配置的 distinguished_name
+utf8                            = yes                           # 表示 field 字段值使用 utf8 格式解析，否则使用 ascii 码解析
+# DN = Distinguish Name; 证书请求文件的唯一性标识
+distinguished_name              = req_distinguished_name_root_ca_req            # 用于创建 root ca 证书请求文件，以下三者留一
+#distinguished_name              = req_distinguished_name_intermediate_ca_req    # 用于创建 inter ca 证书请求文件
+#distinguished_name              = req_distinguished_name_nginx_crt_req          # 用于创建 nginx 证书请求文件
+
+######## todo 添加到证书请求文件中的 subject 信息配置
+[ req_distinguished_name_root_ca_req ]
+countryName                     = Country Name (2 letter code)                              # 国家名
+countryName_default             = KH                                                        # 默认国家名
+countryName_min                 = 2                                                         # 国家名最小长度
+countryName_max                 = 2                                                         # 国家名最大长度
+stateOrProvinceName             = State or Province Name (full name)                        # 省份名
+stateOrProvinceName_default     = KH                                                        # 默认省份名
+localityName                    = Locality Name (eg, city)                                  # 城市名
+localityName_default            = KH                                                        # 默认城市名
+0.organizationName              = Organization Name (eg, company)                           # 公司名
+0.organizationName_default      = KH                                                        # 默认公司名
+organizationalUnitName          = Organizational Unit Name (eg, section)                    # 部门名
+organizationalUnitName_default  = KH                                                        # 默认部门名
+commonName                      = Common Name (eg, your name or your server\'s hostname)    # 域名 = rootca.kasei.haku
+commonName_max                  = 64                                                        # 最大域名长度
+commonName_default              = rootca.kasei.haku                                         # 默认域名
+emailAddress                    = Email Address                                             # 邮箱地址 = kasei@kasei.haku
+emailAddress_max                = 64                                                        # 最大邮箱地址长度
+emailAddress_default            = kasei@kasei.haku                                          # 默认邮箱地址
+
+
+[ req_distinguished_name_intermediate_ca_req ]
+countryName                     = Country Name (2 letter code)                              # 国家名
+countryName_default             = KH                                                        # 默认国家名
+countryName_min                 = 2                                                         # 国家名最小长度
+countryName_max                 = 2                                                         # 国家名最大长度
+stateOrProvinceName             = State or Province Name (full name)                        # 省份名
+stateOrProvinceName_default     = KH                                                        # 默认省份名
+localityName                    = Locality Name (eg, city)                                  # 城市名
+localityName_default            = KH                                                        # 默认城市名
+0.organizationName              = Organization Name (eg, company)                           # 公司名
+0.organizationName_default      = KH                                                        # 默认公司名
+organizationalUnitName          = Organizational Unit Name (eg, section)                    # 部门名
+organizationalUnitName_default  = KH                                                        # 默认部门名
+commonName                      = Common Name (eg, your name or your server\'s hostname)    # 域名 = interca.kasei.haku
+commonName_max                  = 64                                                        # 最大域名长度
+commonName_default              = interca.kasei.haku                                        # 默认域名
+emailAddress                    = Email Address                                             # 邮箱地址 = haku@kasei.haku
+emailAddress_max                = 64                                                        # 最大邮箱地址长度
+emailAddress_default            = haku@kasei.haku                                           # 默认邮箱地址
+
+
+
+[ req_distinguished_name_nginx_crt_req ]
+countryName                     = Country Name (2 letter code)                              # 国家名
+countryName_default             = KH                                                        # 默认国家名
+countryName_min                 = 2                                                         # 国家名最小长度
+countryName_max                 = 2                                                         # 国家名最大长度
+stateOrProvinceName             = State or Province Name (full name)                        # 省份名
+stateOrProvinceName_default     = KH                                                        # 默认省份名
+localityName                    = Locality Name (eg, city)                                  # 城市名
+localityName_default            = KH                                                        # 默认城市名
+0.organizationName              = Organization Name (eg, company)                           # 公司名
+0.organizationName_default      = KH                                                        # 默认公司名
+organizationalUnitName          = Organizational Unit Name (eg, section)                    # 部门名
+organizationalUnitName_default  = KH                                                        # 默认部门名
+commonName                      = Common Name (eg, your name or your server\'s hostname)    # 域名 = 1291114093.ml
+commonName_default              = 1291114093.ml                                             # 默认域名
+commonName_max                  = 64                                                        # 最大域名长度
+emailAddress                    = Email Address                                             # 邮箱地址 = admin@1291114093.ml
+emailAddress_max                = 64                                                        # 最大邮箱地址长度
+emailAddress_default            = admin@1291114093.ml                                       # 默认邮箱地址
+
+
+
+
+
+
+
+
+################################################################ shell> openssl ca 命令相关的配置; shell> man ca
+[ ca ]
+default_ca              = default_ca                    # 引用 [ default_ca ] 的配置
+
+[ default_ca ]
+dir                     = /home/kasei/ca                      # 证书认证机构根目录
+#oid_file                =
+certs                   = $dir/certs                    # 当前 CA 已颁发的证书保存目录
+new_certs_dir           = $dir/newcerts                 # 当前 CA 新生成的证书保存目录
+certificate             = $dir/rootca.crt.pem           # 当前 CA 的根证书
+private_key             = $dir/private/rootca.key.pem   # 当前 CA 的密钥（包含公私钥）
+RANDFILE                = $dir/private/.rand            # 随机数种子文件
+default_days            = 365                           # 默认签署的证书文件有效期
+#default_startdate
+#default_enddate
+default_md              = sha256                        # 当前 CA 对文件进行 数字签名 时所使用的 消息摘要算法
+database                = $dir/index.txt                # database index file.
+unique_subject          = yes                           # no: 当前 CA 允许一个 subject 申请多个证书; yes: 当前 CA 一个 subject 只能申请一个证书
+serial                  = $dir/serial                   # 当前 CA 序列号文件，可以设置初始值： shell> echo '01' > serial
+x509_extensions         = v3_nginx_crt_ext              # 引用 [ crt_ext ] 添加到证书中的扩展项
+preserve                = no                            # keep passed DN ordering,保留 csr 文件的 DN 顺序
+email_in_dn             = yes                           # 保留 DN 中的邮件相关的 entry(条目)
+policy                  = policy_match                  # 引用 [ policy_match ] 证书匹配策略
+#policy                  = policy_anything              # 引用 [ policy_anything ] 证书匹配策略
+#name_opt
+#cert_opt
+copy_extensions         = none                          # 生成证书时，扩展项的 copy 行为，有以下值
+                                                        # none = 忽略 csr 请求文件中的 extension，使用 ca 的 extension
+                                                        # copy = 如果 csr 中包含 ca 没有的 extension 那么就把 csr 的 extension 放入到新生成的证书中
+                                                        # copyall = csr 中的 extension 覆盖 ca 的 extension，csr 中没有的，则使用 ca 的
+
+
+######## Certificate revocation lists
+crl                     = $dir/crl.pem                  # 当前 CA 的吊销列表
+crlnumber               = $dir/crlnumber                # 当前 CA 吊销列表序列号
+crl_dir                 = $dir/crl                      # 当前 CA 已颁发的吊销列表保存目录
+#default_crl_hours
+default_crl_days        = 30                            # 默认 CA 颁发的吊销列表的有效期
+crl_extensions          = v3_root_ca_crl_ext            # 引用 [ v3_root_ca_crl_ext ] 添加到证书吊销列表文件中的扩展项
+
+
+######## todo CA 策略配置
+[ policy_match ]
+countryName             = match                         # match 表示请求中填写的该字段信息要和 CA 证书中的匹配
+stateOrProvinceName     = match
+organizationName        = match
+organizationalUnitName  = optional                      # optional 表示该字段信息可提供可不提供
+commonName              = supplied                      # supplied 表示该字段信息必须提供
+emailAddress            = optional
+
+[ policy_anything ]
+countryName             = optional
+stateOrProvinceName     = optional
+localityName            = optional
+organizationName        = optional
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+
+######## todo 添加到证书吊销列表文件中的扩展项
+[ v3_root_ca_crl_ext ]
+issuerAltName                   = issuer:copy
+authorityKeyIdentifier          = keyid:always

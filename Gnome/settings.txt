@@ -1,0 +1,25 @@
+Keybord Shortcuts 配置:
+    Settings -> Device -> Keybord 
+    -> hide all normal windows                  Super+D             隐藏所有窗口
+    -> Show the run command prompt              Alt+F2              执行命令，相当与 Win+R             
+    -> '+' -> Name: Open terminal Command:/usr/bin/gnome-terminal  Shortcut: Ctrl+Alt+T
+
+gnome-terminal shortcut：
+    Ctrl+A              光标移动到行首
+    Ctrl+E              光标移动到行尾
+    Ctrl+L              清屏
+    
+    Ctrl+C              强行终止当前程序运行
+    Ctrl+Shift+C        复制
+    Ctrl+Shift+V        粘贴
+    
+
+Desktop Shortcuts 配置：
+    shell> cd /usr/share/applications     
+    shell> ls |grep chrome                                 # 找到 xxx.desktop 文件
+    shell> cp xxx.desktop ~/Desktop                        # 直接 copy 该文件到桌面即可
+
+修改桌面图标大小: 
+    shell> gsettings range org.gnome.nautilus.icon-view default-zoom-level                 # 查看所有图标大小值
+    shell> gsettings set org.gnome.nautilus.icon-view default-zoom-level small             # 设置图标大小值为 small
+    

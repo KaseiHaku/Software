@@ -1,0 +1,28 @@
+# 配置 docker 开机自启动
+    shell> systemctl enable docker
+
+# 配置 docker 守护进程可以远程操作
+    shell> sudo systemctl edit docker.service           # 编辑服务配置文件
+        # 修改成以下格式
+        [Service]
+        ExecStart=
+        ExecStart=/usr/bin/dockerd -H fd:// -H tcp://127.0.0.1:2375
+    shell> sudo systemctl daemon-reload                 # 重新加载服务配置文件
+    shell> sudo systemctl restart docker.service        # 重新启动服务
+    shell> vim /etc/docker/daemon.json                  # 绑定 socket 文件 和 IP 地址
+
+# Docker Daemon 开启远程访问
+    1. 生成证书文件
+    2. 开启 docker daemon 远程访问
+        shell> dockerd -H tcp://0.0.0.0:2375        # 端口 2375 一般是不加密的，2376 就是加密的，
+                                                    # 格式: tcp://[host]:[port][path]
+                                                    # 0.0.0.0 表示任何 IP 都可以访问，一般改成固定 IP 可以访问
+    3. 创建 /etc/docker/daemon.json 文件（默认配置文件，可以通过命令行参数修改）
+    
+    
+# 配置镜像
+    参考 /etc/docker/daemon.json 文件
+    shell> docker info  # 查看镜像是否生效
+    
+    
+    

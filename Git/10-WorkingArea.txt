@@ -1,0 +1,79 @@
+查看工作区文件状态 {
+    shell> git status --untracked-files             # 查看工作区没有被 git 管理的文件
+    shell> git status --ignored                     # 显示出被忽略的文件，被忽略即 push 远程的时候不上传    
+    shell> git ls-files                             # Plumbing Command: 查看跟踪文件跟工作区文件的信息，状态等
+}
+
+
+添加跟踪 {
+    shell> git add .
+}
+
+取消跟踪 {
+    shell> git rm -r /a                         # 取消跟踪，删除 git 中的历史版本，删除硬盘上的文件
+    shell> git rm -r --cached /ProjectName/     # 取消跟踪，删除 git 中的历史版本，不删除硬盘上的文件
+    shell> git rm -r -f --cached /ProjectName/  # 取消跟踪，删除 git 中的历史版本，不检查是否有更（第4声）新的 commit ，直接使用当前版本
+
+}
+
+清理未跟踪的文件 {
+    shell> git clean -n         # dry-run 
+    shell> git clean -ni         # interactive
+    shell> git clean -nfd         # 删除整个未跟踪的目录
+}
+
+
+查看工作区文件版本差异 {
+    shell> git diff                             # 比较工作区和缓存区之间的差别
+    shell> git diff HEAD                        # 比较工作区和版本库之间的差别
+    shell> git diff HEAD -- demo.txt            # 查看工作区和版本库中最新版本文件的区别
+}
+
+提交修改到缓存区 {
+    shell> git add --update .   # 提交已跟踪文件的修改、删除 到stage
+    shell> git add --no-all .   # 提交已跟踪文件的修改、新文件 到 stage(缓存区)，默认参数
+    shell> git add --all .      # 提交已跟踪文件的修改、新文件、删除 到 stage
+    shell> git add --force .    # 添加 .gitignore 文件中忽略的文件到缓存区，-A 表示把 untracked 的文件或目录也提交到缓存区
+    shell> git add --dry-run -all .         # 显示该命令执行的操作，不实际执行
+}    
+
+数据恢复 {
+    从缓存区恢复 {
+        shell> git checkout -- demo.txt         # 将缓存区中的数据同步到工作区，以缓存区为准
+    }
+
+    从版本库恢复 {
+        # 单文件
+        shell> git checkout commitId -- ./fileName          # 恢复指定文件到指定 commit，此时工作区的文件已经变更，但是需要 commit 才生效    
+        shell> git checkout branchName -- ./fileName        # 恢复指定分支的指定文件
+        shell> git checkout -- fileName                     # 使用该命令放弃工作区修改，注意中间有 -- ，不加的话表示是分支名   
+        shell> git ls-files -d | grep repository/mongo | xargs git checkout --    # 恢复被删除的文件
+        
+        # 单目录
+        shell> git checkout .                               # 该命令表示放弃工作区所有修改
+        
+        # 分支
+        shell> git checkout branchName      # 切换到指定分支，当前该分支的内容将会显示到工作区
+        
+
+    }
+} 
+
+临时存档工作区状态，不提交 {
+    # 工作进度，Stash 用于保存不想 commit 的工作区内容
+    # 适用场景： 遇到了需要紧急切换新的分支，但是不想提交改动。 比如临时修改 Bug，但是手头工作只做了一半
+    shell> git stash list                   # 查看 stash 中储存的所有 工作区状态
+    
+    shell> git stash push -m 'message'      # 储存当前 工作区状态 到 stash
+    shell> git stash push --all -m 'msg' -- path                # @deprecated 所有被 .gitignore 忽略 和 未跟踪(untracked, 新建) 的文件都会被 stash，
+                                                                # 然后执行 shell> git clean
+    shell> git stash push -u -m 'msg' -- .                      # 创建 stash，并包含 untracked(新建) 的文件
+    shell> git stash push --keep-index                          # 创建 stash，所有被放入 index 区的修改都 保持不变(intact)
+    
+    shell> git stash apply                  # 从 stash 中恢复最新的 工作区状态
+    shell> git stash apply stash@{0}        # 从 stash 中恢复指定的 工作区状态
+    shell> git stash drop stash@{0}         # 删除 stash 中指定的 工作区状态
+    shell> git stash pop                    # 弹出一个 stash 中并删除该 stash
+    shell> git stash clear                  # 删除 stash 中所有 工作状态
+    shell> git stash stash@{0} branch testBranch    # 将 stash 中指定的 工作状态 转变成一个名为 testBranch 的分支
+}

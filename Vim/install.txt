@@ -1,0 +1,2 @@
+shell> yum list | grep vim
+shell> yum install vim-enhanced-7.4.160-5.el7.x86_64.rpm -y

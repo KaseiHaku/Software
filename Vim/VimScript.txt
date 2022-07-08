@@ -1,0 +1,88 @@
+######################################################### Frequently Used
+execute "echo 'Hello World!'"   # 执行一个命令
+normal! /foo<CR>                # 忽略所有用户定义的键映射，normal! 不会解析 <CR> 那样的特殊字符序列，<CR> 不会被解析为回车键，解析为普通的字符串   
+execute "normal! mqA;\<esc>`q"  # execute 中可以使用 \<ESC> 来打出键盘 ESC 按键的效果, 该命令的效果是: 在行尾补上一个分号, 并保持光标不动
+
+######################################################### Variable 
+let environmentVar = $VIM       # 访问环境变量 $VIM 的值
+let vimOptionVar = &number      # 访问 set number 的值
+let registerVar = @v            # 访问 v 寄存器的内容
+
+
+
+let var1 = "string"
+let var1 = "spe\"cial\nstr\\ing"        # 双引号中使用 \ 作为转义字符
+let var1 = 'special ''string'           # 单引号中 双单引号=单引号 其他所有字符原样输出
+let var2 = -123
+let var3 = -123.45
+let list1 = ["string", -123, -123.45, ['1', '2']]
+let [var1, var2] = mylist                   " list 解构，参考 ES6 解构函数
+let dictionary = {'key1':'val1', 'key2':-123.4, 'key3':[], 'key4':{} }
+
+
+
+######################################################### Flow Controll
+# Vim 把任何非零的值当作真。零代表假
+# 如果期待数值类型，Vim 自动把字符串转换为数值,
+# 如果使用不以数字开始的字符串，返回的数值为零。所以小心这种代码: 
+#   :if "true"       这里 "true" 会被解读为零，也就是假值！
+
+if
+endif
+
+
+while
+    ...
+endwhile
+
+
+for item in list
+    ...
+endfor
+
+######################################################### Function
+######## 方法定义 keyword = range | abort
+# VimScript 方法首字母必须大写
+# :help internal-variables          # 查看变量前缀
+function MyFunc(param1, param2, ...) range      # 声明 range 时, 会自动添加 "a:firstline" 和 "a:lastline" 用来表示范围的第一行和最后一行
+    
+    let var1 = a:param1             # 函数参数, 仅限于函数内部使用
+    let var1 = a:0                  # 表示方法所有参数的个数
+    let var2 = a:{2}                # 等价于 a:param2 ，表示方法的 第二个参数
+    
+    # 变量作用域
+    let var4 = v:var3               # v:var 表示 Vim 预定义的变量
+    let var3 = g:externalVar        # g:var 表示全局变量
+    let var4 = s:var3               # s:var 局部于当前 vim 脚本
+    let var4 = b:var3               # b:var 局部于当前缓冲区
+    let var4 = w:var3               # w:var 局部于当前窗口
+    let var4 = t:var3               # t:var 局部于当前标签页
+    let var4 = l:var3               # l:var 局部于函数
+    let var4 = a:var3               # a:var 函数参数, 仅限于函数内部使用
+    
+    
+    
+    # 函数调用
+    let res = Func(param)
+    range call Func(param)
+    
+    echom "Hello again, world!"               # echom 输出的内容可以之后使用 :messages 再次查看
+endfunction
+
+
+######## 方法调用
+let Fn = function("MyFunc")                     # 声明一个方法指针，方法必须先定义
+echo Fn(param1, param2)                                       # 通过指针调用方法
+call MyFunc(param1, param2)                                   # call 调用方法
+
+
+
+
+
+
+######################################################### Expression 
+$NMAE	环境变量
+&name	选项
+@r	寄存器
+
+

@@ -1,0 +1,156 @@
+1. VMware 基本概念介绍 
+    1. 概念梳理： 
+        虚拟机（VMware 中创建的虚拟机） 和 宿主机（安装 VMware 的电脑）
+        
+        虚拟网卡：把宿主机（win）的物理网卡(无线、有线网卡)，虚拟成下面两张网卡，用来和虚拟网络通信
+        VMware Network Adapter VMnet1   宿主机通过这个网卡来与 Host-Only 网络模式的虚拟机通信
+        VMware Network Adapter VMnet8   宿主机通过这个网卡来与 NAT 虚拟网络进行通信
+        
+        虚拟交换机：VMware -> Edit -> Virtual Network Editor... -> 里面存在的网络
+            VMnet0            用于虚拟桥接网络下的虚拟交换机。
+            VMnet1            用于虚拟 Host-Only 网络下的虚拟交换机。
+            VMnet8            用于虚拟 NAT 网络下的虚拟交换机。
+
+
+2. VMware 联网配置
+    Host-Only（仅主机模式）： 
+        虚拟网络是一个全封闭的网络,它唯一能够访问的就是主机,主机和虚拟机之间的通信是通过VMware Network Adapter VMnet1 虚拟网卡
+        a. 本机共享网络给Vmnet1，此时修改vmnet1的IP为：192.168.0.1，关闭防火墙
+
+        b. 在虚拟机中打开网络设置，vi　/etc/sysconfig/network-scripts/ifcfg-eth0，设置eth0 如下
+
+        ip： 192.168.0.2(或其它在此网段上的地址）
+        netmask: 255.255.255.0
+        default gateway: 192.168.0.1
+        dns: 202.202.0.33
+                202.202.0.34
+
+        命令模式下dd删除HWADDR整行
+
+        前边打#号，注释掉BOOTPROTO=dhcp
+
+        然后保存退出 
+    
+        
+    
+    NAT(Network Address Translation,网络地址转换)： 
+        宿主机通过 VMware Network Adapter VMnet8 这张网卡连接到 VMnet8 这个虚拟交换机，
+        虚拟机的网卡也连接到 VMnet8 这个虚拟交换机
+        
+        虚拟机访问网络数据传递流程详解：
+            1. 虚拟机通过自己的网卡（当然也是虚拟的网卡）发送数据到 VMnet8 交换机上
+            2. VMnet8 交换机将数据转发到 VMware Network Adapter VMnet8 这张宿主机的虚拟网卡上
+            3. 虚拟网卡将数据发送给宿主机物理网卡（就是 有线 或者 无线网卡）
+            4. 宿主机物理网卡接收到数据后原路返回给虚拟机的虚拟网卡，当然其中需要经过 NAT 操作
+    
+        配置方法：
+            宿主机配置：
+            -> 宿主机（win） Win+R 调出命令行
+            -> shell> ipconfig 
+            -> 找到当前 宿主机连接网络的物理网卡的 IP 地址，假设为 192.168.1.112
+            -> 控制面板 -> 网络共享中心 -> 找到 VMware Network Adapter VMnet8 这张网卡 -> 右击选择 属性 -> 双击 Internet 协议版本 4 (TCP/IPv4)
+            -> [单选] 使用下面的 IP 地址
+            -> IP 地址： 192.168.16.64          注意： IP 不能设置为 192.168.1.*，否则跟上面同一个网络了
+            -> 子网掩码： 255.255.255.0
+            -> 默认网关： 192.168.16.2          注意：需要和 VMware 配置 和 Linux 配置 中的网关一样 
+            -> [单选] 使用下面的 DNS 服务器地址
+            -> 首选 DNS 服务器： 223.5.5.5
+            -> 备用 DNS 服务器： 8.8.8.8
+            
+            控制面板 -> Network and Sharing Center -> Change adapter settings 
+            -> 找到当前用于连接网络的网卡(无线 或 有线)
+            -> 右键: Properties 菜单 -> Sharing 选项卡 
+            -> Internet Connection Sharing 栏
+                [✔] Allow other network users to connect through this computer's internet connection
+                    Home networking connection: 选择 VMware NAT 所使用的网卡，一般都为：VMware Network Adapter VMnet8；除非自己添加了额外的 NAT 网卡
+                [✔] Allow other network users to contorl or disable the share Internet connection
+                    -> Settings button 一般不用配
+            
+            
+            
+            
+            
+            VMware 软件配置：
+            -> 打开 VMware 软件 -> 编辑 -> 虚拟网络编辑器 -> 选择名称 VMnet8 的网络 -> 编辑下面列出的选项，（如果用户不是管理员，请点击更改设置按钮）
+            -> [单选] NAT 模式（与虚拟机共享主机的 IP 地址）（N）
+            -> 点击右边的 NAT 设置按钮
+            -> 网关 IP： 192.168.16.2             注意：该 IP 地址要和 VMware Network Adapter VMnet8 这张网卡的网关地址相同
+            -> 如果需要开启 IPv6，那么 
+                [勾选] Enable IPv6
+                IPv6 prefix: fd15:4ba5:5a2b:1008::/64    这里可以不改，使用默认的即可
+            -> 其他选项自己选择，一般不必配置
+            -> 同一界面下点击“DNS”设置
+            -> [不勾选] 自动检测可用 DNS 服务器
+            -> 首选 DNS 服务器： 223.5.5.5            阿里的 DNS 服务器    
+            -> 备用 DNS 服务器1： 223.6.6.6           阿里的备用 DNS 服务器
+            -> 备用 DNS 服务器2： 8.8.8.8             谷歌的 DNS 服务器
+            -> 确定
+            -> [勾选] 将主机虚拟适配器连接到此网络（V）           # 该项就是配置 宿主机通过  VMware Network Adapter VMnet8 这张网卡连接到 VMnet8 这个网络的（虚拟交换机）
+            -> [不勾选] 使用本地 DHCP 服务将 IP 地址分配给虚拟机（D）
+            -> 子网 IP（I）： 192.168.16.0 需要跟刚才上面的 IP 地址一样，单最后一位填 0
+            -> 子网掩码（M）： 255.255.255.0 跟上面的 掩码 一样即可
+            -> 确定
+            
+            
+            Linux 配置：
+            -> shell> vim /etc/sysconfig/network-scripts/ifconfig-ens33
+            -> 添加或修改以下参数
+            TYPE="Ethernet"
+            ONBOOT="yes"
+            BOOTPROTO="static"
+            IPADDR=192.168.16.16                                # ip地址
+            NETMASK=255.255.255.0                               # 子网掩码
+            GATEWAY=192.168.16.2                                 # 跟上面配置的网关一样
+            BROADCAST=192.168.16.255
+            DNS1=223.5.5.5
+            DNS2=8.8.8.8
+            PEERDNS="no"
+            NM_CONTROLED="no"                                   # 是否由 NetworkManager 控制该网卡，Centos6 上建议为 no
+            
+            -> shell> service network restart
+             
+            如果 linux 是采用 DHCP 那么还需要注意一下配置：           
+            需要注意的是static ip同样需要向dhcp服务器租用，刚开始我设置为了192.168.163.38，各种不行，
+            从下图（Vmvare编辑--》虚拟网络适配器--》DHCP设置）可以看出DHCP服务器只提供192.168.163.128-192.168.163.254租用
+            
+        
+        
+    Bridge（桥接模式）： 
+        本地物理网卡和虚拟机的虚拟网卡通过 VMnet0 虚拟交换机进行桥接，物理网卡和虚拟网卡在拓扑图上处于同等地位。
+        
+        配置方法：
+            宿主机配置：
+            -> 宿主机（win） Win+R 调出命令行
+            -> shell> ipconfig 
+            -> 找到当前 宿主机连接网络的物理网卡的 IP 地址，假设为 192.168.1.112
+            -> 控制面板 -> 网络共享中心 -> 选择当前连接网络的网卡 -> 右击选择 属性 -> 双击 Internet 协议版本 4 (TCP/IPv4)          
+            -> [单选] 使用下面的 IP 地址
+            -> IP 地址： 192.168.1.112         
+            -> 子网掩码： 255.255.255.0
+            -> 默认网关： 192.168.1.1          注意：需要和 VMware 配置 和 Linux 配置 中的网关一样 
+            -> [单选] 使用下面的 DNS 服务器地址
+            -> 首选 DNS 服务器： 223.5.5.5
+            -> 备用 DNS 服务器： 8.8.8.8
+
+            
+            VMware 软件配置：
+            打开 VMware 软件 -> 编辑 -> 虚拟网络编辑器 -> 选择名称 VMnet8 的网络 -> 编辑下面列出的选项，（如果用户不是管理员，请点击更改设置按钮）
+            -> [单选] 桥接模式（将虚拟机请直接连接到外部网络）（B） 
+            -> 桥接到： [下拉框] 选择你当前连接网络的 宿主机物理网卡，可以到 win 共享中心查看
+            -> 确定
+            
+            
+            Linux 配置：
+            -> shell> vim /etc/sysconfig/network-scripts/ifconfig-eth0
+            -> 添加如下行
+            IPADDR=192.168.1.153           # 注意： 该处 IP 地址不能和 宿主机的物理网卡一样   
+            NETMASK=255.255.255.0
+            GATEWAY=192.168.1.1
+            DNS1=223.5.5.5
+            DNS2=8.8.8.8
+            PEERDNS="no"
+            NM_CONTROLED="no"
+            
+    
+    
+

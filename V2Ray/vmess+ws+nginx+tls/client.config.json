@@ -1,0 +1,80 @@
+{
+  "log": {"loglevel": "debug"}, 
+  "inbounds": [
+    {
+      "tag": "ladderSocksIn",
+      "protocol": "socks",
+      "port": 1080,
+      "listen": "127.0.0.1",
+      "settings": {
+        "auth": "noauth"
+      }
+    }
+  ],
+  "outbounds": [    
+    {
+      "tag":"direct",
+      "protocol":"freedom",
+      "streamSettings": {
+        "domainStrategy": "AsIs"
+      }
+    },
+    {
+      "tag":"vps",
+      "protocol":"vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "66.*.*.*",
+            // 这里必须由原先的 v2ray server 端口，改成 nginx 的接收端口，否则连不上
+            // "port":40000 ,
+            "port": 443,     
+            "users": [
+              { "id":"f45499fa-6c4b-3e55-adbb-bd50bc4137b8", "alterId":64, "security":"auto", "level":1 }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": { "path": "/ws" },
+        // 虽然 v2ray server 端的 security=none ，但是 tls 在 nginx 上配置了，所以此处的 security 不能配置为 none，必须是 tls
+        // "security": "none", 
+        "security": "tls", 
+        // 此处 tlsSettings 可以删除
+        // 因为 TLS 握手过程是：客户端拿本地 CA(根) 证书，去校验服务器发过来的证书是否正确的过程，除非是双向校验，否则根本用不到
+        "tlsSettings": {
+          "serverName": "1291114093.ml",
+          "allowInsecure": false,
+          "alpn": ["http/1.1"],
+          "disableSystemRoot": false,
+          "certificates": [
+            // verify: 当前证书用于验证服务器端传过来的 TLS 证书，当前证书必须是 CA 证书
+            // 其实此配置的作用相当于在 windows 中安装一个 CA 根证书，用于验证 服务器证书用的，所以除了自建 CA 以外，根本用不到
+            { "usage": "verify", "certificateFile": "/path/to/certificate.crt", "keyFile": "/path/to/key.key" }
+          ],
+        },
+      },
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "field",
+        "domain": ["geosite:cn"],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "ip": ["geoip:private","geoip:cn"],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "inboundTag": ["ladderSocksIn"],
+        "outboundTag": "vps"
+      }
+    ] 
+  }
+}

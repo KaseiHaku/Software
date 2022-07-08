@@ -1,0 +1,21 @@
+﻿/*######################################### ngrok 反向代理（内网穿刺）工具 ##############################################*/
+安装 {
+	官网下载 ngrok-stable-windows-386.zip 解压，里面就一个 ngrok.exe 文件。无需安装
+}
+
+
+创建 http tunnel {
+	双击运行 ngrok.exe ，在弹出命令行窗口中输入
+	
+	ngrok http 8180   // 创建 http tunnel 向外网暴露 8180 端口，8180 就是 tomcat 的 http 连接端口
+	http://localhost:4040 // 本地浏览器打开该网址，就能看到暴露端口的 request 和 response
+	ngrok authtoken 3KAgkCDsQAwGdBgEoMpif_tN4CS93t3duCWoXB3vEp // 安装自己的验证令牌，需要在官网注册账户才有
+	
+	ngrok http -subdomain=kasei 80  // 配置子域名，访问网址变为 https://kasei.ngrok.io 而不是原来随机分配的 https://随机串.ngrok.io
+	ngrok http -auth="username:password" 8080 // 创建带用户名密码的隧道，需要在请求中包含 username 和 password 两个参数
+	ngrok http -inspect=false 80 // 配置不记录端口的 request 和 response
+	ngrok http -host-header=rewrite site.dev:80  // 重写主机地址，不知道干什么的
+	ngrok http -bind-tls=true site.dev:80 // 配置只接收 https 请求，false 只接收 http 请求，不设置这个参数，都接收
+	
+}
+

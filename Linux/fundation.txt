@@ -1,0 +1,63 @@
+################################ Linux 系统基础（预备）知识总览
+function bootProcedure(){
+    硬件上电;
+    运行 BIOS 系统的 POST(Power On Self Test) 上电自检程序;
+    if(POST 没有报错){
+        BIOS 产生一个 INT 13H 的中断，该中断指向 BIOS 配置的引导磁盘（如：U 盘启动）;
+        BIOS 在配置的引导磁盘第一个分区的 0 号扇区 MBR(Master Boot Record) 扇区中查找引导记录;
+        BIOS 将 MBR 的第一个引导扇区(0 号扇区)中的代码加载到内存，并运行;  // 一个分区有 0~63 个扇区，一个扇区 512 字节
+        运行 1~63 扇区中的代码，挂载文件系统，并执行 /boot/grub2 文件夹下的代码;  // 该代码中包含文件系统驱动程序
+        /boot/grub2 中的代码会加载 /boot 目录下的内核代码到内存中，并启动第一个进程 systemd(PID=1 /sbin/init) 完成全部引导过程;
+        
+        systemd 进程读取 /etc/systemd/system/default.target 文件中的配置，default.target 是以下 target 中某一个的 符号链接;
+        /** target 种类，* 开头的 target 表示所有前置服务都完成了，该 target 是一个最终 target
+         * graphical.target     桌面系统  == runlevel 5
+         * multi-user.target    多用户模式 == runlevel 3
+         * emergency.target     单用户模式  == runlevel ?
+         * */
+        
+        /** service
+         * /usr/lib/systemd/system/    // 存放用户没有登陆就要启动的服务
+         * /usr/lib/systemd/user/      // 启动用户登陆后才启动的服务
+         * */
+        systemd 启动 multi-user.target 下的本机与服务器服务;   // 此处假设 default.target 是 multi-user.target 的符号连接
+        systemd 执行 multi-user.target 下的 /etc/rc.d/rc?.d 目录下的服务。软链接 名称格式： [K|S][两位数字]服务名称;
+        按 软链接 名称中的数字顺序执行服务，数字越小，越先执行。其中 K(kill) 表示关闭服务，S(start) 表示启动服务;
+        /etc/rc.d/rc?.d 目录下的 软链接 都指向 /etc/rc.d/init.d 目录下的文件;
+        
+        
+        
+        
+        
+        
+    } else {
+        return 启动失败;
+    }
+}
+
+
+
+2. 系统运行级别
+    # 0 - 停机（千万不能把initdefault 设置为0 ）
+    # 1 - 单用户模式
+    # 2 - 多用户，没有 NFS
+    # 3 - 完全多用户模式(标准的运行级)
+    # 4 - 系统预留
+    # 5 - X11 （xwindow)
+    # 6 - 重新启动 （千万不要把initdefault 设置为6 ）
+    
+    这些级别在 /etc/inittab 文件里指定。 这个文件是 init 程序寻找的主要文件，最先运行的
+    服务是放在 /etc/rc.d 目录下的文件。
+    在大多数的 Linux 发行版本中，启动脚本都是位于 /etc/rc.d/init.d 中的。这些脚本被用 ln 命令连接到 /etc/rc.d/rcn.d 目录。
+    (这里的 n 就是运行级 0-6 ) ,每个不同级别的目录都链接了 Init.d 中的命令的一部分。
+
+3. 
+    
+4.
+5.
+6.
+7.
+8.
+9.
+
+

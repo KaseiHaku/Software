@@ -1,0 +1,27 @@
+官方文档    
+    https://support.google.com/chrome/answer/157179?hl=en
+
+F3                          # 查找
+Ctrl+F                      # 查找
+Ctrl+G                      # 查找下一条搜索结果
+Ctrl+Shift+G                # 查找上一条搜索结果
+Ctrl+K                      # 转到地址栏搜索
+
+F6                          # 转到地址栏输入
+Alt+Enter                   # 新 tab 页中打开
+
+
+Ctrl+Shift+Delete           # 清空缓存
+
+Ctrl+T                      # 新建一个 tab 页
+Ctrl+Shift+T                # 重新打开最近关闭的 tab 页
+Ctrl+Tab                    # 切换到下一个 tab 页
+Ctrl+Shift+Tab              # 切换到上一个 tab 页
+Ctrl+[1-8]                  # 切换到第 1-8 个 tab 页
+Ctrl+9                      # 切换到最后一个 tab 页
+
+F12                         # 开发者工具
+Ctrl+Shift+I                # 开发者工具 
+Ctrl+P                      # 开发者工具，打开文件
+Ctrl+Shift+P                # 开发者工具，打开命令面板
+

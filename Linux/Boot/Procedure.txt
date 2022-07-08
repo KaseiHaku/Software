@@ -1,0 +1,89 @@
+CentOS7 启动过程 {
+    POST (Power on Self Test) {
+        上电
+        读取主板 firmware(固件，ROM) 中的 UEFI 系统，或者传统的 BIOS 系统，并执行。该 firmware 会检查启动所需的硬件是否都正常
+    }
+    MBR(选择启动设备) {
+        UEFI 会根据配置的启动设备，读取启动设备的最初的 512Byte(MBR) = 446(BootLoader) + 64(分区表) + 2(错误标志位) 中的内容到 RAM(运行内存) 中
+        MBR 中有记录 BootLoader(GRUB2) 的位置，并加载到 RAM 中
+        然后将控制权交给 GRUB2
+    }
+    GRUB2 {
+        grub 是什么？
+            Grand Unified Bootloader：一个多操作系统启动引导管理程序，用于引导主机装载指定的操作系统到内存中
+        如何进入 grub ？
+            UEFI 引导：MBR 阶段长按 ESC 进入
+            BIOS 引导：MBR 阶段长按 Shift 进入
+            
+        /boot/grub2/grub.cfg        # grub2 配置文件，不要直接修改该文件
+        /etc/default/grub           # grub2 菜单配置文件，就是可以修改的
+        如果修改了 /etc/default/grub 文件，那么需要使用一下命令，是配置生效
+        shell> grub2-mkconfig –o /boot/grub2/grub.cfg   # 使用该命令，重新生成 GRUB2 配置文件，即 /boot/grub2/grub.cfg 
+        
+        GRUB2 在 /boot 目录下查找被压缩过的内核镜像，也叫 vmlinuz
+        GRUB2 加载 vmlinuz 到内存，并提取 initramfs(初始内存文件系统)镜像文件，到临时的，基于内存的文件系统(tmpfs)中
+        initrd( initial RAM disk )
+        initramfs 的工作是加载块设备驱动，这样才能真正使用文件系统
+    }
+    Kernel(加载内核) {
+        从 initrd 镜像文件中加载必要的 驱动模块
+        内核启动第一个进程，名为 systemd PID=1 
+    }
+    systemd {
+        systemd 程序读取 /etc/systemd/system/default.target 文件的内容，这个文件是一个软连接，
+        根据软连接的指向不同，会启动不同的用户态，比如该软连接 /usr/lib/systemd/system/multi-user.target ，那么就会启动多用户交互界面，
+        multi-user.target 文件定义了这个用户态需要启动哪些服务
+    }
+   
+    shell> systemctl get-default       # 查看当前的默认的启动级别
+    
+    总结 {
+        Boot Phase                      Configuration
+        POST                            Hardware Configuration (F2, ESC, F10 or another key)
+        Select bootable Device          BIOS/UEFI configuration or hardware boot menu
+        Loading the boot loader         grub2-install and edits to /etc/defaults/grub
+        Loading the kernel              Edits to the GRUB configuration and /etc/dracut.conf
+        starting /sbin/init             Compiled into initramfs
+        Processing initrd.target        Compiled into initramfs
+        Switch to the root filesystem   /etc/fstab
+        Running the default target      /etc/systemd/system/default.target
+    }
+}
+
+
+开机自启动 {
+    CentOS7 中不建议在 /etc/rc.d/rc.local 文件中添加自己的脚本，而是建议使用自定义服务
+    shell> touch ~/autoexe.sh
+    shell> vim ~/autoexe.sh
+        添加如下内容
+        #!/bin/sh
+        #chkconfig: 2345 80 90
+        #description:auto_run
+    shell> cp ~/autoexe.sh /etc/init.d/
+    shell> chmod 755 /etc/init.d/autoexe.sh     # 添加可执行权限
+    shell> systemctl enable autoexe.sh          # 设置开机自启动
+    
+}
+
+自定义服务 {
+    /usr/lib/systemd/system/        # 系统服务存放路径
+    /usr/lib/systemd/user/          # 用户服务存放路径
+    
+    shell> touch ~/custom.service   # 创建自定义服务文件
+        添加如下格式内容
+        [Unit]
+        Description=mongodb
+        After=auditd.service systemd-user-sessions.service time-sync.target network.target
+
+        [Service] 
+        Type=forking 
+        PIDFile=/var/run/mongodb/mongod.pid
+        ExecStart=/root/script/mongo_server_start.sh
+        ExecStop=/root/script/mongo_server_stop.sh
+        PrivateTmp=true 
+
+        [Install]
+        WantedBy=multi-user.target
+    shell> chmod 754 ~/custom.service
+    shell> mv ~/custom.service /usr/lib/systemd/system/     即可
+}

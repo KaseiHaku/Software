@@ -1,0 +1,139 @@
+git 配置文件及配置命令详解
+    git 配置文件介绍
+        /etc/gitconfig              # 文件为系统级的配置文件
+        ~/.gitconfig                # 文件为用户级的配置文件
+        .git/config                 # 文件为仓库级的配置文件
+   
+    
+    git 配置文件操作    
+        # 查看配置文件参数
+        shell> git var -l                    # 查看 git 逻辑变量
+        shell> git config --list             # 直接列出所有 Git 系统配置参数
+        shell> git config --system --list    # /etc/gitconfig 文件为系统级的配置文件
+        shell> git config --global --list    # ~/.gitconfig 文件为用户级的配置文件
+        shell> git config --local --list     # .git/config 文件为仓库级的配置文件
+
+
+        # 添加配置参数
+        shell> git config [--local|--global|--system] --add section.key "value"
+
+        # 修改配置参数值
+        shell> git config [--local|--global|--system] section.key "value"  # 设置对应的 参数名=值
+
+        # 删除一个配置参数
+        shell> git config [--local|--global|--system] --unset section.key
+
+
+Git 控制台字符配置 
+    %GIT_HOME%\bin\bash.exe> git log 乱码（Garbled）问题 {
+        %GIT_HOME%\etc\bash.bashrc 末行追加一下内容
+        export LANG="zh_CN.UTF-8"
+        export LC_ALL="zh_CN.UTF-8"
+    }
+
+
+Git 初始化配置 {
+    shell> git config --global user.name "KaseiHaku"            # 配置当前用户的所有 git 仓库的用户名，保证唯一性
+    shell> git config --global user.email "****@qq.com"         # 配置当前用户的所有 git 仓库的邮箱，保证唯一性
+    shell> git config --global core.editor "vim"                # 表示当前用户的所有 git 需要文本编辑的地方都使用 vim 作为编辑器
+    shell> git config --global --add merge.ff false             # 禁用 fast forward 模式合并分支
+    shell> git config --global merge.conflictstyle diff3        # 配置 git 冲突展示样式
+    shell> git config --global pull.ff only                     # 当执行 git pull 命令时，默认采用 --ff-only 策略，如果不能执行 fast-forward 那么中止 merge 操作
+    
+    各个操作系统下的换行符一致性配置：默认值为 Win=\r\n; Linux=\n; Mac=\r
+    # core.autocrlf 配置，有如下值，及其含义
+    shell> git config --global core.autocrlf false  # 提交检出均不转换，推荐使用
+    shell> git config --global core.autocrlf input  # 提交时转换为LF，检出时不转换
+    shell> git config --global core.autocrlf true   # 提交时转换为LF，检出时转换为CRLF
+    
+    # core.safecrlf 配置，有如下值，及其含义
+    shell> git config --global core.safecrlf true   # 拒绝提交包含混合换行符的文件，推荐使用
+    shell> git config --global core.safecrlf false  # 允许提交包含混合换行符的文件
+    shell> git config --global core.safecrlf warn   # 提交包含混合换行符的文件时给出警告
+
+    空白符检查配置
+    shell> git config --global core.whitespace blank-at-eol         # 检查行尾的空格，默认打开
+    shell> git config --global core.whitespace blank-at-eof         # 检查文件底部的空行，默认打开
+    shell> git config --global core.whitespace space-before-tab     # 警惕行头 tab 前面的空格，默认打开
+    shell> git config --global core.whitespace indent-with-non-tab  # 揪出以空格而非 tab 开头的行，默认关闭
+    shell> git config --global core.whitespace tab-in-indent        # 监视在行头表示缩进的 tab，默认关闭
+    shell> git config --global core.whitespace cr-at-eol            # 告诉 Git 忽略行尾的回车，默认关闭
+    
+    
+    字符编码格式配置
+    shell> git config --global i18n.commitencoding utf-8    # 设置 commit log 提交时使用 utf-8 编码，可避免服务器上乱码，同时与linux上的提交保持一致！
+    shell> git config --global i18n.logoutputencoding utf-8 # 使得在 git log 时将 utf-8 编码转换成指定的编码，解决 Msys bash 中 git log 乱码。
+    shell> git config --global core.quotepath false         # git bash 中文件名乱码
+    shell> git config --global svn.pathnameencoding gbk     # 设置路径名称编码格式，windows 下需要设置 gbk 才能不乱码
+    shell> git config --global gui.encoding utf-8           # 设置 git gui 的界面编码
+    
+    export LESSCHARSET=utf-8                                # 该环境变量是指定 less 命令查看文件时，使用的编码格式
+    alias ls='ls --show-control-chars --color=auto'         # 强制让 ls 命令的输出字符编码格式为 控制台配置的格式
+
+    打开 git-bash.exe 后，对窗口右键 -> Options -> Text -> Locale:zh_CN, Charactor set: UTF-8
+    
+    
+    Credential Manager 凭证管理：
+    shell> cat ~/.gitconfig         # 查看 git 配置文件的变化 
+        [credential]
+            helper = store
+    shell> git config --global credential.helper "cache --timeout 3600"             # 不保存在硬盘，过期时间为 3600 秒  
+    shell> git config --global credential.helper "store --file ~/.my-credentials"   # 凭据永远明文保存在硬盘，默认是 ~/.git-credentials
+    shell> git config [--local|--global|--system] --unset-all credential.helper     # 清除各个级别的 git 凭证，使用管理员权限打开 git bash      
+    
+    
+    自定义 merge 驱动:
+    shell> git config --global merge.my-ours.name 'description'     # 定义一个名为 myOurs 的 merge driver, 并附带描述
+    # 自定义 merge 时, 执行的 shell 命令
+    shell> git config --global merge.my-ours.driver './git-merge-xxx.sh %O %A %B %L %P'    
+    shell> git config --global merge.my-ours.driver true            # 注意这里的 true 是 linux shell 的命令, exit code 永远等于 0
+    shell> git config --global merge.my-ours.recursive text         # 定义递归祖先合并的策略
+    
+}
+
+
+
+清楚登录缓存：
+    shell> git config --system --unset credential.helper        # 清除登录缓存
+
+
+配置关联的 github 仓库
+    # 使用 HTTPS 协议配置远程仓库
+        shell> touch ~/.git-credentials
+        
+        shell> vim ~/.git-credentials
+        添加以下内容：
+        https://{username}:{passwd}@github.com
+
+    # 使用 SSH 协议配置远程仓库
+    # 查看目录下有没有 id_rsa 和 id_rsa.pub (或者是 id_dsa 和 id_dsa.pub 之类成对的文件)，有 .pub 后缀的文件就是公钥，另一个文件则是私钥
+    shell> ls -al ~/.ssh  
+      
+    # 如果上一步没有文件或 .ssh 目录都不存在，那么创建密钥对
+    shell> ssh-keygen -t rsa -C "****@qq.com"   # 生成密钥对	
+    Enter file in which to save the key (/home/you/.ssh/id_rsa):[Enter]   # 这里提示私钥保存为哪个文件，默认为()中的文件
+    Enter same passphrase again: [Type passphrase again]    # 这里提示输入密码：1234
+    
+    # 查看生成的公钥
+    shell> cat ~/.ssh/id_rsa.pub    
+    
+    # 在远程仓库中配置 公钥
+    # 登陆你的github帐户。点击你的头像，然后 Settings -> 左栏点击 SSH and GPG keys -> 点击 New SSH key
+    # 然后你复制上面的公钥内容，粘贴进“Key”文本域内。 title域，自己随便起个名字。
+    # 点击 Add key。
+    
+    # 验证下刚才添加的 key 是否正常工作
+    shell> ssh -T git@github.com    
+    The authenticity of host 'github.com (192.30.253.113)' can't be established.
+    RSA key fingerprint is SHA256:dfakdfwoefkqwemgqweegfqweg.
+    Are you sure you want to continue connecting (yes/no)? yes  # 提示如上信息， 直接输入 yes 即可
+
+    
+修改本地仓库拉去数据协议：
+    shell> git remote set-url origin git@github.com:yourusername/yourrepositoryname.git     # 修改为 ssh 协议
+
+
+    
+    
+    
+    

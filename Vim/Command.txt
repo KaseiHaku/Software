@@ -1,0 +1,75 @@
+工作目录 {
+    :pwd                                # 查看当前路径
+    :cd ./dir                           # 切换当前 vim 的工作目录
+    :lcd ./dir                          # 切换当前 窗口 的工作目录
+    :set autochdir                      # 自动设当前编辑的文件所在目录为当前工作路径
+}
+
+修改当前文件字符集 {
+    :e ++enc=utf-8
+}
+
+撤销, 重做 {
+    :u          # 撤销
+    :undo       # 撤销
+    :red        # 重做
+    :redo       # 重做
+}
+
+命令行中使用 Register {
+    :<C-R>0      # 使用 0 号寄存器
+}
+
+历史命令 {
+    :history                            # : 命令的史命令
+    :history /                          # 搜索命令的历史命令
+    :se<Up>                             # 带出 se 开头的历史命令
+}
+
+临时修改 vim 配置 {
+    :set paste                          # 原样粘贴，不自动缩进
+    :set nopaste                        # 重新开启缩进
+    :set guifont=*                      # 查看 gvim 支持的所有字体
+    :nohl                               # 取消搜索后的高亮显示
+}
+
+光标移动 {
+    :67                                 # 光标移动到 67 行    
+}
+
+自动执行的命令 {
+    :verbose autocmd                    # 查看所有 autocmd 命令，verbose 显示其定义位置
+}
+
+
+Miscellanous {
+    :r !cmd                             # 将 shell 命令结果插入到当前光标所在行的下一行
+    :put=getcwd()                       # 插入当前目录
+}
+
+打印命令 {
+    :echo 'abcd' | clip                     # Windows 将内容复制到系统剪贴板
+    :echo 'abce' | xsel                     # Linux 下将内容复制到系统剪贴板
+    :echo 'abce' | xsel -b                  # 如果上面命令有问题，加 -b 选项试试
+    :messages                               # 查看 echom 输出的所有历史内容
+    :messages clear                         # 清空 messages    
+}
+
+执行 shell 命令，再回到 vim {
+    :shell
+    shell> exit
+}
+
+
+
+重定向命令输出位置 {
+    :help redir                             # 查看重定向帮助
+    :redir @a>
+    :set all
+    "ap
+    :redir END
+}
+
+
+
+

@@ -1,0 +1,6 @@
+地址栏输入: chrom://extensions
+找到 devtools ID 属性栏的值, 复制
+
+进入 C:\Users\Administrator\AppData\Local\Google 搜索刚才复制的 id
+
+找到 manifest.json 文件, 将 persistent: false 改成 true 即可

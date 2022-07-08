@@ -1,0 +1,44 @@
+1. HBase 采用列式存储：
+    对于表
+    id      name    age     
+    1       root    0
+    2       kasei   22
+    3       haku    22
+    
+    行式存储：
+    1root0  2kasei22    3haku22
+    
+    列式存储：
+    123     rootkaseihaku   02222
+    
+2. HBase Table 的组成
+    Table = RowKey + Family + Column + Timestamp + 
+    
+3. HBase 数据存储模式，是 key = value 模式存储的
+    (Table, RowKey, Family, Column, Timestamp) = Value 
+    表在硬盘中存储顺序： 根据 RowKey 按字典序排列，然后再根据 Column 按字典序排列
+    
+4. 建表语句
+    disable 'demo:user'
+    drop 'demo:user'
+    create_namespace 'demo'
+    
+    create 'demo:user'
+    {name=>'b', versions=>'3', replication_scope=>1, compression=>'snappy', compression_compact=>'snappy'}
+    {name=>'o', replication_scope=>1, compression=>'snappy', compression_compact=>'snappy'}
+    
+    name        列族
+    version     数据版本，默认为 3
+    replication_scope   重复域，用于主从复制
+    compression 压缩方式
+    compression_compact 压缩方法2
+
+5. 配置文件
+    hbase-site.xml
+    
+    <property>
+        <name>hbase.rootdir</name>
+        <value>/home/hbase_data</value><!-- 指定 hbase 数据保存目录 -->
+    </property>   
+    
+    

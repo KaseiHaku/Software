@@ -1,0 +1,33 @@
+Ctrl+Left           # 光标移动到下一个词首
+Ctrl+Right          # 光标移动到下一个词尾
+Alt+B               # 前移一个单词
+Alt+F               # 后移一个单词
+Ctrl+A              # 行首
+Ctrl+E              # 行尾
+
+
+Ctrl+U              # 删除光标左边所有
+Ctrl+K              # 删除光标右边所有
+Ctrl+W              # 删除光标左边一个词
+Alt+D               # 删除光标右边一个词
+Ctrl+H              # 删除光标左边一个字符
+Ctrl+D              # 删除光标右边一个字符
+Ctrl+Shift+-        # 撤销删除
+
+
+Ctrl+Shift+C        # 复制（相当于鼠标左键拖拽）
+Ctrl+Shift+V        # 粘贴（相当于鼠标中键）
+
+
+Ctrl+R              # 历史命令查找，再次 Ctrl+R 搜索上一个
+
+Ctrl+Alt+T          # 启动终端
+Ctrl+S              # 阻止向屏幕输出
+Ctrl+Q              # 取消阻止向屏幕输出    
+Ctrl+C              # 杀掉当前正在执行的进程
+
+
+
+Ctrl+L              # 清屏
+
+

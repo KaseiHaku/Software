@@ -1,0 +1,94 @@
+0. 安装环境
+    系统版本： CentOS 7
+    内核版本： 3.10.0-693.el7
+    系统架构： x86_64
+    Oracle 版本： Oracle Database 11g Release 2 (11.2.0.1.0)
+
+
+2. root 用户登录
+ 
+ 
+3. 硬件要求检查
+    3. 确保 内存 >= 2G 
+        shell> grep MemTotal /proc/meminfo
+        
+    4. 确保 SWAP 空间大小，两倍的内存
+        shell> grep SwapTotal /proc/meminfo     # 查看交换空间的大小
+        shell> free -m          # 查看内存和交换空间的大小
+        
+    5. 查看 操作系统 架构
+        shell> uname -m
+        
+    6. 硬盘空间检查
+        shell> df -h /tmp       # 该目录至少 1G 剩余空间
+        如果空间不足，配置 oracle 用户的时候，要配置 TMP 和 TMPDIR 两个环境变量
+        
+        shell> df -h            # 检查磁盘空间剩余，保证有 10G 的剩余空间
+            
+   
+        
+4. 软件依赖检查
+
+    系统要求检查：  
+            Oracle Database 11g Release 2 (11.2.0.4) 需要 Linux 7 或者 Red Hat Enterprise Linux 7 以上的系统，且必须是 x86_64
+            shell> cat /proc/version            # 查看当前系统版本
+            
+    内核要求检查：
+            shell> uname -r         # 查看内核版本
+        
+    软件包依赖检查：
+            X Window 软件
+        
+            binutils-2.23.52.0.1-12.el7.x86_64
+            compat-libcap1-1.10-3.el7.x86_64
+            compat-libstdc++-33-3.2.3-71.el7.i686
+            compat-libstdc++-33-3.2.3-71.el7.x86_64
+            gcc-4.8.2-3.el7.x86_64
+            gcc-c++-4.8.2-3.el7.x86_64
+            glibc-2.17-36.el7.i686
+            glibc-2.17-36.el7.x86_64
+            glibc-devel-2.17-36.el7.i686
+            glibc-devel-2.17-36.el7.x86_64
+            ksh
+            libaio-0.3.109-9.el7.i686
+            libaio-0.3.109-9.el7.x86_64
+            libaio-devel-0.3.109-9.el7.i686
+            libaio-devel-0.3.109-9.el7.x86_64
+            libgcc-4.8.2-3.el7.i686
+            libgcc-4.8.2-3.el7.x86_64
+            libstdc++-4.8.2-3.el7.i686
+            libstdc++-4.8.2-3.el7.x86_64
+            libstdc++-devel-4.8.2-3.el7.i686
+            libstdc++-devel-4.8.2-3.el7.x86_64
+            libXi-1.7.2-1.el7.i686
+            libXi-1.7.2-1.el7.x86_64
+            libXtst-1.2.2-1.el7.i686
+            libXtst-1.2.2-1.el7.x86_64
+            make-3.82-19.el7.x86_64
+            sysstat-10.1.5-1.el7.x86_64
+            
+            以上软件包必须已安装，>= 列出的版本
+            
+            shell> rpm -q package_name 
+      
+   
+5. 创建必要的用户及用户组
+    用户组： oinstall, dba, oper
+    用户： oracle
+        
+6. 修改内核参数
+
+7. 创建所需目录
+
+8. 配置 oracle 用户，用户级环境变量
+
+9. 挂载产品光盘
+
+10. 安装 Oracle 数据库
+
+
+            
+        
+        
+        
+    

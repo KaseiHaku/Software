@@ -1,0 +1,153 @@
+windows 双网卡路由配置：
+    shell> route print      # 打印当前网卡信息
+    
+    # -p                            表示该路由永久有效
+    # 10.0.0.0 mask 255.0.0.0       目标网络
+    # 10.100.1.254                  gateway
+    # metric 64                     跃点数，越低优先级越高，一般需要配置成比常用网络要高，不然访问会很慢
+    # if 12                         表示使用编号为 12 的网卡发送，编号可以通过 shell> route print    中的接口列表第一列获取到
+    shell> route -p add 10.0.0.0 mask 255.0.0.0 10.100.1.254 metric 64 if 12
+    
+    路由规则：假设目标地址为 x.x.x.x 
+        1. 如果 On-link 中，有符合 x.x.x.x 的路由配置，那么直接采用，优先级根据 metric 判断，越大优先级越低
+        2. 如果 On-link 没有匹配到，则根据配置 metric 顺序依次查找匹配的路由，
+        3. 如果 2 也没有匹配到，则走默认路由，
+           Network Destination          Netmask         Gateway         Interface       Metric
+           0.0.0.0                      0.0.0.0                                                     # 表示匹配所有 目标 ip
+        
+        
+路由跟踪：
+    shell> tracert www.baidu.com            # 查看 IP 数据包经过的路由器
+
+
+删除 硬盘 虚拟内存: 
+    解决: 一个 硬盘 作为 C 盘过后，移动到另一台 电脑 作为 数据盘，但是无法格式化
+    Windows 虚拟内存文件 pagefile.sys:
+        删除: 
+            Win+R -> control -> System -> Adnvanced System Settings -> Advanced 
+                -> Performance 栏目 -> Settings... 
+                -> Advanced -> Virtual Memory -> Change... 
+                -> 选择新的 数据盘(即: 老的 系统盘) -> [单选] No paging file -> Set 按钮
+                -> 必须一路 OK 退出
+                -> 重启电脑
+        移动：同上，@trap 同时只有一个 disk 可以作为 虚拟内存，所以移动必须先删除其他 盘 上的 虚拟内存 才行
+    
+数据盘格式化：
+    Win+R -> compmgmt.msc -> 
+
+Ctrl+\ 快捷键失效：
+    Settings -> Devices -> Typing -> Advanced keyboard settings -> Input language hot keys 
+    -> Advanced Key Settings 标签页
+        Hot keys for input languages 栏目
+            选择一项
+            点击 Change key Sequence 按钮
+            [取消勾选] Enable key Sequence
+
+
+1. windows services 配置
+    Win+R -> services.msc -> ok -> 这里面包含所有注册的 windows 服务
+
+2. 注册表操作
+    Win+R -> gpedit.msc -> 进入注册表
+
+3. 远程桌面连接配置
+    Win+R > gpedit.msc > Local Computer Policy > Computer Configuration -> Administrative Templates -> System -> Credentials Delegation ->  双击 Encryption Oracle Remediation 
+    -> 选择 Enable -> Option: Protection Level 设置为 Vulnerable
+
+4. 配置环境变量
+    永久生效：
+        我的电脑->高级系统设置->环境变量
+
+    当前 shell 生效：
+    shell> set                                                  # 查看当前所有环境变量
+    shell> set M2_HOME                                          # 查看环境变量值
+    shell> set M2_HOME=F:\Maven                                 # 覆盖环境变量
+    shell> set Path=%Path%;D:\Mysql                             # 追加环境变量
+
+
+5. windows 远程桌面不能识别本地机器的麦克风的问题？
+
+    1. 控制面板 修改默认麦克风和扬声器
+    2. 远程桌面连接时，配置将远程桌面声音 和 录音 从本地机器播放和录入
+    3. 修改 远程机 注册表
+        Win+R -> regedit 
+        -> [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\[fDisableAudioCapture]
+        修改该变量的值为 0 即可
+
+6. 删除某个文件时，提示被程序占用，怎么执行删除操作
+    Win+R -> explorer.exe 进入 Resource Monitor -> 选择 CPU 选项卡 -> 在 Associated Handles 后面的搜索框中输入被占用文件的 绝对路径
+    -> 找到占用进程的 PID -> Ctrl+Alt+Del 进入 Task Manager -> 杀掉对应 PID 的进程 -> 然后再删除文件夹
+
+    -> 如果占用的进程为： explorer.exe -> Win+R 打开一个 命令行窗口 -> 杀掉 explorer.exe 进程
+    -> shell> del E:\ggh 删掉你所要删的文件 -> shell> explorer.exe -> 完成
+
+7. 电脑无法解析 DNS 地址，但用手机却可以解析
+    1. 清除本机 DNS 缓存： shell> ipconfig /flushdns
+    2. 重置 winsock 目录设置： shell> netsh winsock reset
+
+8. Win+R 能打开的程序
+    1. cmd		# 打开命令提示符
+    2. resmon	# 打开资源监视器
+    3. regedit	# 打开注册表编辑器
+    4. explorer	# 打开资源管理器
+    5. mstsc	# 远程桌面连接
+    6. perfmon	# 性能监视器
+    7. taskmgr	# 任务管理器
+    
+    清空 Win+R 历史记录
+    Win+R -> regedit -> HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU -> 清空里面的值即可
+
+9. 根据域名查询 ip 地址
+    shell> nslookup www.baidu.com
+    shell> ping www.baidu.com 
+
+10. 好用的 DNS
+    OpenNIC DNS 官网：http://www.opennicproject.org/   该网站会推荐最佳的 DNS 服务器
+    114 DNS: 14.114.114.114  114.114.115.115 
+    Opener DNS: 42.120.21.30 
+    Google DNS: 8.8.8.8   8.8.4.4
+    阿里DNS： 223.5.5.5 223.6.6.6 
+    V2EX DNS：199.91.73.222   178.79.131.110 
+    OpenDNS：208.67.222.222   208.67.220.220 
+    OneDNS：112.124.47.27 114.215.126.16 
+    
+    
+11. 查看系统字符集
+    Win+R -> chcp       可以查看当前活动的代码页，代码页是字符集的别名，也有人称“内码表”，然后网上查当前 代码页 对应的 字符集
+    
+12. PowerShell 的使用
+    PS> Get-Command         # 获取当前 session 中所有可用命令
+    PS> Get-Help            # 获取一个命令的帮助
+    PS> Get-Member
+    
+13. 查看端口占用及杀进程
+    shell> netstat -ano | findstr "port"
+    shell> tasklist | findstr "PID"
+    shell> taskkill /f /t /pid PID 
+    
+14. cmd 命令提示符使用
+    shell> command /?       # 查看帮助，或者 /h
+
+15. 内存升级必备知识:
+    查看主板支持最大的内存大小：
+        Win+R -> cmd -> wmic memphysical get maxcapacity -> 会显示最大支持的内存大小，单位 KB
+        @trap 主板不支持的内存大小，内存条再大也没用
+        
+    查看当前主板内存插槽有几个，当前内存条频率？
+        方法一：
+            Win+R -> cmd -> taskmgr -> Performance -> Memory 
+                -> Slots used: 2 of 4       表示插槽有 4 个，插了两个
+                -> Speed: 2667 MHz          表示内存频率
+        方法二：
+            Win+R -> cmd -> wmic -> memorychip -> ConfiguredClockSpeed 列下面指定的就是内存频率 -> exit
+
+    查看 CPU 支持的 内存频率？
+        方法一：
+        Win+R -> cmd -> taskmgr -> Performer -> CPU -> 又上角可以查看 CPU 型号 
+        方法二：
+        Win+R -> cmd -> devmgmt.msc -> Processors -> 可以查看 CPU 型号 -> https://www.intel.cn/  -> 查找对应型号的 CPU 信息 -> 找到内存规格
+            -> 最大内存大小：64 GB
+            -> 内存类型：DDR4-2666, LPDDR3-2133
+            -> 最大内存通道数: 2                    这个指 双通道，双通道的作用是提高利用效率
+            -> 最大内存带宽: 41.8 GB/s
+            -> 支持的 ECC 内存：否

@@ -1,0 +1,28 @@
+# 服务器端 --listener 监听器进程的配置文件
+
+
+# 下面定义LISTENER进程为哪个实例提供服务   　　  
+# 这里是ORCL，并且它对应的ORACLE_HOME和GLOBAL_DBNAME   
+# 其中GLOBAL_DBNAME不是必需的除非使用HOSTNAME做数据库连接   
+SID_LIST_LISTENER = (
+    SID_LIST = (
+        SID_DESC = 
+            (GLOBAL_DBNAME = boway)   
+            (ORACLE_HOME = E:/oracle/product/10.1.0/Db_2)
+            (SID_NAME = ORCL)   　　   
+　　)   
+)   
+　　  
+# 监听器的名字，一台数据库可以有不止一个监听器   
+# 再向下面是监听器监听的协议，ip，端口等，这里使用的tcp1521端口，并且使#用的是主机名   
+LISTENER = (
+    DESCRIPTION = (
+        ADDRESS_LIST=(
+            ADDRESS = (PROTOCOL = TCP)(HOST = boway)(PORT = 1521)
+        )
+    )   
+)   
+    
+    
+    
+    

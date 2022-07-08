@@ -1,0 +1,89 @@
+k8s 网络模型：
+    1. 每个 Pod 具有独立的 IP 地址
+    2. Pod 中的所有 Container 共享 Pod 的 IP 地址，并且相互之间可以通过 localhost 来访问
+    3. Pod 可以通过 Pod 的 IP 地址和其他所有 Pod 通信(不经过 NAT)
+    4. 隔离（即：限制 Pod 可以通信的对象） 是通过 网络策略 实现的
+    5. 支持将 host 端口映射到 Pod 的 端口上 或者 直接将 Pod 运行在 host 网络空间 并且共享 host IP 地址
+    
+k8s 网络模型的实现：
+    有很多种 CNI 插件，但是最主要的有两个:
+        network 插件: 实现将 Pod 连接到 网络
+        IPAM(IP Address Management) 插件: 用于分配 Pod 的 IP 地址
+        
+
+k8s Service:
+    一个 Service 拥有一个 VIP(Virtual IP) , kube-proxy 会将 VIP 连接到绑定的 Pod 上
+    VIP 可以通过 k8s DNS 查找到
+    Service 可以通过以下两种类型以供 Cluster 外部访问:
+        NodePort: 所有 k8s 集群中的节点
+        LoadBalancer: 由 Cluster 外部 网络负载均衡器 提供一个 VIP 给 Service 使用
+    @trap 当在 on-prem(本地 或 企业内部) 使用 Calico 部署时，可以公布 Service 的 IP 地址，该方式可以不通过 NodePort 或 LoadBalancer 方便地访问服务
+    
+k8s DNS:
+    每个 Service 和 Pod 在 DNS 都有记录：
+        Service: my-svc.my-namespace.svc.cluster-domain.example
+        Pod: pod-ip-address.my-namespace.pod.cluster-domain.example
+        通过 Deployment 创建的 Pod: pod-ip-address.deployment-name.my-namespace.svc.cluster-domain.example
+    同一 namespace 中可以直接通过 serviceName 访问，不同 namespace 需要通过 serviceName.namespace 访问
+    
+
+k8s Cluster Networking 4 个主要的问题：
+    1. 高度耦合的 container-to-container 之间的通信，即：Pod 中的 container 之间的通信
+    2. Pod-to-Pod 之间的通信：
+    3. Pod-to-Service 之间的通信：
+    4. External-to-Service 之间的通信：
+
+
+
+
+k8s packet 发送类型：
+    同一个 Pod 中 Container 之间：
+        Pod 中的每个 Docker 容器拥有与 Pod 相同的 IP，Port，MAC 地址空间，并且由于他们在同一个网络命名空间，所以他们之间可以通过 localhost 相互访问
+        使用的机制:
+            Docker 的一种网络模型：–net=container
+            container 模式指定新创建的 Docker 容器和已经存在的一个容器共享一个网络命名空间，而不是和宿主机共享。
+            新创建的 Docker 容器不会创建自己的网卡，配置自己的 IP，而是和一个指定的容器共享 IP、端口范围等
+            在每个 k8s Pod 中，都有一个 pause 容器，该容器具有独立的 网络命名空间，所有后续加入到该 Pod 中的 Container 都使用该(pause)容器的 网络命名空间
+
+    同一个 Node 中 不同 Pod 之间:
+        使用的机制:
+            使用 docker0 网卡进行桥接
+
+    不同 Node 中 不同 Pod 之间
+        biz container -> pause container        # 在同一个 Pod 内，所有 Container 共享 pause 容器的网络命名空间，即: 相当于使用一个网卡
+        -> docker0                              # 容器运行时 网卡
+        -> cni0(flannel0)                       # k8s 用于实现 Service 层的虚拟网卡
+        -> host0(node0, ens33)                  # 主机网卡
+ 
+k8s 中各种 IP:
+    PodIP
+    ClusterIP = ServiceIP
+    NodeIP = HostIP
+
+
+IPVS 模式网络详解:
+    LVS = Linux Virtual Server
+    LVS 实现模式:
+        @doc https://www.cnblogs.com/kevingrace/p/6137975.html
+        NAT: 支持 20 个节点以下；效率低；必须时私有网络
+        TUN: 超 100 个节点；效率高；LAN/WLAN
+        DR: 超 100 个节点；效率最高；仅支持 LAN
+        FULL-NAT:
+    LVS 负载均衡算法：
+        # 静态调度算法
+        rr = Round Robin = 轮询
+        wrr = weighted Round Robin = 加权轮询
+        sh = source hash = 源地址哈希
+        dh = destination hash = 目标地址哈希
+        
+        # 动态调度算法
+        lc = least connection = 最少连接
+        wlc = weighted least connection = 加权最少连接
+        sed = = 最短延迟
+        nq = no queue = 不排队
+        LBLC = = 基于局部性的最少连接）类似于dh，目标地址hash
+        LBLCR = =（带复制的基于局部性的最少链接）
+    LVS 管理工具：
+        shell> ipvsadm -l -n
+        shell> ipvsadm -C
+        

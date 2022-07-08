@@ -1,0 +1,105 @@
+Foundamental {
+    Linux {
+        /etc/vimrc                          # Linux 全局配置文件 
+        ~/.vimrc                            # 用户级配置文件
+        /usr/share/vim                      # $VIM
+        /usr/share/vim/vimfiles             # 公用插件位置
+        /usr/share/vim81                    # $VIMRUNTIME
+        /usr/share/vim81/autoload           # vim-plug 插件管理器插件本身的存放位置
+        ~/.vim/plugged                      # vim-plug 下载的插件，默认存放位置
+    }   
+    Windows {
+        假设 vim 安装目录为 D:\Vim
+        D:\Vim                              # $VIM
+        D:\Vim\_vimrc                       # 全局配置文件
+        D:\Vim\vimfiles                     # 公用插件位置
+        D:\Vim\vim81                        # $VIMRUNTIME
+        D:\Vim\vim81\autoload               # vim-plug 插件管理器插件本身的存放位置
+        C:\Users\Kasei\_vimrc               # 用户级配置文件        
+        C:\Users\Kasei\vimfiles\plugged     # vim-plug 下载的插件，默认存放位置
+    }
+    
+    :version                                # 查看所有配置文件位置
+    :echo $VIM                              # 查看环境变量
+}
+
+系统剪贴板交互配置{
+    shell> vim --version | grep clipboard   # 如果 clipboard 前面有 '-' 减号，说明安装的 vim 版本不支持系统剪贴板
+    shell> yum install vim -X11             # 安装图形化界面的 vim
+    shell> vimx file                        # 使用 vimx 打开文件才能和 clipboard 交互
+}
+
+
+
+
+
+快捷键配置预备知识 {
+        
+        键表 {
+            <k0>-<k9>           小键盘数字0到9
+            <S-x>               大写S配合x，意味着shift+x组合键
+            <C-x>               大写C配合x，意味着ctrl+x组合键
+            <A-x>               大写A配合x，意味着alt+x组合键
+            <C-S-x>             Ctrl+Shift+X
+            <ESC>               ESC键
+            <BS>                backspace退格键
+            <CR>                ENTER回车键
+            <Space>             空格键
+            <Shift>             shift键
+            <Ctrl>              ctrl键
+            <Alt>               alt键
+            <F1>-<F12>          F1到F12功能键
+            
+            尽管能映射的键表非常丰富，但因为某些历史原因，ALT几乎无法映射。
+            同时CTRL键被linux系统频繁使用，F1到F12功能键某些也被vim占用。
+            比如F1是帮助，这些都不适合用来映射，以免造成快捷键冲突。
+        }
+        
+        
+        vim keymap prefix {
+            nore : 非递归
+            n : 在普通模式下生效
+            v : 在可视模式下生效
+            i : 在插入模式下生效
+            c : 在 ex 命令模式下生效
+        }
+        
+        开始配置 {
+            在 ~/.vimrc 文件中
+            
+            noremap ? ?  // 表示在所有模式下都生效
+            
+            映射上下左右的光标移动 
+            nnoremap  j  k    // 把原来的 k 键 映射成 j 键，非递归模式
+            nnoremap  k  j    // 把原来的 j 键 映射成 k 键，非递归模式
+            
+            行光标移动  
+            nmap lh   ^  
+            nmap le   $  
+            
+        
+            演示递归模式，不能这么配置 {
+                nmap  i  k  
+                nmap  k  j  
+                nmap  j  h  
+                上述设置成了递归模式，那么结果是这样的，按下 i 键同时也触发按下 k 键，同时也触发按下 j 键，就全乱套了
+            }
+            
+            映射 Ctrl+S 在编辑模式下为文件保存
+            imap <C+s> <ESC>:w<CR>a    #后面的<ESC>:w<CR>i 作为整体看待
+            
+            
+            autocmd BufWritePost $MYVIMRC source $MYVIMRC   #设置当 .vimrc 文件变动时自动重新加载，即生效
+            
+            
+            前缀键
+            let mapleader="#"   #设置映射前缀为 '#' 表示我定义的映射，防止跟其他插件冲突
+            nmap <leader>w  :w<CR>   #映射方式改成这种格式，含义是：在普通模式按下 #w 时，就完成了文件的保存工作。
+            
+            自定义 <esc> 键 
+            noremap <C-[> <ESC>
+        
+        }
+        
+    }
+}  

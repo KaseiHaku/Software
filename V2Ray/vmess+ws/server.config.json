@@ -1,0 +1,43 @@
+{
+  "log": {
+    "loglevel": "debug"
+  },
+  "inbounds": [
+    {
+      "port": 40000,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {"id": "f45499fa-6c4b-3e55-adbb-bd50bc4137b8", "level": 1, "alterId": 64, "email": "love@v2ray.com"}
+        ],
+        "disableInsecureEncryption": true
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": { "path": "/ws" },
+        "security": "none"
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "tag": "blocked",
+      "protocol": "blackhole",
+      "settings": {}      
+    }
+  ],
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "ip": ["geoip:private"],
+        "outboundTag": "blocked"
+      }
+    ]
+  }
+}

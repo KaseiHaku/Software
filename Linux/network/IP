@@ -1,0 +1,16 @@
+IP <==> Internet Protocol Address <==> 因特网协议地址
+
+
+shell> nmtui        # 可以进入图形界面管理 IP 地址
+
+# 查看 传输层 协议，在 IP 数据包 协议号 头 中的值
+shell> cat /etc/protocols
+
+# 为什么开启 IPv6 后，有多个 IPv6 地址？
+IPv6 Address: 固定 IPv6 地址，当使用 IPv6 连接外网时，暴露给公网的是 IPv6 地址是临时 IPv6 地址。设备不停变更临时 IPv6 地址可以有效防止外网攻击
+Temporary IPv6 Address: 临时 IPv6 地址，用于保护用户隐私，有效期较短，一定时间后会自动换成其他临时 IPv6 地址
+Link-local IPv6 Address: 本地链接 IPv6 地址; 一般 fe80: 开头
+
+
+# IP 地址冲突检测
+shell> arping -I ens33 192.168.1.200

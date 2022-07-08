@@ -1,0 +1,163 @@
+Concept:
+    Docker = Repository + Image + Container 
+    Repository: 用来存储 Image , 想当于 git 的 repository 
+    Image: 一个配置好的 Linux 环境
+    Container: Image 的一个运行实例
+    坑：部署在同一台上的 docker container 之间不能通过 宿主机 ip 进行通信
+
+启动 Docker：
+    shell> systemctl list-unit-files | grep docker
+    shell> systemctl start docker.service
+    shell> systemctl stop docker                # 关闭 docker 服务
+    shell> systemctl stop docker.socket         # 关闭 docker.socket 服务
+    shell> systemctl enable docker.service      # 设置开机自启动：
+
+Docker Manage:
+    shell> docker                                       # 查看 docker 命令的帮助
+    shell> docker ps                                    # 查看当前正在运行的容器
+    shell> docker ps -a                                 # 查看所有容器
+    shell> docker port containerId                      # 查看容器运行
+    shell> docker logs containerId                      # 查看容器内的标准输出的内容
+    shell> docker top containerId                       # 查看容器内部运行的进程
+    shell> docker inspect containerId                   # 查看 Docker 底层信息
+    shell> docker images --help                         # 二级命令帮助
+    shell> docker version                               # 查看 Docker 版本
+    shell> docker info
+
+
+Image：
+    shell> docker images                            # 列出本地所有镜像
+    shell> docker search centos                     # 从 Docker Hub 中查找镜像
+    shell> docker pull centos:7.6.1810              # 获取一个新镜像
+    
+    # 推送镜像
+    shell> vim /etc/docker/daemon.json      # 追加 "insecure-registries": ["host:port"]
+    shell> systemctl stop docker
+    shell> systemctl load-daemon
+    shell> systemctl start docker
+    shell> docker login -u xxx -p xxx host:port     # 登录仓库
+    shell> docker push host:port/path/imgName:tag     # 推送
+
+    # 从已有容器中创建一个新的镜像
+    # shell> docker commit -m "注释" -a “作者" 模板容器ID  镜像名称
+    shell> docker commit -m="has update" -a="kasei" e218edb10161 kasei/centos:haku   
+
+    # 从零开始创建一个镜像
+    shell> touch Dockerfile     # 创建 Dockerfile 并编辑内容        
+    # shell> docker build 目标镜像名称  "Dockerfile 所在目录路径"
+    shell> docker build kasei/centos:haku .
+    shell> docker build -t test/myapp .         # 测试 Dockerfile 语法是否正确
+
+    # 设置镜像标签
+    shell> docker tag imgId host:port/path/imgName:tag
+
+    # 设置构建成功时，镜像保存的仓库和标签
+    shell> docker build -t kasei/myapp:1.0.0 -t shykes/myapp:latest .
+    
+    # 镜像导入导出
+    shell> docker image save niginx:1.21.1 -o niginx-1.21.1.tar     # 将 image 导出为 tar 文件
+    shell> docker image load -i niginx-1.21.1.tar                   # 从 tar 文件中加载 image
+    
+    # 删除镜像
+    shell> docker image ls --filter=reference='repo*:tag*'
+                           --filter "dangling=true"             # 匹配所有没有 tag 的 image
+                           --filter "label=com.example.version=1.0"
+                           --filter "before=image1"
+                           --filter "since=image3"
+ 
+    # 查看镜像的构建历史
+    shell> docker image histtory redis:3.1 --no-trunc
+
+Container：
+    shell> docker create                                # 创建一个容器，但不运行，其他参数跟 run 一样
+    shell> docker rm containerId                        # 删除一个容器实例
+    shell> docker rm $(docker ps -a -q)                 # 删除所有容器
+
+    shell> docker start container1 container2           # 启动一个或多个已经被停止的容器
+    shell> docker stop container1 container2            # 停止运行中的容器
+    shell> docker stop $(docker ps -a -q)               # 停止所有容器
+    shell> docker restart container1 container2         # 重启容器
+
+    shell> docker pause container1 container2           # 暂停容器中所有的进程
+    shell> docker unpause container1 container2         # 恢复容器中所有的进程
+
+    shell> docker kill -s KILL mysql                    # 杀死容器中的 mysql 进程
+    
+    
+
+   
+
+    # 运行一个容器
+    shell> docker run hello-world:latest                # 以 hello-world 镜像为模型，创建一个容器实例
+    shell> docker run centos:7.6.1810 /bin/bash         # 创建容器实例，并运行命令 /bin/bash
+    shell> docker run -t -i centos:7.6.1810 /bin/bash   # -i 允许与容器的标准输入进行交互; -t 在容器里指定一个伪终端或终端
+    shell> docker run -d centos:7.6.1810 /bin/bash      # -d 后台启动容器
+    sehll> docker run -P centos:7.6.1810 /bin/bash      # -P 将容器内部使用的网络端口随机映射到我们使用的主机上
+    shell> docker run -d -p 5000:80 centos:7.6.1810     # -p 将容器的 80 端口映射到宿主机的 5000 端口上
+    shell> docker run --name haku centos:7.6.1810       # 命名一个容器实例
+
+    shell> docker run --entrypoint hostname image       # 覆盖 image 默认的 entrypoint 
+    shell> docker run -v /hostPath:/dockerPath          # 将 宿主机的 /hostPath 目录挂载到 docker 的 /dockerPath 目录下，最好用绝对路径 
+                                                        # 否则会挂载在 /var/lib/docker/volumes/ 下面 
+    shell> docker run --network=dridge                  # docker container 使用的网络，
+                                                        # none                  无网络
+                                                        # bridge                使用默认安装 docker0 网桥 进行 桥接
+                                                        # host                  使用主机网卡
+                                                        # container:id          使用另一个容器的网卡
+                                                        # <network-name>|<network-id>  连接到通过 shell> docker network create 创建出来的网卡
+    # 常用容器启动，--network=host 要保证 container 里面没有端口冲突
+    shell> docker run -d --name=containerName -v /hostPath:/dockerPath -p hostPort:dockerPort --network=host imageId        
+
+    # 在容器内部执行一条命令
+    shell> docker exec -d containerId /bin/bash         # 
+    shell> docker exec -it containerId /bin/bash        # 开启伪终端, 推荐
+    shell> /# exit                                      # 退出
+        
+    
+    # 进程相关
+    shell> docker container inspect -f '{{.State.Pid}}' containerId             # 查看 指定容器本身 在 host 中的 PID
+    shell> cat /sys/fs/cgroup/memory/docker/<containerId>/cgroup.procs          # 同上
+    shell> docker top <containerId>                                             # 查看 容器内运行进程 的 PID
+    shell> ps -H -p 123                                                         # 树形展示 pid=123   
+
+    
+
+    # 使用 宿主机 软件，在 container 里面执行，检查 container 的状态
+        shell> docker ps -a | grep pattern           # 获取容器名称
+        shell> docker inspect --format "{{.State.Pid}}" containerId         # 获取 container 在 host 中的 PID
+        # 这里选项要根据实际情况添加，多了会找不到命令
+        shell> nsenter -t pid -m -u -i -n -p  ip addr       # 这个命令找不到 ip 命令，因为 -m 进入了文件空间，命名空间 进太多了
+        shell> nsenter -t pid -n ip addr                    # 进入 pid 的命名空间；这个命令就没问题，因为没有进入 文件命名空间，所以 文件空间 还是宿主机的，可以找到 ip 命令
+    
+    # 查看 container 容器中虚拟文件系统在 host 下的路径
+    # LowerDir: 包含所有底层 layer 的 filesystem，除了最后一层的
+    # UpperDir：最上层 layer 的 filesystem
+    # MergedDir: 所有 layer 的 filesystem 合并之后的视图
+    # WorkDir: 容器内部的工作目录
+        shell> docker inspect contianerId | grep -i MergedDir
+        shell> ls -al /proc/<pid>/root/          # 另一种进入 container 文件系统的方式
+        shell> ls -alL /proc/<pid>/root         # 
+    
+    # docker container 网络检查
+        shell> docker exec -it containerId cat /etc/resolv.conf         # 找到 dns 服务器
+        shell> nsenter -t 7801 -n nslookup dubboadmin 127.0.0.11        # 指定 dns 服务器搜索域名
+    
+    # Pid 相关
+        shell> docker ps -q | xargs -ri docker inspect --format '{{.State.Pid}}, {{.Name}}' {}      # 查看所有容器的 Pid
+        # 查看 container 进程 和 host 进程 PID 的映射关系
+        shell> cat /proc/<hostPID>/status                           # NSpid 行就是 container 中的 PID
+        shell> grep NSpid.*10061 /proc/*/status 2> /dev/null        # 10061 是 containerPID，输出的文件路径中的 就是 hostPID
+    
+
+Registry:
+    shell> docker login -u kasei -p kasei localhost:5000    # 添加一个私有仓库地址和密码到 docker 中
+
+Docker 允许其他 user 使用：
+    shell> usermod -aG docker kasei
+    shell> docker ps            # 如果可以运行，则说明已经分配了权限了
+    
+
+
+
+
+

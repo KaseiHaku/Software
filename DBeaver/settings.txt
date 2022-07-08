@@ -1,0 +1,30 @@
+怎么查看帮助
+
+配置界面弹窗（ask me again）
+    Window -> Preferences -> 搜 confirmations
+
+配置文件编码格式：
+    Window -> Preferences -> General -> Workspace
+    -> Text file encoding: Other: UTF-8
+    -> New text file line delimiter: Other: Unix
+
+配置 sql script 自动保存：
+    Window -> Preferences -> Editors -> SQL Editor 
+    -> Auto-save 
+        -> Auto-save editor on close
+        -> Save editor on query execute
+        -> Save/Restore active schema
+
+配置 sql 自动插入格式:
+    Window -> Preferences -> Editors -> SQL Editor -> Code Completion
+    -> Iniser case: Lower case
+    -> [不勾选] Insert space after table/column names
+    -> [勾选] Sort proposals alphabetically
+    -> [不勾选] Insert table aliases(in FROM clause)
+
+配置 SQL Editor 文字, 避免中文字体太小:
+    Window -> Preferences -> User Interface -> Appearance -> Colors and Fonts 
+    -> 目录树中的 Basic -> Text Font -> Edit 
+    ->  Font: Consolas 改成 Microsoft YaHei
+        Font Style: Regular
+        Size: 10

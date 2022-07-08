@@ -1,0 +1,73 @@
+################################ Linux 环境变量
+1. 知识预备
+    linux 环境变量分为系统环境变量、用户环境变量、终端环境变量、自定义变量，各个类别的有效范围不同
+    环境变量: 可以在其进程的子进程中继续有效
+    自定义变量：无法延伸至其进程的子进程
+
+2. 配置文件位置
+    # 系统级
+    /etc/environment             # 保存系统环境变量
+    
+    /etc/profile                 # 保存所有用户的环境变量，对所有用户生效     
+    /etc/profile.d               # 分目录保存所有用户的环境变量，对所有用户生效 
+    
+    /etc/bash.bashrc             # 保存所有 terminal 的环境变量
+    
+    # 用户级
+    ~/.bash_profile | ~/.bash_login | ~/.profile            # 仅对当前用户生效的环境变量，这三个文件主要是抹平各个 发行版 间的差异
+    ~/.bashrc                    # 仅保存当前用户的 terminal 的环境变量
+    ~/.bash_logout               # 仅保存当前用户 logout 时执行的 shell
+    
+    配置文件格式
+    VAR_NAME="value"            # 声明一个 shell 脚本变量，等号两边不能带空格
+    export VAR_NAME             # 定义一个环境变量   
+    
+    
+    
+3. 查看环境变量
+    a. 直接查看配置文件
+    b. 通过命令行打印
+        # 环境变量
+        shell> env                  # 显示所有的环境变量
+        shell> export               # 显示所有的环境变量，按变量名排序
+        
+        # 自定义变量
+        shell> set                  # 显示 环境变量 + 自定义变量 = 所有变量
+        shell> declare              # 显示 环境变量 + 自定义变量 = 所有变量，按变量名排序，同 shell> typeset ; 但是 typeset 已弃用
+        shell> echo $PTAH           # 查看 PATH 这个变量的内容
+        
+        
+4. 添加环境变量
+    a. 直接在配置文件中写入
+        在配置文件中添加如下一行：
+        export HELLO="Hello!"  # 新建环境变量 HELLO  value = Hello!
+        
+    b. 通过命令行添加
+      
+   
+   
+5. 删除环境变量
+    shell> unset HELLO                                      # 删除环境变量 HELLO         
+    
+6. 修改环境变量
+    shell>set HELLO=1234                                    # 修改环境变量的值，如果没有值，那么值为 null
+    
+7. 引用环境变量
+    export path=/path1:/path2:/pahtN:$path                  # 引用自己，则表示追加值，$path 最好方最后，这样自定义路径会先搜索
+    
+    
+8. 使环境变量生效
+    shell> source /etc/environment                              # source 命令执行配置文件脚本
+    shell> /etc/enviroment                                      # 直接执行该环境变量配置文件即可
+
+9. export 命令
+    shell> export -p                            # 列出所有的 shell 赋予程序的环境变量
+    shell> export -n HELLO                      # 删除指定的变量。变量实际上并未删除，只是不会输出到后续指令的执行环境中；
+    shell> export HELLO="hello world"           # 为之后的 shell 添加环境变量 HELLO, 并不是永久有效
+    shell> export -f FUNC                       # -f 表示 FUNC 是一个函数名称，不是一个变量名
+    
+10. 常用环境变量作用
+    $PATH                                       # 用于调用其他目录下的命令，如/home/oracle
+    $DISPLAY                                    # 配置图形输出的位置，如:11.0
+    $LANG                                       # 系统语言环境
+    $SHELL                                      # 当前用户默认 shell

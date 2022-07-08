@@ -1,0 +1,50 @@
+目前的翻墙方法:
+    1. VPN 
+    2. ShadowsocksR
+    3. V2ray
+
+
+备用翻墙方案：
+    免费 VPN:
+        https://windscribe.com/
+        https://getlantern.org
+    
+    免费机场：
+        Address	        Port	Password	        Method			
+        198.74.61.191	14540	f55.fun-08666005	aes-256-cfb	
+        108.160.132.25	11099	4XVeP1	aes-256-cfb	01:57:15
+        149.28.20.182	11099	4XVeP1	aes-256-cfb	01:57:07
+        185.38.15.117	11103	4XVeP1	aes-256-cfb	01:57:21	
+        51.15.227.177	81	namaho.org+LNVTU	chacha20-ietf-poly1305
+        5.181.5.8	443	nHHpgf23ac3RSC	aes-256-cfb	
+        104.192.83.107	8888	https://4ss.org	aes-256-cfb	
+        139.162.17.181	10134	f55.fun-92260094	aes-256-cfb	
+        104.248.152.238	15537	isx.yt-22677142	aes-256-cfb	
+        91.219.237.119	9001	getvpn20190501	aes-256-cfb	
+        5.189.227.120	31654	KZGXzjZw6IxQ	aes-256-cfb	
+        50.116.55.108	11645	f55.fun-34711278	aes-256-cfb	
+        192.241.205.20	10208	isx.yt-79259336	aes-256-cfb	
+        206.189.47.144	18218	isx.yt-99026129	aes-256-cfb	
+        46.182.110.223	11099	4XVeP1	aes-256-cfb	01:57:19	
+        172.104.90.149	16341	YiPbjUeizDxJ	aes-256-cfb
+        46.29.162.169	8069	6572767529	aes-256-cfb	01:57:09
+        167.99.101.228	5333	Hp@digitalocean1(($	aes-256-cfb
+        5.181.5.107	443	nHHpgf23ac3RSC	aes-256-cfb
+        5.183.176.208	443	nHHpgf23ac3RSC	aes-256-cfb	
+        192.241.206.108	15861	ss8.pm-33662577	aes-256-cfb	
+        2.56.240.27	2133	www.eieee.cn	aes-256-cfb
+        185.225.139.181	5678	nutgeek.com	rc4-md5
+        188.246.233.159	31972	qHE3dZdDn7Pb	aes-256-cfb	
+        5.181.5.115	443	nHHpgf23ac3RSC	aes-256-cfb
+        128.199.170.164	14876	ss8.pm-43560439	aes-256-cfb
+        198.13.33.175	11099	4XVeP1	aes-256-cfb	01:57:19
+        46.182.110.116	11100	4XVeP1	aes-256-cfb	01:57:14
+    
+    免费 V2ray: 
+        Address	        Port	UID                                 Network	Path	TLS		
+        www.kernels.bid	443	6d32cdae-f77b-83f9-fcac-5e862241a49c	ws	/ws	tls		
+        www.kernels.bid	80	5a6120f9-b4d8-1ad0-e0c3-bc3208f2fc2f	ws	/ws	none	
+    
+    
+    
+        

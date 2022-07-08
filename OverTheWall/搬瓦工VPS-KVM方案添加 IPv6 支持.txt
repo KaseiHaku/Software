@@ -1,0 +1,85 @@
+方法一：IPv4 被墙，那么就使用 IPv6 访问 VPS
+    1. V2Ray 使用 VPS 的 IPv6 地址发送 IPv6 数据包
+    2. IPv6 数据包通过 OpenVPN 客户端软件转换成 IPv4 数据包发送到指定的 隧道服务器 ，隧道服务器 再将数据包转发给 VPS
+    
+实施步骤：
+    1. 申请一个 IPv4 <--> IPv6 的隧道：
+        http://he.net/
+        打开该网址：https://tunnelbroker.net/ 注册一个账号：q1291114093q
+        登陆账号 -> 点击“Create Regular Tunnel”  -> 
+    
+        http://www.freenet6.net     另一个申请 IPv6 地址的网站，需要下载客户端
+    
+    2. 配置 VPS
+        SSH 登陆 VPS
+        shell> vim /etc/sysconfig/network
+        修改或添加：
+        NETWORKING_IPV6=yes
+
+        shell> vim /etc/sysconfig/network-scripts/ifcfg-eth0
+        修改或添加：
+        IPV6INIT=yes
+        IPV6_AUTOCONF=yes
+
+        shell> vim /etc/sysctl.conf
+        修改或添加：
+        net.ipv6.conf.all.disable_ipv6 = 0
+        net.ipv6.conf.default.disable_ipv6 = 0
+        net.ipv6.conf.lo.disable_ipv6 = 0
+        shell> sysctl -p        # 使配置生效
+
+        # 配置开机自运行 ipv6 tunnel 脚本
+        shell> touch /root/ipv6Tunnel.sh
+        添加内容如下：
+        #!/bin/sh
+        modprobe ipv6
+        ip tunnel add he-ipv6 mode sit remote 72.52.104.74 local 66.98.122.202 ttl 255
+        ip link set he-ipv6 up
+        ip addr add 2001:470:1f04:ad6::2/64 dev he-ipv6
+        ip route add ::/0 dev he-ipv6
+        ip -f inet6 addr
+
+        shell> chmod 744 /root/ipv6Tunnel.sh
+        shell> vim /etc/rc.d/rc.local
+        添加：
+        sh /root/ipv6Tunnel.sh
+    
+    3. 配置前置隧道
+        测试当前网络是否支持 IPv6 ：ipv6-test.com          # 如果支持，那么直接访问 VPS 就行了
+        
+        如果不支持需要配置前置隧道
+        IPv4-only 网络下使用 4to6 隧道 访问 IPv6 网络：
+        https://blog.csdn.net/zhanglizhi111/article/details/79201569
+
+        https://6plat.org 网站申请一个个人账号： hsssh
+        下载安装 OpenVPN 
+        http://bbs2.6plat.org/d/19    # 64模块使用手册
+
+        
+        
+
+方式二: V2Ray+Websocket+TLS+Cloudflare
+    文字教程  https://233v2.com/post/5/
+    youtube 教程： https://www.youtube.com/watch?v=-GH7DOlqe-M
+    
+    1. 注册免费域名
+        免费域名申请： https://www.freenom.com/zh/freeandpaiddomains.html 注册免费域名
+    2. 注册 Cloudflare
+        Cloudflare官网: https://www.cloudflare.com/
+    3. 添加 dns 和 A 记录
+    
+    4. 站长工具查询 www.1291114093.ml
+    
+    5. 申请 CA证书
+        https://letsencrypt.org/
+    
+  
+
+工具网站：
+    https://www.soshoulu.com
+    https://tsukkomi.org/post/get-free-ipv6-tunnel
+    https://tools.ipip.net/traceroute.php
+    
+    https://en.wikipedia.org/wiki/List_of_IPv6_tunnel_brokers
+    
+

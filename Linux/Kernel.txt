@@ -1,0 +1,38 @@
+内核参数配置：
+    相关文件：
+        
+        /etc/sysctl.d/*.conf            # 配置系统启动时，使用的 内核参数
+        /run/sysctl.d/*.conf            # 同上
+        /usr/lib/sysctl.d/*.conf        # 同上，以上三个文件 优先级 从高到低，字典序执行，后面覆盖前面的
+        /etc/sysctl.conf                # 系统自带配置处，shell> ll /etc/sysctl.d
+        
+    Inquire：
+    shell> sysctl -a             // 查看所有内核参数：
+    
+    Update:
+    shell> vim /etc/sysctl.conf
+    添加：
+    net.ipv4.ip_forward = 1     // 开启内核 ip 转发功能，
+    
+    shell> sysctl -p           // 从默认配置文件（/etc/sysctl.conf）中读取参数值，并使参数值立刻生效
+    shell> sysctl -p /etc/sysctl.conf.bak   // 从指定配置文件中读取参数值，并使参数值立刻生效
+    shell> sysctl --system      // 是系统中所有配置文件生效
+    
+    
+内核模块管理:
+    相关文件：   
+        /lib/modules/$(uname -r)        # 所有 module 保存路径
+        /etc/modules-load.d/*.conf              # 配置系统启动时 加载 哪些模块，
+        /run/modules-load.d/*.conf              # 同上
+        /usr/lib/modules-load.d/*.conf          # 同上，以上三个文件 优先级 从高到低，字典序执行，后面覆盖前面的
+        /etc/modprobe.d/                # 置模块加载时的一些参数
+
+    shell> ldd /bin/ls          # 显示 ls 二进制程序所依赖的 库文件
+    shell> lsmod                # 显示当前加载到内核中的所有 module
+    shell> cat /proc/modules    # 同上
+    shell> modinfo ext          # 查看 ext 内核 module 的信息
+    
+    shell> depmod               # 生成内核 module 依赖关系
+    
+    shell> modprobe             # 临时向内核添加或删除 module
+    

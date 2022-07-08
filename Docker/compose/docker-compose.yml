@@ -1,0 +1,275 @@
+# 官方文档地址：
+#    https://docs.docker.com/compose/compose-file/compose-versioning/
+#    https://docs.docker.com/compose/compose-file/compose-file-v3/
+# docker-compose 安装
+#   shell> sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#   shell> sudo chmod +x /usr/local/bin/docker-compose
+# 
+# features: 
+#   1. 在同一台宿主机上创建出多个 组合项目 的隔离环境 Compose Project Environment ，默认使用当前 docker-compose.yml 所在的目录作为 环境名称(工程名称)， 
+#      可以使用 shell> docker-compse -p envName 或 COMPOSE_PROJECT_NAME 来指定 env(project, app) name
+#   2. shell> docker-compose run 时，会自动创建一个 projectName_default 的虚拟 docker 网卡用作所有 container 的桥接，
+#      container 之间可以通过 containerName 进行通信，即：shell> ping containerName   能通，返回的 containerName 的 container_ip 地址，端口也是 container_port
+#      同一个 docker-compose.yml 中容器之间可以通过   postgres://container_name:container_port  访问数据库
+#      但是在 宿主机中需要通过 postgres://{DOCKER_IP}:host_port   才能访问
+# 
+# shell command:
+#   shell> docker-compose --help
+#   shell> docker-compose up      # 启动当前目录下的 docker-compose.yml 文件
+#   shell> docker-compose up -d     # 后台启动当前目录下的 docker-compose.yml 文件
+#   shell> docker-compose -f ./my-docker-compose.yml up -d     # 以 ./my-docker-compose.yml 作为配置文件，后台（detach）启动
+#   shell> docker-compose ps        # 查看当前正在运行哪些东西
+#   shell> docker-compose run exxample env       # 在 example 容器中运行 env 指令，该命令是一次性的
+#   shell> docker-compose stop     # 关闭整个 docker-compose.yml 文件启动的 container
+#   shell> docker-compose down --volumes        # 关闭整个 docker-compose.yml 文件启动的 container，并删掉所有 container，--volumes 连挂载目录一块儿删
+#
+# docker-compose.yml
+#   1. 可以使用多个 docker-compose.yml，执行逻辑为 后面的 docker-compose.yml 覆盖之前的 docker-compose.yml 的配置
+#   2. 当使用多个 -f docker-compose.yml 参数时，所有 docker-compose.yml 文件内部的 相对路径 都 相对于第一个 -f 指定的 配置文件，可以使用 --project-directory 修改该 basePath
+#
+# transfer to prod:
+#   1. 去除 volume 绑定，这样代码永远在容器中了，不会被动态修改
+#   2. 指定 restart policy 为 restart: always  
+#   3. 基于 common-docker-compose.yml  编写一个 product-docker-compose.yml 
+#      并使用 shell> docker-compose -f common-docker-compose.yml -f product-docker-compose.yml  up -d   命令使后者覆盖前者
+#   4. 当代码修改后，需要执行 shell> docker-compose build web  来重新生成 image，并执行 shell> docker-compose up --no-deps -d web 运行， --no-deps 表示不重启依赖服务
+#   5. 配置 DOCKER_HOST, DOCKER_TLS_VERIFY, and DOCKER_CERT_PATH 环境变量，可以使 shell> docker-compose  将本地 container 部署到远程 docker 主机上
+#
+#
+#
+#
+
+version: "3.9"    # 表示当前 docker-compose(Compose specification) 的版本，版本 "3.8"  需要 docker 的版本为 19.03.0+
+
+name: compose_project_name    # 该值如果定义则使用该值，否则默认使用 工作目录 名
+
+# 因为 shell> docker-compose run 时，会自动创建一个 projectName_default 的虚拟 docker 网卡用作所有 container 的桥接
+# 使用该字段可以创建自定义 network，最终创建的 network 在 docker network list 中的名字为 projectName_networkName
+networks:
+  # default 特殊 key 可以指定当前 docker-compose.yml 默认使用的 network，该网络写不写都存在 名称 = projectName_networkName
+  # 如果定义了其他 network，那么当前 default 必须手工定义，否则不会创建，而且在 services.xxx.networks 也需要手工连接到 default network 才行，
+  default:
+    driver: overlay         # docker 网络模式
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
+        - subnet: fc00:0:0:1::/64
+  
+  net1:                     # 该 network 在当前 compose 中的别名
+    name: custom_network    # shell> docker network ls 中的名字，如果没有配置，则与父级字段名相同，即: net1
+    driver: bridge          # docker 网络模式
+    driver_opts:            # docker 网络模式相关的可选项配置
+      foo: "1"
+      bar: "2"
+    ipam:     # ip allocate manager  地址分配管理器
+      driver: default     # ipam 驱动，默认 default，不过好像没找到其他的
+      config:
+        - subnet: "172.16.238.0/24"       # 必须是 CIDR format 格式的 IP 地址范围
+        - subnet: "2001:3984:3989::/64"
+  net2:                       # 当前 compose 中 outside_network 的别名
+    name: outside_network     # shell> docker network ls 中的名字
+    internal: true      # docker 默认会将该网络 bridge 到 宿主机上，用来提供给 其他主机连接，true 表示不 bridge ，当前网络完全隔离外网环境
+    external: true      # external 特殊 key 用于表示使用 原本已存在的 network，配置该选项后 docker-compose 不会创建该 network，如果不存在，那么会抛异常
+    
+  # docker-compose 中，连接到 host 网络，@trap 最好使用 ${services.xxx.network_mode} 来配置，这种有坑
+  hostnet:
+    external: true
+    name: host
+  # docker-compose 中，连接到 none 网络，@trap 最好使用 ${services.xxx.network_mode} 来配置，这种有坑
+  nonet:
+    external: true
+    name: none
+
+volumes:
+  example-data:
+    driver: local
+ 
+services:
+  redis:    
+    image: redis:6.2.2
+    volumes:
+      - /opt/docker/redis/data:/data:rw
+    expose:
+      - "6379"
+    ports:
+      - '6379:6379'
+    command: [redis-server, --requirepass, "mypassword"]
+    networks:
+      - default   # 因为定义了其他网络，所以 default 需要显式声明，否则不会连接到 default 上
+      
+  example:            # 运行的 docker 的 container name
+    build:          
+      # 读取 指定目录下的 Dockerfile 文件，build 一个新的 image，再以新的 image 创建一个 constainer 运行 
+      # 如果是相对路径，那么基于当前 docker-compose.yml 文件的路径
+      context: .     
+      dockerfile: Dockerfile-alternate    # 自定义 build 的 Dockerfile
+      args:     # 添加 Dockerfile 中的 args
+        buildno: 1
+        gitcommithash: cdc3b19
+      labels:
+        - "com.example.description=Accounting webapp"
+        - "com.example.department=Finance"
+      network: host   # 在构建期间为 RUN 指令设置网络容器连接。
+    # 表示当前 container 基于的 image，当 build 和 image 同时使用时， 该 image 仅仅用作配置 build 出来的 image 的名称
+    # image 格式: registrydomain:port/path/tag:version
+    # 例如: docker.io:4000/library/postgresql:1.0.1
+    image: tomcat:8.5.65    
+    ports:            # 映射宿主机断口到 container 的端口上
+      - '5000:5002'     
+      - '127.0.0.1:5000:5002'       # 将容器的 5002 端口映射到 宿主机 127.0.0.1 网卡的 5000 端口上
+    # 映射宿主机的目录到 container 的目录上，转产时可以去掉该配置，这样 代码 就在容器中了，并且不会被修改
+    # @trap 相对路径必须以 . 或 .. 开头，防止跟 顶层 volumes 定义的 name 冲突
+    volumes:          
+      - /opt/docker/example/data:/data:rw       # hostPath:containerPath:readWrite; readWrite=[ro,rw]
+      - example-data:/var/lib/redis       # 引用顶层 volumes 定义的路径
+      - type: volume                # 挂载类型：volume, bind, tmpfs or npipe
+        source: /root/data          # 宿主机路径
+        target: /data               # 容器中的路径
+        read_only: false            # 是否只读
+        bind:                       # type=bind 的额外配置
+          propagation:              # 传播模式
+        volume:                     # type=volume 的额外配置
+          nocopy: true              # true 禁止从容器中复制数据
+        tmpfs:                      # type=tmpfs 的额外配置
+          size: 1024m               # 临时文件大小: b,k,m,g
+    environment:      # 配置 container 的环境变量
+      EXAMPLE_ENV: development
+      # 在 docker-compose.yml 中使用外部环境变量，如果环境变量比较多 projectDirectory 下的 .env 文件可以为 docker-compose.yml 统一配置环境变量，
+      # shell> docker-compose --env-file .env.prod      # 可以指定使用哪个文件作为 .env 环境变量文件
+      # shell> docker-compose run -e DEBUG=1            # 命令行指定 环境变量
+      SHELL_ENV: ${SHELL_ENV_TRASMIT_2_DOCKER_COMPOSE}    
+    env_file:         # 指定多个 .env 环境变量文件
+      - .env.prod
+    # 指定 profile，如果没有指定，那么当前 constainer 每次都会启动，如果指定了 profile，那么只有特定的 profile 被激活时才启动当前 container
+    # shell> docker-compose --profile debug up    # 指定激活哪一个 profile，或者可以使用 环境变量 COMPOSE_PROFILES 进行激活
+    # 存在 depends_on 时， profile 会传递给被依赖的 container，如果被依赖的 container 没有传递过来的 profile ，那么就会报错
+    profiles: ["frontend"]      
+    depends_on:       # 表名当前 container 依赖其他 container，必须在其他 container 之后启动
+      - redis
+    extends:
+      # 引入公共的 docker-compose.yml ，可以减少当前文件的配置，注意：volumes_from 和 depends_on 是不会从 common-docker-compose.yml 引入的
+      file: common-docker-compose.yml     
+      service: common-example         # 指定引入 common-docker-compose.yml 中哪个 container 的配置   
+    
+    # 网络模式: bridge, host, none, service:[service name], container:[container name/id]; 其中 host 不能 和 links 混用
+    # 相当于 shell> docker run --network 
+    network_mode: "host"    
+    networks:     # 指定当前 container 连接到哪些 network 上，这些 network 配置在 顶层的 networks 属性中
+      default:   # 因为定义了其他网络，所以 default 需要显式声明，否则不会连接到 default 上
+      net1:
+        # 为当前 container 在该 network 分配静态 ip 地址，
+        # 顶层 networks 属性中同名的 network 中的 ipam 属性中，必须配置子网，包含当前配置的静态 ip 地址
+        ipv4_address: 172.16.238.10     
+        
+        # 使用 IPv6 则 docker daemon 必须开启 IPv6,
+        # 即: /etc/docker/daemon.json 中配置，{ "ipv6": true, "fixed-cidr-v6": "2001:db8:1::/64" }
+        # 并添加 ${services.example.sysctls} IPv6 相关的内核参数
+        ipv6_address: 2001:3984:3989::10
+        aliases:  # 配置当前 container 在该 network 中的别名
+          - alias1
+          - alias3
+      net2:  
+    sysctls:    # 配置 container 的 内核参数
+      - net.ipv6.conf.all.disable_ipv6=0        # 开启 IPv6 内核参数
+      - net.ipv4.tcp_syncookies=0
+    dns:
+      - 8.8.8.8
+      - 9.9.9.9
+    dns_search:   # 用于查找 dns 服务器有哪些
+      - dc1.example.com
+      - dc2.example.com
+    container_name: my-web-container              # 自定义 container name 而不是使用默认的  
+    command: [bundle, exec, thin, -p, 3000]       # 用于覆盖 Dockerfile 中默认的 CMD 指令, 使用 exec 格式
+    entrypoint: [/code/entrypoint.sh]             # 覆盖 Dockerfile 中默认的 entrypoint 指令, 使用 exec 格式
+    expose:         # 暴露 container_port 用于其他 container 连接
+      - "3000-3010"
+      - "8000"
+    
+    # 重启策略配置，非 swarm 模式，swarm 模式重启策略查看 service.xxx.deploy
+    # 可用值: no,always,on-failure,unless-stopped
+    restart: no   
+    # swarm 相关配置，如果不是 swarm 部署，则需要使用 shell> docker-compose --compatibility up -d
+    # 部署相关的匹配，比如 CPU 内存的使用限制等
+    # @doc https://docs.docker.com/compose/compose-file/deploy/
+    deploy:  
+      # 定义外部 client 服务发现方式
+      endpoint_mode: vip    # vip(Virtual IP); dnsrr(DNS round-robin)
+      # 用于配置当前 service 的 metadata
+      labels: 
+        com.example.description: "This label will appear on the web service"
+      mode: global    # global: 每个物理 node 部署一个服务；replicated: 一个 物理 node 可以部署多个 
+      # 用于配置 service 在哪个 node 上运行
+      placement:
+        constraints:  # 配置 node 必须满足指定条件才能运行当前服务
+          #- disktype=ssd   # 同下
+          disktype: ssd
+        preferences:
+          #datacenter: us-east   # 同下
+          - datacenter=us-east
+      replicas: 2   # 指定副本服务实例数量
+      resources: 
+        reservations: &ref_limit # 保证 container 至少拥有以下资源
+          cpus: '0.50'    # 指定该服务可以使用多少个核心，可以 小数点后两位
+          memory: 10m     # 1b, 2k, 3m, 4g
+          pids: 1 
+          devices:
+            - capabilities: ["nvidia-compute"]
+        limits: # 保证 container 最多拥有以下资源
+          <<: *ref_limit
+      # 重启策略配置
+      restart_policy:
+        condition: none  # [none, on-failure, any]
+        delay: 5s
+        max_attempts: 3
+        window: 120s  # 等待多少时间后，才判断是否重启成功
+      rollback_config:  # 回滚配置
+      update_config:    # 更新配置
+    # 外部连接，使当前 container 可以通过 container 或者 alias 来访问另一个容器
+    external_links:
+      - container:containerAlias
+    extra_hosts:    # 相当于 shell> docker --add-host   # 修改 /etc/hosts 文件
+      - "host.docker.internal:172.17.0.1"   # 保留域名: docker0 网卡的地址
+      - "gateway.docker.internal:"          # 保留域名：网关地址
+      - "somehost:162.242.195.82"
+      - "otherhost:50.31.209.229"
+    # 以下参数和 shell> docker run 命令中的选项一致
+    user: 1000:1000       # 指定当前容器内 进程使用哪个 user 进行执行；格式: uid:gid
+    working_dir: /root    # 容器当中默认的工作目录
+    
+    domainname: foo.com
+    hostname: foo
+    ipc: host                         # 用于实现 container 间的内存共享
+    mac_address: 02:42:ac:11:65:43    # 自定义 MAC 地址
+
+    
+    privileged: true      # 容器内部用户权限 和 外部 用户权限一致
+    
+    read_only: true       # 设置 container 的 rootfs 为 readonly
+    # 共享内存(shared memory) 大小， 默认 64M，
+    # swap: 是将 硬盘空间 的一部分 作为 内存 使用
+    # shm: 是将 内存 挂载为 tmpfs(临时文件系统)，允许数据在 不同进程间 访问，挂载分区为: /dev/shm, 可以使用 shell> df -h 查看
+    shm_size: 64M         
+    stdin_open: false    # 对应 shell> docker run --interactive; 即使没有连接，也保持 STDIN 为 open 状态，
+    tty: false           # 对应 shell> docker run --tty; 分配一个 pseudo-tty
+       
+    # 覆盖容器默认 ulimit，ulimit 用于限制当前启动程序可以使用的资源大小
+    ulimits:
+      nofile:
+        soft: 20000
+        hard: 40000
+    
+    # 通过字符串，指定容器是否具有额外的功能
+    # @doc https://man7.org/linux/man-pages/man7/capabilities.7.html
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE: 
+    
+    # 日志：用于获取 运行中 container 和 service 的信息
+    logging:
+      # 日志驱动程序，可能的默认值：[json-file, syslog, none]，具体根据操作系统决定
+      # 只有 json-file 和 journald 类型的驱动程序，才能直接通过 docker-compose up 和 docker-compose logs 获取日志 
+      driver: "json-file"       
+      options:
+        max-size: "200k"        # json-file 类型可用
+        max-file: "10"          # json-file 类型可用
+    

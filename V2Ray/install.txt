@@ -1,0 +1,36 @@
+V2Ray 安装：  
+    Linux：
+        shell> bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)      # 执行下载下来的脚本
+        脚本运行后，文件系统的变动：
+            新增：
+            /usr/bin/v2ray/v2ray：V2Ray 程序；
+            /usr/bin/v2ray/v2ctl：V2Ray 工具；
+            /etc/v2ray/config.json：配置文件；
+            /usr/bin/v2ray/geoip.dat：IP 数据文件
+            /usr/bin/v2ray/geosite.dat：域名数据文件
+            /etc/systemd/system/v2ray.service: Systemd
+            /etc/init.d/v2ray: SysV
+        
+    
+V2Ray 配置：
+    shell> vi /etc/v2ray/config.json
+    
+V2Ray 启动|停止：
+    shell> service v2ray start          
+    shell> service v2ray stop
+
+使用：
+    win:
+        Control Panel -> View by: Large icons -> Internet Options -> Connections -> LAN Settings 
+        -> 去掉 Automatic Configuration 里面的所有勾选项
+        -> Proxy server
+            -> [勾选] Use a proxy server for your LAN
+                -> Advance
+                    -> Servers
+                        -> Address: 127.0.0.1
+                        -> Port: 12345
+                        -> [勾选] use the same proxy server for all protocol
+                    -> Exceptions
+                        -> *localhost*;127.*;192.*
+            -> [勾选] Bypass proxy server for local address
+    

@@ -1,0 +1,73 @@
+# @trap 注释不能接在行末，会导致读取失败，当前文件是为了书写方便，实际不能这么写注释
+
+# Unit 配置
+[Unit]
+# Before=                       # Timer units 隐式 Before= 依赖它要激活的 service
+# Requires= sysinit.target      # Timer units 默认 Requires= sysinit.target
+# After= sysinit.target         # Timer units 默认 After= sysinit.target
+
+# 服务描述
+Description=timed task
+Documentation=file:///home/kasei/Desktop/Script/dig-timer.timer
+# 与当前 Unit 配合的其他 Unit，如果它们没有运行，当前 Unit 不会启动失败
+Wants=network-online.target     
+
+# 检测条件
+ConditionPathExists=!/run/ostree-booted
+
+[Install]
+Alias=
+WantedBy=timers.target
+# RequiredBy=  # 同上
+Also=
+DefaultInstance=
+
+# 定时器配置
+# 根据不同的 启动点，设置定时器触发的相对时间，格式 1y 2M 3w 4d 5h 6m 7s 8ms 9us = 1年 2月 3周 4天 5小时 6分 7秒 8毫秒 9微秒
+[Timer]
+# 初始触发时间 配置
+# 定时器生效后，多久开始触发
+OnActiveSec=8us
+# 基于 系统启动时间，来设置 timer 的触发时间
+# OnBootSec=10s
+# systemd 进程启动后，多少时间开始执行
+# OnStartupSec=1m
+
+# 再次触发时间 配置
+# 基于 上次 timer 激活时间，来设置下次 timer 的出发时间
+# OnUnitActiveSec=1h
+# 基于 上次 timer 激活后执行结束的时间，来设置 timer 的触发时间
+OnUnitInactiveSec=16s
+
+# 基于绝对时间，出发定时器
+# OnCalendar=Thu,Fri 2012-*-1,5 11:12:13
+
+
+# 定时器被安排在一个时间窗口内运行，
+# 时间窗口为: OnCalendar=, OnActiveSec=, OnBootSec= 触发的时间 到 + AccuracySec 指定的时间范围内
+AccuracySec=1s
+
+# 定时器触发时，延迟执行，随机延时时间为 8s 内
+RandomizedDelaySec=4s
+FixedRandomDelay=false
+
+# 时钟 和 时区 改变时，触发定时器
+OnClockChange=true
+OnTimezoneChange=true
+
+# 指定要触发的 .service
+Unit=dig-timer.service
+
+# 宕机导致错过定时任务，是否开机立即运行该定时任务
+Persistent=true
+
+# true: 定时器触发时，使系统从挂起状态恢复
+WakeSystem=false
+
+# true: 当前定时器启动一次后，就一直是 load 状态，不能重复 start
+# false: 当前定时器可以重复 start
+RemainAfterElapse=true
+
+
+
+

@@ -1,0 +1,96 @@
+# k8s.obj.yml: 所有 k8s 对象通用的配置文件
+
+apiVersion: apps/v1 # 必填，使用哪个版本的 k8s API 来创建当前 k8s object
+kind: Deployment    # 必填，所创建的 k8s object 的 类型
+metadata:           # 必填，用于 唯一标识 当前 k8s object
+  # 必填，当前 k8s object 的名称，需要在 当前类型资源 中唯一
+  # DNS Names(RFC 1123): 最多 253 个字符；小写字母数字，'-', '.'；以字母数字开头；以字母数字结尾
+  # Label Names(RFC 1123): 最多 63 个字符；小写字母数字，'-'; 以字母数字开头；以字母数字结尾
+  # Label Names(RFC 1035): 最多 63 个字符；小写字母数字，'-'; 以字母开头；以字母数字结尾
+  # Path Segment Names: 不能包含以下字符：['.', '..', '/', '%']
+  name: nginx-deployment
+  # 可选，指定当前 k8s object 所在的 命名空间
+  # namespace 只对可以 命名空间 化的 obj 有效：例如: Deployment, Service
+  # 对面向整个集群的 obj 无效，例如：StorageClass, Node, PersistentVolume
+  # namespace 不应该以 kube- 开头，
+  # k8s 默认自带四个 namespace: [
+  #   default,        # 当 k8s obj 没有指定 namespace 时，自动属于该 命名空间
+  #   kube-system,    # k8s 系统创建的所有 obj 都属于该 namespace
+  #   kube-public,    # 该 namespace 对所有 user 可读(包括没认证的)，这个命名空间主要保留给 集群使用
+  #   kube-node-lease
+  # ];
+  #
+  # 当创建一个 kind=Service 的 k8s obj，对创建一个对应的 DNS 条目，条目的格式为: <service-name>.<namespace-name>.svc.cluster.local
+  # 如果 container 只使用的了 <service-name>，他将被解析为 命名空间本地的服务。这在多个命名空间使用同一套配置时，很有用
+  #
+  # @trap 当创建和 公共顶级域名(com, org, cn) 相同的 namespaceName 时，在这个 namespace 中服务的域名 和 公共 DNS 中的记录会有重叠
+  #       在 workload 中执行 DNS lookup 且不带有 尾随点时（即: 查找 aa.bb.org），会被重定向到 集群内的服务，而不是在 公网上对ing域名的主机
+  namespace: kasei-default
+  # 不可填，k8s 系统自动生成，在 整个集群中唯一
+  # UID: b2138452-9949-410f-882d-21b74306b39a
+
+  # Label Selector: 当前有两种：基于全等 和 基于集合，两种 selector 都不支持 or 操作，逗号表示且的关系，两种类型可以混写
+  #   equality-based：
+  #     env=prod                    # 选择所有 env==prod 的 k8s obj
+  #     tier!=frontend              # 选择所有 tier 不存在 或 tier!=frontend 的 k8s obj
+  #     env=prod,tier!=frontend     # 选择所有 env==prod 且 tier 不存在 或 tier!=frontend 的 k8s obj
+  #   set-based:
+  #     env in (prod, qa)                 # 选择所有 env 值在括号内的 obj
+  #     tier notin (frontend, backend)    # 选择所有 tier 值不在括号内的 obj
+  #     partition                         # 选择所有存在 labels.partition 键的 obj
+  #     !partition                        # 选择所有不存在 labels.partition 键的 obj
+  #     !partition,env notin (qa)          # 选择所有不存在 labels.partition 键 且 env!=qa 的 obj
+  labels:
+    # 格式: prefix/name: value
+    #   prefix: <=253   Domain          可省略
+    #   name:   <=63    [a-z0-9A-Z-_.]  开头和结尾必须是 [:alnum:]
+    #   value:  <=63    [a-z0-9A-Z-_.]  开头和结尾必须是 [:alnum:]
+    # 如果 prefix 不存在，则表示当前 label 是当前 user 私有的
+    # 系统自动化的组件(kube-scheduler, kube-controller-manager, kube-apiserver, kubectl 或 其他三方自动组件)添加的 label，都必须带有 prefix
+    # kubernetes.io/ 和 k8s.io/ prefix 保留给 k8s 核心组件使用
+    kasei.haku.com/a0A-_.b: a0A
+    kubernetes.io/metadata.name: namespaceName    # k8s 控制平面在 所有命名空间 设置了一个 不可变的 label
+
+    # 应该添加到每个 k8s obj 中的 label，这里添加 app.kubernetes.io/ 前缀是为了不 interfere(干扰) 用户自定义(私有)标签
+    app.kubernetes.io/name: mysql
+    app.kubernetes.io/instance: mysql-abcxzy
+    app.kubernetes.io/version: 5.7.21
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: wordpress
+    app.kubernetes.io/managed-by: helm
+    app.kubernetes.io/created-by: controller-manager
+
+    # 用户私有标签
+    env: prod
+    release: canary
+    partition: A
+    version: 1.0.0
+  # 不参与 LabelSelector 的过滤操作，
+  # 支持 label 中不支持的字符
+  annotations:
+    # 格式: prefix/name: value
+    #   prefix: <=253   Domain          可省略
+    #   name:   <=63    [a-z0-9A-Z-_.]  开头和结尾必须是 [:alnum:]
+    #   value:  无限制
+    # 其他同 label
+    key: val
+  # 终结者：在 k8s 删除资源前，执行指定的 垃圾回收动作
+  # finalizer 一般不指定运行某段代码，而是某个资源的一系列 key，就像 annotation 一样
+  finalizers:
+  # k8s 用于管理 obj 之间依赖关系的字段，该字段 指向 拥有当前 obj 的 obj
+  ownerReferences:
+# 拥有关系配置
+ownerReferences:
+  blockOwnerDeletion: false # true: 阻止 gc 删除 拥有当前 obj 的 obj
+
+# 描述想要当前 k8s object 处于什么样的状态
+# 该 字段的格式，根据 kind 的不同而不同
+# 各个类型 spec 格式文档地址: https://kubernetes.io/docs/reference/kubernetes-api/
+spec:
+
+
+# 当前 object 最新观察到的状态
+status:
+
+
+

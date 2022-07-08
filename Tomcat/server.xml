@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Server port="8005" shutdown="SHUTDOWN">
+  <Service name="Catalina">
+    <!-- URIEncoding 设置前端 URI 的编码格式，解码时使用相同的格式解码，防止乱码 -->
+    <Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000" URIEncoding="UTF-8">
+  </Service>
+</Server>

@@ -1,0 +1,4 @@
+US: Los Angeles, California (DC3 CN2) [USCA_3] (current) – Premium bandwidth multiplier: 0.33x
+US: Los Angeles, California (DC8 ZNET) [USCA_8]
+
+一般选择以上两个机房，其中 DC3 是 CN2 线路，对于中国来说速度较快， DC8 没有尝试过，可以试试

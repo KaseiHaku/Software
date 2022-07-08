@@ -1,0 +1,18 @@
+1. F8 执行单条 sql 语句
+
+2. plsql 对查询出来的数据编辑
+    方法一： select 语句后面加 for update 
+    select * from table for update;
+    
+    方法二： select 语句查询出 rowid
+    select t.rowid, t.* from table as t;
+    
+3. 对数据 insert delete update 之后，先点击选出框上面的 绿色的勾 post 数据到缓存，然后必须执行 commit; 命令，快捷键 F10，否则不生效
+
+4. Rollback 快捷键 Shift+F10
+
+5. 查看表结构
+    Ctrl+鼠标点击表名 
+    
+6. PL/SQL 窗口无法最小化
+    右键 -> 使用管理员权限运行 即可

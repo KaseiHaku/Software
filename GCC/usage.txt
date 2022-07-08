@@ -1,0 +1,37 @@
+GCC: GNU Compiler Collection: GUN 编译器家族
+
+新建一个 .c 文件 Test.c 内容如下：
+    #include <stdio.h>
+    int main(void)
+    {
+        printf("Hello World!\n");
+        return 0;
+    }
+
+预处理：
+    shell> gcc -E Test.c -o Test.i          # 该操作就是把 stdio.h 的内容插入到 Test.c 文件中，并把内容输出到 Test.i 文件中 
+
+编译为汇编代码：
+    shell> gcc -S Test.i -o Test.s          # 将文件解析成汇编代码，输出汇编代码文件 Test.s
+
+汇编器（gas）将汇编代码解析为机器代码（即目标文件）：
+    shell> gcc -c Test.s -o Test.o          # 将文件解析成机器吗，输出机器码文件 Test.o
+    
+链接：负责将程序的目标文件（Test.o）与所需的所有附加的目标文件连接起来，最终生成可执行文件。附加的目标文件包括静态连接库和动态连接库
+    shell> gcc Test.o -o Test.exe           # -o 指定编译后的可执行文件名称
+    
+Debug:
+    shell> gcc -pedantic Test.c -o Test.exe     # -pedantic 选项能够帮助程序员发现一些不符合 ANSI/ISO C标准的代码，但不是全部
+    shell> gcc -Wall Test.c -o Test.exe         # -Wall 表示输出全部的警告信息，不停止编译
+    shell> gcc -Werror Test.c -o Test.exe       # -Werror 表示编译时出现警告，立刻停止编译，要求修改代码
+    
+
+引用三方库时的编译：
+    gcc –c –I /usr/dev/mysql/include test.c –o test.o   # -I 表示预处理需要导入的头文件
+    gcc –L /usr/dev/mysql/lib –lmysqlclient test.o –o test  # -L 表示链接时需要的链接库
+    gcc –L /usr/dev/mysql/lib –static –lmysqlclient test.o –o test  强制链接时使用静态链接库
+    
+相关环境变量：
+    LIBRARY_PATH：指定程序静态链接库文件搜索路径
+    LD_LIBRARY_PATH：指定程序动态链接库文件搜索路径
+         

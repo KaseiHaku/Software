@@ -1,0 +1,224 @@
+# @doc https://dev.mysql.com/doc/refman/8.0/en/server-option-variable-reference.html
+# [group]
+#   如果 group 的名字 和 一个 程序名 相同，那么当前 group 下的 option 都是针对这个 程序的
+#   将常用 group 放在前面，特定的 group 放在后面，因为后面配置的 option 会覆盖前面配置的
+# 
+# 文件可能位置: /etc/my.cnf   /etc/mysql/my.cnf   /etc/mysql/conf.d/my.cnf
+################################ Syntax ################################
+# optionName = optValue                         optName 和 optValue 前后空格默认去除
+# !include      /home/mydir/myopt.cnf           引入其他配置文件
+# !includedir   /home/mydir                     引入其他配置目录
+# escape sequences: \b, \t, \n, \r, \\, and \s      能转则转，不能转原样输出; 而 SQL 中 \x 转不了，那么输出 x，而不是 \x
+
+
+################################ 客户端配置 ############################
+[client]
+# 该 group 中的配置对所有 客户端程序都有效，例如: mysql, mysqldump, mysqlbinlog 等
+#default-character-set = utf8mb4             # 客户端默认使用的字符集
+
+################ Connection 相关, 主从复制也用得到
+# 可用值：
+#   DISABLED: 不使用 SSL/TLS 加密连接
+#   PREFERRED: 优先尝试使用 SSL/TLS 建立加密连接，如果无法建立则尝试建立非SSL/TLS连接
+#   REQUIRED: 必须使用 SSL/TLS 建立加密连接
+#   VERIFY_CA: 与 REQUIRED 行为一样，与此同时会验证 mysqld 提供的 server-cert.pem 是否有效
+#   VERIFY_IDENTITY: 与 VERIFY_CA 行为一样，与此同时会验证 mysqld 提供的 server-cert.pem 中的 host 是否与实际连接的 hostname 一致
+# @trap 从库 首次运行时需要注释掉，为了避免该情况，可以采用 change replication source to 中指定 SSL 相关配置
+#ssl-mode = VERIFY_CA
+#ssl-ca = channel/master/ca.pem                 # 该 CA 证书将用于验证 mysqld 提供的 server-cert.pem 是否有效
+#ssl-cert = channel/master/client-cert.pem      # 客户端证书，发送给服务器，mysqld 从中提取公钥用于对数据的解密； create user ... require x509; 必须指定该配置
+#ssl-key = channel/master/client-key.pem        # 客户端私钥，用于对要发送的数据进行加密；create user ... require x509; 必须指定该配置
+
+
+[mysql]
+default-character-set = utf8mb4             # 默认使用的字符集
+
+[mysqldump]
+default-character-set = utf8mb4             # 默认使用的字符集
+
+[mysqlbinlog]
+set-charset = utf8mb4
+
+################################ mysqld 服务端配置 ############################
+# @doc https://dev.mysql.com/doc/refman/8.0/en/server-option-variable-reference.html
+[mysqld]
+default_storage_engine = InnoDB             # 默认数据库引擎
+character_set_server = utf8mb4              # 默认字符集
+collation_server = utf8mb4_unicode_ci       # 默认排序规则
+default-time-zone = '+8:00'                 # 默认时区，东 8 区
+lower_case_table_names = 1                  # 小写存储表名，匹配时不区分大小写
+transaction_isolation = REPEATABLE-READ     # 默认事务隔离级别
+tmp_table_size = 128M                       # 内存中临时表的最大值，超过此值转存硬盘
+
+#sql_mode =                                  # 使用默认值即可
+interactive_timeout = 600                   # 服务器在关闭交互式连接之前等待活动的秒数
+wait_timeout = 600                          # 服务器在关闭非交互式连接之前等待活动的秒数
+
+
+# 只读配置
+# @trap 设置 super_read_only=ON，隐性强制设置 read_only=ON
+# @trap 设置 read_only=OFF，隐性强制设置 super_read_only=OFF
+# @trap super_read_only=ON 时，还能执行的操作有：
+#   1. replication 线程执行的 update
+#   2. 对 mysql.gtid_executed 表的写入
+#   3. 可以执行 ANALYZE TABLE 和 OPTIMIZE TABLE 语句
+#   4. 对 TEMPORARY 表的操作
+#   5. 对 mysql.general_log 和 mysql.slow_log 表的写入
+#   6. 对 performance_schema 数据库中的表的更新
+read_only = OFF                             # ON: 设置所有账号为 只读模式，除了拥有 CONNECTION_ADMIN(老版本叫 SUPER) 权限的账号
+super_read_only = OFF                       # ON: 设置所有账号为 只读模式
+innodb_read_only = OFF                      # ON: 更牛逼的 readonly，禁止 super_read_only 中允许的操作
+transaction_read_only = OFF                 # ON: 所有事务，都是只读事务，不能执行修改
+
+################ InnoDB 相关
+
+innodb_data_file_path = ibdata1:64M:autoextend
+innodb_autoextend_increment = 64            # 系统表空间数据文件 每次 autoextend 扩展的大小，单位 MB
+innodb_file_per_table = ON                  # 每个 table 都有一个独立的 tablespace 文件，即：mysql/datadir/dbname/tbName.ibd
+
+
+
+innodb_log_files_in_group = 2               # 每个 log group 中包含的 log file 的数量
+innodb_log_file_size = 512M                 # 每个 log file 的大小限制
+innodb_log_buffer_size = 16M                # log file 的缓冲区大小，缓冲区满了才会写盘
+
+innodb_open_files = 2048                    # innodb 可以同时打开的文件数量
+
+innodb_flush_log_at_trx_commit = 1          # 每次事务提交都 写盘，保证断电不丢数据
+innodb_flush_method = O_DIRECT              # 写盘方式
+
+
+innodb_buffer_pool_size = 1G                # 如果服务器只用作 MySQL 服务器，一般设置为 物理内存的 60%-80%
+innodb_buffer_pool_instances = 8            # 将 buffer pool 分成多少个 pool 实例
+
+innodb_thread_concurrency = 16              # 线程并发数上限，服务器有几个 CPU 就设置为几，0 表示不限制
+
+
+innodb_deadlock_detect = OFF                # 关闭，影响性能，使用 innodb_lock_wait_timeout 锁超时自动回滚
+innodb_print_all_deadlocks = ON             # 打印 InnoDB 所有 Deadlock 到 err log 中
+innodb_lock_wait_timeout = 50               # InnoDB 事务等待 行锁 的超时时间，单位: 秒，超时只会回滚当前语句，而不是整个事务，
+innodb_rollback_on_timeout = OFF            # ON: 当事务中一个 statement 执行超时，则回滚整个事务
+
+
+
+################ Connection 相关
+max_connections = 2048                      # MySQL允许最大的进程连接数，如果经常出现 Too Many Connections 的错误提示，则需要增大此值
+max_user_connections = 0                    # 但用户并行连接到 MySQL 的最大连接数，0 不限制
+
+# 如果没有配置值，那么容器首次启动时，自动生成 ssl 相关的文件，即: datadir 目录下的 ca.pem, server-cert.pem, and server-key.pem
+# 如果没有这些文件，可以使用 shell> mysql_ssl_rsa_setup 手动生成
+# @doc https://dev.mysql.com/doc/refman/8.0/en/using-encrypted-connections.html
+# @trap server.cert 和 client.cert 必须出自同一个 CA.cert
+#tls_version = TLSv1.2,TLSv1.3               # 指定 tls 版本, ''(空串) 表示不开启 TLS
+#tls_ciphersuites = NULL                     # tls 加密套件, 不配置 表示 使用默认值；''(空串) 表示不使用 加密套件，会导致连接无法建立；
+#ssl_ca = ca.pem                             # 指定 CA 证书文件路径
+#ssl_capath = /path                          # 指定多个 CA 证书文件所在目录
+#ssl_cert = server-cert.pem                  # 指定 服务端 证书文件路径
+#ssl_key = server-key.pem                    # 指定 服务端 证书私钥文件路径
+#require_secure_transport = OFF              # ON: mysql 只允许 TLS 加密的 TCP 连接，或者本地连接
+#ssl_cipher="DHE-RSA-AES128-GCM-SHA256:AES128-SHA"  # mysql 允许的 加密套件
+#ssl_crl = /file                             # 指定 证书撤销列表文件 的路径
+#ssl_crlpath = /path                         # 指定多个 证书撤销列表文件 的目录
+
+
+################ Statement 相关
+max_allowed_packet = 32M                    # 限制接收数据包的大小,单条数据超过该值时插入或更新失败,
+sort_buffer_size = 2M                       # 每个连接独享的 group by, order by 的缓冲区大小
+join_buffer_size = 128M                     # 用于表间关联缓存的大小,每个连接独享
+tmp_table_size = 16M                        # sql 语句在排序或者分组时没用到索引，就会使用临时表空间
+thread_cache_size = 256                     # 保存在缓存中线程的数量
+
+back_log = 512                              # mysql 可以持有 未完成 的请求数量
+
+
+################ Log 相关
+log_timestamps = SYSTEM                     # 配置 mysql 所有 log 里面的时间戳是哪个时区的，SYSTEM: 表示打印的是系统时间，UTC: 表示打印 UTC 时间
+
+######## error log:
+# 配置 mysql 错误日志文件路径为：datadir/mysqld.log，
+# @trap container 部署最好打印到 stderr，否则看不到，除非已经挂在到 容器外部了
+#log_error = mysqld.log
+
+
+######## binlog: 归档日志，在主从复制中，用于复制
+log-bin = binlog                            # 配置 binlog 文件的 basename, 实际文件会自动加后缀
+log_bin_index = binlog.index                # 配置 binlog index 的文件名
+binlog_error_action = ABORT_SERVER          # binlog 报错时，mysql 的处理动作，ABORT_SERVER: 直接关闭 mysql
+max_binlog_size = 1G                        # 1024*1024*1024 = 1G, 配置单个 binlog 文件最大值
+sync_binlog = 1                             # 每次事务提交都 写 binlog
+binlog_format = row                         # 即日志中记录的是语句还是行更新或者是混合
+binlog_expire_logs_seconds = 2592000        # 清除 30(30*24*60*60 seconds)天前的日志，替代 expire_logs_days
+log_bin_trust_function_creators = OFF       # 禁止创建 function，因为不能保证 creator 不创建引起 binlog 不安全的 function
+binlog_expire_logs_auto_purge = ON          # ON: binlog 自动清理
+binlog_rows_query_log_events = OFF          # ON: 将 信息日志事件 写入 binlog，可以获取到实际 client 执行的 sql
+binlog_row_image = full                     # [full, minimal, noblob]; binlog 格式为 row 时，该参数决定如何将 row 信息写入到 binlog 中
+
+######## slow query log: 慢查询日志
+slow_query_log  = ON                        # 慢查询总开关
+slow_query_log_file = slow.log              # 慢查询日志文件
+long_query_time = 2                         # 慢查询阈值（秒），SQL 执行超过这个阈值将被记录在日志中
+log_queries_not_using_indexes  = 1          # 无论是否超时，未使用索引的记录也会记录下来
+min_examined_row_limit = 10000              # 慢查询仅记录扫描行数大于此参数的 SQL
+log_output = FILE,TABLE                     # 慢查询日志存储方式，TABLE: 保存到表，性能差；FILE: 保存到文件；FILE,TABLE: 同时保存到表和文件
+
+
+######## redo log: 重做日志，宕机时，有些事务没有写盘，需要根据该日志重做，保证事务的持久性
+# InnoDB 默认在 datadir 下创建两个 5MB 的 redo log，分别为 ib_logfile0 和 ib_logfile1
+# @trap innodb_log_file_size * innodb_log_files_in_group <= 512GB
+
+
+
+######## undo log: 回滚日志，保存了事务发生之前的数据的一个版本
+
+
+
+################ Replication 主从复制相关
+server_id = 1                               # 主从复制必须，并且各服务器具有唯一性
+gtid_mode = ON                              # 开启 gtid 模式
+enforce_gtid_consistency = ON               # 不允许执行 gtid 模式不支持的 sql
+
+######## 主库
+# 当  rpl_semi_sync_source (semisync_source.so library) 插件安装到 从库 后才可用
+#rpl_semi_sync_source_wait_point = AFTER_SYNC    # 主从半同步配置
+#replication_sender_observe_commit_only
+# replication_optimize_for_static_plugin_config
+
+# 需要同步的数据库。如果是多个同步库，就以此格式另写几行即可。
+# 如果不指明对某个具体库同步，就去掉此行，表示同步所有库（除了ignore忽略的库）。
+#binlog-do-db=k8s
+# 不同步 mysql 系统数据库。如果是多个不同步库，就以此格式另写几行；也可以在一行，中间逗号隔开。
+#binlog-ignore-db=mysql
+
+
+
+######## 从库
+
+# 告诉 从库 启动时，不启动以下线程，直到手动执行 START REPLICA; 再启动
+#   replication I/O(receiver): 从主库接收数据
+#   SQL (applier): 执行从主库接收的数据
+#skip_replica_start = ON
+#replica_parallel_workers = 4                # 从库 执行并行复制 worker 的数量
+#replica_parallel_type = LOGICAL_CLOCK       # 决定 事务 是否允许在 从库 执行并行复制
+#log_replica_updates = ON                    # 配置 replica 服务器 是否将从 master 接收的更新，写入到自己的 binlog 中
+
+#### relay log: 中继日志，在主从复制中，replica 中记录已经执行的事务的日志
+#max_relay_log_size = 0                      # 0 表示使用 max_binlog_size 的值
+#relay_log = relay-bin                       # 配置 relaylog 文件的 basename
+#relay_log_index = relay-bin.index
+#relay_log_purge = ON                        # ON: 开启自动清理 中继日志
+#relay_log_recovery = ON                     # 允许 从库 在启动时，立即启动 中继日志 的回复
+#sync_source_info = 10000                    # 每 n 个事件后，从库更新 复制连接元数据
+#sync_relay_log = 10000                      # 每 n 条 relay log 记录之后，触发一次写盘，将 relay log 持久到硬盘
+#sync_relay_log_info = 10000                 # 每 n 个事务之后，从库更新 应用线程元数据
+
+
+# 如果需要同步的数据库名相同
+# 需要同步的数据库名。如果不指明同步哪些库，就去掉这行，表示所有库的同步（除了ignore忽略的库）。
+#replicate-do-db=k8s
+# 如果需要同步的数据库名不同
+# master 上的数据库名为 k8s ， slave 上的库名为 k8s2
+#replicate-rewrite-db=k8s->k8s2
+
+
+
+

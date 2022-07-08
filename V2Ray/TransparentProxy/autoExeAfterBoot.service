@@ -1,0 +1,10 @@
+[Unit]
+Description=autoExeAfterBoot
+After=auditd.service systemd-user-sessions.service time-sync.target network.target
+
+[Service] 
+Type=oneshot
+ExecStart=/root/Script/autoExeAfterBoot.sh
+
+[Install]
+WantedBy=multi-user.target

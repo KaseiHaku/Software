@@ -1,0 +1,36 @@
+列编辑模式：{
+    Shift+右键+拖动：列编辑模式
+    Ctrl+左键：增加选择
+    Alt+左键：减少选择
+}
+
+
+在同一个窗口中打开文件夹：{
+    Project -> Add Folder to Project...
+}
+
+
+插件安装：{
+    直接安装：
+        1. Sublime 插件下载网址 https://packagecontrol.io/  下载插件
+        2. Preferences -> Browse Packages 打开插件安装目录
+        3. 将下载的压缩包直接解压到 该安装目录即可
+    
+    使用 Package Control 组件安装
+        1. 按Ctrl+ `(此符号为tab按键上面的按键) 调出console（注：避免热键冲突） 
+        2. 粘贴以下代码到命令行并回车：
+            import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())
+        3. 下载完成之后重启Sublime Text 3
+        4. 如果在 Perferences 下拉菜单中看到 Package Control 这一项，则安装成功
+        5. Ctrl+Shift+P调出命令面板 
+        6. 输入install 调出 Install Package 选项选中并回车，然后在列表中输入需要安装的 插件名称 选中安装即可
+
+    常用插件：
+        1. Hex 格式查看文件：HexViewer
+}
+
+
+查看 Hex（16进制格式）：
+    Ctrl+Shift+P -> 输入 HexViewer -> 选择 Toggle to Hex View
+编辑 Hex :
+    Ctrl+Shift+P -> 输入 HexViewer -> 选择 Show Hex Edit Panel

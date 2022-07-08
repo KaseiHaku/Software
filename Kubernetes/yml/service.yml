@@ -1,0 +1,133 @@
+# 提供集群外访问的方法：
+#   Pod.spec.containers[].ports[].hostPort: 直接将 Port 和 Node Port 绑定，前提: 需要 nodeSelector 固定 Pod 运行的 Node
+#   Pod.spec.hostNetwork: 直接使用 Node 网络，前提: 需要 nodeSelector 固定 Pod 运行的 Node
+#   Service.spec.type.NodePort: 在集群所有 Node 都开一个端口，用于处理请求
+#   Service.spec.externalIPs: 使用集群中，符合配置 IPs 的 Node 用于处理请求
+#   Service.spec.type.Loadbalancer: Layer4(传输层)负载均衡器：集群内还是通过 ExternalIPs 来开放服务, 例如: MetalLB
+# @trap Ingress: 本身不涉及如何暴露自己到 公网 上，还是需要通过 hostNetwork, hostPort, NodePort, ExternalIP, Loadbalancer 来暴露
+
+
+
+# 外部服务  需要手工配置 endpoint，endpoit 的ip 不能是 
+#   loopback： 127.0.0.0/8,  ::1/128
+#   link-local: 169.254.0.0/16,  224.0.0.0/24, fe80::/64
+#   其他 k8s service 的 ClusterIP
+#
+# k8s-apiserver 不允许代理没有映射到 pod 上的 endpoint，即： shell> kubectl proxy <service-name>  失败
+# 
+# Endpoint
+#   一个 endpoint 资源如果超过 1000 个，那么这个 endpoint 的被认为是 过量的， endpoints controller 会只截取前 1000 个资源
+# EndpointSlice
+#   当 EndpointSlice 达到 100 个 endpoint 时就被认为是满了，在这个时间点，会创建一个 额外的 EndpointSlice 会被创建，并用来保存 额外的 endpoint
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-service
+spec:
+
+  # 将流量打到 Pod Label 符合当前 Selector 配置的 Pod 上
+  # 只支持 equality-based label selector
+  selector:
+    app: demo-k8s    # 筛选出 ${metadata.labels.app}=demo-k8s 的 Pod 上
+  # 当前服务提供的端口
+  ports:
+    - protocol: TCP   # "TCP", "UDP", and "SCTP"
+      # 当前 service 暴露出来的端口，该端口是 ClusterPort，不是 HostPort，也不是 PodPort(ContainerPort)，
+      # PodPort==ContainerPort: 同一个 Pod 内的 Container 共享 IP, Port, Volume, Namespace
+      port: 8080
+      targetPort: 8080  # 当前 Service 将流量打到 Pod 的哪个端口上
+      name: port1           # 当前端口的名称，当前 service 只有一个 port 的时候可以忽略
+      # 当 type 为  NodePort or LoadBalancer 时，当前 Service 在每一个 Node 中，暴露出来的端口
+      # @trap: 端口范围必须为 30000~32767
+      # nodePort: 32767
+      appProtocol: http    # 当前端口的应用层协议
+  
+  # 从外部访问 K8s Service 的方法：其中 {} 中的为 k8s cluster 中的组件
+  #   ClusterIP: 本身无法访问，需要代理。流程为: Client -> Proxy -> {Service -> Pod}
+  #   NodePort: 流程为: Client -> {NodePort -> Service -> Pod}
+  #   LoadBalancer: 流程为: Client -> LoadBalancer -> {NodePort -> Service -> Pod}
+  #   Ingress: 流程为：Client -> {Ingress -> Service -> Pod}
+  type: ClusterIP         # 配置服务是如何公开的，可用值: [ExternalName, ClusterIP, NodePort, LoadBalancer]
+  #####
+  # IP 协议家族
+  # 该字段一般情况下 根据 集群配置 和 ${spec.ipFamilyPolicy} 自动配置
+  # 如果手动配置的情况下，要求：1. 集群 支持手工配置的 协议家族；2. ${spec.ipFamilyPolicy} 允许；才会生效，否则 Service 创建失败
+  # 有效值: [Ipv4, IPv6]
+  # @trap 该字段只在 type=[ClusterIP, NodePort, LoadBalancer] 时 且 Headless service 时有效
+  ipFamilies: [Ipv4, IPv6]
+
+  # IP 家族策略
+  #   SingleStack: 默认值，单栈
+  #   PreferDualStack: 最好爽栈
+  #   RequireDualStack: 必须双栈，否则失败
+  ipFamilyPolicy: SingleStack
+
+  # 有效值：["None", "", "IP Address"]
+  #   None: 表示当前服务是一个 headless service
+  # headless service: 即：no virtual IP
+  #   1. 不会分配 clusterIP，
+  #   2. kube-proxy 不处理这些服务
+  #   3. 平台的 load balancing 和 proxy 对这些服务无效
+  #   4. 如何配置 DNS 取决于当前 Service 是否配置了 selector
+  #      配置了 selector:
+  #         endpoints controller 会在 API 中创建 Endpoints 记录
+  #         修改 DNS 配置：直接将 Pods 的 IP 地址当作 A 记录返回
+  #      无 selector:
+  #         不创建 Endpoints 记录
+  #         如果当前服务是  ExternalName 类型，在 DNS 配置一个 CNAME 记录
+  #         如果不是，为 和当前 Service 共享 name 的所有 Endpoints，创建一个 A 记录
+  clusterIP: None
+  # 如果没有指定，默认从 clusterIP 获取，如果指定了，那么要求 clusterIPs[0] = clusterIP
+  # 该数组最多有两个元素，其他限制跟 clusterIP 一致
+  clusterIPs: []
+
+  # 集群中其他可以提供当前服务的 Node 的 IP 地址，这些 IP 地址不受 k8s 管理
+  # 常见应用场景：不属于 k8s 系统的 外部负载均衡器
+  #   相比 NodePort 的优点是：可以指定 高性能服务器 来作为集群的入口，防止 NodePort 模式下流量随便打，压跨 低性能服务器
+  #   缺点: 不具有高可用性，配置 IP 对应的 host 挂掉之后就 gg
+  externalIPs: []
+
+  # 会话 亲和性：同一个会话，发送到同一个 Pod
+  # 有效值:
+  #   ClientIP: 基于 客户端 IP 来判断是否同一个会话
+  #   None: 默认值，no session affinity
+  sessionAffinity: None
+
+  # 只对 type=LoadBalancer 时生效，使用该字段中指定的 IP 创建 LoadBalancer
+  loadBalancerIP:         
+  # 表明 LoadBalancer 只接收指定 IP 地址发送的请求
+  loadBalancerSourceRanges: []
+  # 表明当前 Service 属于哪一个 LoadBalancer 类型
+  # 格式：prefix/name  例如：example.com/internal-vip
+  # 没有 prefix 的值，是终端用户保留的
+  # 如果没有配置，将使用默认的 Loadbalancer 实现
+  loadBalancerClass:
+
+  # 当 type=ExternalName 时生效
+  externalName: alias  # 为当前服务在 服务发现机制 中配置一个 alias
+  # 外部流量策略：主要配置 外部流量 如何流转到 Container 中的
+  #   Cluster: 集群模式，流量进入入口 Node 后，分发到 绑定到指定 Service 的所有 Pod 中
+  #   Local: 本地模式，流量进入入口 Node 后，直接在 入口 Node 中查找 绑定到指定 Service 的 Pod 的
+  externalTrafficPolicy: Cluster   
+  
+  
+  
+  # 有效值：
+  #   Cluster: 默认，流量打到集群中所有可用的 endpoint 上
+  #   Local: 流量打到本地 Node 的 endpoint 上，如果没有则丢弃
+  internalTrafficPolicy:
+
+  # 当 type=LoadBalancer 和 externalTrafficPolicy=Local 时才有效
+  # Scenario：外部系统(例如: loadbalancer) 通过这个端口来判断，一个 Node 是否持有当前 service 的 endpoint
+  healthCheckNodePort:
+  publishNotReadyAddresses:
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800    # ClientIP 类型的 会话亲和性 超时时间，0<val<86400(1 day), 默认值=10800(3 hours)
+  # 当 type=LoadBalancer 时，是否自动分配 ${spec.ports[].nodePort} 的值
+  allocateLoadBalancerNodePorts: true
+
+
+
+

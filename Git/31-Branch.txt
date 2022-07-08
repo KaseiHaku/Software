@@ -1,0 +1,106 @@
+基本概念 {
+    1. 一个分支 branch 就是一个指针，指向了一个 commit
+    2. 远程分支也是指向一个 commit ，且不管远程分支还是本地分支都是以 init commit 为 root 的 tree 
+}
+
+
+Query {
+    shell> git branch --list --verbose              # 查看本地库所有分支
+    shell> git branch --all --verbose               # 查看本地库和本地远程库所有分支
+    shell> git branch --all dev* pro*               # 分支名符合 dev* 或 pro* 模式的分支
+
+    shell> git branch --contains commitHashValue    # 查看包含指定 commit 的分支，如果 commit 没有指定，默认为 HEAD 
+    shell> git branch --no-contains commitHashValue # 查看不包含指定 commit 的分支
+    shell> git branch --merged commit               # 查看合并到指定 commit 的分支，如果 commit 没有指定，默认为 HEAD 
+    shell> git branch --no-merged commit            # 查看没有合并到指定 commit 的分支
+}
+
+Create {
+    shell> git branch debug                             # 基于当前分支创建一个 debug 分支
+    shell> git branch debug HEAD                        # 同上
+    shell> git branch --track newBranch HEAD            # 以当前分支的 HEAD 为起始点，创建一个新的分支，并且新分支跟踪当前分支，即：以当前分支为 上游 分支
+    shell> git checkout --track newBranchName           # 根据当前分支新建一个 newBranchName 分支，并设置当前分支为 newBranchName 的 上游 分支
+    shell> git push --set-upstream origin branch_name   # 基于 本地分支 创建 远程分支
+    shell> git checkout -b <branch name> <SHA1>         # 从历史提交中检出分支
+}
+
+Delete {
+    shell> git branch -d debug              # 删除当前分支上的 debug 分支
+    shell> git branch -D debug              # 强制删除 debug 分支
+    shell> git fetch --force origin                     # 强制覆盖本地库
+    shell> git fetch --prune origin                     # 修剪所有远程库中不存在的本地分支
+}
+
+Update {
+    shell> git remote add --mirror=fetch                    # 添加远程库，并从 远程库 fetch 所有内容覆盖 本地库
+}
+Switch {
+    shell> git checkout debug               # 切换到当前分支上的 debug 分支
+}
+
+Remote-tracking {
+    shell> git branch --set-upstream-to=origin/master debug        # 设置本地库 debug 分支的 上游 分支为 origin/master
+    shell> git branch --unset-upstream debug                        # 取消本地库 debug 分支的 上游 分支配置
+}
+
+
+
+Merge {
+    shell> git checkout master              # 切换到 master 分支上
+    shell> git merge debug                  # 把 debug 分支更新合并到当前(master)分支上
+    shell> git merge origin/debug           # 合并 LocalRemoteRepo 中的 debug 分支到当前(master)分支上
+    shell> git status                       # 如果出现分支合并冲突，使用该命令查看冲突的文件
+    shell> vim conflict.txt                 # 打开冲突的文件，找到文件中如下格式的字符串，并手工处理冲突
+                                            # <<<<<<< HEAD
+                                            # HEAD(master) 分支修改的内容
+                                            # =======
+                                            # debug 分支修改的内容
+                                            # >>>>>>> branch2
+
+    shell> git add conflict.txt             # 手工处理完冲突后，再把冲突文件手工提交到缓存区，表示冲突已解决，再提交即可
+    shell> git commit -m '分支合并，冲突处理后提交'
+    shell> git log --oneline --decorate --graph --all   # 查看分支情况
+    
+    Advance {
+         shell> git merge --abort                # 放弃当前合并
+        shell> git reset --hard HEAD            # 回到之前的状态
+        shell> git merge -Xignore-all-space debug           # 忽略所有空白
+        shell> git merge -Xignore-space-change debug        # 忽略所有空白的修改
+        
+        # 手工合并文件
+        # 坑：merge 提交前执行以下命令才有效
+        shell> git show :1:hello.rb > hello.common.rb       # 共同 ancestor 节点保存的文件版本 输出重定向到 hello.common.rb 用于手工处理冲突
+        shell> git show :2:hello.rb > hello.ours.rb         # 当前合并分支保存的文件版本
+        shell> git show :3:hello.rb > hello.theirs.rb       # 被合并分支保存的文件版本
+
+        shell> git ls-files -u              # 更底层的方式查看冲突的文件
+        shell> git merge-file -p hello.ours.rb hello.common.rb hello.theirs.rb > hello.rb             # 合并文件
+
+        shell> git checkout --conflict=diff3 hello.rb
+        shell> git checkout --ours              # 直接选择当前分支的版本作为合并后的版本，抛弃另一个版本
+        shell> git checkout --theirs            # 直接选择合并分支的版本作为合并标准，抛弃当前分支的版本
+
+
+
+        # 查看合并对各版本文件内容造成的影响
+        shell> git diff --ours                  # 查看分支合并到底引入了哪些东西
+        shell> git diff --theirs                # 查看分支合并，对被合并分支版本做了哪些修改
+        shell> git diff --base                  # 查看分支合并，对两个分支否版本的修改
+
+        # 合并清理
+        shell> git clean -f                     # 清理为手动合并而创建但不再有用的额外文件
+    }
+}
+
+Demerged {
+    shell> git reset            # 直接将 HEAD 指针往老 commit 移动，抛弃新的 commit
+    shell> git revert           # 新建一个 commit 用老数据覆盖最新修改的数据
+
+
+    shell> git reset --hard HEAD~           # 有风险，会丢失合并节点之后的提交
+    shell> git revert -m 1 HEAD             # 还原提交
+    shell> git revert ^M                    # 撤销 原来的 还原操作
+}
+
+    
+         

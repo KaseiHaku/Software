@@ -1,0 +1,32 @@
+# @trap 注释不能接在行末，会导致读取失败，当前文件是为了书写方便，实际不能这么写注释
+[Unit]
+Description=autoExeAfterBoot                        # 服务描述
+Documentation=file:///root/Script/autoExeAfterBoot.sh      # 服务文档所在路径，uri 格式  
+#Requires=                                          # 当前 Unit 依赖的其他 Unit，如果它们没有运行，当前 Unit 会启动失败
+#Wants=                                             # 与当前 Unit 配合的其他 Unit，如果它们没有运行，当前 Unit 不会启动失败
+#BindsTo=                                           # 与 Requires 类似，它指定的 Unit 如果退出，会导致当前 Unit 停止运行
+#Before=                                            # 如果该字段指定的 Unit 也要启动，那么必须在当前 Unit 之后启动
+After=auditd.service systemd-user-sessions.service time-sync.target network.target  # 如果该字段指定的 Unit 也要启动，那么必须在当前 Unit 之前启动
+#Conflicts=                                         # 这里指定的 Unit 不能与当前 Unit 同时运行
+#Condition=                                         # 当前 Unit 运行必须满足的条件，否则不会运行
+#Assert=                                            # 当前 Unit 运行必须满足的条件，否则会报启动失败
+
+
+
+
+
+# 用来 Service 的配置，只有 Service 类型的 Unit 才有这个区块
+[Service]
+Type=forking                                        # 服务的运行形式，forking 后台运行
+Restart=always                                      # always: 10s 内重启 5 次失败，那么放弃重启; on-failure: 当服务的退出状态码不为 0 时，重启
+RestartSec=1                                        # 尝试重启前等待时间，默认值 100ms，一般建议至少 1s
+ExecStart=/root/Script/autoExeAfterBoot.sh          # 启动服务执行的命令
+
+
+# 常是配置文件的最后一个区块，用来定义如何启动，以及是否开机启动
+[Install] 
+WantedBy=multi-user.target                          # 当前 Unit 激活时（enable）符号链接会放入/etc/systemd/system 目录下面以 Target 名 + .wants后缀构成的子目录中
+#RequiredBy=                                         # 它的值是一个或多个 Target，当前 Unit 激活时，符号链接会放入/etc/systemd/system目录下面以 Target 名 + .required后缀构成的子目录中
+#Alias=                                              # 当前 Unit 可用于启动的别名
+#Also=                                               # 当前 Unit 激活（enable）时，会被同时激活的其他 Unit
+

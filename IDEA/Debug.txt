@@ -1,0 +1,60 @@
+IDEA Debug {
+
+    Ctrl+F8                 Set Break Point         点击编辑界面左侧行标列
+
+    F7                      Step Into               单步执行，进入方法，但是不会进入第三方类库的方法
+    Shift+F7                Smart Step Into         
+    Alt+Shift+F7            Force Step Into         强制进入方法，包括动态代理和三方类库
+
+
+    F8                      Step Over               单步执行，跳过方法   
+    Shift+F8                Step Out                跳出当前进入的方法 
+    Alt+Shift+F8            Foece Step Over                  
+
+
+
+    F9                      执行到下一个断点 
+    Alt+F9                  Run to Cursor
+                            Force Run to Cursor
+
+    变量及表达式查看： {
+        Alt+F8                  计算并显示表达式的值
+
+        Variables               窗口中查看变量
+        Watches                 窗口中查看表达式
+    }         
+    
+    Breakpoint Type: {
+        Line Breakpoint: 行断点                    # 代码运行到 断点 所在行时停止
+        Field Breakpoint: 字段断点                  # 字段 read or write 时停止
+        Method Breakpoint: 方法断点                 # 方法 enter or exit 时停止，主要用于 interface 调试
+        Exception Breakpoint: 异常断点              # 程序抛出指定 exception 时停止
+    }
+
+
+    断点条件设置： {
+
+    }
+
+
+    断点回退： {
+        Drop Frame          回退到指定断点，不用重头开始 Debug
+    }
+
+    中断 Debug ：{
+        Force Return            直接中断当前 Debug ，不执行后面的代码
+    }
+
+    多线程 Debug:{
+    
+        
+        断点右击：
+            Breakpoints 窗口中 [勾选] Suspend 并 [单选]Thread
+            Suspend： All 表示该断点将停止整个 JVM 执行(包括其他所有线程)，Thread 表示只暂停当前线程的执行（建议使用Thread）
+            Condition: 可以设置该断点生效的条件
+
+        Debugger 窗口 -> 选择 Frames 标签页 -> 下拉框中选择想要查看的线程 -> 选择 Thread Frame(框架) 
+        -> Alt+F8(或者 Debugger 标签页同级中的 Evaluate Expression 按钮)
+        -> Expression: this.getState() -> 回车即可看到表达式执行结果
+    }
+}

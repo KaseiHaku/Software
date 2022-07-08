@@ -1,0 +1,33 @@
+# 客户端和服务器端
+
+# 本文件的作用相当于 linux 下的 hosts 文件，提供的tnsname到主机名或者ip的对应，只有当 sqlnet.ora 中类似 
+# NAMES.DIRECTORY_PATH= (TNSNAMES) 这样，也就是客户端解析连接字符串的顺序中有TNSNAMES时，才会尝试使用这个文件。 
+
+TNSNAME = (
+    DESCRIPTION = (
+        ADDRESS_LIST = ( 
+            ADDRESS = (PROTOCOL = protocol-name) (HOST = host-name) (PORT = port-number) # 当前 TNSNAME 对应的主机，端口，协议 
+        ) 
+    )
+    (
+        CONNECT_DATA = 
+            (SERVER = DEDICATED)  # 使用专用服务器模式去连接需要跟服务器的模式匹配，如果没有就根据服务器的模式自动调节   
+            (SERVICE_NAME = service-name) # 对应service_name，SQLPLUS> show parameter service_name;进行查看   
+    )
+) 
+    
+
+#### sample
+TNS_NAME1 = (
+    DESCRIPTION = (
+        ADDRESS_LIST = ( 
+            ADDRESS = (PROTOCOL = TCP) (HOST = 127.0.0.1) (PORT = 1521) 
+        ) 
+    )
+    (
+        CONNECT_DATA = 
+            (SERVICE_NAME = ORCL)   
+    )
+) 
+
+

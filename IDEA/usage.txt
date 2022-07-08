@@ -1,0 +1,273 @@
+行内编辑 Json Xml 等字符串 {
+    输入 String str = ""; -> 光标移动到双引号内部 -> Alt+Enter -> 选择 Inject language or reference -> 选择 json 
+    -> 光标移动到双引号内部 -> 再次 Alt+Enter -> Edit JSON Fragment -> 可以看到编辑 json 文件的界面了 -> 编辑完后关闭即可
+    
+    // language=<language_ID> prefix=<prefix> suffix=<suffix>
+}
+
+查看当前 工作空间 和 Git 仓库中分支中所有不同的文件列表 {
+    VCS -> VCS Operations Popup... -> Branchs -> 选择指定的分支 -> 选择 Show Diff with Working Tree 
+    -> 就可查看所有不同的文件 (注意：到底是以 工作空间 为基准对比，还是以 指定分支 为基准进行对比的),   
+        蓝：改，
+        灰：删，
+        绿：增，
+        红：冲突
+}
+
+
+1. 创建一个 gradle 项目，并包含多个子模块，即目录结构为 gradle_project { gradle_module1, gradle_module2}
+    File -> New -> Project -> 选择 Gradle -> 不勾选任何东西，包括 java -> Next
+    -> GroupId: kasei.gradle_project 
+    -> ArtifactId: gradle_project 
+    -> Next
+    -> [勾选] Use auto-import     // 开启自动更新修改的依赖
+    -> [勾选] Create directories for empty content roots automatically    // 表示自动创建 src 文件目录结构
+    -> [单选] using explicit module groups    // 
+    -> [勾选] Create separate module per source set   // 为每个模组创建单独的 build.gradle 文件，如果是多模组的项目，就不用自己去为每个模组创建一个 build.gradle
+    -> [单选] Use local gradle distribution   // 使用本地安装的 gradle ，而不是使用 idea 自带的 gradle
+    -> Next
+    -> Project name: gradle_project -> Project location: E:\IdeaProjects\gradle_project
+    -> 点击 More Settings
+    -> Module name: gradle_module1
+    -> Content root: E:\IdeaProjects\gradle_project\gradle_module1
+    -> Module file location: E:\IdeaProjects\gradle_project\gradle_module1
+    -> Project format: .idea(directory based)
+    -> Finish    
+
+
+    创建一个项目中的子模块
+    File -> Project Structure... -> Projec Settings -> Modules -> 选择自己的项目的模块 -> '+' -> New Module -> Spring Initializr
+    -> Group: kasei.java
+    -> Artifact: springboot_module
+    -> Type: Gradle Project(Generate a Gradle based project archive)
+    -> Language: Java
+    -> Packaging: Jar
+    -> Java Version: 8
+    -> Version: 0.0.1-SNAPSHOT
+    -> Name: springboot_module
+    -> Description: Demo project for Spring Boot
+    -> Package: kasei.java.springboot_module
+    -> Next
+    -> 选择 spring boot 环境
+    -> Module name: springboot_module
+    -> Content root:  E:\IdeaProjects\java_project\springboot_module
+    -> Module file location: E:\IdeaProjects\java_project\springboot_module
+    -> Finish
+
+
+2. Live Template 代码模板的使用呢 {
+
+    psvm : main()
+    sout : System.out.println();   
+    soutm : System.out.println("当前类.当前方法");
+    soutv : System.out.println("mv = " + mv);
+    fori : for(){}
+    iter : for(:){}
+}
+
+
+3. Shortcut 快捷键的使用 {
+
+    // Edit
+    Shift+Shift                 查找任何东西
+    Ctrl+Shift+N                查找文件
+    Ctrl+E                      查看最近访问的文件	
+    Ctrl+Shift+F7               高亮显示当前选中的文本，ESC 取消高亮
+    Ctrl+F                      在当前文件中查找
+    Ctrl+Shift+F                全局查找指定匹配模式
+    Alt+F3                      逐个向下查找选中的文本，并高亮显示，ESC 退出 
+    Ctrl+R                      文件中替换
+    Ctrl+Shift+R                全局替换指定匹配模式
+    Alt+1                       调出项目目录树界面
+
+    Ctrl+Slash                  行注释 //	
+    Ctrl+Shift+Slash            块注释 /**/	
+    Ctrl+Alt+T                  可以把代码包在一块内，例如try/catch
+    Ctrl+Shift+Space            自动补全代码
+    Ctrl+Shift+Enter            完成当前行，并跳到下一行
+
+    Ctrl+Q                      显示注释文档
+    Ctrl+Y                      删除当前行
+
+    ESC                         退出当前调出的窗口
+
+    按住 Alt                     列编辑模式
+    Ctrl+D                      复制并粘贴多行
+    Ctrl+Shift+Up/Down          多行移动代码
+    Ctrl+Alt+L                  格式化代码  
+    Ctrl+Alt+左右方向键          快速返回前进上次代码位置
+
+
+    // Package
+    Alt+Enter                   快速修复，手动导包	
+    Ctrl+Alt+O                  自动优化导入类和包	
+
+    // Class
+    Ctrl+Alt+U                  查看类的关系图，包括实现的接口
+    Ctrl+Alt+B                  查看一个类的所有子类或者接口的所有实现
+    Ctrl+H                      查看类的继承结构，只展示 extends ，不包含 implements 
+    Alt+F7                      查看类在哪些地方被使用
+
+    Ctrl+Shift+I                快速查看定义内容，但不打开
+    Ctrl+F12                    查看当前类中的所有属性和方法
+
+    Ctrl+N                      查找类  
+    Ctrl+Shift+T                创建测试类
+    Shift+F6                    rename class method variable
+
+
+
+    // Function
+    Alt+F7                      查看方法在哪些地方被使用
+    Ctrl+Alt+H                  查看当前方法被调用和调用哪些方法的图
+    Ctrl+P                      查看方法参数，神器
+    Ctrl+B                      跳转到方法声明处
+    Ctrl+Alt+B                  跳转到方法实现处
+    Alt+Up/Down                 在方法间快速移动定位
+
+    Ctrl+O                      重写父类方法
+    Ctrl+I                      实现接口方法
+    Alt+Insert                  generate getter setter constructor and so on
+
+
+    // Variable
+    Ctrl+Space                  代码提示
+    Ctrl+Alt+Space              代码自动生成，new cast  method's parameters  
+    Ctrl+Alt+V                  选择指定的 Identifier(标识符)，自动生成变量
+    Ctrl+Alt+F                  选择指定的 Identifier(标识符)，自动生成 Field
+    
+    // Other frequently used
+    Alt+F12                     打开 Terminal
+}
+
+
+
+
+
+5. IDEA Cache 缓存清理 {
+    File -> Invalidate Caches/Restart
+    Build -> Reubuild Project
+}
+
+
+定位当前代码在工程中的位置 {
+    打开当前文件 -> Alt+1 打开项目当行栏 -> 点击 Scroll from Source （像车轮一样的图标）即可
+}
+
+
+IntelliJ IDEA 工程创建过程 {
+    File 
+    -> New Project 
+    -> Empty Project 
+    -> Next 
+    -> Project name : [项目名称] 
+    -> Project location : [项目保存路径]
+    -> Finish   // 至此 Project 创建完毕
+
+    // 自动弹出 Project Structure 默认选择 Modules
+    -> Modules 
+    -> "+" 图标
+    -> New Module
+    -> 选择 Module 类型 = Java
+    -> 选择 Module SDK : [自己的JDK] 
+    -> 选择 Web Application
+    -> 选择 Versions
+    -> 勾选 Create web.xml
+    -> Next
+    -> 输入 Module name 
+    -> 点击 Finish
+}
+
+
+IntelliJ IDEA 从零开始搭建项目，不用项目模板 {
+    创建一个空文件夹：e:/IdeaProjects/kasei/fromZeroModule
+    打开 IDEA：File –> open 打开这个空目录，IDEA 会自动在该目录下新建 .idea 目录，用于存放 idea 的配置信息
+    创建一个 fromZeroModule/src 文件夹，右击 src -> Mark Directory as -> Sources Root 将 src 文件夹标记为源代码目录
+    这时候项目已经从 空项目 变成一个普通的 java 项目了
+    创建 fromZeroModule/webapp, fromZeroModule/webapp/WEB-INF,fromZeroModule/webapp/WEB-INF/lib, fromZeroModule/webapp/WEB-INF/web.xml 目录和文件
+    File -> ProjectStructure -> Project Settings -> Facets -> "+" 图标 -> Web -> 在右侧框中，上半部分的路径修改为web.xml的路径，下半部分的路径修改为webapp文件夹的路径
+    File -> ProjectStructure -> Project Settings -> Module -> 选中刚才创建的 “特征面” -> 配置
+    普通 web 项目，右击 lib 目录，Add as Library... , 把 lib 目录设置为 classpath，不然会找不到类的 
+
+    maven 项目
+    创建文件夹 
+    src/main/java       => mark as sources root
+    src/main/resource   => mark as resources root 
+    src/main/webapp     => mark as none 不标记
+}
+
+
+IDEA 创建 Maven Web 项目 {
+
+    创建 maven web 项目 {
+        File -> New -> Project... -> Maven 
+        => Project SDK : [选择需要的 JDK 版本] 
+        => [√勾选] Create from archtype
+        => 点击选择：org.apache.maven.archetypes:maven-archetype-webapp
+        => Next 
+        => GroupId : [kasei] 
+        => ArtifactId : [projectName]
+        => Next
+        => Maven home directory : [选择自己装的 Maven]
+        => User settings file : [自己装的 Maven 用户配置文件路径]
+        => Local repository : [自己配置的本地仓库路径]
+        => Next
+        => More Settings
+        => Module name:[module name]
+        => Content root:[e:\IdeaProject\project_name\module_name]
+        => Module file location:[e:\IdeaProject\project_name\module_name]
+        => Finish		
+        -> 手动添加缺少的 文件夹 
+        -> 创建：projectName/src/mian/java 右击文件夹 -> Mark Directory As -> Sources Root 
+        -> 创建：projectName/src/test/java 右击文件夹 -> Mark Directory As -> Test Sources Root
+        -> 也可以创建好后在，右键项目-选择 Open Module Settings 打开项目配置页面更改 或从菜单栏进入  View - Open Module Settings
+        // 至此创建好了 maven web 项目 
+    }
+
+
+    配置项目 {
+        View -> Open Module Settings -> Modules 
+        => Sources 选项卡 // 用于配置源码路径
+        => Paths 选项卡 => Use module compile output path 
+        => Output path : [E:\IdeaProjects\hello\target\classes] 
+        => Test output path : [E:\IdeaProjects\hello\target\test-classes]
+        => Dependencise 选项卡
+        => 点击 "+" 图标
+        => JARs or directories...
+        => 选择 WEB-INF 下的 lib 目录 
+        => 选择文件类型为 Jar Directory
+        => OK
+    }
+
+    配置 Tomcat {
+        Run -> Edit Configurations... 
+        => "+" 图标 => Tomcat Server => Local
+        => Name : [module_name+Tomcat]
+        => Server 选项卡中配置服务器参数
+        => On 'Update' action : [Update classes and resources]
+        => On frame deactivation : [Update classes and resources]
+        => Deployment 选项卡配置部署参数
+        => "+" 图标 => Artifact => 选择 自己的项目
+        => 如果没有 Artifact 选项
+        => File -> Project Structure... -> Artficats -> "+" 图标 -> Web Application:Exploded -> 
+        => Name:[module_name]
+        => "+" 图标 => Module Output => 选择自己的项目 => ok
+    }
+
+}
+
+
+
+IDEA 项目打包发布 {
+
+    Java web 项目打成 war 包： {
+        1.点击工具栏的project structure（或File->project structure）
+        2.左侧选择Artifacts,创建Web Application :Archive ,选择“for 工程名:war exploded”,填写Name和output路径，点击OK
+        3.点击菜单栏build,选择build artifacts,选择该Artifact完成。
+        4.在output路径下可以找到war包。
+
+        坑： 引入 jar 包后，还需要把 jar 包配置到项目类路径下才能使用
+        坑： 项目打成产品时（例如：Web 中的 war 包），也要把依赖的所有 jar 一起打包到 产品中
+        坑： 当项目 url 和 目录名称 大小写不一致，导致 url 无法访问，或者 大小写对应出错的问题，找到 项目产物目录，修改里面的 目录名称即可
+    }
+}

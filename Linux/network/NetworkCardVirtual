@@ -1,0 +1,23 @@
+Docker bridge 原理：
+    OSI 七层网络模型 / TCP 五层网络模型;
+        
+        # 硬件空间
+        -> 物理层          
+            物理网卡 
+            
+        -> 数据链路层       # ARP, MAC; 
+            虚拟网卡         # 可以将数据发送到 物理网卡 和 其他虚拟设备 上
+            虚拟 bridge 
+        
+        # 内核空间
+        -> 网络层          # IP
+            防火墙          # Network Protocol Stack: 进行 NAT，IP Forward，等操作      
+            
+        -> 传输层          # OSI 七层网络模型 / TCP 五层网络模型; Port
+        
+        
+         
+        
+        
+        # 用户空间
+        -> 应用层          # OSI 七层网络模型 / TCP 五层网络模型;

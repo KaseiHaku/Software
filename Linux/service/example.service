@@ -1,0 +1,14 @@
+# @trap 注释不能接在行末，会导致读取失败，当前文件是为了书写方便，实际不能这么写注释
+
+[Unit]
+Description=timed task: dig 1291114093.top
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=oneshot
+# 启动服务执行的命令
+# @trap 必须指向可执行文件，如果在 PATH 中的，可以指定文件名，否则需要全路径
+# @trap 使用 shell 内建命令，必须使用 shell> bash -c '' 来调用，否则无法识别，因为 shell 内建命令 不是文件
+ExecStart=zsh -c 'dig 1291114093.top +short >! /home/kasei/Desktop/Script/dig-timer.log'

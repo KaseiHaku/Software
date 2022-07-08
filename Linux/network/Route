@@ -1,0 +1,96 @@
+Terminology:
+    路由前缀: 192.168.0.0/24    或  ip+mask，即: CIDR
+    /etc/iproute2/rt_*              # 保存着 shell> ip route 相关的选项值
+
+
+Route Procedure 路由过程：
+    IP 数据包进入 Rule
+    -> 按 Rule 0~32767 的优先级顺序进行匹配，
+        -> 如果匹配成功，则进入该 Rule 对应 Table 进行路由，
+           进入路由表之后，根据 路由条目进行匹配，如果没有找到匹配的 路由条目，那么直接失败，不会继续后续 Rule 匹配
+           路由条目匹配规则：
+                优先级相同，最长匹配原则；
+                优先级相同，长度也相同，metric(跃点数) 越低优先级越高
+        -> 如果匹配不成功，那么进入下一个规则进行 数据包 的匹配，以此类推 
+        
+
+    案例：
+        假设系统中只有优先级为 0，32766 及 32767 这三条规则。
+        那么系统首先会根据规则0在本地路由表里寻找路由，如果目的地址是本网络，或是广播地址的话，在这里就可以找到匹配的路由；
+        如果没有找到路由，就会匹配下一个不空的规则，在这里只有 32766 规则，那么将会在主路由表里寻找路由；如果没有找到匹配的路由，就会依据 32767 规则，即寻找默认路由表；如果失败，路由将失败。
+
+
+Concept:
+    /etc/sysconfig/network-scripts  # 该目录下，每一个 route- 开头的文件，对应一张网卡的路由配置文件，如 route-ens33 对应 ifcfg-ens33 这张网卡    
+    shell> vim /etc/sysconfig/network-scripts/route-ens33
+    Format Pattern = Target  via  Gateway
+    172.0.0.0/8  via  20.0.0.100       # 配置 172 这个网卡的路由必须通过 20 这个 ip 地址
+    
+    
+    Route Rule 路由规则 = 优先级 + 条件 + 路由表; 数字越小优先级越高
+        linux 系统启动时，内核会为路由规则数据库配置以下三条缺省的规则，
+        rule 0 : 匹配任何条件的数据包，查询路由表 local（table id = 255）。rule 0 非常特殊，不能被删除或者覆盖。 
+        rule 32766 : 匹配任何条件的数据包，查询路由表 main（table id = 254）。系统管理员可以删除或者使用另外的策略覆盖这条策略。
+        rule 32767 : 匹配任何条件的数据包，查询路由表 default（table id = 253）(ID 253) 。对于前面的缺省策略没有匹配到的数据包，系统使用这个策略进行处理。这个规则也可以删除。
+
+    Route Table 路由表：
+        Linux 系统中有 0~255 张路由表，其中有以下几张预定义表，数字越小优先级越高
+        table 0 : 系统保留，表名 unspec
+        table 253 : 默认路由表，表名为 default； 一般来说默认的路由都放在这张表
+        table 254 : 主路由表，表名为 main； 如果没有指明路由所属的表，所有的路由都默认都放在这个表里
+        table 255 : 本地路由表，表名为 local； 像本地接口地址，广播地址，以及NAT地址都放在这个表。该路由表由系统自动维护，管理员不能直接修改
+   
+   Route Record 路由记录：
+        路由记录存在于路由表中
+        Destination     目标网络 或 目标主机，0.0.0.0 (IPv4) 或 ::/128(IPv6) 表示改记录是默认网关，所有没有匹配的路由数据全发往这里
+        Genmask         Destination 字段的掩码，Destination 是主机时设置成 255.255.255.255，是默认路由时设置成 0.0.0.0
+        Gateway         网关地址，0.0.0.0 表示当前记录对应的 Destination 跟本机在同一网段内，通信不需要经过网关        	    
+        Flags           U 路由是活动的
+                        H 目标是个主机
+                        G 需要经过网关
+                        R 恢复动态路由产生的表项
+                        D 由路由的后台程序动态地安装
+                        M 由路由的后台程序修改
+                        ! 拒绝路由
+        Metric          路由距离，到达指定网络所需的中转数
+        Ref             路由项引用次数
+        Use             此路由项被路由软件查找的次数
+        Iface           网卡名字，例如 eth0
+        
+        
+        0.0.0.0 是默认路由   0.0.0.0/32  是未指定的 IPv4 地址
+        ::/0    是默认路由   ::/128      是未指定的 IPv6 地址
+        
+        Route Record Example:
+            Destination     Genmask             Gateway             Flags     Iface       Metric      Ref     Use
+            10.0.0.10       255.255.255.255     10.139.128.1        UGH       eth0                  # 主机路由，
+            8.8.8.8         255.255.255.255     192.168.0.1         UG        eth0                  # 主机路由，经过网关
+            192.168.0.0     255.255.255.0       0.0.0.0             U         eth0                  # 网络路由，不经过网关            
+            0.0.0.0         0.0.0.0             192.168.0.1         UG        eth1                  # 默认路由，
+            
+            
+            IPv6
+            ::/0                                fe80::1             UG        eth0                  # 默认路由，
+            
+            
+            
+    
+    
+            
+
+Operation:
+    shell> ip rule help
+    shell> ip rule show             // 查看所有 IPv4 路由规则      
+    shell> ip -6 rule show          // 查看所有 IPv6 路由规则   
+    shell> ip rule add from 192.168.0.0/24 to 10.0.0.0/8 tos tcp dev ens33 fwmark  firewallMark pref 30000 iff ... oif ... uidrange ... l3mdev 
+            table 128 nat 192.168.0.1 realms [SRCREALM/]DSTREALM goto NUMBER
+
+
+    shell> ip route help
+    shell> ip -6 route help
+    shell> ip route add table 128 ...
+    shell> ip route list table 128 ...         // 查看指定路由表的内容
+    
+    
+
+    

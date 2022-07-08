@@ -1,0 +1,24 @@
+# @trap 不要用新的 openssl 去替换系统的 openssl，因为依赖 openssl 的软件很多，随意替换会系统崩溃的
+shell> openssl version -a       # 查看系统中是否已经安装 openssl
+
+shell> curl https://www.openssl.org/source/openssl-1.1.1d.tar.gz > openssl-1.1.1d.tar.gz        # 官网下载最新的源码
+shell> tar -zxvf openssl-1.1.1d.tar.gz  
+shell> cd openssl-1.1.1d.tar.gz
+shell> less INSTALL     # 查看安装手册，查看并安装必要的依赖
+
+
+shell> ./config --prefix=/usr/local     # 配置安装位置，默认安装位置为 /usr/local
+
+shell> yum install perl.x86_64
+shell> yum install perl-devel.x86_64
+shell> yum install perl-core.x86_64
+
+
+shell> make
+shell> make test
+shell> make install
+
+shell> ln -s /usr/local/lib64/libssl.so.1.1 /usr/lib64/libssl.so.1.1
+shell> ln -s /usr/local/lib64/libcrypto.so.1.1 /usr/lib64/libcrypto.so.1.1
+
+

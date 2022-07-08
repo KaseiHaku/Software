@@ -1,0 +1,19 @@
+搬瓦工官网：
+    https://bwh88.net/clientarea.php?action=products
+    bandwagonhost.com
+    bwh1.net
+    bwh8.net
+    bwh88.net
+    bwh89.net
+    bwh81.net
+    
+    https://kiwivm.64clouds.com/main.php  # 控制面板网址
+    
+搬瓦工账号：
+    129@qq.com
+    f22
+
+搬瓦工 IP 被墙检测网址：
+    官网工具：https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck
+    IP 端口号检测（国内）：http://tool.chinaz.com/update.html
+    IP 端口号检测（国外）：https://www.yougetsignal.com/tools/open-ports/

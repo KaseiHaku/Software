@@ -1,0 +1,31 @@
+# shell> kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          # trap: 这里 Prefix 类型在转发的时候，不会把 path 值当前缀给删掉，而是转发完整路径给 backend
+          - pathType: Prefix      # [Exact, Prefix, ImplementationSpecific]
+            path: "/gg"          # 必须 / 开头，Exact 和 Prefix 类型，该字段必须存在
+            backend:
+              service:
+                name: k8s-service   # 该 serviceName 必须和当前 ingress 在同一个 namespace 中
+                port:
+                  number: 8080
+          #- pathType: Prefix
+          #  path: "/bar"        # beyond all recognition
+          #  backend:
+          #    service:
+          #      name: bar-service
+          #      port:
+          #        number: 5678
+          - pathType: Prefix
+            path: "/foo"          # foo = fu = fuck-up
+            backend:
+              service:
+                name: foo-service
+                port:
+                  number: 5678

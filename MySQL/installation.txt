@@ -1,0 +1,54 @@
+win10 下 mysql-8.0.12-winx64.zip 解压版安装手册：
+
+1. 提取文件
+    解压 zip 到 F:\Mysql\ 目录下
+
+2. 添加环境变量
+    MYSQL_HOME = F:\Mysql\mysql-8.0.12-winx64
+    Path = %MYSQL_HOME%\bin
+    
+3. 创建配置文件 %MYSQL_HOME%\my.ini 或 %MYSQL_HOME%\my.cnf 
+    my.ini 和 my.cnf 文件的编码必须是英文编码（如windows中的ANSI），不能是UTF-8或GBK等。
+    配置文件具体内容见当前目录下的同名文件
+
+4. 选择初始化方法
+    mysqld ： 一般选择该初始化方法
+    mysqld-debug ： 用于数据库 debug，开发用不到
+
+5. 初始化数据库（注意： DBMS 和 DB 是两个概念，这里是初始化 DB） 
+    mysqld --defaults-file=%MYSQL_HOME%\my.ini --initialize --console           # 采用该命令会生成一个 随机的 root@localhost 的密码 要注意看控制台信息，并保存该随机密码， 例如： tks!>+i.e5-H， 连接数据库后应该修改该密码
+    mysqld --initialize-insecure --console                                      # 采用该命令会生成 空串 密码，即 root 可以直接进入
+
+6. 启动 DBMS
+    mysqld --console                                                            # 命令行启动数据库，该方法启动后会占用一个 命令行窗口，需要另起一个命令行窗口
+
+7. 设置 root 密码
+    另起一个命令行窗口
+    shell> mysql -u root -p                                                     # 该登录方式适用于 mysqld --initialize 方式初始化的
+    Enter password: (enter the random root password here)
+    
+    shell> mysql -u root --skip-password                                        # 该登录方式适用于 mysqld --initialize-insecure 方式初始化的
+    
+    mysql> alter user 'root'@'localhost' identified by 'new_password';          # 修改 root 密码为新密码
+    mysql> quit；                                                                # 退出，采用新密码重登
+    
+    
+8. 关闭 DBMS
+    shell> mysqladmin -u root -p shutdown                                       # 命令行关闭数据库
+    
+    
+9. 将 mysql 注册为 windows 服务
+    注册为 windows 服务前，先关闭当前命令行开启的 mysql
+    shell> mysqld --install MySQL                                               # MySQL 是用于注册的服务名称，开机自启动
+    shell> mysqld --install-manual MySQL                                        # 注册为 windows 服务，开机不启动
+    
+10. windows 服务的启动和停止（管理员权限）
+    shell> net start mysql                                                      # 启动 mysql 服务网，大小写不敏感
+    shell> net stop mysql                                                       # 停止 mysql 服务，大小写不敏感
+    shell> mysqladmin -u root -p shutdown                                       # 使用 mysql 工具停止 mysql 服务
+    
+11. 将 mysql 从 windows 服务移除
+    shell> mysqld --remove
+  
+12. 测试是否安装成功
+    mysql -u root -p                                                            # 如果能正常登陆，这说明安装成功

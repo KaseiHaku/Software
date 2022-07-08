@@ -1,0 +1,6 @@
+# 官方下载地址
+    https://www.charlesproxy.com/download/
+
+# 破解
+    进入 https://www.zzzmode.com/mytools/charles/
+    下载破解后的 charles.jar 替换 %CHARLES_HOME%\lib\charles.jar 即可

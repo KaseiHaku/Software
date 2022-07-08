@@ -1,0 +1,23 @@
+Installation:
+    http://www.emule-project.net/home/perl/general.cgi?l=1&rm=download
+
+Settings {
+    配置文件保存路径：{
+        Options -> Directories -> Incoming Files = E:\eMule0.50a\Incoming
+        Options -> Directories -> Temporary Files = E:\eMule0.50a\Temp
+    }
+    
+    服务器配置 {
+        Servers -> Update server.met from URL -> click 'Update' button
+        
+        Ed2k 链接
+        http://upd.emule-security.org/server.met
+        
+        Kad 链接：
+        http://upd.emule-security.org/nodes.dat
+        http://kademlia.ru/download/nodes.dat
+        http://sn.im/nodes.dat
+    }
+}
+    
+    

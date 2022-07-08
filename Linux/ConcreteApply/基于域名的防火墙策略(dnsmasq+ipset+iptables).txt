@@ -1,0 +1,58 @@
+开启内核转发功能 {
+    shell> vim /etc/sysctl.conf     # 现代 linux 中没有该文件了，只有 /etc/sysctl.d 目录，如果想需要修改，可以自建一个 *.conf 文件即可
+        添加或修改
+        net.ipv4.ip_forward = 1
+    shell> sysctl -p    # 从默认配置文件（/etc/sysctl.conf）中读取参数值，并使参数值立刻生效
+}
+
+
+ipset 配置 {
+    shell> ipset create vps4 hash:ip                    # 创建一个名为 vps ，类型为 hash:ip 的 ipset
+    shell> ipset create vps6 hash:ip family inet6       # 创建一个名为 vps6，类型为 hash:ip 的 ipset, 保存 i=IPv6 类型的地址
+    shell> touch /root/ipset.persistence                # 创建一个文件用于保存 ipset 持久化数据 
+    shell> ipset save > /root/ipset.persistence         # 将当前所有 ipset 信息持久化到 /root/ipset.persistence
+    shell> # 创建一个 开机自执行服务, 从 /root/ipset.persistence 恢复持久化信息，具体如何创建服务参考 Linux/service
+    shell> # 创建一个 关机自执行服务, 将当前的 ipset 信息持久化到 /root/ipset.persistence 文件中，具体如何创建服务参考 Linux/service
+}
+
+
+dnsmasq 配置 {
+    shell> touch /etc/NetworkManager/dnsmasq.d/vps.conf     # 创建 NetworkManager 控制的 dnsmasq 的配置文件
+    shell> vim /etc/NetworkManager/dnsmasq.d/vps.conf
+        ######### /etc/NetworkManager/dnsmasq.d/vps.conf ########
+        listen-address=::1,127.0.0.1,192.168.1.1    # DNS 服务器监听的地址，监听 192.168.1.1 表示当前 DNS 服务器提供给局域网使用
+        port=53                                     # 表示 dnsmasq 开启的 dns 服务监听的端口为 53
+        no-resolv                                   # 表示 dnsmasq 不会再去读取 /etc/resolv.conf 配置文件中的域名服务器，一定要配置，
+        server=223.5.5.5                            # 配置 dnsmasq 的上游服务器 1
+        server=8.8.8.8                              # 配置 dnsmasq 的上游服务器 2
+        server=/google.com/8.8.8.8# 53              # google.com 域名及其子域名，使用 8.8.8.8 这个域名服务器解析，DNS 请求发送到域名服务器的 53 端口
+        ipset=/1291114093.xyz/google.com/vps4,vps6     # 将 129.ml 和 google.com 两个域名及子域名的解析结果记录到名为 vps4 和 vps6 的 ipset 中 
+        ######### /etc/NetworkManager/dnsmasq.d/vps.conf ########
+
+}
+
+
+NetworkManager 配置 {
+    shell> vim /etc/NetworkManager/NetworkManager.conf      # 编辑 NetworkManager 的配置文件
+        [main]
+        dns=dnsmasq             # 添加或修改该行，需要处理 SELinux 安全策略问题
+        
+    shell> touch /etc/NetworkManager/dnsmasq.d/vps.conf     # 由于通过 NM 使用 dnsmasq 所以要将配置文件配置在这个地方
+    shell> vim /etc/NetworkManager/dnsmasq.d/vps.conf       # 编辑配置文件，格式跟原生配置文件一样
+    shell> systemctl restart NetworkManager                 # 重启 NM 服务，使新配置生效
+}
+
+
+检测是否成功 {
+    shell> ping 1291114093.ml
+    shell> ipset list                   # 查看名为 vps4 的 ipset 的 Members 属性下面是否有 自己 VPS 的 ip 地址，有则成功
+}
+
+iptable 配置 {
+    
+}
+
+    
+
+
+

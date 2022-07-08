@@ -1,0 +1,14 @@
+生成一个 UUID:
+    shell> cd /usr/bin/v2ray
+    shell> ./v2ctl uuid
+
+测试配置文件有效性：
+    shell> cd /usr/bin/v2ray
+    shell> ./v2ray -test -config /etc/v2ray/config.json
+
+启动 v2ray：
+    shell> cd /usr/bin/v2ray
+    shell> ./v2ray -config /etc/v2ray/config.json
+
+android 客户端：
+    https://github.com/2dust/v2rayNG/releases/download/0.5.1/app-universal-release.apk

@@ -1,0 +1,8 @@
+使虚拟机桌面大小，随虚拟机窗口大小自动调整：
+    View -> Autosize -> 选择 Autofit Guest
+
+从 Host SSH 连接到虚拟机：
+    1. 打开 windows 防火墙 ping 配置
+       Control Panel -> System and Security -> Windows Defender Firewall -> Advanced Setting -> Inbound Rules 
+       -> File and Printer Sharing(Echo Request - ICMPv4-in)  Enable
+       -> File and Printer Sharing(Echo Request - ICMPv6-in)  Enable

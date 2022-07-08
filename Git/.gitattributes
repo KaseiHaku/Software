@@ -1,0 +1,60 @@
+######## .gitattributes 配置格式: 
+# pattern   attr1 -attr2 attr3=str 
+# pattern 匹配模式跟 .gitignore 一样
+# 如果 path 没有被 pattern 匹配到,                属性的状态为 Unspecified(未指定)
+# attr1         相当于 attr1=true                属性的状态为 Set
+# -attr2        相当于 attr2=false               属性的状态为 Unset
+# attr3=str     配置 attr3 的值为 str            属性的状态为 Set to a value
+
+# atrr 介绍：
+# text                                  用于配置 text 文件换行符格式，可用值有：lf crlf
+# working-tree-encoding                 用于配置 工作树 中文件的编码格式，可用值有：UTF-8
+# merge                                 指定文件 merge 时，使用的 linux shell 命令
+# conflict-marker-size                  指定文件合并冲突时，冲突标记的长度，可用值: 正整数
+
+
+# 匹配当前目录及其子目录下所有 .txt 结尾的文件
+*.txt           text=lf eol=lf working-tree-encoding=UTF-8
+
+
+
+######## 自定义 merge 驱动: 
+# 官方文档： https://git-scm.com/docs/gitattributes#_performing_a_three_way_merge
+# buildin merge driver: text, binary, union
+# shell> git config --global merge.my-ours.name 'description'       # 定义一个名为 my-ours 的 merge driver, 并附带描述
+# 自定义 merge 时, 执行的 shell 命令
+# shell> git config --global merge.my-ours.driver './git-merge-xxx.sh %O %A %B %L %P'       # 自带的 merge 驱动可以在 Git 安装目录下找到
+                                                                                            # %O 用于 merge 的 ancestor version 文件
+                                                                                            # %A current version
+                                                                                            # %B 合入分支的 version
+                                                                                            # %L 冲突标记的长度
+                                                                                            # %P 冲突时，对比的当前文件的路径名称
+# shell> git config --global merge.my-ours.driver true              # 注意这里的 true 是 linux shell 的命令, exit code 永远等于 0
+# shell> git config --global merge.my-ours.recursive text           # 定义递归祖先合并的策略
+
+# 新建一个 need-verify-merge-driver.sh 文件，内容如下
+# #!/bin/bash
+# git merge-file "${1}" "${2}" "${3}"   # 注意 git merge-file 的参数顺序为 %A %O %B , 这个顺序必须跟 git config --global merge.my-ours.driver './xxx.sh %A %O %B' 一致
+# exit 1
+# 该文件的作用是，正常使用 git merge 但是永远退出码为 非0 即：merge 失败
+
+# @trap 通过该方式配置的 merge driver，只有文件在两个分支同时存在修改时，才会被调用。
+
+
+######## 后端配置文件使用 need-verify-merge-driver 驱动进行 git merge
+# maven-assembly-plugin 配置文件
+**/src/assembly/*                   merge=need-verify-merge-driver
+# maven profile filter 配置文件
+**/src/*/filter/*                   merge=need-verify-merge-driver
+# 项目配置文件
+**/src/*/resources/**/*.yml         merge=need-verify-merge-driver
+**/src/*/resources/**/*.properties  merge=need-verify-merge-driver
+
+
+######## 前端配置文件使用 need-verify-merge-driver 驱动进行 git merge
+**/*-client/src/config/**/*         merge=need-verify-merge-driver
+
+
+# 匹配当前目录及其子目录下所有 .kasei 结尾的文件的 merge 驱动为 my-ours
+*.kasei         merge=my-ours conflict-marker-size=32
+

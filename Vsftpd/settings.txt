@@ -1,0 +1,3 @@
+开起 root 用户远程登陆：
+    shell> vim /etc/vsftpd/user_list            # 注释掉该文件中的 root 用户
+    shell> vim /etc/vsftpd/ftpusers             # 注释掉该文件中的 root 用户

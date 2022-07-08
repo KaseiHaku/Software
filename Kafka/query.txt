@@ -1,0 +1,10 @@
+shell> cd $KAFKA_HOME
+
+shell> bin/kafka-topics.sh --bootstrap-server 10.1.1.1:9092 --list  # 查询当前所有 topic
+shell> bin/kafka-topics.sh --describe --zookeeper 10.0.0.1:2181 --topic topicName   # 查看 topic 信息
+
+shell> bin/kafka-console-producer.sh --broker-list localhost:9092 --topic topicName   # 发送一条消息到指定 topic
+
+
+shell> bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic topicName  # 查看一个 topic 所有消息
+

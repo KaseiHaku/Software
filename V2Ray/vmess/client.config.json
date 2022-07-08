@@ -1,0 +1,58 @@
+{
+  "log": {"loglevel": "debug"}, 
+  "inbounds": [
+    {
+      "tag": "ladderSocksIn",
+      "protocol": "socks",
+      "port": 1080,
+      "listen": "127.0.0.1",
+      "settings": {
+        "auth": "noauth"
+      }
+    }
+  ],
+  "outbounds": [    
+    {
+      "tag":"direct",
+      "protocol":"freedom",
+      "streamSettings": {
+        "domainStrategy": "AsIs"
+      }
+    },
+    {
+      "tag":"vps",
+      "protocol":"vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "66.*.*.*",
+            "port":40000 ,
+            "users": [
+              { "id":"f45499fa-6c4b-3e55-adbb-bd50bc4137b8", "alterId":64, "security":"chacha20-poly1305", "level":1 }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "field",
+        "domain": ["geosite:cn"],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "ip": ["geoip:private","geoip:cn"],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "inboundTag": ["ladderSocksIn"],
+        "outboundTag": "vps"
+      }
+    ] 
+  }
+}

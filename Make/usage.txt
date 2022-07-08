@@ -1,0 +1,21 @@
+Convinence Param
+    prefix      # 指定安装路径的前缀
+    
+Convinence Phony Target
+    all         # 最终目标，即对所有组件编译
+    install     # 将生成的可执行文件，安装到指定目录下
+    clean       # 清理中间过程生成的 临时文件
+
+
+
+shell> make             # 默认使用当前目录下的 MakeFile，对源码进行 Compiler -> Build(Link) -> *.exe 
+shell> make -f myMakeFile       # 指定使用的 MakeFile
+
+
+
+# prefix=/opt/Git/git-2.22.0    给 MakeFile 里面的 prefix 变量传值，用于自定义一些东西
+# all MakeFile 里面的 phony target（伪目标），就是一组 shell 脚本的 名称
+shell> make prefix=/opt/Git/git-2.22.0 all    # 将生成的可执行文件，安装到指定目录下
+
+shell> make prefix=/opt/Git/git-2.22.0 install # 将生成的可执行文件，安装到指定目录下
+shell> make clean           # 清理中间过程生成的 临时文件

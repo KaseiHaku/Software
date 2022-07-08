@@ -1,0 +1,27 @@
+官网：http://nginx.org/
+
+下载 & 安装：
+    shell> cd ~
+    shell> wget http://nginx.org/download/nginx-1.16.0.tar.gz
+    shell> tar -zxvf nginx-1.16.0.tar.gz
+    shell> cd nginx-1.16.0
+    
+    
+    shell> yum install pcre-devel.x86_64
+    shell> yum install openssl
+    shell> yum install zlib-devel
+    # 源码编译前依赖检查
+    shell> ./configure --with-http_ssl_module --with-http_v2_module   # 添加 https 和 http2 协议支持
+    
+    # 根据当前目录下的 Makefile 编译源码
+    shell> make        
+    
+    # 把编译好的相关文件安装到相应的目录中 
+    shell> make install                                
+    
+startup:
+    shell> cd /usr/local/nginx
+    shell> ./sbin/nginx
+    
+    shell> ./sbin/nginx -h      # 查看帮助
+    

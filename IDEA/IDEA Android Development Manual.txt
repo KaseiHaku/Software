@@ -1,0 +1,82 @@
+1 Pretreat {
+    1.1 安装 JDK，并在 IDEA 中配置好
+    1.2 安装 SDK，并在 IDEA 中配置好
+    1.3 安装 Gradle，并在 IDEA 中配置好
+}
+
+2 Create an Android Project {
+    
+}
+
+
+3 Android Project Directory Structure {
+
+    Android
+        │
+        ├─ app
+        │   ├─ androidTest
+        │   ├─ main
+        │   │   ├─ java
+        │   │   │   └─kasei.android  // 项目代码存放目录
+        │   │   ├─ assets                   // 资源文件，不会生成 id 且不会自动占用空间
+        │   │   ├─ res                      // 资源文件，会自动生成 id
+        │   │   │   ├─ drawalbe             // 存放各种位图文件，(.png，.jpg，.9png，.gif等)除此之外可能是一些其他的drawable类型的XML文件
+        │   │   │   ├─ layout               // 存放布局文件
+        │   │   │   ├─ menu                 // 在以前有物理菜单按钮
+        │   │   │   ├─ mipmap-mdpi          // 中等分辨率，很少，除非兼容的的手机很旧
+        │   │   │   ├─ mipmap-hdpi          // 高分辨率，一般我们把图片丢这里
+        │   │   │   ├─ mipmap-xhdpi         // 超高分辨率，手机屏幕材质越来越好，以后估计会慢慢往这里过渡
+        │   │   │   ├─ mipmap-xxhdpi        // 超超高分辨率，这个在高端机上有所体现
+        │   │   │   ├─ mipmap-xxxhdpi
+        │   │   │   └─ values
+        │   │   │       ├─ colors.xml       // 定义颜色资源
+        │   │   │       ├─ strings.xml      // 定义字符串资源
+        │   │   │       ├─ styles.xml       // 定义样式资源
+        │   │   └─ AndroidManifest.xml  // 控制安卓显示的 xml 文件
+        │   ├─ test
+        │   └─ build.gradle
+        │   
+        │   
+        ├─ build
+        │   ├─ android-profile
+        │   └─ generated
+        ├─ gradle
+        │   └─ wrapper
+        │       ├─ gradle-wrapper.jar
+        │       └─ gradle-wrapper.properties
+        ├─ build.gradle
+        ├─ gradle.properties       
+        ├─ gradlew
+        ├─ gradlew.bat
+        ├─ local.properties
+        └─ settins.gradle    
+        
+        
+}
+
+
+
+
+4 Package and Signature {
+    Build -> Generate Signed APK... 
+    -> Key store path: [签名保存路径]
+    -> Key store password: []
+    -> Key alias: []
+    -> Key password: []
+    
+    4.2 验证 apk 文件是否签名，只需输入下述cmd指令：jarsigner -verbose -certs -verify app-release.apk
+
+}
+
+
+
+
+
+4 Modify Android Project Name in Idea {
+    1. 关闭Android Studio 
+    2. 修改project所在路径的文件夹名字为[NewName]
+    3. 打开Android Stuido，import新的[NewName]路径工程(很重要,重新import工程，Android Studio会自动修改部分相关的project名字引用)
+    4. 修改根目录下的.iml文件名为[NewName].iml，及该文件中的external.linked.project.id=[NewName]
+    5. 修改.idea/modules.xml里面的
+    <module fileurl="file://$PROJECT_DIR$/[NewName].iml" filepath="$PROJECT_DIR$/[NewName].iml" />
+}

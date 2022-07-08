@@ -1,0 +1,39 @@
+基本概念：
+    en_US.UTF-8     # en: 表示 你说英语; US: 表示 你在美国; UTF-8: 表示使用的字符集是 utf-8; 
+    zh_CN.UTF-8     # zh: 表示 你说中文; CN: 表示 你在中国; UTF-8: 表示使用的字符集是 utf-8; 
+
+
+
+shell> locale                                   # 查看所有 本地化 配置
+LANG=C                      # LC_* 的默认值，是优先级最低的设置
+LC_CTYPE=zh_CN.UTF-8        # 用于字符分类和字符串处理（大小写转换），控制所有字符的处理方式，包括字符编码，字符是单字节还是多字节，如何打印等，
+                            # 最重要的一个环境变量，必须设置成 zh_CN.UTF-8 否则无法输入中文
+LC_NUMERIC=C                # 数字格式
+LC_TIME=C                   # 时间格式
+LC_COLLATE=C                # 字符的比较和排序规则
+LC_MONETARY=C               # 货币格式
+LC_MESSAGES="C"             # 提示信息的语言。当 LANGUAGE= 参数存在，当前参数就会失效，LANGUAGE可以设置多种语言信息，如 LANGUAGE="zh_CN.UTF-8:zh_CN.GBK"
+LC_PAPER="C"                # 纸张大小
+LC_NAME="C"                 # 名称格式
+LC_ADDRESS="C"              # 地址格式
+LC_TELEPHONE="C"            # 电话格式
+LC_MEASUREMENT=C            # 度量单位
+LC_IDENTIFICATION="C"       # 身份证
+LC_ALL=                     # 它是一个宏，如果该值设置了，则该值会覆盖所有 LC_* 的设置，注意： LANG 的值不受该宏影响
+
+
+shell> locale -a            # 查看支持的区域
+shell> locale -m            # 查看支持的字符编码格式
+
+
+
+
+
+shell> localectl status                         # 查看当前 本地化 配置
+shell> localectl list-locales                   # 查看所有可用的 本地化 配置
+shell> localectl set-locale LANG=zh_CN.utf8     # 
+
+shell> vim /etc/locale.conf                     # 修改配置文件
+shell> shutdown -r now
+
+

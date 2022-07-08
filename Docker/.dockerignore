@@ -1,0 +1,20 @@
+# comment
+
+# 排除 root 目录下，以 temp 开头的文件或者目录 
+*/temp*
+
+# 排除 root 目录下，第二层子目录下的以 temp 开头的文件或目录
+*/*/temp*
+
+# 排除 root 目录下类似 temp1 temp2 之类的文件和目录，但是不排除 temp12
+temp?
+
+# 因为 docker root 目录同时是作为工作目录的，所以以下两个效果是一样的
+/foo/bar
+foo/bar
+
+# 排除所有 .go 文件
+**/*.go
+
+# 表示不排除指定文件，如果规则冲突，后面的会覆盖前面的
+!README.md

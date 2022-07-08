@@ -1,0 +1,32 @@
+官网下载 Node.js:
+    https://nodejs.org/en/download/    下载 Windows Binary (.zip) 解压版
+
+
+环境变量配置：
+    NODEJS_HOME = F:\node-v10.15.3-win-x64     # node.exe 文件所在的文件夹
+    Path = %NODEJS_HOME%
+
+测试：
+    shell> node -v      # 测试 node 是否安装成功
+    shell> npm -v       # 测试 npm 是否安装成功
+
+配置包下载保存路径：相当于 gradle 的仓库
+    shell> npm config set prefix "E:\Node.js\node_global"   # npm 全局安装位置 
+    shell> npm config set cache "E:\Node.js\node_cache"     # npm 缓存路径 
+
+安装 webpack :
+    shell> npm install webpack -g       # 命令执行后可到 npm 全局安装位置去查看
+
+安装 NVM:
+    Windows: https://github.com/nvm-sh/nvm/blob/master/README.md
+    Linux: https://github.com/nvm-sh/nvm
+    
+    修改 nvm 镜像
+    shell> vim %NVM_HOME%/settings.txt
+    root: D:\NVM\nvm
+    path: D:\NVM\nodejs
+    node_mirror: https://npm.taobao.org/mirrors/node/       # 修改成 淘宝镜像 否则 下不下来
+    npm_mirror: https://npm.taobao.org/mirrors/npm/
+
+
+

@@ -1,0 +1,14 @@
+Shadowsocks Windows 客户端：
+    下载网址：https://github.com/shadowsocks/shadowsocks-windows/releases
+    客户端配置：
+        Server Addr： 66.98.122.202  // shadowsocks 服务器 ip 地址
+        Server Port： 47125 // shadowsocks 服务器 端口号
+        Password: f27   // shadowsocks 服务器连接密码
+        Encrption: aes-256-cfb  // 数据流加密格式
+        Timeout(Sec): 20 // 超时时间（秒）
+        Proxy Port: 1080 // shadowsocks 客户端运行的本地端口号
+        
+Shadowsocks Android 客户端：
+    下载网址：https://github.com/shadowsocks/shadowsocks-android/releases
+    
+

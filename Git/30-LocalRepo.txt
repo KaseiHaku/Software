@@ -1,0 +1,21 @@
+Query {
+    shell> git remote --verbose         # 查看 LocalRepo 的 RelatedRepo
+}
+
+Create {
+    shell> git init                     # 创建一个 仓库，.git 文件夹用于保存版本信息；其他目录为 工作区 的文件
+    shell> git init --bare              # 创建一个 仓库，该仓库没有 工作区 的文件，而是直接把 .git 目录中的内容，提取到 当前执行命令的目录中
+    shell> git clone
+}
+
+Delete {
+    直接删除本地仓库中的 .git 文件夹 即可，删除之后，该仓库就是普通文件夹，没有版本控制功能了
+}
+
+Update {
+    shell> git remote add --mirror=fetch origin url         # 将 RemoteRepo 覆盖到 LocalRepo，该命令只对 BareRepo 有效
+    本地 commit   # 查看额外的文件
+    本地 branch   # 查看额外的文件 
+    
+}
+

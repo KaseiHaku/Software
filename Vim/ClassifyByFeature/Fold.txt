@@ -1,0 +1,40 @@
+帮助 {
+    :help fold-commands
+}
+
+创建折叠 {
+    zf8j                    # 向下创建 8 行折叠
+    zF8                     # 向下创建 8 行折叠
+    :1,8fo[ld]              # 1 到 8 行创建为一个折叠
+}
+
+删除折叠 {
+    zd                      # 删除当前折叠
+    zD                      # 删除嵌套折叠
+    zE                      # Eliminate(消除) all folds
+}
+
+操作 {
+    zo                      # 展开当前 cursor 所在折叠
+    zO                      # 展开所有 cursor 所在折叠及其子折叠
+    zc                      # 折叠当前 cursor 所在折叠
+    zC                      # 折叠所有 cursor 所在折叠及其子折叠
+    za                      # 展开/折叠 当前折叠
+    zA                      # 递归 展开/折叠 当前折叠及其子折叠
+    zv                      # 展开当前光标所在位置的折叠
+    zx  
+    zX
+    zm
+    zM                      # 折叠当前 window 所有折叠
+    zr
+    zR                      # 展开当前 window 所有折叠，'foldlevel'=无穷大， 'foldlevel'=5 表示打开折叠层级 <=5 的所有折叠
+    
+    zi                      # invert 'foldenable'
+    zn                      # 重置 'foldenable' 配置
+    zN                      # 开启 'foldenable' 
+}
+
+光标移动 {
+    [z                      # 上一个折叠
+    ]z                      # 下一个折叠
+}

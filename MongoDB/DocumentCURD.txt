@@ -1,0 +1,69 @@
+# Query
+mongo> db.org.find(
+    {
+        key: value,                         # 表示 key=value
+        key: { $eq: value },                # 表示 key=value
+        key: { $gt: value },                # 表示 key>value
+        key: { $gte: value },               # 表示 key>=value
+        key: { $lt: value },                # 表示 key<value
+        key: { $lte: value },               # 表示 key<=value
+        key: { $lt: value },                # 表示 key<value
+        key: { $ne: value },                # 表示 key!=value
+        key: { $in: [value1, value2] },     # 表示 key in (value1, value2)
+        key: { $in: [regexp1, regexp2] },   # 表示 key in (regexp1, regexp2)
+        key: { $nin: [value1, value2] },    # 表示 key not in (value1, value2)
+        {
+            $and: [                         # 与
+                { key: value },
+                { key: value }
+            ]
+        },
+        {
+            $or: [                          # 或
+                { key: value },
+                { key: value }
+            ]
+        },
+        key: { $not: { $gt: value } },      # 非
+        {
+            $nor: [                         # 或非
+                { key: value },
+                { key: value }
+            ]
+        },
+        key: { $exists: true },             # 存在
+        key: { $type: "array" },            # 数组类型
+        
+        
+        
+    }
+)
+
+
+# Create
+mongo> db.org.insertOne({name:"orgName", year:2019})
+mongo> db.org.insertMany([{name:"orgName", year:2019},{name:"orgName2", year:1902}])
+
+# Delete
+mongo> db.org.remove(
+   <query>,
+   {
+     justOne: <boolean>,
+     writeConcern: <document>
+   }
+)
+
+
+# Update
+mongo> db.org.update(<query>,
+   <update>,
+   {
+     upsert: <boolean>,
+     multi: <boolean>,
+     writeConcern: <document>
+   }
+)
+
+
+
+

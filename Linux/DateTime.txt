@@ -1,0 +1,57 @@
+基本概念：
+    RTC: Real Time Clock 主板硬件时钟
+    UTC: Universal Time Clock 世界时，格林尼治时间
+ 
+相关文件：
+    /etc/adjtime            # 表示当前 硬件时钟 显示的时间是 UTC 还是 LOCAL，如果不存在，默认 UTC
+    /etc/localtime          # 软链接
+    /usr/share/zoninfo      # 时区信息目录，/etc/localtime 的链接目标
+    /etc/timezone           # 有些系统用，有些不用，用于代表时区
+ 
+ 
+ 
+不联网设置本地时间：
+    shell> timedatectl set-ntp false                    # 关闭同步网络时间
+    shell> timedatectl status                           # 查看当前系统 日期/时区/时间 等信息
+    shell> timedatectl list-timezones                   # 查看所有时区
+    shell> timedatectl set-timezone UTC                 # 根据可用时区，配置当前系统时区；服务器推荐配置时区为 UTC
+    shell> timedatectl set-time '2015-04-27 17:01:50'   # 设置当前系统时间
+    shell> timedatectl set-local-rtc 1                   # 关机时，将 系统时间 同步到 硬件时间系统（即 BIOS 主板时间）
+    
+    
+ 
+同步网络时间：
+    shell> yum list installed | grep ntp            # 查看是否已经安装 ntp(Network Time Protocol)
+    shell> yum list | grep ntp                      # 查看 yum 源中的 ntp 包
+    shell> yum install -y ntp                       # 安装 ntp， -y 安装过程中任何询问都 yes
+    
+    shell> vi /etc/sysconfig/ntpd                   # 修改 ntp 启动参数，增加-g -x 参数，允许ntp服务在系统时间误差较大时也能正常工作
+    OPTIONS= "-g -x"                                 
+    
+    shell> systemctl enable ntpd                    # 设置 ntp 服务开机自启动
+    shell> systemctl start ntpd                     # 开启 ntp 服务
+
+    shell> timedatectl set-ntp true                 # 开启网络时间协议
+
+    如果时间还不同步，那么手工同步时间
+    shell> systemctl stop ntpd                      # 先关闭 ntp 服务
+    shell> /usr/sbin/ntpdate ntp.api.bz             # 手工同步时间
+    shell> timedatectl status                       # 再次查看时间
+    
+    配置 ntp 服务器
+    shell> vim /etc/ntp.conf                        # 编辑 ntp 配置文件
+    以下四行注释掉
+    server 0.centos.pool.ntp.org iburst
+    server 1.centos.pool.ntp.org iburst
+    server 2.centos.pool.ntp.org iburst
+    server 3.centos.pool.ntp.org iburst
+    添加
+    server ntp1.aliyun.com iburst
+    server ntp2.aliyun.com iburst
+    server ntp3.aliyun.com iburst
+    server ntp4.aliyun.com iburst
+    server ntp5.aliyun.com iburst
+    server ntp6.aliyun.com iburst
+    server ntp7.aliyun.com iburst
+    
+ 

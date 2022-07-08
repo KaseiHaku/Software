@@ -1,0 +1,14 @@
+# @trap 注释不能接在行末，会导致读取失败，当前文件是为了书写方便，实际不能这么写注释
+[Unit]
+Description=autoExeBeforeShutdown
+DefaultDependencies=no
+#  服务依赖关系，在哪些服务执行之前执行当前服务
+Before=shutdown.target reboot.target halt.target        
+
+[Service]
+Type=oneshot
+ExecStart=/root/Script/autoExeBeforeShutdown.sh         
+
+[Install]
+# 在哪些启动模式下，需要安装当前服务
+WantedBy=halt.target reboot.target shutdown.target      

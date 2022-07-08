@@ -1,0 +1,62 @@
+Download {
+    https://www.mongodb.com/download-center/community
+    Version: 选最新的
+    OS: 选你需要安装 MongoDB 的操作系统
+    Package： 选对应的
+    下载 
+    mongodb-org-server-4.2.0-1.el7.x86_64.rpm   # mongo database
+    mongodb-org-shell-4.2.0-1.el7.x86_64.rpm    # mongo shell client
+}
+
+Install {
+    CentOS7 {
+        shell> rpm -iv mongodb-org-server-4.2.0-1.el7.x86_64.rpm > mongodbInstallation.log
+        shell> rpm -iv mongodb-org-shell-4.2.0-1.el7.x86_64.rpm 
+    }
+}
+
+Settings {
+    CentOS7 {
+        shell> vim /etc/mongod.conf     # mongodb 默认配置文件位置，具体参数看官方文档       
+    }
+}
+
+Run {
+    shell> sudo mongod -f /etc/mongod.conf   # 使用配置文件启动 mongodb, root 权限
+
+    shell> mongo --host 127.0.0.1 --port 27017          # MongoDB 默认是不需要认证就能读写任何数据库
+    mongo> show dbs                 # 查看所有数据库
+    mongo> use admin                # 使用 admin 数据库
+    mongo> db.createUser(           # 创建超级管理员
+      { 
+        user: "mongoRoot",
+        pwd: "changeMeToAStrongPassword",
+        roles: [ "root" ]
+      }
+    )
+    mongo> show users       # 查看创建的用户
+    mongo> db.shutdownServer()      # 断开当前连接
+    mongo> exit
+    shell> vim /etc/mongod.conf     # 添加 auth = true 开启认证登录
+    
+    # 用刚才创建的用户登录
+    shell> mongo -u "mongoRoot" -p "1234" --authenticationDatabase "admin"        # 方式一
+    
+    shell> mongo 
+    mongo> use admin
+    mongo> db.auth("mongoRoot", "1234" )            # 方式二
+    
+    
+    mongo>db.updateUser(                # 修改用户密码：
+       "user123",
+       {
+          pwd: "KNlZmiaNUp0B",
+          customData: { title: "Senior Manager" }
+       }
+    )
+}
+
+
+    
+    
+    

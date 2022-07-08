@@ -1,0 +1,70 @@
+1. X-Window 中的概念
+    X-Server： 
+        主要负责管理 X-Server 所在主机上 用户 GUI 交互相关的硬件，例如：显示适配器、屏幕分辨率、键盘形式、鼠标形式等等
+        X-Server 接收 鼠标，键盘的动作，并通过 X-Protocol 协议发送给 X-Client 去处理
+        一般为 用户本地电脑 运行的 X Server
+        
+        X11R6: X-Window 11 的 第 6 次 release 版本
+            XFree86: 维护 X11R6 的组织， http://www.xfree86.org/ 
+            Xorg: 维护 X11R6 的组织， http://www.x.org/
+            由于两个组织的存在，导致 X11R6 的代码有两个主线版本
+        
+    X-Client： 
+        主要负责事件的处理，例如：鼠标，键盘的动作
+        X-Client 处理完事件后，将如何绘制屏幕 通过 X-Protocol 协议传递给 X Server 进行 屏幕渲染
+        一般为 远程服务器 中运行的程序
+    
+    X-Protocol: X 协议
+    
+    DISPLAY 环境变量： 控制将图形显示到何处； 格式为 hostname:displaynumber.screennumber    其中 screennumber 表示多个显示屏
+    
+    X-Window 架构 跟 B/S 架构的区别：
+        B/S 架构: Client 在用户本地，Server 在远程服务器
+        X-Window 架构: Client 在远程服务器， Server 在用户本地
+    
+    Window Manager: 
+        一个特殊的 X-Client，提供许多自带的功能
+        主流的 Window Manager: Gnome, KDE
+    
+    
+        
+X-Window 启动过程：
+    shell> startx [X client option] -- [X server option]            # 主要用于读取配置文件
+    shell> xinit [client option] -- [server or display option]      # startx 读取配置数据后，实际委托给 xinit 来启动 X-Window
+    启动 X-Client:
+        寻找 ~/.xinitrc 配置文件,如果不存在，则使用 /etc/X11/xinit/xinitrc 作为默认配置文件
+        根据配置信息，启动配置的 Window Manager(KDE, Gnome)
+        
+    启动 X-Server:
+        寻找 ~/.xserverrc 配置文件,如果不存在，则使用 /etc/X11/xinit/xserverrc 作为默认配置文件
+        如果 X11R6 代码是 Xorg 维护的版本，则继续读取 /etc/X11/xorg.conf 配置文件
+        如果 X11R6 代码是 XFree86 维护的版本，则继续读取 /etc/X11/XF86Config 配置文件
+        如果一切 OK，那么 X-Server 会在 tty7 顺利启动
+            默认监听端口为 6000，即: 第 0 个显示接口，hostname:0 缩写 :0 ，第一个启动的 X-Server 永远在 tty7
+            
+    X-Server 可以启动多个监听 port ，来监听不同的 X-Client 的请求，并且 port 和 tty 号递增，例如：
+        X-Server-Instance1  port=6000 tty=tty7      # 第一个启动的 X-Server 永远在 tty7 且 port=6000
+        X-Server-Instance2  port=6001 tty=tty8
+
+X-Window 常用命令：
+    shell> man xinit        # 查看 X-Window 启动参数有哪些
+    shell> man X            # 查看 X-Server 的用法
+    shell> X -version       # 查看当前 X(X-Server) 的信息，根据代码版本，可能是 XFree86 或者 Xorg 的信息
+
+2. 操作
+    X-Server 端：
+    shell> xhost +192.168.0.1   # 允许 192.168.0.1 这个主机发送 X Request 到本机
+    shell> xhost -192.168.0.1   # 禁止 192.168.0.1 发送 X Request 到本机
+    
+    shell> xhost +              # 允许所有主机向本机发送 X Request 请求
+    shell> xhost +              # 再次执行，禁止所有主机向本机发送 X Request 请求
+    
+    
+    /etc/X*.hosts
+    
+    
+    shell> export DISPLAY=192.168.0.254:0           # :0 表示发送到 0 号显示屏幕
+    
+    /etc/X11/gdm/gdm.conf               # 显示屏启动配置文件，默认启动 0 好显示屏
+    0=/usr/bin/X11/X -bpp 8 vt7         # -bpp 参数指定颜色数，此处为 8 位色深； vt7 表示Ctrl+Alt+F7可切换到该屏幕
+    1=/usr/bin/X11/X -bpp 8 vt9

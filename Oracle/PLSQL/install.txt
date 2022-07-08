@@ -1,0 +1,14 @@
+官网：https://www.allroundautomations.com/
+官方下载地址： https://www.allroundautomations.com/registered/plsqldev.html
+下载的软件版本： 13.0.4
+
+product code: 4vkjwhfeh3ufnqnmpr9brvcuyujrx3n3le
+serial number: 226959
+password: xs374ca
+
+
+plsql 远程连接 oracle 需要安装 oracle 客户端
+或者 安装 instantclient 然后配置相关配置文件才能连接
+
+安装完 instantclient 之后需要在 pl/sql 中配置该安装的 instantclient 才行
+

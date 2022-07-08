@@ -1,0 +1,4 @@
+Architecture:
+    Server(Tomcat) - 1:n -> Service - 1:n -> Connector(连接器)
+                                    - 1:1 -> Container(Servlet 容器)
+    Connector 和 Container 之间使用 ServletRequest 和 ServletResponse 对象进行交流，
