@@ -30,6 +30,9 @@
 Glossary:
     @doc https://git-scm.com/docs/gitglossary
     
+    working tree: 当前 工作区 中所有文件组成的树
+    index: working tree 中确定提交的版本，即: 缓存区 的内容
+    
     ref:
         以 refs/ 开头的，指向 object 或 另一个 ref 的。例如: refs/heads/master  对应 .git/refs/heads/master
         ref 大多数情况下可以缩写：
