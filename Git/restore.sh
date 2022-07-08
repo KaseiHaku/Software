@@ -1,3 +1,11 @@
+################################ Concept
+shell> git stash            # 从 贮藏区 恢复
+shell> git revert           # 将反向操作 放到一个新的 commit 中提交，用于撤销前面 commit 的修改
+shell> git restore          # 将 工作区 指定 path 恢复到某个 源，也可以用来恢复 index 区
+shell> git reset            # 改写历史，1: 从指定 commit 复制文件到 index/stage; 2: 将 HEAD 指向一个 commit; 
+
+
+
 ################################ restore workarea: 恢复工作区
 #### git stash
 shell> git stash apply stash@{0}        # 从 stash 中恢复指定的 工作区状态
@@ -13,12 +21,19 @@ shell> git checkout branchName      # 切换到指定分支，当前该分支的
 shell> git checkout commitId -b newBranchName       # 从指定 commit 切出新分支
 
 #### git restore
-shell> git restore -- path                                          # 因为 --stage 不存在, 所以根据 index 恢复 worktree 中指定路径的内容
+shell> git restore --source=tree-ish        # 指定恢复 源，默认为 index，当 --staged 存在时，默认为 HEAD
+                   --staged                 # 表示以 source 为准，恢复 index 区的内容
+                   --worktree               # 表示以 source 为准，恢复 worktree 区的内容
+                   -- ./xxx/path/           # 恢复路径
+
+
+shell> git restore -- path                                          # 因为 --staged 不存在, 所以根据 index 恢复 worktree 中指定路径的内容
 shell> git restore --worktree -- path                               # 同上
-shell> git restore --worktree --stage -- path                       # 因为 --stage 存在, 所以根据 HEAD 恢复 index 和 worktree 中指定路径的内容
-shell> git restore --worktree --stage --source=commit -- path       # 因为 --source=commit , 所以根据 commit 恢复 index 和 worktree 中指定路径的内容
+shell> git restore --worktree --staged -- path                      # 因为 --staged 存在, 所以根据 HEAD 恢复 index 和 worktree 中指定路径的内容
+shell> git restore --source=commit --worktree --staged  -- path     # 因为 --source=commit , 所以根据 commit 恢复 index 和 worktree 中指定路径的内容
 shell> git restore --worktree --ours -- path                        # 当从 index 中恢复时，--ours 表示使用 index 覆盖 worktree，--theirs 表示使用未合并的路径
 shell> git restore --worktree --theirs --merge -- path              # 当从 index 中恢复时，--theirs 表示使用未合并的路径，--merge 表示重建冲突合并
+
 
 
 
@@ -46,7 +61,13 @@ shell> git reset --patch tree-ish -- path       # 交互式选择 tree-ish 中�
 
 ################################ restore HEAD point: 恢复 HEAD 指针
 shell> git reset --soft             # 仅修改 HEAD 指针，cached 和 work tree 都不修改
-shell> git revert 
+shell> git revert --edit commit ....        # revert commit 提交前，会让你输入 commit message
+                  --mainline 2              # 一般情况下无法 revert merge commit，使用该参数指定 沿哪个 parent 所在的路径 revert
+                  --cleanup=scissors        # 配置 commit message 提交之前如何 清理
+                  --no-commit               # 默认自动提交，配置该参数，提交之前可以在 工作区 改东西，改完东西在 提交 revert commit
+                                            # 使用该配置后，index 文件树可以不指向 HEAD，revert 会在当前所在的 commit 执行
+                                            
+                  
 
 
 
