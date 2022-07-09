@@ -17,6 +17,7 @@
                                 #   |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
                                 #   |  |  |  |  |
                                 #   *  *  *  *  * user-name  command to be executed
+                                #   0  0  *  *  7 root  date            # 每周日运行
     
     /etc/cron.hourly            # 每小时定时执行的 脚本文件 的保存目录     
     
