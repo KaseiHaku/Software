@@ -54,4 +54,5 @@
     server ntp6.aliyun.com iburst
     server ntp7.aliyun.com iburst
     
- 
+查看时间:
+    shell> date +"%Y-%m-%dT%H:%M:%S"  
