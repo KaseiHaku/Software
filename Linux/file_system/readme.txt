@@ -74,6 +74,9 @@ prwxrwxrwx              # p 管道，伪文件，不占磁盘空间
 shell> vim /etc/fstab           # 用于配置 系统启动 时要 挂载 的 文件系统
 shell> vim /etc/mtab            # 记录当前系统 已经挂载的 文件系统
 
+shell> blkid            # 查看 /etc/fstab 中 UUID 对应的 分区
+shell> df -h            # 查看分区
+
 
 
 
