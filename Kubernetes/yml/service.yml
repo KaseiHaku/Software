@@ -64,7 +64,9 @@ spec:
   ipFamilyPolicy: SingleStack
 
   # 有效值：["None", "", "IP Address"]
-  #   None: 表示当前服务是一个 headless service
+  #   None: 
+  #     表示当前服务是一个 headless service
+  #     @trap 配置为 None 时，该 Service 只能做 IP 映射，不能做 IP+Port 映射，即: 该 service 对应的 EndPoints 的 Ports 配置无效
   # headless service: 即：no virtual IP
   #   1. 不会分配 clusterIP，
   #   2. kube-proxy 不处理这些服务
