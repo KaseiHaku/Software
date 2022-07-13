@@ -78,6 +78,11 @@ jdk 自带的文件编码转换工具 {
 }
 
 
+# jar 解压 压缩文件
+    shell> jar -xvf xxx.jar                                 # 解压
+    shell> jar -cvf0M new.jar BOOT-INF/ META-INF/ org/      # SpringBoot jar 重新打包
+
+
 
 
 
