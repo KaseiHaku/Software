@@ -41,7 +41,7 @@ Netfilter Hook Infrastructure 整体图形：
     2. TPROXY 不能用于 output 链
     3. Netfilter 特性: 在 OUTPUT 链打标记会使相应的包重路由到 PREROUTING 链上
 
-ISO 层级:
+ISO/OSI = InternationalStandardizationOrganization/OpenSystemInterconnect = 国际标准化组织/开放式系统互联 层级:
     防火墙工作在 网络层
 
 
