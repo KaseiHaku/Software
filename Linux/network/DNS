@@ -36,7 +36,8 @@ DNS 服务器配置：
     sortlist        IP/netmask IP       # 允许将得到的域名结果进行特定的排序     
     
     # 用于配置 resolver 的内置变量
-    # ndots:1           设置调用res_query()解析域名时域名至少包含的点的数量
+    # ndots:1           如果传入 domain 中 . 的个数小于 1 个，那么将 search 指定的域名后缀拼接到传入的 domain 中继续解析
+    #                   
     # timeout:5         设置等待dns服务器返回的超时时间，单位秒
     options         ndots:1  timeout:5           
 
