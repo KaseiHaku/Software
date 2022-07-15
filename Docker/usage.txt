@@ -132,11 +132,11 @@ Container：
     # 查看 container 容器中虚拟文件系统在 host 下的路径
     # LowerDir: 包含所有底层 layer 的 filesystem，除了最后一层的
     # UpperDir：最上层 layer 的 filesystem
-    # MergedDir: 所有 layer 的 filesystem 合并之后的视图
+    # MergedDir: 所有 layer 的 filesystem 合并之后的视图，
     # WorkDir: 容器内部的工作目录
-        shell> docker inspect contianerId | grep -i MergedDir
-        shell> ls -al /proc/<pid>/root/          # 另一种进入 container 文件系统的方式
-        shell> ls -alL /proc/<pid>/root         # 
+        shell> docker inspect contianerId | grep -i MergedDir   # @trap 并不是实际容器工作的文件系统，因为不包含动态配置的参数
+        shell> ls -al /proc/<pid>/root/                         # 这里才是 container 实际使用的文件系统
+        shell> ls -alL /proc/<pid>/root                         # 
     
     # docker container 网络检查
         shell> docker exec -it containerId cat /etc/resolv.conf         # 找到 dns 服务器
