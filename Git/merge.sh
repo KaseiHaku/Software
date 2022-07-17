@@ -37,4 +37,22 @@ shell> git cherry-pick -e                   # cherry-pick 提交时会提示输�
                        --skip               # 跳过当前 commit ，继续 cherry-pick 后续 commit
                        --quit               # 中止 cherry-pick，已经 pick 到当前分支的 commit 不会被回退
                        --abort              # 舍弃 cherry-pick，将分支状态回退到 cherry-pick 之前的状态
+                       
+# 合并两个不相关的库，并保留提交历史
+    # clone 两个库到同一个目录中
+    shell> git clone repo1
+    shell> git clone repo2
+    
+    # 将 repo2 作为 repo1 的远程库
+    shell> cd repo1
+    shell> git remote add repo2 ./repo2
+    
+    # 合并
+    shell> git fetch repo2
+    shell> git checkout -b repo2_master repo2/master    # 将 repo2 的 master 检出为本地的 repo2_master 分支
+    shell> git checkout master          # 切换为 repo1 的 master
+    shell> git merge repo2_master --allow-unrelated-histories           # 合并 repo2 的分支
+    shell> git push         # 推送 repo1 的远程库
+    
+    
                         
