@@ -51,7 +51,7 @@ shell> git cherry-pick -e                   # cherry-pick 提交时会提示输�
     shell> git fetch repo2
     shell> git checkout -b repo2_master repo2/master    # 将 repo2 的 master 检出为本地的 repo2_master 分支
     shell> git checkout master          # 切换为 repo1 的 master
-    shell> git merge repo2_master --allow-unrelated-histories           # 合并 repo2 的分支
+    shell> git merge --allow-unrelated-histories repo2_master        # 合并 repo2 的分支
     shell> git push         # 推送 repo1 的远程库
     
     
