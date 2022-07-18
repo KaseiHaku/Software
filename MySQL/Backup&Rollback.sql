@@ -73,6 +73,7 @@ mysql> show binlog events in 'binlog.001122';    -- 查看指定binlog文件的�
 shell> mysqlbinlog --base64-output=decode-rows                      # never, decode-rows, auto
                    --start-datetime='2021-11-19 14:12:00'           # 执行开始时间
                    --stop-datetime='2021-11-19 14:28:00'            # 执行结束时间
+                   --database='bladex'                              # 只显示指定数据库的数据
                    --set-charset=utf8mb4                            # 设置字符集
                    -vv                                              # 当 binlog_form=ROW 时，需要加这个来重构 SQL，不然乱码
                    binlog.001122                                    # 指定 binlog 文件
