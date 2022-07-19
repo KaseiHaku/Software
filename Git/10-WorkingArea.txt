@@ -17,9 +17,11 @@
 }
 
 清理未跟踪的文件 {
-    shell> git clean -n         # dry-run 
-    shell> git clean -ni         # interactive
-    shell> git clean -nfd         # 删除整个未跟踪的目录
+    shell> git clean -n             # dry-run 
+    shell> git clean -ni            # interactive
+    shell> git clean -nfd           # 删除整个未跟踪的目录
+    shell> git clean -ndxf          # 清空 未跟踪的目录 和 ignore 的文件
+    shell> git clean -ndXf          # 只清空 ingnore 的文件
 }
 
 
