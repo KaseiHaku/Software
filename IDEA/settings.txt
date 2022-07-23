@@ -89,6 +89,12 @@ Personalize Settings {
         
         Reference:
             $MyScope || $MyScope2           # 引用已经存在的 scope
+        
+        
+        常用:
+            lib:java..*                     # jdk 的包
+            file:*-client/src//*            # 前端代码
+            
     }
 
     IDEA git log 视图配置 {
