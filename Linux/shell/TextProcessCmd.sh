@@ -37,6 +37,8 @@ shell> grep -P -i -v -n -H -C 2 -R pattern file         # 常用选项
 # 作用：将标准输入转换成命令的参数，默认拼接在命令的最后
 #      xargs 命令会把输入的字符串中的 换行 和 其他空白字符 替换成空格
 #      然后根据 定界符 将输入中的字符串分隔成一段段连续的字符串, 并将这些字符串当做 command 的 参数或选项 依次拼接到 command 后面
+# 执行顺序: 转换 -> 分割 -> 分批 -> 传参
+#       @trap 转换 只有在没有指定 分割符 时存在，即: shell> xargs
 # 定界符：默认定界符是 空格，       
 shell> xargs [option] command [command-option]
     -a file         # 从指定文件读入输入，而不是标准输入中
@@ -62,7 +64,27 @@ shell> xargs [option] command [command-option]
                     # 使用 -I -i --replace=R 等选项后, xargs 的默认 定界符 会变成 \n, 而不是 space, 
                     # 如果需要使用 space 需要额外指定 -d ' '
     
-    
+
+分割: 
+shell> xargs                            # 把输入的字符串中的 换行 和 其他空白字符 替换成空格，以 空格 作为分割符
+shell> xargs -d 'str'                   # 不处理输入字符串，指定 字符串 作为分割符
+shell> xargs -0                         # 不处理输入字符串，等价于 shell> xargs -d '\0'     \0 == null
+
+分批:
+shell> xargs -n2                        # 把输入的字符串中的 换行 和 其他空白字符 替换成空格，以 ' ' 为分割符，分割后每次使用 2 个当作参数
+shell> xargs -d"\n" -n2                 # 不处理输入字符串，以 \n 为分割符，分割后每次使用 2 个当作参数
+shell> xargs -L2                        # 不处理输入字符串，以 \n 为分割符，分割后每次使用 2 个当作参数
+shell> xargs -d' ' -L2                  # 不处理输入字符串，以 ' ' 为分割符，分割后每次使用 2 个当作参数
+shell> xargs -I{}                       # 不处理输入字符串，等价于 shell> xargs -L1  然后使用占位符 {}
+shell> xargs -I{} -L2                   # 不处理输入字符串，由于 -L2 在后面定义，所以直接覆盖 -I{}, 连着占位符的效果一并覆盖，所以占位符没用了
+
+# 传参
+# 默认直接拼接在 cmd 后面
+# -I{} 模式，则用 单引号 包裹，传入占位符
+
+
+
+
 shell> echo 1 2 3 | xargs -n 1 touch                        # 每行输出 1 个，然后将每行的字符串作为后面命令的参数
 shell> echo ggXaaXhh | xargs -d X -n 1 echo                 # 修改定界符为 'X'
 shell> echo kasei | xargs -I {} ./sk.sh -p {} -l            # -I 指定占位符为 {}， 命令行中的 {} 将被传入的参数所替代 
