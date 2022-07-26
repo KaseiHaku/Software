@@ -54,16 +54,17 @@ shell> xargs [option] command [command-option]
     
     # 参数传递
     -I R            # 等同 --replace=R， R 必须指定 
-    -i              # 使用 {} 作为 占位符 标记
+    -i              # 使用 {} 作为 占位符 标记，@deprecated
     --replace=[R]   # 使用 R 作为 占位符 标记，如果 R 没有指定，那么占位符默认为 {}
                     # 使用 -I -i --replace=R 等选项后, xargs 的默认 定界符 会变成 \n, 而不是 space, 
                     # 如果需要使用 space 需要额外指定 -d ' '
     
     
-shell> echo 1 2 3 | xargs -n 1 touch                       # 每行输出 1 个，然后将每行的字符串作为后面命令的参数
-shell> echo ggXaaXhh | xargs -d X -n 1 echo                # 修改定界符为 'X'
-shell> echo kasei | xargs -I {} ./sk.sh -p {} -l           # -I 指定占位符为 {}， 命令行中的 {} 将被传入的参数所替代 
-shell> echo aaa | xargs -rti ./sk.sh -p {} -l               # 最常用, @trap -i 必须是最后一个
+shell> echo 1 2 3 | xargs -n 1 touch                        # 每行输出 1 个，然后将每行的字符串作为后面命令的参数
+shell> echo ggXaaXhh | xargs -d X -n 1 echo                 # 修改定界符为 'X'
+shell> echo kasei | xargs -I {} ./sk.sh -p {} -l            # -I 指定占位符为 {}， 命令行中的 {} 将被传入的参数所替代 
+shell> echo aaa | xargs -rti ./sk.sh -p {} -l               # 最常用, @trap -i 必须是最后一个，-i 已经废弃，使用 -I{} 替代
+shell> echo aaa | xargs -rtI{} ./sk.sh -p {} -l             # 最常用 
 
 # xargs Demo
 # 假设输入的字符串为 A：  '1 2\t3\n4\\5'
