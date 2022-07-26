@@ -135,6 +135,7 @@ shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 # sed 
 # 每次读入一行，对该行进行 文本替换 和 搜索
 # @help: http://www.gnu.org/software/sed/manual/html_node/index.html
+# @trap sed 默认正则为 BRE，使用 -r 可以改为 ERE，但是无法使用 PCRE
 # Format := sed -e [addr]X[options] -e [addr]X[options] (file | -)
 # addr := [ 
 #   number | $ | first~step | /regexp/ | \%regexp% | /regexp/I | /regexp/M              # SingleAddr 单地址
