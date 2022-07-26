@@ -188,6 +188,7 @@ shell> sed 's/regex/replacement/g' file1        # 全局替换匹配的文本
 
 shell> seq 6 | sed -e 1d -e 3d -e 5d            # 多 cmd 模式
 shell> seq 6 | sed '1d;3d;5d'
+shell> echo -n '  1234 567  ' | sed -r -e 's/^\s*(\S(.*)\S)\s*$/\1/'        # 巨神坑: ERE [] 中 \ 作为普通字符
 
 
 
