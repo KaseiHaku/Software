@@ -80,7 +80,9 @@ shell> xargs -I{} -L2                   # 不处理输入字符串，由于 -L2 
 
 # 传参
 # 默认直接拼接在 cmd 后面
-# -I{} 模式，则用 单引号 包裹，传入占位符
+# -I{} 模式，则用 单引号 包裹，传入占位符，如果 1 批里面包含多个 command-line 参数，则需要使用 bash -c 'cmd {}' 来执行
+shell> echo '' | xargs -rtI{} bash -c 'cmd {}'      #  1 批里面包含多个 command-line 参数时，使用方法
+
 
 
 
