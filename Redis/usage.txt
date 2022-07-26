@@ -46,7 +46,8 @@ Key {
     redis> pttl key                                         # 查看 key 的过期时间
     redis> del key1 key2                                    # 删除 key
     
-    shell> redis-cli -c -p 7001 cluster nodes| cut -d' ' -f2| cut -d'@' -f1| sed 's/:/ -p /g'| xargs -d'\n' printf ' -h %s\n' | xargs -d'\n' -n1 -I{} redis-cli -c {} kyes ZUU* > redis-cli.sh && ./redis-cli.sh
+    # 集群查看所有 node 中的 keys
+    shell> redis-cli -c -p 6379 -a pwd cluster nodes| cut -d' ' -f2| cut -d'@' -f1| sed 's/:/ -p /g'| xargs -d'\n' printf '-h %s\n' | xargs -rtI{} bash -c 'redis-cli -c {} -a pwd keys 000*'
     
     # 查看 0-16 database 中所有的 key, 及 key 所在 DB，DB index 存在一位的偏移，显示 2 实际 dbindex=1
     shell> echo {0..16} | xargs -t -I {} -d ' ' redis-cli -h 127.0.0.1 -n {} -a 'pwd' keys '*' | grep -E 'xargs|keyPattern' 
