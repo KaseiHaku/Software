@@ -35,6 +35,8 @@ sftp {
     
     shell> sftp -P 22 root@192.168.1.2
     sftp> help
+    sftp> get -r /remote/dir /local/dir
+    sftp> put -r /local/dir/*  /remote/dir
 }
 
 scp {
