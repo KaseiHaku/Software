@@ -32,6 +32,9 @@ sftp {
     protocol:  基于 SSH 协议
     
     可以进行文件管理
+    
+    shell> sftp -P 22 root@192.168.1.2
+    sftp> help
 }
 
 scp {
