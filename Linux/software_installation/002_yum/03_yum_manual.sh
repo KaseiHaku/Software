@@ -1,7 +1,7 @@
 # yum 安装：安装的其实还是 rpm 软件包，只是自动解决依赖关系，像 maven； 所以 yum 安装的软件还是能用 rpm 命令管理
 # 使用该方式需先确保两个条件，1： yum 软件包自身已经安装   2： yum 源已经配置完成
 
-# 包名格式: name=包名, arch=架构, ver=版本, rel=发行号, epoch=时代/纪元/时期
+# 包名格式: name=包名, arch=架构, ver=版本, rel=针对不同 OS 的发行号, epoch=时代/纪元/时期
 #   name
 #   name.arch
 #   name-ver
