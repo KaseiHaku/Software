@@ -42,8 +42,7 @@ shell> yum deplist kubeadm                                              # 查看
 
 # 安装
 shell> yum install -y {epock}:{package name}-{version}-{release}.{arch} # 完整格式
-shell> yum install -y {package name}-{version}                          # 常用
-shell> yum install -y {package name}-{version}-{release}               # 常用
+shell> yum install -y {package name}-{version}-{release}                # 常用
 
 shell> yum install *.rpm                                                # 安装软件包
 shell> yum groupinstall "GNOME Desktop"                                 # 安装软件组
