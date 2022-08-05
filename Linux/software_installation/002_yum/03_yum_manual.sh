@@ -41,7 +41,10 @@ shell> yum group list                                                   # 查看
 shell> yum deplist kubeadm                                              # 查看包依赖
 
 # 安装
-shell> yum install -y {epock}:{package name}-{version}-{release}.{arch}
+shell> yum install -y {epock}:{package name}-{version}-{release}.{arch} # 完整格式
+shell> yum install -y {package name}-{version}                          # 常用
+shell> yum install -y {package name}-{version}}-{release}               # 常用
+
 shell> yum install *.rpm                                                # 安装软件包
 shell> yum groupinstall "GNOME Desktop"                                 # 安装软件组
 shell> yum localinstall google-chrome-stable_current_x86_64.rpm         # 用 yum 安装已经下载的 rpm 包，让 yum 解析依赖关系
