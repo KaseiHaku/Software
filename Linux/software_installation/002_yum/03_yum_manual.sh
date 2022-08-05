@@ -19,6 +19,7 @@ shell> yum list installed                                               # 列出
 shell> yum list extras                                                  # 列出已安装但不在yum源中的软件（本地）
 
 shell> yum group list                                                   # 查看 yum 源中的所有软件组
+shell> yum deplist kubeadm                                              # 查看包依赖
 
 # 安装
 shell> yum install *.rpm                                                # 安装软件包
