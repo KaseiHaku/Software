@@ -1,6 +1,19 @@
 # yum 安装：安装的其实还是 rpm 软件包，只是自动解决依赖关系，像 maven； 所以 yum 安装的软件还是能用 rpm 命令管理
 # 使用该方式需先确保两个条件，1： yum 软件包自身已经安装   2： yum 源已经配置完成
 
+# 包名格式: name=包名, arch=架构, ver=版本, rel=发行号, epoch=时代/纪元/时期
+#   name
+#   name.arch
+#   name-ver
+#   name-ver-rel
+#   name-ver-rel.arch
+#   name-epoch:ver-rel.arch
+#   epoch:name-ver-rel.arch
+
+
+
+
+
 # 帮助
 shell> yum help
 shell> yum help erase       # 查看子命令帮助
@@ -14,6 +27,12 @@ shell> yum search str                                                   # 查找
 shell> yum provides *bin/less                                           # 查找包含 指定文件 的软件包
 
 shell> yum list                                                         # 查看 yum 源中的所有软件包
+                                                                        # list 显示格式
+                                                                        #   name.arch       [epoch:]ver-rel     repo
+                                                                        
+                                                                        
+                                                                        
+                                                                        
 shell> yum --showduplicates list                                        # 查看仓库中一个包的所有版本
 shell> yum list installed                                               # 列出所有采用 yum 安装的软件
 shell> yum list extras                                                  # 列出已安装但不在yum源中的软件（本地）
@@ -22,6 +41,7 @@ shell> yum group list                                                   # 查看
 shell> yum deplist kubeadm                                              # 查看包依赖
 
 # 安装
+shell> yum install -y {epock}:{package name}-{version}-{release}.{arch}
 shell> yum install *.rpm                                                # 安装软件包
 shell> yum groupinstall "GNOME Desktop"                                 # 安装软件组
 shell> yum localinstall google-chrome-stable_current_x86_64.rpm         # 用 yum 安装已经下载的 rpm 包，让 yum 解析依赖关系
