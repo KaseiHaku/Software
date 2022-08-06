@@ -75,6 +75,7 @@ Concept:
             
             IPv6
             ::/0                                fe80::1             UG        eth0                  # 默认路由，
+            default                             fe80::1             UG        eth0                  # 同上，default 为特殊前缀 = ::/0 = 0/0
             
             
             
