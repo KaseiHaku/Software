@@ -23,7 +23,7 @@
     shell> ip neigh                                 # 查看
     
     
-    
+    shell> ip -d link show                          # -d 查看详细信息，不加不全
     shell> ip link ens33                            # 查看 ens33 这块网卡的信息，省略网卡参数，表示查看所有网卡
     shell> ip link set ens33 promisc on|off         # 开启|关闭网卡的混杂模式（抓包使用）
     shell> ip link set ens33 mtu 1500               # 更改 mtu（Maximum Transmission Unit) 大小   
