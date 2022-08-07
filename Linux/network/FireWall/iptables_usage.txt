@@ -16,6 +16,11 @@ Chain:
 
 Rule:
     Query:
+    # -L 展示格式:
+    #       num         target     prot      opt            source        destination
+    #       序号        动作        协议      IpOption       源IP         目的IP
+    
+    
     shell> iptables -t nat -S                               // 查看 nat 表所有规则，跟 -L 格式不一样
     shell> iptables -t nat --line-numbers -L                // 查看 nat 表所有规则
     shell> iptables -t nat --line-numbers -L V2RAY          // 查看 nat 表中 V2RAY 链中所有的规则
