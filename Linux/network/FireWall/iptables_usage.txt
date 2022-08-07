@@ -67,7 +67,14 @@ Target:
     ChainName   # 表示数据包提交到另一条自定义 chain 去匹配 rule
     iptables-enxtensions(8)     # 表示执行 这个 man 文档中描述的 target
     
-
+Debug:
+    shell> iptables -t raw -I OUTPUT 1 -p icmp -j TRACE         # 标记为 TRACE，只能用于 raw 表
+    shell> cat /var/log/messages        
+    
+    
+    shell> iptables -t filter -I FORWARD 1 -p icmp -j LOG --log-prefix "kasei:::"
+    shell> dmesg
+    shell> syslog
     
 
 TProxy(Transparent Proxy):
