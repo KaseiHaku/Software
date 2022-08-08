@@ -73,7 +73,7 @@ Debug:
     
     
     shell> iptables -t filter -I FORWARD 1 -p icmp -j LOG --log-prefix "kasei:::"
-    shell> dmesg
+    shell> dmesg -w -k
     shell> syslog
     
 
