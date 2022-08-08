@@ -39,7 +39,7 @@ spec:
           enum: []    # 当前层级的 value 必须在 enum 中
 
           required: ['apiVersion', 'kind', 'metadata']  # 表示当前层级 JSON 对象(即: <properties> 中) 的指定属性 必填
-          # 字段有哪些，格式怎么样
+          # 当 type=object 时，字段有哪些，格式怎么样
           properties:
             apiVersion:
               description: version
@@ -53,7 +53,12 @@ spec:
               properties:
                 xxxArg:
                   type: array
-
+          # 当 type=array 时，配置数组元素的类型
+          # 可以是 JSONSchemaProps 或者 JSONSchemaPropsArray
+          #   JSONSchemaProps: 所有数组元素只有一个类型
+          #   JSONSchemaPropsArray: 数组元素可以有多个类型
+          items:
+            type: string
           # 当前 层级 默认值，如果没定义的话
           default: {}
 
