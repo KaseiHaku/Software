@@ -11,10 +11,10 @@ Concept:
     Chain 链： 由一连串过滤规则组成的串
         有以下几种类型的链：
             prerouting      链的规则可以存在于 raw -> mangle -> nat          (箭头表示规则优先顺序)
-            input           链的规则可以存在于 nat filter mangle
-            forward         链的规则可以存在于 filter mangle
+            input           链的规则可以存在于 mangle -> nat -> filter 
+            forward         链的规则可以存在于 mangle -> filter 
             output          链的规则可以存在于 raw -> mangle -> nat -> filter
-            postrouting     链的规则可以存在于 nat mangle
+            postrouting     链的规则可以存在于 mangle -> nat 
     Rule 规则：
         用与匹配数据包的条件
         
