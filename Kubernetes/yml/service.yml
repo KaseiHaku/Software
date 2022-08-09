@@ -1,8 +1,14 @@
 # 提供集群外访问的方法：
-#   Pod.spec.containers[].ports[].hostPort: 直接将 Port 和 Node Port 绑定，前提: 需要 nodeSelector 固定 Pod 运行的 Node
-#   Pod.spec.hostNetwork: 直接使用 Node 网络，前提: 需要 nodeSelector 固定 Pod 运行的 Node。@trap 这种模式下 都不需要配置 k8s service 对象
+#   Pod.spec.containers[].ports[].hostPort: 
+#       直接将 Port 和 Node Port 绑定，但是网络命名空间还是独立的，类似 docker-compose 中 4567:1234
+#       前提: 需要 nodeSelector 固定 Pod 运行的 Node
+#       @trap 这种模式下 都不需要配置 k8s service 对象
+#   Pod.spec.hostNetwork: 
+#       直接使用 Node 网络命名空间，类似 docker-compose 中 network_mode: "host"    
+#       前提: 需要 nodeSelector 固定 Pod 运行的 Node。
+#       @trap 这种模式下 都不需要配置 k8s service 对象
 #   Service.spec.type.NodePort: 在集群所有 Node 都开一个端口，用于处理请求
-#   Service.spec.externalIPs: 使用集群中，符合配置 IPs 的 Node 用于处理请求
+#   Service.spec.externalIPs: 配置 集群 外部 IP，但是需要外部保证访问该 IP 的流量能打到 k8s 任一 node 上
 #   Service.spec.type.Loadbalancer: Layer4(传输层)负载均衡器：集群内还是通过 ExternalIPs 来开放服务, 例如: MetalLB(用过不好)
 # @trap Ingress: 本身不涉及如何暴露自己到 公网 上，还是需要通过 hostNetwork, hostPort, NodePort, ExternalIP, Loadbalancer 来暴露
 
