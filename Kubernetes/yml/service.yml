@@ -102,10 +102,26 @@ spec:
   # 该数组最多有两个元素，其他限制跟 clusterIP 一致
   clusterIPs: []
 
-  # 集群中其他可以提供当前服务的 Node 的 IP 地址，这些 IP 地址不受 k8s 管理
-  # 常见应用场景：不属于 k8s 系统的 外部负载均衡器
-  #   相比 NodePort 的优点是：可以指定 高性能服务器 来作为集群的入口，防止 NodePort 模式下流量随便打，压跨 低性能服务器
-  #   缺点: 不具有高可用性，配置 IP 对应的 host 挂掉之后就 gg
+  # 能把流量打到 k8s node 上的其他 IP 地址，这些 IP 地址不受 k8s 管理
+  #
+  # Working Principle(工作原理):
+  #   当任一 k8s node 接收到 目的IP 在 externalIPs 中的 packet 时，通过 iptables 规则将该 packet 送到当前 service 对应的 endpoint 上
+  #
+  # 和 type: NodePort 的区别:
+  #   1. iptables 的规则不同，可以通过 shell> iptables-save > xxx.iprules  导出，对比两次导出文件的差异
+  #   2. externalIPs + ClusterIP 模式下，虽然 流量 打到任一 k8s node 上，都能正确访问，
+  #      但是 exteranlIPs 可以只绑定 高性能服务器 来作为集群的入口，防止流量随便打，压跨 低性能服务器。
+  #      当然如果 Loadbalancer + NodePort 模式下，Loadbalancer 只把流量打到 高性能服务器 上，完全可以实现相同的效果
+  #
+  # Pros&Cons(优缺点):
+  #   pros: 
+  #     可以和 任何 type 的 service 一起使用
+  #     可以指定 高性能服务器
+  #   cons: 
+  #     不具有高可用性，配置 IP 对应的 host 挂掉之后就 gg
+  # 
+  # Scenarios(应用场景)：
+  #   不属于 k8s 系统的 外部负载均衡器
   externalIPs: []
 
   # 会话 亲和性：同一个会话，发送到同一个 Pod
