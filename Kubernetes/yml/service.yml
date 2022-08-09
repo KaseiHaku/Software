@@ -1,9 +1,9 @@
 # 提供集群外访问的方法：
 #   Pod.spec.containers[].ports[].hostPort: 直接将 Port 和 Node Port 绑定，前提: 需要 nodeSelector 固定 Pod 运行的 Node
-#   Pod.spec.hostNetwork: 直接使用 Node 网络，前提: 需要 nodeSelector 固定 Pod 运行的 Node
+#   Pod.spec.hostNetwork: 直接使用 Node 网络，前提: 需要 nodeSelector 固定 Pod 运行的 Node。@trap 这种模式下 都不需要配置 k8s service 对象
 #   Service.spec.type.NodePort: 在集群所有 Node 都开一个端口，用于处理请求
 #   Service.spec.externalIPs: 使用集群中，符合配置 IPs 的 Node 用于处理请求
-#   Service.spec.type.Loadbalancer: Layer4(传输层)负载均衡器：集群内还是通过 ExternalIPs 来开放服务, 例如: MetalLB
+#   Service.spec.type.Loadbalancer: Layer4(传输层)负载均衡器：集群内还是通过 ExternalIPs 来开放服务, 例如: MetalLB(用过不好)
 # @trap Ingress: 本身不涉及如何暴露自己到 公网 上，还是需要通过 hostNetwork, hostPort, NodePort, ExternalIP, Loadbalancer 来暴露
 
 
@@ -44,10 +44,27 @@ spec:
       appProtocol: http    # 当前端口的应用层协议
   
   # 从外部访问 K8s Service 的方法：其中 {} 中的为 k8s cluster 中的组件
+  #   ExternalName: 
+  #     其他 pod 通过 CoreDNS 解析当前服务时，会返回 CNAME 记录指向 {.spec.externalName} 配置的域名，比如: baidu.com
+  #     pod 递归解析 baidu.com 得到最终的 IP 地址，然后向该 IP 地址发送 packet
+  #     适用场景:  
+  #       外部域名 需要换成 内部域名，给其他 pod 使用
+  #       内部域名 需要起 n 个别名，给其他 pod 使用
+  #
   #   ClusterIP: 本身无法访问，需要代理。流程为: Client -> Proxy -> {Service -> Pod}
+  #
   #   NodePort: 流程为: Client -> {NodePort -> Service -> Pod}
+  #     在所有 k8s node 上使用指定 port 来提供当前 service
+  #
   #   LoadBalancer: 流程为: Client -> LoadBalancer -> {NodePort -> Service -> Pod}
+  #     访问 NodePort 和 ClusterIP 类型的 service时，流量 会通过 外部负载均衡器 到指定的 Pod。
+  #     外部负载均衡器实现方式:
+  #       1. 可以通过 自动添加路由记录 的方式实现 
+  #       2. MetaLB
+  #       3. VIP 等
+  #
   #   Ingress: 流程为：Client -> {Ingress -> Service -> Pod}
+  #     不属于 k8s service 的一种，在 L5 或 L7 层网络上提供 反向代理 或 负载均衡 的功能
   type: ClusterIP         # 配置服务是如何公开的，可用值: [ExternalName, ClusterIP, NodePort, LoadBalancer]
   #####
   # IP 协议家族
@@ -107,7 +124,7 @@ spec:
   loadBalancerClass:
 
   # 当 type=ExternalName 时生效
-  externalName: alias  # 为当前服务在 服务发现机制 中配置一个 alias
+  externalName: alias  # 为当前服务在 服务发现机制 中配置一个 alias，例如: DNS CNAME record
   # 外部流量策略：主要配置 外部流量 如何流转到 Container 中的
   #   Cluster: 集群模式，流量进入入口 Node 后，分发到 绑定到指定 Service 的所有 Pod 中
   #   Local: 本地模式，流量进入入口 Node 后，直接在 入口 Node 中查找 绑定到指定 Service 的 Pod 的
