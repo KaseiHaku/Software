@@ -25,7 +25,7 @@ spec:
         - containerPort: 1234     # 在 Pod IP 上的暴露端口
           name: xxx               # 命名端口，有多个端口时使用
           hostIP: 0.0.0.0         # 外部端口 绑定到 host 的哪个网卡(IP)上
-          # 在 host 上暴露的端口，类型 docker-compose 中 4567:1234 , 这样可以使用当前 pod 所在 node 的 ip:hostPort 直接访问该容器
+          # 在 host 上暴露的端口，类似 docker-compose 中 4567:1234 , 这样可以使用当前 pod 所在 node 的 ip:hostPort 直接访问该容器
           # 和 ${.spec.hostNetwork} == true 的区别是，hostPort 只是端口映射，网络命名空间还是独立的，而 ${.spec.hostNetwork} == true 则是使用 node 的 网络命名空间
           # 如果 ${.spec.hostNetwork} == true, 那么该端口必须和 containerPort 端口一样
           hostPort: 4567          
