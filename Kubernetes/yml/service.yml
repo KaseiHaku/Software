@@ -58,13 +58,14 @@ spec:
   #
   #   LoadBalancer: 流程为: Client -> LoadBalancer -> {NodePort -> Service -> Pod}
   #     访问 NodePort 和 ClusterIP 类型的 service时，流量 会通过 外部负载均衡器 到指定的 Pod。
+  #     运行在 L4(传输层) 层网络上
   #     外部负载均衡器实现方式:
   #       1. 可以通过 自动添加路由记录 的方式实现 
   #       2. MetaLB
   #       3. VIP 等
   #
   #   Ingress: 流程为：Client -> {Ingress -> Service -> Pod}
-  #     不属于 k8s service 的一种，在 L5 或 L7 层网络上提供 反向代理 或 负载均衡 的功能
+  #     不属于 k8s service 的一种，在 L4(传输层) 或 L7(应用层) 层网络上提供 反向代理 或 负载均衡 的功能
   type: ClusterIP         # 配置服务是如何公开的，可用值: [ExternalName, ClusterIP, NodePort, LoadBalancer]
   #####
   # IP 协议家族
