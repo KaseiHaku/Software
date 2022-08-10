@@ -78,7 +78,7 @@ spec:
           #   3. 由于这里是 反亲和性，那么当前 Pod 不能调度到 Node.metadata.labels[].topologyKey = Ary 的 node 上
           topologyKey: "kubernetes.io/hostname"   # 用于判断 pod 是否 co-located(位于同一地点，位于同一拓扑域) 的 node label 的 key name
           labelSelector:
-            matchLabels:
+            matchLabels: # 多个 and 的关系
               app.kubernetes.io/component: controller
               app.kubernetes.io/instance: ingress-nginx
               app.kubernetes.io/name: ingress-nginx
