@@ -84,7 +84,7 @@ metadata:           # 必填，用于 唯一标识 当前 k8s object
 # 该 字段的格式，根据 kind 的不同而不同
 # 各个类型 spec 格式文档地址: https://kubernetes.io/docs/reference/kubernetes-api/
 spec:
-  selector:       # pod 的选择器
+  selector:       # pod 的选择器，符合条件的 pod 将由该 deployment 管理
     matchExpressions:
       - key: app
         operator: In
