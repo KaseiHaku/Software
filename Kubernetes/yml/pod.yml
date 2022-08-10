@@ -70,6 +70,19 @@ spec:
     nodeAffinity:       # 描述 pod 的在 scheduling 时，对 node 的亲和性
     podAffinity:      # 描述当前 pod 跟其他 pod 的亲和性，即：尽量将当前 pod 和 这些 pod 部署在一个 node, zone 中
     podAntiAffinity:    # 描述当前 pod 跟其他 pod 的反亲和性，即：避免将当前 pod 和 这些 pod 部署在一个 node, zone 中
+      preferredDuringSchedulingIgnoredDuringExecution:  # 偏好约束
+      requiredDuringSchedulingIgnoredDuringExecution: # 强制约束，多个 and 的关系
+        - # 执行过程:
+          #   1. 选出符合 labelSelector 的所有 Pod
+          #   2. 查看这些 Pod 所在 node 的 nodeLabel 中是否有 topologyKey 中指定的 label 名称，如果有则将该 label 的 value 放入到 数组 Ary 中
+          #   3. 由于这里是 反亲和性，那么当前 Pod 不能调度到 Node.metadata.labels[].topologyKey = Ary 的 node 上
+          topologyKey: "kubernetes.io/hostname"   # 用于判断 pod 是否 co-located(位于同一地点，位于同一拓扑域) 的 node label 的 key name
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: controller
+              app.kubernetes.io/instance: ingress-nginx
+              app.kubernetes.io/name: ingress-nginx
+        
 
   # 允许（但并不要求）Pod 调度到带有与之匹配的污点的 node 上
   # @doc https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
@@ -93,7 +106,11 @@ spec:
   # 拓扑传播约束
   topologySpreadConstraints:
     maxSkew:
-    topologyKey:
+    # 当两个 k8s node labels 中 kubernetes.io/hostname label 的 value 相同时，表示这两个 node 在同一个拓扑域中
+    # 例如: 
+    #     如果 topologyKey 是 "kubernetes.io/hostname"，则每个 Node 都是该拓扑的域
+    #     如果 topologyKey 是 "topology.kubernetes.io/zone"，则每个区域都是该拓扑的一个域
+    topologyKey: "kubernetes.io/hostname"   
     whenUnsatisfiable:
     labelSelector:
 
