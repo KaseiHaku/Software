@@ -48,7 +48,12 @@ shell> yum install *.rpm                                                # 安装
 shell> yum groupinstall "GNOME Desktop"                                 # 安装软件组
 shell> yum localinstall google-chrome-stable_current_x86_64.rpm         # 用 yum 安装已经下载的 rpm 包，让 yum 解析依赖关系
 
-
+# 离线安装
+shell> yum -y install yum-utils
+shell> yumdownloader --resolve --destdir=/tmp ansible                   # 下载 ansible，并解析依赖，并同时下载当前系统中没有的依赖
+shell> repotrack --download_path=/tmp -n ansible                        # 下载 ansible 全量依赖包, -n 切换是否下载非最新的 rpm，默认最新的，加了就下载所有的
+shell> yum --nogpgcheck localinstall a.rpm b.rpm c.rpm                  # 需要同时安装程序包所有的依赖项目，否则还是会尝试联网去下载缺少的依赖项目
+                                                                        # --nogpgcheck  不让yum对程序包进行GPG验证
 # 更新
 shell> yum list updates                                                 # 列出所有可更新的包（yum源）
 shell> yum check-update                                                 # 检查可更新的程序（本地）
