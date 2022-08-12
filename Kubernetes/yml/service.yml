@@ -14,7 +14,7 @@
 
 
 
-# 外部服务  需要手工配置 endpoint，endpoit 的ip 不能是 
+# 外部服务  需要手工配置 endpoint，endpoint 的ip 不能是 
 #   loopback： 127.0.0.0/8,  ::1/128
 #   link-local: 169.254.0.0/16,  224.0.0.0/24, fe80::/64
 #   其他 k8s service 的 ClusterIP
@@ -101,7 +101,7 @@ spec:
   #         修改 DNS 配置：直接将 Pods 的 IP 地址当作 A 记录返回
   #      无 selector:
   #         不创建 Endpoints 记录
-  #         如果当前服务是  ExternalName 类型，在 DNS 配置一个 CNAME 记录
+  #         如果当前服务是  ExternalName 类型，在 DNS 配置一个 CNAME 记录指向 {.spec.externalName} 配置的域名，比如: baidu.com
   #         如果不是，为 和当前 Service 共享 name 的所有 Endpoints，创建一个 A 记录
   clusterIP: None
   # 如果没有指定，默认从 clusterIP 获取，如果指定了，那么要求 clusterIPs[0] = clusterIP
