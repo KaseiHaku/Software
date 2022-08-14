@@ -22,6 +22,11 @@ shell> yum help erase       # 查看子命令帮助
 shell> yum -y install yum-utils                                         # 安装必备插件
 shell> yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo    # 添加 yum 源仓库
 shell> yum-config-manager --add-repo=file:///opt/localyum           # 添加本地目录作为 yum 源
+shell> yum-config-manager --setopt=option=value                     # 全局配置 等价于 /etc/yum.conf 中配置，临时
+shell> yum-config-manager --save --setopt=option=value              # 同上，但是将配置写入 /etc/yum.conf
+shell> yum-config-manager --setopt=<repoid>.option=value            # 针对 repoid 仓库的配置，repoid 可以包含通配符
+shell> yum-config-manager --enable \*           # 启用所有仓库
+shell> yum-config-manager --disable \*          # 停用所有仓库
 
 
 # 查看
