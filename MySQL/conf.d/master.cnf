@@ -186,8 +186,8 @@ enforce_gtid_consistency = ON               # 不允许执行 gtid 模式不支�
 # 需要同步的数据库。如果是多个同步库，就以此格式另写几行即可。
 # 如果不指明对某个具体库同步，就去掉此行，表示同步所有库（除了ignore忽略的库）。
 #binlog-do-db=k8s
-# 不同步 mysql 系统数据库。如果是多个不同步库，就以此格式另写几行；也可以在一行，中间逗号隔开。
-#binlog-ignore-db=mysql
+# 不同步指定的库。如果是多个不同步库，就以此格式另写几行；也可以在一行，中间逗号隔开。
+#binlog-ignore-db=k8s
 
 
 
@@ -218,6 +218,9 @@ enforce_gtid_consistency = ON               # 不允许执行 gtid 模式不支�
 # 如果需要同步的数据库名不同
 # master 上的数据库名为 k8s ， slave 上的库名为 k8s2
 #replicate-rewrite-db=k8s->k8s2
+# 不同步指定的数据库。如果是多个不同步库，就以此格式另写几行；禁止用逗号分隔，写成一行
+#replicate-ignore-db=db1
+#replicate-ignore-db=db2
 
 
 
