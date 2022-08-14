@@ -42,7 +42,7 @@ shell> mkdir /opt/localyum                                          # 创建本�
 shell> tar -zxf localyum.tar.gz -C /opt/localyum                    
 shell> yum-config-manager --add-repo=file:///opt/localyum           # 添加本地目录作为 yum 源
 shell> yum-config-manager --save --setopt=opt_localyum.gpgcheck=0   # 0 表示关闭 gpg 校验；1 表示启用 gpg 校验
-shell> vim /etc/yum.repo.d/opt_localyum.repo                        # gpgcheck=0 
+shell> vim /etc/yum.repo.d/opt_localyum.repo                        # 如果上面命令无效，则添加 gpgcheck=0 到文件中 
 shell> yum-config-manager --disable base extras updates             # 一般离线服务器需要执行这条命令，关闭原有仓库
 shell> yum -y install ansible                                       # 使用本地仓库安装 ansible
 
