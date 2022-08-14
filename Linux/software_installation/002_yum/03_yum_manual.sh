@@ -29,6 +29,24 @@ shell> yum-config-manager --enable \*           # 启用所有仓库
 shell> yum-config-manager --disable \*          # 停用所有仓库
 
 
+shell> yum-config-manager --setopt=skip_if_unavailable=true            # 运行时，如果仓库不可用则跳过
+
+# 制作本地仓库
+#### 在线服务器相关命令
+shell> yum install -y createrepo
+shell> repotrack --download_path=/opt/localyum -n ansible           # 下载 ansible 全量依赖包, -n 切换是否下载非最新的 rpm，默认最新的，加了就下载所有的
+shell> createrepo /opt/localyum                                     # 创建仓库基本信息
+shell> tar -zcf localyum.tar.gz /opt/localyum/*                     # 打包，然后将该包放到离线服务器上
+#### 离线服务器相关命令
+shell> mkdir /opt/localyum                                          # 创建本地 yum repo 目录
+shell> tar -zxf localyum.tar.gz -C /opt/localyum                    
+shell> yum-config-manager --add-repo=file:///opt/localyum           # 添加本地目录作为 yum 源
+shell> yum-config-manager --save --setopt=opt_localyum.gpgcheck=0   # 0 表示关闭 gpg 校验；1 表示启用 gpg 校验
+shell> vim /etc/yum.repo.d/opt_localyum.repo                        # gpgcheck=0 
+shell> yum-config-manager --disable base extras updates             # 一般离线服务器需要执行这条命令，关闭原有仓库
+shell> yum -y install ansible                                       # 使用本地仓库安装 ansible
+
+
 # 查看
 shell> yum info package                                                 # 查看软件包的信息
 shell> yum info yum                                                     # 查看 yum 自己的信息
