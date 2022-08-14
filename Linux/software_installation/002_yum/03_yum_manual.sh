@@ -18,6 +18,11 @@
 shell> yum help
 shell> yum help erase       # 查看子命令帮助
 
+# 仓库管理
+shell> yum -y install yum-utils                                         # 安装必备插件
+shell> yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo    # 添加 yum 源仓库
+shell> yum-config-manager --add-repo=file:///opt/localyum           # 添加本地目录作为 yum 源
+
 
 # 查看
 shell> yum info package                                                 # 查看软件包的信息
@@ -44,16 +49,21 @@ shell> yum deplist kubeadm                                              # 查看
 shell> yum install -y {epock}:{package name}-{version}-{release}.{arch} # 完整格式
 shell> yum install -y {package name}-{version}-{release}                # 常用
 
+
 shell> yum install *.rpm                                                # 安装软件包
 shell> yum groupinstall "GNOME Desktop"                                 # 安装软件组
-shell> yum localinstall google-chrome-stable_current_x86_64.rpm         # 用 yum 安装已经下载的 rpm 包，让 yum 解析依赖关系
+
 
 # 离线安装
-shell> yum -y install yum-utils
 shell> yumdownloader --resolve --destdir=/tmp ansible                   # 下载 ansible，并解析依赖，并同时下载当前系统中没有的依赖
 shell> repotrack --download_path=/tmp -n ansible                        # 下载 ansible 全量依赖包, -n 切换是否下载非最新的 rpm，默认最新的，加了就下载所有的
 shell> yum --nogpgcheck localinstall a.rpm b.rpm c.rpm                  # 需要同时安装程序包所有的依赖项目，否则还是会尝试联网去下载缺少的依赖项目
                                                                         # --nogpgcheck  不让yum对程序包进行GPG验证
+shell> yum localinstall xxx.rpm bbb.rpm                                 # 用 yum 安装已经下载的 rpm 包，让 yum 解析依赖关系
+                                                                        # @trap 如果依赖包也是离线安装的，需要一次性写到一条命令里面
+                                                                        
+
+
 # 更新
 shell> yum list updates                                                 # 列出所有可更新的包（yum源）
 shell> yum check-update                                                 # 检查可更新的程序（本地）
