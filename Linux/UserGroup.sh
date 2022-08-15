@@ -20,7 +20,7 @@ shell> useradd -G guest,stranger kasei          # 添加用户的同时，指定
 shell> useradd -a -G guest kasei                # 添加用户的同时，将用户 新加入到一个 guest 用户组
 
 shell> useradd -s /bin/bash kasei               # 指定用户所使用的 shell
-shell> useradd -s /usr/sbin/nologin kasei       # 创建一个无法通过 ssh 登陆的用户
+shell> useradd -s /sbin/nologin kasei           # 创建一个无法通过 ssh 登陆的用户
 shell> useradd -u 1024 kasei                    # 指定新建用户的 UID，如果 UID 存在，则创建失败
 shell> useradd -u 1024 -o kasei                 # 指定新建用户的 UID，如果 UID 存在，则重复使用其他用户的 UID
 
