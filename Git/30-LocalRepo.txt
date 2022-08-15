@@ -5,7 +5,8 @@ Query {
 Create {
     shell> git init                     # 创建一个 仓库，.git 文件夹用于保存版本信息；其他目录为 工作区 的文件
     shell> git init --bare              # 创建一个 仓库，该仓库没有 工作区 的文件，而是直接把 .git 目录中的内容，提取到 当前执行命令的目录中
-    shell> git clone
+    shell> git clone -- url
+    shell> git clone --single-branch -b branchName -- url           # clone 指定的远程分支到名为 origin 的 LocalRemoteRepo 中
 }
 
 Delete {
