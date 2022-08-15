@@ -13,12 +13,14 @@ shell> cat /etc/shadow                      # 查看所有账号的密码，格�
 shell> useradd -c 'my username' kasei           # 添加用户，并添加注释，用于描述该用户
 shell> useradd -d /home/kasei kasei             # 添加用户的同时，指定用户主目录
 shell> useradd -d /home/kasei -m kasei          # 添加用户的同时，指定用户主目录，如果主目录不存在，则创建
+shell> useradd -M kasei                         # 不创建该用户的 home 目录
 
 shell> useradd -g dba kasei                     # 添加用户的同时，指定用户所属的 主用户组
 shell> useradd -G guest,stranger kasei          # 添加用户的同时，指定用户所属的 附加用户组 为 guest 和 stranger; 全量覆盖
 shell> useradd -a -G guest kasei                # 添加用户的同时，将用户 新加入到一个 guest 用户组
 
 shell> useradd -s /bin/bash kasei               # 指定用户所使用的 shell
+shell> useradd -s /usr/sbin/nologin kasei       # 创建一个无法通过 ssh 登陆的用户
 shell> useradd -u 1024 kasei                    # 指定新建用户的 UID，如果 UID 存在，则创建失败
 shell> useradd -u 1024 -o kasei                 # 指定新建用户的 UID，如果 UID 存在，则重复使用其他用户的 UID
 
