@@ -10,7 +10,21 @@ AllowGroups groupNamePattern
 # @trap 
 #   当使用 交互式SSH 登陆时，指定的 path 必须包含必要的文件，例如: /bin/sh, /dev/null, /dev/zero, /dev/stdin, /dev/stdout, /dev/stderr, /dev/tty
 #   当使用 SFTP 登陆时，一般情况下是不需要的，但是有些系统需要 /dev/log 文件存在
+# @trap 目录权限设置要遵循2点：
+#   ChrootDirectory 设置的目录权限及其所有的上级文件夹权限，属主和属组必须是 root；
+#   ChrootDirectory 设置的目录权限及其所有的上级文件夹权限，只有属主能拥有写权限，权限最大设置只能是755。
 ChrootDirectory /xxx/xxx
+
+
+
+
+# 配置外部子系统（例如文件传输守护程序）。参数可以是 子系统名称 或 执行子系统请求的命令（带有可选参数）。
+# 命令 sftp-server 实现 SFTP 文件传输子系统。
+# 命令 internal-sftp 实现了一个 on-process(进程内) SFTP 服务器，这可以简化使用 ChrootDirectory 的配置，以在客户端上强制使用不同的文件系统根。
+# 默认情况下没有定义子系统。
+# 格式 Subsystem subsysName cmd args
+#Subsystem      sftp    /usr/libexec/openssh/sftp-server        # 注释掉这行，添加下面行
+Subsystem       sftp    internal-sftp           # 指定使用 sftp 服务使用系统自带的 internal-sftp，如果不添加，用户无法通过 sftp 登录。
 
 
 # 当当前 Match line 的条件匹配时，后续配置的所有 keyword 都是用来覆盖全局配置的，直到下一个 Match line 或者文件结束
@@ -19,11 +33,14 @@ ChrootDirectory /xxx/xxx
 # 可用的 criteria:  User, Group, Host, LocalAddress, LocalPort, Address
 # 
 Match Group sftp
+    keyword1 ...
+    keyword2 ...
+    
+Match User minisyc      # 新的 Match Block。匹配用户，如果要匹配多个组，多个组之间用逗号分割
+    X11Forwarding no                                    # 这两行，如果不希望该用户能使用端口转发的话就加上，否则删掉
+    AllowTcpForwarding no
+    PermitTTY no
+    ForceCommand internal-sftp                          # 指定 sftp 命令
+    ChrootDirectory /root/k8s/outer/self/minio
+    
 
-
-# 配置外部子系统（例如文件传输守护程序）。参数应该是子系统名称和根据子系统请求执行的命令（带有可选参数）。
-# 命令 sftp-server 实现 SFTP 文件传输子系统。
-# 或者，名称 internal-sftp 实现了一个进程内 SFTP 服务器。这可以简化使用 ChrootDirectory 的配置，以在客户端上强制使用不同的文件系统根。
-# 默认情况下没有定义子系统。
-# 格式 Subsystem subsysName cmd args
-Subsystem miniosyc /usr/libexec/openssh/sftp-server
