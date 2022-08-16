@@ -8,8 +8,8 @@ AllowGroups groupNamePattern
 # 指定 身份认证 结束后，使用 shell> chroot 到指定的 path 或 dir
 # session 启动时，检查指定 path 或 dir 的权限为 755
 # @trap 
-#   当使用 交互式SSH 登陆时，指定的 path 必须包含必要的文件，例如: /bin/sh, /dev/null, /dev/zero, /dev/stdin, /dev/stdout, /dev/stderr, /dev/tty
-#   当使用 SFTP 登陆时，一般情况下是不需要的，但是有些系统需要 /dev/log 文件存在
+#   当需要支持 交互式SSH 登陆时，指定的 path 必须包含必要的文件，例如: /bin/sh, /dev/null, /dev/zero, /dev/stdin, /dev/stdout, /dev/stderr, /dev/tty
+#   当需要支持 SFTP 登陆时，一般情况下是不需要的，但是有些系统需要 /dev/log 文件存在
 # @trap 目录权限设置要遵循2点：
 #   ChrootDirectory 设置的目录权限及其所有的上级文件夹权限，属主和属组必须是 root；
 #   ChrootDirectory 设置的目录权限及其所有的上级文件夹权限，只有属主能拥有写权限，权限最大设置只能是755。
@@ -23,7 +23,8 @@ ChrootDirectory /xxx/xxx
 # 命令 internal-sftp 实现了一个 on-process(进程内) SFTP 服务器，这可以简化使用 ChrootDirectory 的配置，以在客户端上强制使用不同的文件系统根。
 # 默认情况下没有定义子系统。
 # 格式 Subsystem subsysName cmd args
-#Subsystem      sftp    /usr/libexec/openssh/sftp-server        # 注释掉这行，添加下面行
+#Subsystem      sftp    /usr/libexec/openssh/sftp-server        # 注释掉这行，这行表示所有可使用 ssh 的用户都可使用 SFTP
+#                                                               # 但是这种方式有一个缺陷，就是用户在 SFTP 软件里面可以 cd / 从而看到系统所有文件
 Subsystem       sftp    internal-sftp           # 指定使用 sftp 服务使用系统自带的 internal-sftp，如果不添加，用户无法通过 sftp 登录。
 
 
