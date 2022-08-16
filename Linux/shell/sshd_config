@@ -1,0 +1,29 @@
+# /etc/ssh/sshd_config   当前文件路径
+# shell> man sshd_config
+
+
+# 只允许指定 group 下的用户登陆，不能配置 group id
+AllowGroups groupNamePattern
+
+# 指定 身份认证 结束后，使用 shell> chroot 到指定的 path 或 dir
+# session 启动时，检查指定 path 或 dir 的权限为 755
+# @trap 
+#   当使用 交互式SSH 登陆时，指定的 path 必须包含必要的文件，例如: /bin/sh, /dev/null, /dev/zero, /dev/stdin, /dev/stdout, /dev/stderr, /dev/tty
+#   当使用 SFTP 登陆时，一般情况下是不需要的，但是有些系统需要 /dev/log 文件存在
+ChrootDirectory /xxx/xxx
+
+
+# 当当前 Match line 的条件匹配时，后续配置的所有 keyword 都是用来覆盖全局配置的，直到下一个 Match line 或者文件结束
+# 所以该 keyword 一般配置在文件尾，
+# 如果一个 Match 块中存在多个相同的 keyword，那么第一个生效
+# 可用的 criteria:  User, Group, Host, LocalAddress, LocalPort, Address
+# 
+Match Group sftp
+
+
+# 配置外部子系统（例如文件传输守护程序）。参数应该是子系统名称和根据子系统请求执行的命令（带有可选参数）。
+# 命令 sftp-server 实现 SFTP 文件传输子系统。
+# 或者，名称 internal-sftp 实现了一个进程内 SFTP 服务器。这可以简化使用 ChrootDirectory 的配置，以在客户端上强制使用不同的文件系统根。
+# 默认情况下没有定义子系统。
+# 格式 Subsystem subsysName cmd args
+Subsystem miniosyc /usr/libexec/openssh/sftp-server
