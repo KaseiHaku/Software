@@ -7,11 +7,22 @@ info bash
 man -k command
 info command
 
-# 配置 shell 参数
-# shell> set [+-abCdefhHklmnpPtuvx]           # -e 表示开启 shell e 功能, +e 表示关闭 shell e 功能
-# shell> set -e                               # 若指令传回值不等于0，则立即退出shell。
-# shell> set -u 　                            # 当执行时使用到未定义过的变量，则显示错误信息。
-# shell> set -x                               # 用来在运行结果之前，先输出执行的那一行命令
+
+
+# set 命令
+#   shell> set [--abefhkmnptuvxBCEHPT] [-o option-name] [arg ...]       # 格式
+#   shell> set                  # 不带任何 option，列出当前所有变量
+#   shell> set -u               # 当带了 option 时，表示修改当前 shell 的配置
+#   shell> set -u aa bb cc      # option 后面的参数都被当做 position params 的值，即: $1, $2, $3, ..., $n
+#   shell> set -u -- aa -b -c   # -- 的作用是：表示所有 option 已经结束，后面尽管是 -b 也被当做 position params 处理
+#   shell> set -u - aa -b -c    # - 的作用是: 同上
+# 
+# shell 配置:
+#   shell> set [+-abCdefhHklmnpPtuvx]           # -e 表示开启 shell e 功能, +e 表示关闭 shell e 功能
+#   shell> set -e                               # 若指令传回值不等于0，则立即退出shell。
+#   shell> set -u 　                            # 当执行时使用到未定义过的变量，则显示错误信息。
+#   shell> set -x                               # 用来在运行结果之前，先输出执行的那一行命令
+set -- cmd "$@"             # 相当于 $@ = cmd "$@"
 
 
 # 各种 bracket
