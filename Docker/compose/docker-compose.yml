@@ -233,6 +233,9 @@ services:
       - "gateway.docker.internal:"          # 保留域名：网关地址
       - "somehost:162.242.195.82"
       - "otherhost:50.31.209.229"
+    group_add:  # 指定容器中的 user 必须属于指定 usergroup 的
+      - sftp    # 指定 groupname
+      - 1000    # 指定 groupid
     # 以下参数和 shell> docker run 命令中的选项一致
     user: 1000:1000       # 指定当前容器内 进程使用哪个 user 进行执行；格式: uid:gid
     working_dir: /root    # 容器当中默认的工作目录
