@@ -3,6 +3,7 @@ shell> top                                                  # 找到有问题的
 shell> top -p PID -H                                        # 找到有问题的 线程 PID2
 shell> jstack PID2 > PID2.jstack                            # 将指定 PID2 的堆栈信息导出到 PID2.jstack 文件中
 shell> printf "0x%x\n" PID2                                 # 将 10进制的 线程 PID2 转换为 16进制的 0xPID，为后面查找 jstack 日志做准备
+shell> grep nid=oxPID PID2.jstack                           # 搜索
 shell> vim +/0xPID                                          # 查看 线程是否有问题
 
 
