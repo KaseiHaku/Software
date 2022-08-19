@@ -247,6 +247,7 @@
                                             L                               # 定位一个 字符串
                                             &                               # 查找下一个
 
+    shell> top -b -n 1 -H -c > top.txt 
 
 # 查看 PID 相关信息
     shell> ll /proc/PID         # 包含该 PID 所有数据
