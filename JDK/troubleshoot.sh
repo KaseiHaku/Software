@@ -1,3 +1,10 @@
+################################ 坑 ################################
+cap_add: [SYS_PTRACE]               # docker 部署，如果不加这个配置，jstack, jmap 等工具无法使用
+-XX:+DisableAttachMechanism         # 如果启动参数包含这个，jstack, jmap 等工具无法使用
+/tmp/hsperfdata_$USER               # jstack 和  jmap 默认从该文件读取 jvm 进程信息，
+                                    # 由于 Tomcat 一般会指定 -Djava.io.tmpdir=${tomcat_home}/tmp/ 参数，来修改临时目录，会导致 jps, jstack 报错
+
+
 ################################ Troubleshoot Procedure ################################
 shell> top                                                  # 找到有问题的 java 进程的 PID
 shell> top -p PID -H                                        # 找到有问题的 线程 PID2
