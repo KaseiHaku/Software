@@ -18,10 +18,6 @@ Consumer Group:
     Leader 由所有的副本共同选举得出，其他副本则都为 Follower 副本。
     在生产者写或者消费者读的时候，都只会与 Leader 打交道，在写入数据后 Follower 就会来拉取数据进行数据同步。
 
-作者：JanusWoo
-链接：https://juejin.cn/post/6874957625998606344
-来源：稀土掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 写入 partition:
     1. 指定 partition key，并进行 hash 计算，决定写入哪个 partition
@@ -38,4 +34,5 @@ Consumer Group:
        Consumer Group 机制会保障一条消息只被组内唯一一个 Consumer 消费，不会重复消费。
        消费组这种方式可以让多个 Partition 并行消费，大大提高了消息的消费能力，最大并行度为 Topic 的 Partition 数量。
        如果 Consumer>Partition, 那么多余的 Consumer 就处于空闲状态，直到有 工作中的 Consumer 挂掉，才会自动顶替
+       同一个分区(partition)同时只能被一个消费者(consumer)实例消费
        
