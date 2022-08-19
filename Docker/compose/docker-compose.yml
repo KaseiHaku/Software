@@ -265,8 +265,10 @@ services:
     # 通过字符串，指定容器是否具有额外的功能
     # @doc https://man7.org/linux/man-pages/man7/capabilities.7.html
     cap_add:
+      #- ALL          # 表示添加所有 cap 参数
       - SYS_NICE      # CAP_SYS_NICE: 允许 mysql 修改 线程的优先级
       - SYS_PTRACE    # jmap, jstack 等 jdk 工具依赖 Linux 的 SYS_PTRACE，而 Docker 1.10 之后版本默认禁用了，导致 JDK 工具无法使用
+      
     
     # 日志：用于获取 运行中 container 和 service 的信息
     logging:
