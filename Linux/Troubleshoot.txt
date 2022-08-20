@@ -1,0 +1,8 @@
+# 进入 救援模式(Rescue): 一个独立的小型的 Linux 系统，借助它可以通过 mount 和 chroot 进入要修复的系统
+shell> echo $PATH           # 查看可以使用的命令
+
+
+
+# XFS 停电后重启失败
+shell> ls -al /dev          # 找到要恢复的 硬盘/分区
+shell> xfs_repaire -v -L /dev/sda
