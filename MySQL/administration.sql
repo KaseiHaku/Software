@@ -4,7 +4,8 @@ shell> mysqladmin -u root -p shutdown                           -- 使用 mysql 
 
 
 /******************************* Login/Logout *********************************/
-shell> mysql -h localhost -u root -p                            -- 使用 localhost 主机下的 root 用户进行密码验证登陆
+shell> mysql -h 192.168.1.200 -P 3307 -u root --password=xxx --default-character-set=utf8mb4 < tmp.sql   # 命令行执行 tmp.sql 脚本文件
+shell> mysql -h 192.168.1.200 -P 3307 -u root --password=xxx --default-character-set=utf8mb4             # 登录 mysql server     
 msyql> quit;                                                    -- Logout
 
 
