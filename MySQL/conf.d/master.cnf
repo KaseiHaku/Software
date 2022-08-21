@@ -44,6 +44,7 @@ set-charset = utf8mb4
 [mysqld]
 default_storage_engine = InnoDB             # 默认数据库引擎
 character_set_server = utf8mb4              # 默认字符集
+character-set-client-handshake = OFF        # 忽略客户端字符集配置
 collation_server = utf8mb4_unicode_ci       # 默认排序规则
 default-time-zone = '+8:00'                 # 默认时区，东 8 区
 lower_case_table_names = 1                  # 小写存储表名，匹配时不区分大小写
