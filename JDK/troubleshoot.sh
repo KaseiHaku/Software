@@ -83,11 +83,12 @@ shell> jsadebugd
 
 # Java 的堆栈跟踪工具，
 # 主要用于打印指定 Java 进程、核心文件或远程调试服务器的 Java 线程的堆栈跟踪信息。
-shell> jstack   -F <pid>        # 强制 dump 堆栈信息，在 线程 hung(挂) 起时使用
-                -m              # 打印java 和 native（C++） 堆栈信息 
+# 巨神坑: pid 是 java 进程的 PID，而不是 CPU 爆高的线程的 TID，虽然 TID 在 linux 也叫做 PID，但是两者不一样
+shell> jstack   -F <pid>        # 强制 dump 堆栈信息，在 java 进程 hung(挂) 起时使用
+                -m              # 打印 java 和 native（C++） 堆栈信息 
                 -l              # 打印额外的信息，包括锁信息
                 
-shell> jstack -l <pid>          # 常用，一般不带 -F，因为导致 CPU 爆满的线程肯定是 RUNNABLE 状态
+shell> jstack -l <pid>          # 常用，一般不带 -F，因为导致 CPU 爆满的 java 进程(PID)，肯定有线程是 RUNNABLE 状态
 
 # JVM 诊断命令工具，将诊断命令请求发送到正在运行的 Java 虚拟机。
 shell> jcmd -l                      # 列出本机上的 jvm 进程
