@@ -27,6 +27,11 @@ shell> printf "0x%x\n" TID                                  # 将 10进制的 �
 shell> grep -A 30 nid=0xTID zzz.jstack                      # 搜索
 shell> vim +/0xTID                                          # 查看 线程是否有问题
 
+#### 是否死锁判断
+shell> grep -C 30 'parking to wait for  <0x000000070a349638>' zzz.jstack        # 表示当前线程正在等待名为 <0x000000070a349638> 的资源
+shell> grep -C 30 'locked <0x000000070a349638>' zzz.jstack                      # 表示当前线程锁定了名为 <0x000000070a349638> 的资源
+shell> # 如果一个线程，既锁定了一个资源，又等待另一个资源，而另一个资源被其他线程锁定，造成相互等待的局面，就形成了 死锁
+
 
 
 
