@@ -84,8 +84,9 @@
                 -f                              # 显示所有进程信息，连同命令行
                 --forest                        # 树形结构显示进程
                 -H                              # 树形结构显示进程
-                --context                       # 显示 selinux 信息
+                --context                       # 显示 selinux 信息                 
                 --format format                 # 自定义显示哪些内容
+                -o format                       # 同上，
                 -j                              # jobs 格式
                 -l                              # 长格式
                 -ly                             # 长格式，不显示 flags
@@ -99,6 +100,8 @@
                 -L                              # 显示线程，LWP 或 NLWP 列
                 -m                              # 显示线程，在进程后面
                 -T                              # 显示线程，SPID 列
+    shell> ps -mp 1234 -o user,%cpu,tid,cmd
+                
                 
     shell> pstree                               # 树形结构显示进程
                 -a                              # 打印进程启动参数
