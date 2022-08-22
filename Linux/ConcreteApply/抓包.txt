@@ -111,6 +111,7 @@ shell> tcpdump -D               # 查看可以抓包的网卡
 shell> tcpdump -i eth0 -J       # 列出当前网卡可以展示的时间戳类型
 shell> tcpdump -i eth0          # 抓取指定网卡的包
 shell> tcpdump -i eth0 -n -nn -A -tttt
+shell> tcpdump -nn -i eth0 ip proto \\icmp      # 抓 eth0 网卡的 icmp 协议
 
 
 shell> tcpdump -vvvi ens33 -ASQ out -#enl > ~/networkCard.dump & tail -f  ~/networkCard.dump
