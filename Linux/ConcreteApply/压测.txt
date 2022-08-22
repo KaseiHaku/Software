@@ -1,0 +1,6 @@
+# 压测
+shell> yum -y install httpd-tools
+shell> ab -n 100000                 # 一共执行多少次请求
+          -c 500                    # 一次并发执行多少个请求
+          -s 2                      # response 超时时间，秒
+          https://abc.jsafg.com.cn:30443/foo      # 请求地址
