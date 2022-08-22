@@ -8,9 +8,9 @@ cap_add: [SYS_PTRACE]               # docker 部署，如果不加这个配置�
 ################################ Troubleshoot Procedure ################################
 shell> top                                                  # 找到有问题的 java 进程的 PID
 shell> top -p PID -H                                        # 找到有问题的 线程 PID2
-shell> jstack -l PID2 > pid2.jstack                         # 将指定 PID2 的堆栈信息导出到 PID2.jstack 文件中
+shell> jstack -l PID2 > zzz.jstack                          # 将指定 PID2 的堆栈信息导出到 zzz.jstack 文件中, zzz 是因为 ll 就是最后，比较好找
 shell> printf "0x%x\n" PID2                                 # 将 10进制的 线程 PID2 转换为 16进制的 0xPID，为后面查找 jstack 日志做准备
-shell> grep -A 30 nid=0xPID pid2.jstack                     # 搜索
+shell> grep -A 30 nid=0xPID zzz.jstack                      # 搜索
 shell> vim +/0xPID                                          # 查看 线程是否有问题
 
 
