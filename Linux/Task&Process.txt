@@ -100,7 +100,17 @@
                 -L                              # 显示线程，LWP 或 NLWP 列
                 -m                              # 显示线程，在进程后面
                 -T                              # 显示线程，SPID 列
-    shell> ps -mp 1234 -o user,%cpu,tid,cmd
+    # 自定义输出格式：
+    #   user        用户； alias = euser, uname
+    #   tid         thread id; alias = lwp, spid
+    #   cputime     当前进程累计使用的 CPU 时间
+    #   %cpu        CPU utilization(利用率) = cputime/realtime(线程实际存活的时间)
+    #   %mem        进程(包括线程)常驻内存 / 总物理内存大小
+    #   rss         没有在 swap 区的，当前 线程 的 常驻内存大小，alias = rssize,rsz
+    #   size        如果进程要弄脏所有可写页面然后被 swap out，则大约需要的交换空间量。这个数字很粗略
+    #   wchan       若该进程状态时 sleeping，那么显示睡眠中的系统函数名, "-": 线程为 running; "*": 当前进程是多线程的
+    shell> ps -mp 1234 -o user,tid,cputime,%cpu,%mem         
+                                                        
                 
                 
     shell> pstree                               # 树形结构显示进程
