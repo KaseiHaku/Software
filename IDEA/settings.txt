@@ -1,6 +1,14 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
 
+    项目启动时，提示 Command line is too long {
+        Run -> Edit Configurations... -> Configuration -> Environment 
+            -> Shorten command line: JAR manifest 
+               Shorten command line: classpath file     
+        
+    }
+
+
     外观配置 {
         View -> Appearance -> Status Bar Widgets -> Memory Indicator   # 显示 IDEA 内存使用情况
         File -> Settings -> Appearance & Behavior -> Appearance 
