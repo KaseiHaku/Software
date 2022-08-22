@@ -6,12 +6,26 @@ cap_add: [SYS_PTRACE]               # docker 部署，如果不加这个配置�
 
 
 ################################ Troubleshoot Procedure ################################
-shell> top                                                  # 找到有问题的 java 进程的 PID
-shell> top -p PID -H                                        # 找到有问题的 线程 PID2
-shell> jstack -l PID2 > zzz.jstack                          # 将指定 PID2 的堆栈信息导出到 zzz.jstack 文件中, zzz 是因为 ll 就是最后，比较好找
-shell> printf "0x%x\n" PID2                                 # 将 10进制的 线程 PID2 转换为 16进制的 0xPID，为后面查找 jstack 日志做准备
-shell> grep -A 30 nid=0xPID zzz.jstack                      # 搜索
-shell> vim +/0xPID                                          # 查看 线程是否有问题
+######## PID: 获取当前有问题的 jvm(java) 进程 ID，即: shell> java ... ; 生成的 PID
+shell> jps -l                       # 适合 java 进程少的情况
+shell> ps -ef | grep java           # 信息更详尽
+shell> lsof -i:<port>               # 适合有多个 java 进程，根据 jps 可能分辨不出来想找的进程，而需要通过端口号进行定位
+shell> top                          # 找到有问题的 java 进程的 PID
+
+
+######## 导出 jvm 的线程栈，
+# 巨神坑: jstack 只能导出整个 jvm 的线程栈，所以指定的 PID 必须是 jvm(java) 的 PID，而不能是 TID(线程id)
+shell> jstack -l PID > zzz.jstack                           # 将指定 java PID 的堆栈信息导出到 zzz.jstack 文件中, zzz 是因为 ll 就是最后，比较好找
+
+
+######## TID: 获取占用高的 线程 ID，最好开两个 ssh ，跟上一步同时执行
+shell> top -H -p PID                                        # 找到有问题的 线程，得到 TID
+shell> printf "0x%x\n" TID                                  # 将 10进制的 线程 TID 转换为 16进制的 0xTID，为后面查找 jstack 日志做准备
+
+
+######## Analyze: 分析
+shell> grep -A 30 nid=0xTID zzz.jstack                      # 搜索
+shell> vim +/0xTID                                          # 查看 线程是否有问题
 
 
 
