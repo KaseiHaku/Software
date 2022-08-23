@@ -32,8 +32,8 @@
 
 Maven Trap:
     maven 拉取不到 远程仓库 中新增的 artificate：
-        原因：当 local repository 中包含新增的 artificate 的目录（但是该目录中没有 jar 包）时，maven 就不会从 远程仓库 中拉取 artificate
-        解决方案：删除 artificate 目录
+        原因：当 local repository 中包含新增的 artifact 的目录（但是该目录中没有 jar 包）时，maven 就不会从 远程仓库 中拉取 artifact
+        解决方案：删除 artifact 目录
     
     手动往 maven 本地仓库中添加 定制 jar 包, 但是构建时依然找不到 jar:
         主要原因是 maven  Verifying availability 
@@ -43,14 +43,23 @@ Maven Trap:
         最短路径优先
         如果路径长度相同，则最先声明优先
         
-    Maven 添加本地 jar 包:
+    Maven 手工添加本地 jar 包:
+        神坑: install-file 时,需要同时 安装 pom 文件, 不然没用
+        0. 帮助
+            shell> mvn install:help -Ddetail=true -Dgoal=install-file
+            
         1. 将 jar 包 install 到 maven local repository 中
+           # 当能找到该包的 pom.xml 文件时，采用这种方式，推荐使用
+           shell> mvn install:install-file -Dfile=./xxx.jar -DpomFile=./pom.xml -DupdateReleaseInfo=true -D'localRepositoryPath=C:\Users\tzxb\.m2\repository'
+           # 找不到该包的 pom.xml 文件时，采用这种方式，不推荐
            shell> mvn install:install-file -Dfile=./xxx.jar -DgroupId=com.longersoftware -DartifactId=hmac -Dversion=1.0 -Dpackaging=jar -Dclassifier=cls
+           
         2. 将本地目录当做一个 repository , 并在其中部署 jar 包, 然后 pom.xml 中添加该 repository
            shell> mvn deploy:deploy-file   部署 jar 包到 本地目录, 然后 pom 文件中添加 <repository><url>file:///home/kasei/mvnRepo</url></repository> 引入
+           
         3. shell> 直接将 jar 包依赖的 <scope> 改成 system, 并配置 <systemPath> 到 jar 包所在位置
         4. Nexus 私有仓库管理
-        神坑: install-file 时,需要同时 安装 pom 文件, 不然没用
+        
        
 
 Maven 项目目录结构{  
