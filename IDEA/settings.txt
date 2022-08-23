@@ -252,6 +252,8 @@ Personalize Settings {
         
         3. 运行tomcat时，控制台乱码 {
             Run -> Edit Configurations... -> 选择当前项目的部署环境 Tomcat 或其他 —> Server -> VM options 设置为 -Dfile.encoding=UTF-8 ，重启tomcat
+            %TOMCAT_HOME%/conf/logging.propties         # 全局搜索 encoding，全改成 UTF-8
+            %TOMCAT_HOME%/conf/server.xml               # 查找修改 <Connector port="8080" protocol="HTTP/1.1" URIEconding="UTF-8"/> 
         }
         
     }
