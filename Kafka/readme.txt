@@ -35,4 +35,15 @@ Consumer Group:
        消费组这种方式可以让多个 Partition 并行消费，大大提高了消息的消费能力，最大并行度为 Topic 的 Partition 数量。
        如果 Consumer>Partition, 那么多余的 Consumer 就处于空闲状态，直到有 工作中的 Consumer 挂掉，才会自动顶替
        同一个分区(partition)同时只能被一个消费者(consumer)实例消费
+
+
+Stream API: 流计算 API
+    什么是流计算：就是一个 数据 从 topicA 开始 经过一系列的运算，塞到另一个 topicB 中的过程
+    Concept:
+        Stream: 流。指数据流，其实就是一系列数据
+        Stream Processor: 流处理器。指流计算中，包含计算逻辑的容器
+        Stream Processor Topology: 流处理器拓扑图。指一个完整的 流计算 中，所有 流处理器 组成的 拓扑图
+        Source Processor: 源处理器，指 流计算 第一个处理器
+        Sink Processor: 水箱处理器, 指 产出最终结果的处理器，即最后一个处理器
+
        
