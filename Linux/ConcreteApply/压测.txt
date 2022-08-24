@@ -4,3 +4,60 @@ shell> ab -n 100000                 # 一共执行多少次请求
           -c 500                    # 一次并发执行多少个请求
           -s 2                      # response 超时时间，秒
           https://abc.jsafg.com.cn:30443/foo      # 请求地址
+
+
+# 压测结果分析
+Server Software:
+Server Hostname:        172.16.0.123
+Server Port:            30443
+SSL/TLS Protocol:       TLSv1.2,ECDHE-RSA-AES128-GCM-SHA256,2048,128
+
+Document Path:          /api/blade-resource/attach/list?current=1&size=20
+Document Length:        2347 bytes
+
+Concurrency Level:      1000                        # 并发量，命令行中 -c 指定的数量
+Time taken for tests:   288.379 seconds             # 测试总耗时
+Complete requests:      100000                      # 成功的请求数量
+Failed requests:        0                           # 失败的请求数量
+Write errors:           0
+Total transferred:      253200000 bytes             # 总共传输的数据量，指的是 ab 从被测服务器接收到的总数据量，包括 body 和 请求头信息。
+HTML transferred:       234700000 bytes             # 总共传输的数据量，仅 body
+Requests per second:    346.77 [#/sec] (mean)       # 平均每秒完成的请求数：QPS，这是一个平均值，等于 Complete requests/Time taken for tests=100000/288.379
+Time per request:       2883.787 [ms] (mean)        # 从用户角度看，完成一个请求所需要的时间.
+                                                    # 因并发用户数量（Concurrency Level）不止一个，服务器完成 Concurrency Level 个请求，平均每个用户才接收到一个完整的返回，
+                                                    # 所以该值是下一项数值的 Concurrency Level 倍
+Time per request:       2.884 [ms] (mean, across all concurrent requests)   # 服务器完成一个请求的时间
+Transfer rate:          857.43 [Kbytes/sec] received        # 网络传输速度
+                                                            # 对于大文件的请求测试，这个值很容易成为系统瓶颈所在。
+                                                            # 要确定该值是不是瓶颈，需要了解客户端和被测服务器之间的网络情况，包括网络带宽和网卡速度等信息。
+
+
+# 这几行组成的表格主要是针对响应时间也就是第一个 Time per request 进行细分和统计。
+# 一个请求的响应时间可以分成网络链接（Connect），系统处理（Processing）和等待（Waiting）三个部分
+# 表中列的含义:
+#   min         表示最小值； 
+#   mean        表示平均值；
+#   [+/-sd]     表示标准差（Standard Deviation） ，也称均方差（mean square error），
+#               这个概念在中学的数学课上学过，表示数据的离散程度，数值越大表示数据越分散，系统响应时间越不稳定。 # #   median表示中位数； 
+#   max         当然就是表示最大值了。
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        3  592 491.0   1004    3008
+Processing:    74 2277 425.5   2127    6337
+Waiting:       74 2277 425.5   2126    6337
+Total:         78 2869 563.7   3042    6765
+
+
+# 这个表第一行表示有 50% 的请求都是在 3042ms 内完成的，可以看到这个值是比较接近平均系统响应时间（第一个 Time per request: 2883.787 [ms] (mean) ）
+# 以此类推，95% 的请求是小于等于 3612ms 的。
+# 刚才我们看到响应时间最长的那个请求是 6765ms，那么显然所有请求（100%）的时间都是小于等于 6765 毫秒的，也就是表中最后一行的数据肯定是时间最长的那个请求（longest request）
+Percentage of the requests served within a certain time (ms)
+  50%   3042
+  66%   3098
+  75%   3172
+  80%   3249
+  90%   3490
+  95%   3612
+  98%   3707
+  99%   4073
+ 100%   6765 (longest request)
