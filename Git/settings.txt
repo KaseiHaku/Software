@@ -42,8 +42,8 @@ Git 初始化配置 {
     
     各个操作系统下的换行符一致性配置：默认值为 Win=\r\n; Linux=\n; Mac=\r
     # core.autocrlf 配置，有如下值，及其含义
-    shell> git config --global core.autocrlf false  # 提交检出均不转换，推荐使用
-    shell> git config --global core.autocrlf input  # 提交时转换为LF，检出时不转换
+    shell> git config --global core.autocrlf input  # 提交时转换为LF，检出时不转换，推荐使用
+    shell> git config --global core.autocrlf false  # 提交检出均不转换
     shell> git config --global core.autocrlf true   # 提交时转换为LF，检出时转换为CRLF
     
     # core.safecrlf 配置，有如下值，及其含义
