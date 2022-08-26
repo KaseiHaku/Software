@@ -42,14 +42,27 @@ Git 初始化配置 {
     
     各个操作系统下的换行符一致性配置：默认值为 Win=\r\n; Linux=\n; Mac=\r
     # core.autocrlf 配置，有如下值，及其含义
-    shell> git config --global core.autocrlf input  # 提交时转换为LF，检出时不转换，推荐使用
+    # @trap 
+    #   当 CRLF 和 LF 之间存在转换操作时，有 很小的概率 会损坏文件
+    #   如果一个文件中同时包含 CRLF 和 LF 换行，那么 commit 之后再 checkout 是无法恢复到原来 CRLF 和 LF 换行混合时的文件状态的
+    #   这对于 text 类型的文件是一件正确的事: 该转换统一 git repo 中的换行符都为 LF
+    #   但是对于那些意外归类为文本的二进制文件，转换可能会损坏数据
+    #   如果明确知道某个文件转换后会被损坏，需要在 .gitattributes 文件中额外配置该文件的转换方式为 false(即:不转换)
+    shell> git config --global core.autocrlf input  # 提交时转换为LF，检出时不转换，Linux 或 IDEA 编辑时，推荐使用
+    shell> git config --global core.autocrlf true   # 提交时转换为LF，检出时转换为CRLF，windows 下 git 的默认配置
     shell> git config --global core.autocrlf false  # 提交检出均不转换
-    shell> git config --global core.autocrlf true   # 提交时转换为LF，检出时转换为CRLF
     
-    # core.safecrlf 配置，有如下值，及其含义
-    shell> git config --global core.safecrlf true   # 拒绝提交包含混合换行符的文件，推荐使用
-    shell> git config --global core.safecrlf false  # 允许提交包含混合换行符的文件
-    shell> git config --global core.safecrlf warn   # 提交包含混合换行符的文件时给出警告
+                                                    
+    
+    # core.safecrlf 配置，
+    # git 执行如下检查：
+    #   true:   git commit fileA, 然后 checkout fileA，如果 fileA 能恢复到 commit 之前完全相同的状态（即: reversible），那么允许提交，否则报错
+    #   warn:   git commit fileA, 然后 checkout fileA，如果 fileA 不能恢复到 commit 之前完全相同的状态（即: irreversible），也允许提交，但是会警告
+    #   false:  git commit fileA, 然后 checkout fileA，如果 fileA 不能恢复到 commit 之前完全相同的状态（即: irreversible），允许提交，且无任何信息
+    # 有如下值，及其含义
+    shell> git config --global core.safecrlf true   # 拒绝提交 irreversible 的文件，推荐使用
+    shell> git config --global core.safecrlf warn   # 允许提交 irreversible 的文件，弹警告
+    shell> git config --global core.safecrlf false  # 允许提交 irreversible 的文件
 
     空白符检查配置
     shell> git config --global core.whitespace blank-at-eol         # 检查行尾的空格，默认打开
