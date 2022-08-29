@@ -1,0 +1,57 @@
+# 当前 MySQL 集群部署在 k8s 集群外部，所以这里的 Service 比较特殊
+kind: Service
+apiVersion: v1
+metadata:
+  name: mysql
+spec:
+  # ExternalName  # 适用于将外部 域名 映射到内部 Service 上
+  type: ClusterIP
+  # 配合 type: ExternalName 使用，指定的是一个外部服务的 域名
+  # @trap 虽然也支持填写 IP 地址，但是并不会被 Ingress 和 CoreDNS 解析（KubeDNS 支持）
+  #externalName: domain.com
+  ports:
+    - port: 3306
+      targetPort: 3306    # 当 clusterIP=None 时，该字段必须省略，或者跟 port 字段值相同
+  
+  # 巨神坑: 不能配置为 None，否则会导致 Endpoints 中配置的 ports 映射无效
+  # Headless Service: 没有 Virtual IP 的服务
+  #   with selector:
+  #     endpoints controller 会创建 Endpoints ，并修改 DNS A 记录，直接指向 Service 对应的 Pod 的 PodIP
+  #   without selector:
+  #     当 Service 的 type=ExternalName 时，会创建一个 DNS CNAME 记录，用来给 externalName 配置一个别名
+  #     当 Service 的 type 为其他类型时，会根据 Service 同名的 Endpoints 中配置的 IP，来创建 DNS A 记录
+  #clusterIP: None
+
+
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: mysql     # Endpoints 通过该字段值 和 Service 绑定，所以该值必须和 Service.metadata.name 相同
+subsets:
+  - # 已经是 ready 状态，且提供相关端口的 IP 地址
+    addresses:
+      # 这里的 IP 地址不能是以下 IP
+      #   1. 不能是 loopback (127.0.0.0/8 for IPv4, ::1/128 for IPv6)
+      #   2. 不能是 link-local (169.254.0.0/16 and 224.0.0.0/24 for IPv4, fe80::/64 for IPv6)
+      #   3. 不能是其他 k8s Service 的 ClusterIP
+      - ip: 192.168.1.210   # @trap ipv6 有些平台不支持，例如: kube-proxy 不支持 ipv6
+        #hostname: hostName
+        #nodeName: nodeName
+        #targetRef:
+        #  apiVersion: v1
+        #  fieldPath: fieldPath
+        #  kind: kind
+        #  name: name
+        #  namespace: namespace
+        #  resourceVersion: resourceVersion
+        #  uid: uid
+    # 相关 IP 地址提供出来的所有 port
+    ports:
+      - port: 8066      # mycat 端口 
+        protocol: TCP   # UDP, TCP(default), or SCTP
+        # 如果 Service.spec.ports 只有一个端口, 那么该属性可以省略
+        # 如果 Service.spec.ports 有多个端口, 那么该属性的值必须和 Service.spec.ports[].name 一致
+        #name: name
+        # 应用层协议
+        #appProtocol: HTTP
