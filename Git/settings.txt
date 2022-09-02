@@ -36,7 +36,7 @@ Git 初始化配置 {
     shell> git config --global user.name "KaseiHaku"            # 配置当前用户的所有 git 仓库的用户名，保证唯一性
     shell> git config --global user.email "****@qq.com"         # 配置当前用户的所有 git 仓库的邮箱，保证唯一性
     shell> git config --global core.editor "vim"                # 表示当前用户的所有 git 需要文本编辑的地方都使用 vim 作为编辑器
-    shell> git config --global --add merge.ff false             # 禁用 fast forward 模式合并分支
+    shell> git config --global --add merge.ff true              # true: 允许 fast forward; false: 不允许; only: 只允许 ff，否则报错;
     shell> git config --global merge.conflictstyle diff3        # 配置 git 冲突展示样式
     shell> git config --global pull.ff only                     # 当执行 git pull 命令时，默认采用 --ff-only 策略，如果不能执行 fast-forward 那么中止 merge 操作
     
