@@ -139,7 +139,8 @@ services:
       # shell> docker-compose --env-file .env.prod      # 可以指定使用哪个文件作为 .env 环境变量文件
       # shell> docker-compose run -e DEBUG=1            # 命令行指定 环境变量
       SHELL_ENV: ${SHELL_ENV_TRASMIT_2_DOCKER_COMPOSE}    
-    env_file:         # 指定多个 .env 环境变量文件
+    # 指定多个 .env 环境变量文件，如果不配置，默认取当前文件同目录下的 .env 文件作为默认环境变量文件
+    env_file:         
       - .env.prod
     # 指定 profile，如果没有指定，那么当前 constainer 每次都会启动，如果指定了 profile，那么只有特定的 profile 被激活时才启动当前 container
     # shell> docker-compose --profile debug up    # 指定激活哪一个 profile，或者可以使用 环境变量 COMPOSE_PROFILES 进行激活
