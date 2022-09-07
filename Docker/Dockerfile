@@ -66,8 +66,17 @@ EXPOSE 8080/udp
 
 # 在镜像中执行 npm install 命令，该命令会读取 package.json 文件，解析依赖关系，并安装依赖 
 # 每个 RUN 都会创建一个新的 layer，所以最好一个 Dockerfile 只包含一个 run
-RUN npm install
+# 默认的 shell 为: Linux> /bin/sh -c ...;  Windows> cmd /S /C ...
+# shell form
+RUN npm install             
 RUN echo finish
+
+# exec form
+# 该格式最终会被解析成 JSON Array，所以有如下限制:
+#   @trap 必须使用 双引号，不能用单引号
+#   @trap \ 是特殊字符，必须转义，即: 使用 \\ 代表 \
+RUN [ "echo", "$HOME" ]                     # @trap $HOME 不会被替换
+RUN [ "/bin/bash", "-c", "echo $HOME" ]     # @trap $HOME 会被替换
 
 
 # ADD 用于 复制 文件，目录 到 容器中的 dest 目录
