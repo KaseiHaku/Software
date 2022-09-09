@@ -60,7 +60,10 @@ shell> tcpdump  -A                          # 减去 link level(链路层) 包�
                 -Z user, --relinquish-privileges=user               # 指定 -w file 的 own
                 expression                                          # shell> man 7 pcap-filter
                 
-
+# 帮助
+shell> tcpdump --help
+shell> man tcpdump
+shell> man pcap-filter      # 查看过滤器帮助
 
 
 # filter expression  详情可以 man pcap
