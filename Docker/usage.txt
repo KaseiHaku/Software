@@ -22,7 +22,7 @@ Docker Manage:
     shell> docker inspect containerId                   # 查看 Docker 底层信息
     shell> docker images --help                         # 二级命令帮助
     shell> docker version                               # 查看 Docker 版本
-    shell> docker info
+    shell> docker info                                  # 查看 docker 信息，包括 Docker Root Dir 
 
 
 Image：
