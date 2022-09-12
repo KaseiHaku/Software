@@ -66,8 +66,8 @@
     # 适用场景： 遇到了需要紧急切换新的分支，但是不想提交改动。 比如临时修改 Bug，但是手头工作只做了一半
     shell> git stash list                   # 查看 stash 中储存的所有 工作区状态
     
-    shell> git stash push -m 'message'      # 储存当前 工作区状态 到 stash
-    shell> git stash push --all -m 'msg' -- path                # @deprecated 所有被 .gitignore 忽略 和 未跟踪(untracked, 新建) 的文件都会被 stash，
+    shell> git stash push -m 'message'                          # 储存当前 工作区状态 到 stash
+    shell> git stash push --all -m 'msg' -- path                # 所有被 .gitignore 忽略 和 未跟踪(untracked, 新建) 的文件都会被 stash，
                                                                 # 然后执行 shell> git clean
     shell> git stash push -u -m 'msg' -- .                      # 创建 stash，并包含 untracked(新建) 的文件
     shell> git stash push --keep-index                          # 创建 stash，所有被放入 index 区的修改都 保持不变(intact)
