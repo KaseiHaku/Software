@@ -181,3 +181,6 @@ Shell 的可配置项 shopt(shell option)
 Date:
     shell> date -d @1 '+%Y-%m-%d %H:%M:%S.%N'   # @1 表示从 1970-01-01 UTC 开始的毫秒数，而不使用当前时间
                                                 # '+%Y-%m-%d %H:%M:%S.%N' 表示时间输出格式，必须 + 开头，%N=纳秒
+
+绿色环境变量设置
+    shell> ENV_VAR=val cmd args         # 该方式设置的 环境变量 只对 cmd 命令有效
