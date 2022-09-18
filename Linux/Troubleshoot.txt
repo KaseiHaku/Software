@@ -6,3 +6,11 @@ shell> echo $PATH           # 查看可以使用的命令
 # XFS 停电后重启失败
 shell> ls -al /dev          # 找到要恢复的 硬盘/分区
 shell> xfs_repaire -v -L /dev/sda       # -L 强制日志归零，将此作为最后的手段
+
+
+
+# soft lockup 
+# 例如: kernel:NMI watchdog: BUG: soft lockup - CPU#3 stuck for 43s!
+# NMI = non-maskable interrupt
+# Cause: "软锁定" 定义为导致内核在内核模式下循环超过 20 秒而没有给其他任务运行机会的错误
+# Resolution: 正常情况下，当系统负载降低时，会自动消失
