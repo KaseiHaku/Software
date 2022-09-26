@@ -160,32 +160,39 @@ shell> echo 12345 | tr -d '2'         # 删除 字符2
 shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 
 # sed 
-# 每次读入一行，对该行进行 文本替换 和 搜索
+# 处理步骤:
+#   1. 先读入一行，去掉尾部换行符，把当前处理的行存储在临时缓冲区中，称为“模式空间”（pattern space），执行编辑命令
+#   2. 处理完毕，除非加了 -n 参数，把现在的 pattern space 打印出来，在后边打印曾去掉的换行符
+#   3. 把 pattern space 内容给 hold space，把 pattern space 置空。
+#   4. 接着读下一行，处理下一行。
+#
 # @help: http://www.gnu.org/software/sed/manual/html_node/index.html
 # @trap sed 默认正则为 BRE，使用 -r 可以改为 ERE，但是无法使用 PCRE
+#
 # Format := sed -e [addr]X[options] -e [addr]X[options] (file | -)
 # addr := [ 
 #   number | $ | first~step | /regexp/ | \%regexp% | /regexp/I | /regexp/M              # SingleAddr 单地址
 #   | number,number | 0,/regexp/ | SingleAddr,+number | SingleAddr,~number | SingleAddr,+number { SingleAddr }              # 范围地址
 # ]
 # X := cmd
+#   @trap   X                   都是单字母的
 #   @trap   {,},b,t,T,:         命令可以被 semicolon 分隔
-#   @trap   a,c,i               命令可以被 newline 分隔
+#   @trap   a,c,i               命令不能用 simicolons(;) 作为命令分隔符，必须使用 \n(newline) 或者将命令放在脚本最后
 #   @trap   r,R,w,W             命令认为 到 newline 字符之前的所有字符全是 filename
 # 
-#   a text              # 行尾 追加 text
+#   a text              # 在当前行后 追加一行 text
 #   b label             #          
 #   c text              # 整行 替换为 text
 #   d                   # 删除
 #   D                   # 删除直到第一个 换行符
 #   e                   # 执行 pattern 匹配出来的 command，然后用命令结果替换 pattern 匹配的 text
 #   e command           # 执行 command 并将结果输出
-#   F                   # 在行尾打印文件名
+#   F                   # 在当前行后 打印一行文件名
 #   g                   # 使用 hold space 替换 pattern space
 #   G                   # 先往 pattern space 添加 newline，然后追加 hold space 到 pattern space  
 #   h                   # 使用 pattern space 替换 hold space
 #   H                   # 先往 hold space 添加 newline，然后追加 pattern space 到 hold space  
-#   i text              # 在当前 line 之前插入文本。支持 newline 分隔 cmd
+#   i text              # 在当前行前 插入一行 text
 #   l                   # 清晰的打印 pattern space 
 #   n                   # 如果 auto-print 没有关闭，使用下一行输入，替换当前行的 pattern space
 #   N                   # pattern space 追加 \n, 然后 追加下一行输入到当前 pattern space
