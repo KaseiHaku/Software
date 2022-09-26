@@ -216,6 +216,7 @@ shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 #   : label             # 为分支命令(b,t,T) 指定 label 的位置
 # OPTIONS :=
 shell> sed -r -n -e 'addrXoptions' -        # -r 使用扩展正则(egrep); -n 只输出执行过 sed 的行; -e 匹配脚本; -n 不自动打印读入的数据; - 表示文件从 stdin 读取
+shell> sed -i 'X' filename                  # -i 直接用修改后的内容，覆盖原文件
 shell> sed -r -n -e 'addr{X;X}options' -       # {X;X} 同时执行多命令 
 shell> sed 's/regex/replacement/' file1        # 替换每一行首次匹配的文本
 shell> sed 's/regex/replacement/g' file1        # 全局替换匹配的文本
