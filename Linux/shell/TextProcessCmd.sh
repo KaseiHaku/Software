@@ -208,7 +208,7 @@ shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 #   w filename          # 将 pattern space 写入文件
 #   W filename          # 将 pattern space 直到 \n  写入文件
 #   x                   # 交换 pattern space 和 hold space
-#   y/src/dst/          # 将 pattern space 中 src 中的字符，替换为 dst 中的
+#   y/src/dst/          # 将 pattern space 中 src 中的 "单个字符"，替换为 dst 中的。@trap 注意不是 字符串
 #   z                   # zap: 清空 pattern space
 #   #                   # 注释 直到 \n
 #   { cmd ; cmd ... }   # 
