@@ -35,6 +35,11 @@ shell> git restore --worktree --ours -- path                        # 当从 ind
 shell> git restore --worktree --theirs --merge -- path              # 当从 index 中恢复时，--theirs 表示使用未合并的路径，--merge 表示重建冲突合并
 
 
+shell> git restore -s HEAD -WS -- path              # 根据 HEAD 恢复 worktree 和 staged      
+shell> git restore -s HEAD -W -- path               # 根据 HEAD 仅恢复 worktree 
+shell> git restore -W -- path                       # 根据 staged 恢复 worktree 
+
+
 
 
 
