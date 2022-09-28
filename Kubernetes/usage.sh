@@ -104,9 +104,18 @@ shell> kubectl -n namespace get pods podName -o 'jsonpath={}'
     shell> kubectl -n xxx delete all --all      # 删除某一命名空间下所有东西
     
 
+#### 从 Pod 里面复制文件，或复制文件到 Pod 里面, 
+# @trap shell> kubectl cp ;   要求容器中有 tar 命令
+# @trap 如果要保留 symlinks, 执行 * 展开，文件 mode 保留，那么使用 shell> kubectl exec
+
+shell> kubectl cp /tmp/foo_dir <some-pod>:/tmp/bar_dir      # 将本地 /tmp/foo_dir 复制到 default 命名空间中 <some-pod>
+shell> kubectl cp /tmp/foo <some-pod>:/tmp/bar -c <specific-container>      # 将本地 /tmp/foo_dir 复制到 default 命名空间中 <some-pod> 中的指定 container
+shell> kubectl cp /tmp/foo <some-namespace>/<some-pod>:/tmp/bar     # 将本地 /tmp/foo_dir 复制到 <some-namespace> 命名空间中 <some-pod> 中的指定 container
+shell> kubectl cp <some-namespace>/<some-pod>:/tmp/foo /tmp/bar     # 将 <some-namespace> 命名空间 <some-pod> Pod 中的 /tmp/foo 复制到本地 /tmp/bar
 
 
-
-
+shell> tar cf - /tmp/foo | kubectl exec -i -n <some-namespace> <some-pod> -- tar xf - -C /tmp/bar   # 复制本地 /tmp/foo 到远程 /tmp/bar
+shell> kubectl exec -n <some-namespace> <some-pod> -- tar cf - -C /tmp/foo test | tar xf - -C /tmp/bar      # 复制远程 /tmp/foo 目录下的 test 到本地 /tmp/bar
+shell> kubectl exec -n <some-namespace> <some-pod> -- tar -cf - -C /blade/develop/ test > test.tar.gz       # 复制远程 /tmp/foo 目录下的 test 到本地 test.tar.gz
 
 
