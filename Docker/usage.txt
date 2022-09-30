@@ -30,6 +30,21 @@ Image：
     shell> docker search centos                     # 从 Docker Hub 中查找镜像
     shell> docker pull centos:7.6.1810              # 获取一个新镜像
     
+    # 查看镜像、
+    shell> docker images            # 同下
+    shell> docker image ls --filter "dangling=true"             # 匹配所有没有 tag 的 image
+                           --filter "label=key"
+                           --filter "label=key=value"
+                           --filter "before=image1"         # <image-name>[:<tag>], <image id>, <image@digest>
+                           --filter "since=image3"
+                           --filter=reference='repo/*:tag*'     # @trap * 只能是最后一个才有效，即 * 扩展后不能带有 /
+                           -f 'reference=harbor.longer:5000/miniapp/*'
+                           -f 'reference=harbor.longer:5000/miniapp/*:3.0.0*'
+    shell> docker image ls repository                               # 列出指定镜像的所有版本
+    shell> docker image ls repository:tag                           # 列出指定镜像的指定 tag
+    shell> docker image ls 'harbor.longer:5000/miniapp/*'           # @trap * 只能是最后一个才有效，即 * 扩展后不能带有 /
+    shell> docker image ls 'harbor.longer:5000/miniapp/*:3.0.0*'    # 列出匹配的 tag
+    
     # 推送镜像
     shell> vim /etc/docker/daemon.json      # 追加 "insecure-registries": ["host:port"]
     shell> systemctl stop docker
@@ -59,11 +74,10 @@ Image：
     shell> docker image load -i niginx-1.21.1.tar                   # 从 tar 文件中加载 image
     
     # 删除镜像
-    shell> docker image ls --filter=reference='repo*:tag*'
-                           --filter "dangling=true"             # 匹配所有没有 tag 的 image
-                           --filter "label=com.example.version=1.0"
-                           --filter "before=image1"
-                           --filter "since=image3"
+    shell> docker image prune
+    shell> docker image rm  ${docker image ls -q -f 'reference=harbor.longer:5000/miniapp/*:3.0.0*' } 
+    shell> docker image rm  ${docker images -q -f 'reference=harbor.longer:5000/miniapp/*:3.0.0*' } 
+    shell> docker image rm  ${docker images -q harbor.longer:5000/miniapp/*:3.0.0* } 
  
     # 查看镜像的构建历史
     shell> docker image histtory redis:3.1 --no-trunc
