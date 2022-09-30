@@ -75,9 +75,9 @@ Image：
     
     # 删除镜像
     shell> docker image prune
-    shell> docker image rm  ${docker image ls -q -f 'reference=harbor.longer:5000/miniapp/*:3.0.0*' } 
-    shell> docker image rm  ${docker images -q -f 'reference=harbor.longer:5000/miniapp/*:3.0.0*' } 
-    shell> docker image rm  ${docker images -q harbor.longer:5000/miniapp/*:3.0.0* } 
+    shell> docker image rm  $(docker image ls -q -f 'reference=harbor.longer:5000/miniapp/*:3.0.0*' )
+    shell> docker image rm  $(docker images -q -f 'reference=harbor.longer:5000/miniapp/*:3.0.0*' )
+    shell> docker image rm  $(docker images -q harbor.longer:5000/miniapp/*:3.0.0* )
  
     # 查看镜像的构建历史
     shell> docker image histtory redis:3.1 --no-trunc
