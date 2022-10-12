@@ -115,7 +115,7 @@ shell> kubectl cp <some-namespace>/<some-pod>:/tmp/foo_dir /tmp/bar_dir         
 
 
 shell> tar cf - /tmp/foo | kubectl exec -i -n <some-namespace> <some-pod> -- tar xf - -C /tmp/bar           # 复制本地 /tmp/foo 到远程 /tmp/bar
-shell> kubectl exec -n <some-namespace> <some-pod> -- tar cf - -C /tmp/foo test | tar xf - -C /tmp/bar      # 复制远程 /tmp/foo 目录下的 test 到本地 /tmp/bar
-shell> kubectl exec -n <some-namespace> <some-pod> -- tar -cf - -C /blade/develop/ test > test.tar.gz       # 复制远程 /tmp/foo 目录下的 test 到本地 test.tar.gz
+shell> kubectl exec -n <some-namespace> <some-pod> -- tar -czf - -C /tmp/foo test | tar xf - -C /tmp/bar    # 复制远程 /tmp/foo 目录下的 test 到本地 /tmp/bar
+shell> kubectl exec -n <some-namespace> <some-pod> -- tar -czf - -C /blade/develop/ test > test.tar.gz      # 复制远程 /tmp/foo 目录下的 test 到本地 test.tar.gz
 
 
