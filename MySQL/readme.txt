@@ -6,6 +6,7 @@ mysql 命令行 多行 sql 取消:
 MySQL self synopsis:
     mysql> show version;
     mysql> show global variables where variable like '%a%';
+    mysql> select t.* from performance_schema.global_variables t; -- 变量
     mysql> show variables where variable like '%a%';
     mysql> show variables like 'character%';    -- 查看编字符编码方式
     mysql> show variables like 'collation%';    -- 查看排序方式
