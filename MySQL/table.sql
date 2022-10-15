@@ -55,6 +55,8 @@ create table t(
 )AUTO_INCREMENT=1 comment='表的注释'; -- 编码方式：默认的是utf8，  自增长量：可以在这里初始化
 
 -- 删除表
+show variables like 'foreign_key_checks'; -- 查看当前
+set foreign_key_checks = 0; -- 设置不检查外键
 drop table t;
 
 -- 修改表名
