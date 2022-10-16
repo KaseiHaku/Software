@@ -2,7 +2,7 @@
 shell> head -n 10      # 获取头 10 行
 shell> head -n -10     # 丢弃最后 10 行
 shell> tail -n 10      # 获取尾 10 行
-shell> tail -n -10     # 丢弃开头 10 行
+shell> tail -n +10     # 丢弃开头 10 行
 
 
 # find 
