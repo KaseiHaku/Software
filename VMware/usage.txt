@@ -6,3 +6,26 @@
        Control Panel -> System and Security -> Windows Defender Firewall -> Advanced Setting -> Inbound Rules 
        -> File and Printer Sharing(Echo Request - ICMPv4-in)  Enable
        -> File and Printer Sharing(Echo Request - ICMPv6-in)  Enable
+
+
+################################ VMWare ESXi ################################
+从 ESXi 导出虚拟机：
+    下载并安装 VMware-ovftool： 
+        https://my.vmware.com/group/vmware/downloads/details?downloadGroup=OVFTOOL440&productId=974
+
+    在默认目录（C:\Program Files\VMware\VMware OVF Tool）下运行CMD窗口
+        
+    登陆 ESXi 查看虚拟机信息
+        cmd> ovftool.exe vi://192.168.1.50/k8s-worker3
+    使用ovftool将虚拟机导出为OVA格式
+        cmd> 创建一个空目录
+        cmd> ovftool.exe vi://192.168.1.50/centos7-template-50-root E:\k8s-worker3-bak
+
+
+
+
+
+
+
+
+
