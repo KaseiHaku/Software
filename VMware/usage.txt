@@ -19,7 +19,7 @@
         cmd> ovftool.exe vi://192.168.1.50/k8s-worker3
     使用ovftool将虚拟机导出为OVA格式
         cmd> 创建一个空目录
-        cmd> ovftool.exe vi://192.168.1.50/centos7-template-50-root E:\k8s-worker3-bak
+        cmd> ovftool.exe vi://192.168.1.50/centos7-template E:\k8s
 
 
 
