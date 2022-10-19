@@ -5,7 +5,7 @@ CipherSuit(加密算法套件):
     Mac: 1 个 message authentication code (消息认证码 简称MAC，消息摘要)算法 
 
     CipherString: 一个 label，代表具有该 label 的所有 CipherSuit
-        @trap 不是 加密套件 的名称，具体查看 shell> man cipher; 常用 cipher string = [ALL，HIGH，NULL，TLSv1.2]
+        @trap 不是 加密套件 的名称，具体查看 shell> man ciphers; 常用 cipher string = [ALL，HIGH，NULL，TLSv1.2]
         :   代表 或，用于 多个 CipherString 的组合
         +   中缀， 表示 且，用于 CipherString 组合
         
