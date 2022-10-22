@@ -19,6 +19,7 @@ shell> curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh 
 
 # 信息查看
 shell> nvm ls-remote --lts                  # 查看远程可用的版本
+shell> nvm list avaliable                   # 同上
 shell> nvm ls                               # 查看所有已安装的 node 版本
 shell> nvm which 5.0                        # 查看指定版本的 node 安装路径
 shell> nvm current                          # 查看当前 shell 使用的 node 版本
