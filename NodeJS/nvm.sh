@@ -10,6 +10,7 @@ export NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node
 
 # 安装  NVM
 # 下面命令下载 nvm，并执行
+#       https://github.com/coreybutler/nvm-windows    windows 下的 nvm
 # 该脚本将 clone nvm 库到 ~/.nvm
 # 该脚本会自动往 profile 文件中添加环境变量：NVM_DIR, 
 # export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
@@ -18,8 +19,8 @@ shell> curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh 
 
 
 # 信息查看
-shell> nvm ls-remote --lts                  # 查看远程可用的版本
-shell> nvm list avaliable                   # 同上
+shell> nvm ls-remote --lts                  # 查看远程可用的版本  nvm-sh
+shell> nvm list avaliable                   # 同上  nvm-windows
 shell> nvm ls                               # 查看所有已安装的 node 版本
 shell> nvm which 5.0                        # 查看指定版本的 node 安装路径
 shell> nvm current                          # 查看当前 shell 使用的 node 版本
@@ -48,3 +49,10 @@ shell> nvm exec 10.24.0 "node app.js"                           # 使用指定�
 
 # 在项目里面配置使用的 node 版本
 # 创建 xxx/ProjectRoot/.nvmrc
+
+
+
+
+
+
+
