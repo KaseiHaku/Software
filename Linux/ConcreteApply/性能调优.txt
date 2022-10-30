@@ -35,6 +35,11 @@ shell> sysctl net.ipv4.tcp_available_congestion_control     # 查看本机提供
 ################################ 进程级：限制调优 ################################  
 shell> ulimit -a        # 查看当前所有进程级限制
 shell> vim /etc/security/limits.conf 
+root    soft nofile 65535
+root    hard nofile 65535
+*       soft nofile 65535
+*       hard nofile 65535
+
 
 shell> ulimit -n        # 查看单进程最大打开文件数限制，建议 65535
 
