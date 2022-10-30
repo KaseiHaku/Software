@@ -2,6 +2,8 @@
 shell> ss -tan | grep TIME-WAIT         # TCP 连接断开后，会以 TIME-WAIT 的状态保留一定时间，然后才会释放端口。
                                         # TIME-WAIT 数量过多影响新的 连接 创建，需要调整内核参数，更迅速的释放调连接
 
+shell> sysctl -a | grep fs.file-nr          # 查看当前系统的文件描述符的状态
+fs.file-nr = 4672       0       3227745     # 分别代表： 全局已经分配的文件描述符数量；  自由的文件描述符（待重新分配的）; 总的文件描述符的数量
 
 shell> vim /etc/sysctl.conf  
 fs.file-max= 1111111111                     # 系统级最大文件打开数量         
