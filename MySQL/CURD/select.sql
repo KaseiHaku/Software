@@ -201,6 +201,10 @@ select id, group_concat([distinct] name [order by asc/desc 排序字段] [separa
 /* partition */
 partition(partition_name1, partition_name2, partition_name3)
 
+/* 开窗函数 
+    https://dev.mysql.com/doc/refman/8.0/en/window-functions.html
+*/
+select max(t.a) over() from tb t;
 
 
 
