@@ -68,7 +68,7 @@ shell> man pcap-filter      # 查看过滤器帮助
 # filter expression  详情可以 man pcap-filter 
 # filter expression = primitives 
 # primitive = [qualifier] ... id 
-# type qualifier = host net port protrange     # 如果没有，默认 host
+# type qualifier = host net port portrange     # 如果没有，默认 host
 # dir qualifier = src, dst, src or dst, src and dst, ra,  ta,  addr1,  addr2,  addr3, addr4   # 指定 packet 的流向
 # proto qualifier =  ether, fddi, tr, wlan, ip, ip6, arp, rarp, decnet, tcp and udp                # 限制 protocol
 # composed qualifier = qualifier and qualifier or qualifier or not qualifier    # and or not 进行组合 或 &&  || ! 进行组合(shell 中需要转义)
