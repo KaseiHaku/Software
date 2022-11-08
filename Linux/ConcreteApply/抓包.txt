@@ -120,8 +120,9 @@ shell> tcpdump -D               # 查看可以抓包的网卡
 shell> tcpdump -i eth0 -J       # 列出当前网卡可以展示的时间戳类型
 shell> tcpdump -i eth0          # 抓取指定网卡的包
 shell> tcpdump -i eth0 -n -nn -A -tttt
-shell> tcpdump -nn -i eth0 ip proto \\icmp      # 抓 eth0 网卡的 icmp 协议
-shell> tcpdump -nn -i eth0 dst port 9092      # 抓 eth0 网卡，目标端口为 9092 的包
+shell> tcpdump -i eth0 -nn ip proto \\icmp      # 抓 eth0 网卡的 icmp 协议
+shell> tcpdump -i eth0 -nn dst port 9092      # 抓 eth0 网卡，目标端口为 9092 的包
+shell> tcpdump -i eth0 -nnf '(src 172.16.0.24 && dst 172.16.30.14 && dst portrange 3307-3309) || (dst 172.16.0.24 && src 172.16.30.14 && src portrange 3307-3309)'
 
 
 shell> tcpdump -vvvi ens33 -ASQ out -#enl > ~/networkCard.dump & tail -f  ~/networkCard.dump
