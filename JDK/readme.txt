@@ -19,6 +19,19 @@ Java Serializable 接口序列化后字节格式:
     Java 对象/实例 序列化后 前3个字节的码值为: ACED00
     
     
-    
+JDK8 及以前内存结构：
+    本地内存:
+        方法区(永久代)
+        直接内存
+    JVM 内存:
+        heap
+            常量池
+            年轻代
+                eden
+                survivor
+                    s0
+                    s1
+            老年代
+        stack
     
     
