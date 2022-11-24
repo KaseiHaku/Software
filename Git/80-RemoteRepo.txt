@@ -33,7 +33,9 @@ Create {
 
 Delete {
     shell> git branch -r -d origin/debug                # 删除 本地远程库中的分支 
+    shell> git remote prune -n origin           # 删除本地远程库中，在实际远程库中不存在的分支, -n = dry-run
     shell> git pull -p                          # 删除本地远程库中，在实际远程库中不存在的分支
+    
 }
 
 Update {
