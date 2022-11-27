@@ -36,7 +36,7 @@ shell> yum-config-manager --setopt=skip_if_unavailable=true            # 运行�
 shell> yum install -y createrepo
 shell> repotrack --download_path=/opt/localyum -n ansible           # 下载 ansible 全量依赖包, -n 切换是否下载非最新的 rpm，默认最新的，加了就下载所有的
 shell> createrepo /opt/localyum                                     # 创建仓库基本信息
-shell> tar -zcf localyum.tar.gz /opt/localyum/*                     # 打包，然后将该包放到离线服务器上
+shell> tar -zcf localyum.tar.gz -C /opt/localyum .                  # 打包，然后将该包放到离线服务器上
 #### 离线服务器相关命令
 shell> mkdir /opt/localyum                                          # 创建本地 yum repo 目录
 shell> tar -zxf localyum.tar.gz -C /opt/localyum                    
