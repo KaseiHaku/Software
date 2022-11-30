@@ -114,10 +114,26 @@ shell> jps  -p          # 仅显示 JVM 标识
 
 # JVM 统计监控工具 (JVM Statistics Monitoring Tool)
 # 根据参数指定的方式收集和记录指定的 jvm 进程的性能统计信息。
-shell> jstat -<option> -t -h 4 <lvmid>[@<hostname>[:<port>]] 100ms 32   # -t    在输出信息前加上一个Timestamp列，显示程序的运行时间    
+shell> jstat -options       # 查看支持的统计类型
+-class                      # 类加载统计
+-compiler                   # 编译统计
+-gc                         # 垃圾回收统计
+-gccapacity                 # 堆内存统计
+-gccause                    # 最近一次GC统计和原因
+-gcmetacapacity             # JDK8 下 元数据空间统计
+-gcnew                      # 新生代垃圾回收统计
+-gcnewcapacity              # 新生代内存统计
+-gcold                      # 老年代垃圾回收统计
+-gcoldcapacity              # 老年代内存统计
+-gcutil                     # 总结垃圾回收统计
+-printcompilation           # JVM编译方法统计
+                           
+shell> jstat -<option> -t -h 4 <lvmid>[@<hostname>[:<port>]] 1000ms 32  # -t    在输出信息前加上一个Timestamp列，显示程序的运行时间    
                                                                         # -h 4      header line 之间有 4 个样本    
+                                                                        # lvmid     一般本机是 PID
                                                                         # 100ms     采样间隔
                                                                         # 32        采样次数
+shell> jstat -gcutil -t -h10 PID 1s          # 常用
                                                                                 
 # JVM jstat 守护程序
 # 启动一个 RMI 服务器应用程序，用于监视测试的 HotSpot Java 虚拟机的创建和终止，并提供一个界面，允许远程监控工具附加到在本地系统上运行的 Java 虚拟机
@@ -132,7 +148,7 @@ shell> jinfo <pid>
 # 用于分析 Java 堆内存中的对象信息
 # 用于分析heapdump文件，它会建立一个HTTP/HTML服务器，让用户可以在浏览器上查看分析结果，可以查找诸如内存方面的问题
 # 是用来分析Java堆的命令，可以将堆中的对象以html的形式显示出来，包括对象的数量，大小等等，并支持对象查询语言
-shell> jhat     
+shell> jhat             # 仅 java8
 
 
 # Java 内存映射工具 (Java Memory Map)
