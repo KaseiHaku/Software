@@ -274,7 +274,9 @@
               /proc/PID/root                # 链接到进程的根目录
               /proc/PID/stat                # 进程的状态
               /proc/PID/statm               # 进程使用的内存的状态
-              /proc/PID/status              # 进程状态信息，比 stat/statm 更具可读性         
+              /proc/PID/status              # 进程状态信息，比 stat/statm 更具可读性     
+             
+    shell> ls /proc/ | xargs -rI{} echo {} | grep -E -e '[0-9]+' | xargs -rtI{} grep -a 'java' /proc/{}/cmdline     # 筛选所有进程启动命令 
         
 
                                         
