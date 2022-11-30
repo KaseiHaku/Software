@@ -30,6 +30,11 @@ shell> grep --color=auto pattern file1 file2            # 匹配字符串高亮�
 shell> grep -f fileRegexp file1 file2                   # 从文件中读取 pattern ，文件中一行为一个 pattern， 命令匹配所有文件中的 pattern
 shell> grep 'XXX' `find /path -name '*.*'               # 查找多个文件中的匹配内容
 
+shell> grep --binary-files=text 'pattern' file          # 当报 grep: /proc/77/cmdline: binary file matches 时，将二进制文件当作文本文件处理
+shell> grep -a 'pattern' file                           # 同上
+shell> grep --text 'pattern' file                       # 同上
+
+
 shell> grep -P -i -v -n -H -C 2 -R pattern file         # 常用选项 
 
 
