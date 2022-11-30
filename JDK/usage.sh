@@ -29,11 +29,13 @@
 
 
 # jvm 启动参数分类
+#   https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#advanced-runtime-options-for-java
 #   1. 标准参数（-），所有的JVM实现都必须实现这些参数的功能，而且向后兼容；
 #   2. 非标准参数（-X），默认jvm实现这些参数的功能，但是并不保证所有jvm实现都满足，且不保证向后兼容；
 #   3. 非Stable参数（-XX），此类参数各个jvm实现会有所不同，将来可能会随时取消，需要慎重使用；
 # 查看 jvm 启动参数 
     shell> ./java -XX:+PrintFlagsInitial >> AllBootParam.txt   # 查看所有 jvm 启动参数
+    shell> ./java -XX:+PrintCommandLineFlags                    # 查看 jvm 启动时，所有 显示的 和 隐式的 参数
     shell> ./java -classpath    # java 命令默认会根据 CLASSPATH 环境变量 中的路径寻找 .class 文件， CLASSPATH=.:%JAVA_HOME%/lib
                                 # -classpath 告诉 jvm 运行时所有文件的加载路径，设置该参数后将使 CLASSPATH 环境变量失效，
                                 # 如果 CLASSPATH 和 -classpath 都不存在，jvm 默认使用当前目录(./)作为类搜索路径
