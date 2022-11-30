@@ -34,8 +34,12 @@
 #   2. 非标准参数（-X），默认jvm实现这些参数的功能，但是并不保证所有jvm实现都满足，且不保证向后兼容；
 #   3. 非Stable参数（-XX），此类参数各个jvm实现会有所不同，将来可能会随时取消，需要慎重使用；
 # 查看 jvm 启动参数 
-    shell> ./java -XX:+PrintFlagsInitial >> AllBootParam.txt   # 查看所有 jvm 启动参数
-    shell> ./java -XX:+PrintCommandLineFlags                    # 查看 jvm 启动时，所有 显示的 和 隐式的 参数
+    # -XX:+PrintFlagsInitial 输出格式
+    #   第一列表示参数的数据类型，第二列是名称，第四列为值，第五列是参数的类别。
+    #   第三列 "=" 表示第四列是参数的默认值，而 ":=" 表明了参数被用户或者JVM赋值了
+    shell> ./java -XX:+PrintFlagsInitial >> AllBootParam.txt    # 输出所有 -XX 参数和值，初始值
+    shell> ./java -XX:+PrintFlagsFinal                          # 输出所有 -XX 参数和值，最终值
+    shell> ./java -XX:+PrintCommandLineFlags                    # 让 JVM 打印出那些已经被用户 或者 JVM 设置过的详细的 -XX 参数的名称和值
     shell> ./java -classpath    # java 命令默认会根据 CLASSPATH 环境变量 中的路径寻找 .class 文件， CLASSPATH=.:%JAVA_HOME%/lib
                                 # -classpath 告诉 jvm 运行时所有文件的加载路径，设置该参数后将使 CLASSPATH 环境变量失效，
                                 # 如果 CLASSPATH 和 -classpath 都不存在，jvm 默认使用当前目录(./)作为类搜索路径
@@ -49,6 +53,53 @@
     shell> java -jar myapp.jar -Dagentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5505    # jdk 9+ 
     # Debug 模式：Listen to remote JVM (即: server=n) : jvm 向指定主机的指定端口发送 dubug 信息，client 监听本地对应的端口，
     shell> java -jar myapp.jar -agentlib:jdwp=transport=dt_socket,server=n,address=Haku:5005,suspend=y,onthrow=<FQ exception class name>,onuncaught=<y/n>
+
+
+    # JVM 参数调优
+    #   @doc https://blog.csdn.net/qq_44866828/article/details/126309447
+    #   目标:
+    #       堆内存使用率<=70%;
+    #       老年代内存使用率<=70%;
+    #       avgpause <= 1s;
+    #       Full GC 次数 约等于 0 或 avg pause interval >= 24 小时 ;
+    #   调优顺序: 优先级不可变
+    #       满足程序的内存使用需求
+    #       满足时间延迟的要求
+    #       满足吞吐量的要求
+    shell> java 
+            # 吞吐量 调优: 运行用户代码的时间占总运行时间的行例 （总运行时间=程序的运行时间+内存回收的时间）
+            # GC 调优: 
+            -XX:+HeapDumpOnOutOfMemoryError             # 出现OOME时生成堆dump 或者在 OOM 前使用 jmap 命令导出，推荐使用当前方式
+            -XX:HeapDumpPath=/home/hadoop/dump/         # 生成堆文件地址：
+            -XX:+UseZGC                                 # 使用 ZGC
+            -XX:+DisableExplicitGC          # 禁止运行期显式地调用System.gc()来触发fulll GC
+            
+            # GC 日志相关
+            -XX:+PrintGC                    # 输出简要GC日志
+            -XX:+PrintGCDetails             # 输出详细GC日志
+            -Xloggc:gc.log                  # 输出GC日志到文件
+            -XX:+PrintGCTimeStamps          # 输出GC的时间戳（以JVM启动到当期的总时长的时间戳形式）
+            -XX:+PrintGCDateStamps          # 输出GC的时间戳（以日期的形式，如 2020-04-26T21:53:59.234+0800）
+            -XX:+PrintHeapAtGC              # 在进行GC的前后打印出堆的信息
+            -verbose:gc                     # 在JDK 8中，-verbose:gc是-XX:+PrintGC一个别称，日志格式等价于：-XX:+PrintGC。不过在JDK 9中 -XX:+PrintGC被标记为deprecated。 -verbose:gc是一个标准的选项，-XX:+PrintGC是一个实验的选项，建议使用-verbose:gc 替代-XX:+PrintGC
+            -XX:+PrintReferenceGC           # 打印年轻代各个引用的数量以及时长
+            
+            # 内存 调优：
+            -Xms2G              # 堆 初始值 或 最小值，通常设置为 -Xmx 的值，避免运行时要不断扩展JVM内存，等价于 -XX:InitialHeapSize
+            -Xmx16G             # 堆 最大值，建议扩大至3-4倍FullGC后的老年代空间占用，等价于 -XX:MaxHeapSize
+            -Xmn1g              # 新生代内存的大小，包括Eden区和两个Survivor区的总和， 1-1.5倍FullGC之后的老年代空间占用
+                                # 避免新生代设置过小，当新生代设置过小时，会带来两个问题：一是minor GC次数频繁，二是可能导致 minor GC对象直接进老年代。当老年代内存不足时，会触发Full GC。 
+                                # 避免新生代设置过大，当新生代设置过大时，会带来两个问题：一是老年代变小，可能导致Full GC频繁执行；二是 minor GC 执行回收的时间大幅度增加
+            -XX:MetaspaceSize=256m          # 同 jdk7 -XX:PermSize 永久代
+            -XX:MaxMetaspaceSize=256m       # 同 jdk7 -XX:MaxPermSize 永久代，建议扩大至1.2-1.5倍FullGc后的永久带空间占用
+            -Xss1m                          # 每个线程的栈内存，默认1M，般来说是不需要改的
+            -XX:NewRatio=4                  # 设置年轻代（包括Eden和两个Survivor区）与老年代的比值（除去持久代）。设置为4，则年轻代与老年代所占比值为1：4，年轻代占整个堆栈的1/5
+            -XX:SurvivorRatio=8             # 设置年轻代中Eden区与Survivor区的大小比值。设置为8，则两个Survivor区与个Eden区的比值为2:8，每个Survivor区占整个年轻代的1/10
+            -XX:MaxDirectMemorySize=1G      # 直接内存。报java.lang.OutOfMemoryError: Direct buffermemory异常可以上调这个值
+            -XX:InitialCodeCacheSize        # JIT 编译期的 代码缓存，如果满了，字节码将不再会被编译成机器码
+            -XX:+UseCodeCacheFlushing       # 当代码缓存被填满时让JVM放弃一些编译代码
+            
+
 
 
 # 查看 .class 文件的字节码信息
