@@ -86,13 +86,29 @@ Linux 查看当前 Terminal 所有可以运行的命令
     shell> cat ~/.bashrc                            # 永久 alias
 
 重定向：
+    FD = File Descriptor = 文件描述符: 
+        Linux 系统中一切皆文件，当进程打开现有文件或创建新文件时，内核向进程返回一个文件描述符。
+        文件描述符就是内核为了高效管理已被打开的文件所创建的索引，用来指向被打开的文件，所有执行I/O操作的系统调用都会通过文件描述符
+
+        Linux 三个标准输入、输出文件：
+            /dev/stdin      文件描述符 0         标准输入文件
+            /dev/stdout     文件描述符 1         标准输出文件
+            /dev/stderr     文件描述符 2         标准错误输出文件
+
+            shell> cmd <                # 相当于 cmd < 0
+            shell> > /dev/null          # 相当于 1 > /dev/null
+    
     [n]<fileName                # 当 程序 从 文件描述符 n 或 标准输入 读取数据时，打开名为 fileName 的文件，作为数据源
     [n]>fileName                # 当 程序 向 文件描述符 n 或 标准输出 写入数据时，打开名为 fileName 的文件，作为目标
     [n]>>fileName               # 追加同上
-    >fileNme 2>&1               # 输出重定向到 fileName，stderr 使用 stdout 的管道，也输出到 fileName
+    
+    
+    # 重定向 stdout 和 stderr
+    >fileNme 2>&1               # 输出重定向 stdout 到 fileName，stderr 使用 stdout 的管道，也输出到 fileName
     &>fileName                  # 同上，推荐使用这种格式，而不是下一行的格式
     >&fileName                  # 同上
-    >>fileName 2>&1             # 追加
+    
+    >>fileName 2>&1             # 追加，输出重定向 stdout 到 fileName，stderr 使用 stdout 的管道，也输出到 fileName
     &>>fielName                 # 同上
     
     # word 不会经过 shell 进行处理，如果 word 任何部分是引用，here-document 中的 ${var} 不会被 处理
@@ -103,7 +119,7 @@ Linux 查看当前 Terminal 所有可以运行的命令
         here-document
     delimiter                   
     
-    [n]<<<word                  # word 经过 shell 处理后，然后作为 文件描述符 n 的输入
+    <<<word                     # word 经过 shell 处理后，直接作为 command 的输入
     
     [n]<&word                   # 复制文件描述符
     [n]>&word
@@ -138,17 +154,7 @@ Linux 查看当前 Terminal 所有可以运行的命令
     shell> echo 'aaaa' | tee -a file    # 同上，只是向 file 中追加，而不是覆盖
     shell> echo 'aaaa' | tee -          # 将 标准输入 复制一份，两份都输出到 标准输出
 
-FD = File Descriptor = 文件描述符: 
-    Linux 系统中一切皆文件，当进程打开现有文件或创建新文件时，内核向进程返回一个文件描述符。
-    文件描述符就是内核为了高效管理已被打开的文件所创建的索引，用来指向被打开的文件，所有执行I/O操作的系统调用都会通过文件描述符
 
-    Linux 三个标准输入、输出文件：
-        /dev/stdin      文件描述符 0         标准输入文件
-        /dev/stdout     文件描述符 1         标准输出文件
-        /dev/stderr     文件描述符 2         标准错误输出文件
-    
-        shell> cmd <                # 相当于 cmd < 0
-        shell> > /dev/null          # 相当于 1 > /dev/null
 
 
 管道命令：就是把 左边命令 原本输出到 /dev/stdout(1) 的数据 重定向成 右边命令 的 /dev/stdin(0) 输入 
