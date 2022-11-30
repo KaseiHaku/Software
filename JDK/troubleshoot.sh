@@ -114,6 +114,7 @@ shell> jps  -p          # 仅显示 JVM 标识
 
 # JVM 统计监控工具 (JVM Statistics Monitoring Tool)
 # 根据参数指定的方式收集和记录指定的 jvm 进程的性能统计信息。
+# @doc https://docs.oracle.com/en/java/javase/17/docs/specs/man/jstat.html
 shell> jstat -options       # 查看支持的统计类型
 -class                      # 类加载统计
 -compiler                   # 编译统计
@@ -185,6 +186,7 @@ shell> jconsole
  
 
 ################################ 其他工具 ################################
+# https://docs.oracle.com/en/java/javase/17/docs/specs/man/
 
 
 shell> java             # 运行 .class 文件
