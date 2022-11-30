@@ -36,6 +36,7 @@ shell> grep --text 'pattern' file                       # 同上
 
 
 shell> grep -P -i -v -n -H -C 2 -R pattern file         # 常用选项 
+shell> grep -- 'pattern' file                           # 当 pattern 中包含 - 等选项相关的字符时
 
 
 # xargs 
