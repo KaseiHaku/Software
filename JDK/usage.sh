@@ -85,6 +85,35 @@ jdk 自带的文件编码转换工具 {
     shell> jar -cvf0M new.jar BOOT-INF/ META-INF/ org/      # SpringBoot jar 重新打包
 
 
+################################ bin 下工具 ################################
+jar                     jar文件管理工具，主要用于打包压缩、解压jar文件
+jarsigner               jar密匙签名工具          
+java                    Java运行工具，用于运行.class字节码文件或.jar文件
+javac                   Java编译工具(Java Compiler)，用于编译Java源代码文件
+javadoc                 Java文档工具，主要用于根据Java源代码中的注释信息生成HTML格式的API帮助文档
+javap                   Java反编译工具，主要用于根据Java字节码文件反汇编为Java源代码文件
+jcmd                    Java 命令行(Java Command)，用于向正在运行的JVM发送诊断命令请求
+jconsole                图形化用户界面的监测工具，主要用于监测并显示运行于Java平台上的应用程序的性能和资源占用等信息
+jdb                     Java调试工具(Java Debugger)，主要用于对Java应用进行断点调试
+jdeprscan
+jdeps
+jfr
+jhsdb
+jimage
+jinfo                   Java配置信息工具(Java Configuration Information)，用于打印指定Java进程、核心文件或远程调试服务器的配置信息
+jlink
+jmap                    Java内存映射工具(Java Memory Map)，主要用于打印指定Java进程、核心文件或远程调试服务器的共享对象内存映射或堆内存细节
+jmod
+jpackage
+jps                     JVM进程状态工具(JVM Process Status Tool)，用于显示目标系统上的HotSpot JVM的Java进程信息
+jrunscript              Java命令行脚本外壳工具(command line script shell)，主要用于解释执行javascript、groovy、ruby等脚本语言
+jshell
+jstack                  Java堆栈跟踪工具，主要用于打印指定Java进程、核心文件或远程调试服务器的Java线程的堆栈跟踪信息
+jstat                   JVM统计监测工具(JVM Statistics Monitoring Tool)，主要用于监测并显示JVM的性能统计信息
+jstatd                  jstatd(VM jstatd Daemon)工具是一个RMI服务器应用，用于监测HotSpot JVM的创建和终止，并提供一个接口，允许远程监测工具附加到运行于本地主机的JVM上
+keytool                 密钥和证书管理工具，主要用于密钥和证书的创建、修改、删除等。
+rmiregistry             Java 远程对象注册表，用于在当前主机的指定端口上创建并启动一个远程对象注册表
+serialver               序列版本命令，用于生成并返回serialVersionUID
 
 
 
