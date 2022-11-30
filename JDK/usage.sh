@@ -86,8 +86,8 @@
             
             # 内存 调优：
             -Xms2G              # 堆 初始值 或 最小值，通常设置为 -Xmx 的值，避免运行时要不断扩展JVM内存，等价于 -XX:InitialHeapSize
-            -Xmx16G             # 堆 最大值，建议扩大至3-4倍FullGC后的老年代空间占用，等价于 -XX:MaxHeapSize
-            -Xmn1g              # 新生代内存的大小，包括Eden区和两个Survivor区的总和， 1-1.5倍FullGC之后的老年代空间占用
+            -Xmx16G             # 堆 最大值，建议扩大至3-4倍FullGC后的老年代空间占用，等价于 -XX:MaxHeapSize 推荐：1/2 物理内存
+            -Xmn1g              # 新生代内存的大小，包括Eden区和两个Survivor区的总和， 1-1.5倍FullGC之后的老年代空间占用 或者 1/3 -Xmx
                                 # 避免新生代设置过小，当新生代设置过小时，会带来两个问题：一是minor GC次数频繁，二是可能导致 minor GC对象直接进老年代。当老年代内存不足时，会触发Full GC。 
                                 # 避免新生代设置过大，当新生代设置过大时，会带来两个问题：一是老年代变小，可能导致Full GC频繁执行；二是 minor GC 执行回收的时间大幅度增加
             -XX:MetaspaceSize=256m          # 同 jdk7 -XX:PermSize 永久代
