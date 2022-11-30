@@ -97,6 +97,7 @@ shell> echo ggXaaXhh | xargs -d X -n 1 echo                 # 修改定界符为
 shell> echo kasei | xargs -I {} ./sk.sh -p {} -l            # -I 指定占位符为 {}， 命令行中的 {} 将被传入的参数所替代 
 shell> echo aaa | xargs -rti ./sk.sh -p {} -l               # 最常用, @trap -i 必须是最后一个，-i 已经废弃，使用 -I{} 替代
 shell> echo aaa | xargs -rtI{} ./sk.sh -p {} -l             # 最常用 
+shell> echo aaa bbb | xargs -d ' ' -rtI{} ./sk.sh -p {} -l  # 最常用，指定分隔符
 
 # xargs Demo
 # 假设输入的字符串为 A：  '1 2\t3\n4\\5'
