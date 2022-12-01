@@ -127,6 +127,8 @@ shell> jstat -options       # 查看支持的统计类型
 -gcold                      # 老年代垃圾回收统计
 -gcoldcapacity              # 老年代内存统计
 -gcutil                     # 总结垃圾回收统计
+    CGC                     # Count GC，指 CMS 中发生了 GC 收集, 但是没有到阈值, 没有对对象进行清理.此时算一次 CGC
+    CGCT                    # CGC-time，指花费的时间
 -printcompilation           # JVM编译方法统计
                            
 shell> jstat -<option> -t -h 4 <lvmid>[@<hostname>[:<port>]] 1000ms 32  # -t    在输出信息前加上一个Timestamp列，显示程序的运行时间    
