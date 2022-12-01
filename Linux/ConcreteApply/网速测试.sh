@@ -12,4 +12,4 @@ shell>  pip3 install speedtest-cli
 
 
 
-shell> iftop   #  类似于 top 的实时流量监控工具
+shell> yum –y install iftop   #  类似于 top 的实时流量监控工具
