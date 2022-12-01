@@ -132,6 +132,7 @@
     #       user 运行(未调整优先级的) 用户进程的CPU时间 us, 
     #       system 运行内核进程的CPU时间 sy, 
     #       niced 运行已调整优先级的用户进程的CPU时间 ni,
+    #       idle 空闲的 CPU 时间 id,
     #       IO wait: 用于等待IO完成的CPU时间 wa,
     #       Hard Interrupts 处理硬件中断的CPU时间 hi,
     #       Software Interrupts 处理软件中断的CPU时间 si,
