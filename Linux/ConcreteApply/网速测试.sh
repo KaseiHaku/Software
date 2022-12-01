@@ -9,3 +9,7 @@ shell> iperf -c 192.168.1.2     # 测试到服务端的带宽
 
 
 shell>  pip3 install speedtest-cli
+
+
+
+shell> iftop   #  类似于 top 的实时流量监控工具
