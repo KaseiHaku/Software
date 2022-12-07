@@ -6,8 +6,8 @@
 select binary 'aa' from dual;   -- 将字符串转换成 binary 类型
 select cast(t.col as char character set utf8mb4 ) collate utf8mb4_bin from tb t; -- 将当前字符串转换成 utf8mb4 格式的字符串 
 select cast(t.timestampCol at time zone '+00:00' as datetime[] ) from tb t;
-select convert(t.col using utf8mb4 ) collate utf8mb4_bin  from tb t; -- 表示当前被转换的 字符串的字符集是 utf8mb4 
-select convert(t.col, char character set utf8mb4) collate utf8mb4_bin  from tb t; -- 将当前字符串转换成 utf8mb4 格式的字符串 
+select convert(t.col using utf8mb4 ) collate utf8mb4_bin  from tb t; -- 表示当前被转换的 字符串的字符集是 utf8mb4, 标准的 SQL 语法
+select convert(t.col, char character set utf8mb4) collate utf8mb4_bin  from tb t; -- 将当前字符串转换成 utf8mb4 格式的字符串，ODBC 语法
 /******************************* 流程控制函数 *******************************/
 select 
     case [test] 
