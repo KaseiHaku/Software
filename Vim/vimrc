@@ -280,7 +280,7 @@ endif
 
 """""""""""""""""""""""""""""""""""""""""""""""" Plugin 配置 """"""""""""""""""""""""""""""""""""""""""
 " 需要先下载 git ，因为 plug.vim 依赖 git
-" 需要下载 plug.vim 文件放在 $VIMRUNTIME/autoload 文件夹下，vim 中使用 :echo $VIMRUNTIME 查看变量内容
+" 需要下载 plug.vim(https://github.com/junegunn/vim-plug) 文件放在 $VIMRUNTIME/autoload 文件夹下，vim 中使用 :echo $VIMRUNTIME 查看变量内容
 " 打开 vim 运行 :PlugInstall 即可安装所有列表中的插件
 " vim-plug 默认下载插件保存路径为 '~/.vim/plugged'，Windows 下默认为：%HOME%\vimfiles\plugged 
 if has('win64') || has('win32')
