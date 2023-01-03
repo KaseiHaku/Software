@@ -1,0 +1,39 @@
+Download {
+    https://www.jetbrains.com/idea/download/other.html      # 历史版本下载，需要下载 带 JBR 的版本，否则界面不好看
+
+}
+
+
+
+Preset {
+    # 配置后台不自动更新
+    File -> Settings -> Appearance & Behavior -> System Settings -> Updates -> [不勾选] Automatically check updates for [...]
+
+    # 配置一个不存在的代理，防止 IDEA 自动请求远程服务器导致 激活码 失效
+    File -> Settings -> Appearance & Behavior -> System Settings -> Http Proxy -> Manual proxy configuration
+    -> [勾选] Socks
+    -> Host name: 127.0.0.1
+    -> Port number: 10000
+    -> No proxy for: localhost,127.*,192.168.*
+    
+
+    # Intellij IDEA 2020.2.4 插件仓库破解
+    File -> Settings -> Plugins -> Manage Plugins Reposito 
+    -> 添加仓库地址 
+        https://repo.idechajian.com
+    -> 搜索插件 "BetterIntellij" 并安装
+    Help -> Register... -> Add New License -> Active Code -> 粘贴上述激活码即可（无前后空格） -> 激活即可 
+    -> 如果不行打开 idea64.exe.vmoptions 文件看看，删掉多余的，还不行 shell> find /  删除掉所有 IDEA 的配置文件及目录
+     
+    # Intellij IDEA 2020.2.4 无限试用
+     File -> Settings -> Plugins -> Manage Plugins Reposito 
+    -> 添加仓库地址 
+        https://plugins.zhile.io
+    -> 搜索插件 "IDE Eval Reset" 并安装
+    -> 重启 IDEA  
+    -> Help -> Eval Reset 重置试用时间
+    
+}
+
+
+
