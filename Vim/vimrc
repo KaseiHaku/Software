@@ -248,7 +248,8 @@ autocmd cursorhold * set nohlsearch         " 当光标一段时间保持不动�
 
 """""""""""""""""""""""""""""""""""""""""""""""" Shell 配置 """"""""""""""""""""""""""""""""""""""""""
 if has('win64') || has('win32')                                     " 如果是 window 系统
-    set shell=C:\Software\Git\Git\bin\bash.exe                      " 指定 vim 中 :shell 所使用的 shell 
+    set shell=\"D:\Program\ Files\Git\bin\bash.exe\"                " 指定 vim 中 :shell 所使用的 shell，
+                                                                    " @trap 特别注意这里 双引号 空格 反斜杠 的用法，:help 'shell'
     "set shellcmdflag=
     "set shellpipe=|           
     "set shellquote=
