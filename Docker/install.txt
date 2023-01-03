@@ -18,4 +18,5 @@ CentOS7:
     
     
 Windows：
+    # WSL 基于 Hyper-v
     C:\Users\admin\AppData\Roaming\Docker\settings.json      配置 "wslEngineEnabled": false 
