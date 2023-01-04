@@ -28,3 +28,7 @@
     ->  Font: Consolas 改成 Microsoft YaHei
         Font Style: Regular
         Size: 10
+
+配置显示行号：
+    Window -> Preferences -> Editors -> Text Editors
+    -> [勾选] Show line numbers
