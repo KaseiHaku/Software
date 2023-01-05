@@ -120,7 +120,8 @@ cp /source /destination/                            # 复制文件或目录，�
 cp /source /destination/newfilename                 # 复制文件，并重命名
 cp -i /source /destination/                         # 复制过程中如果出现覆盖，则提示
 cp -v /source /destination/                         # 显示复制过程中做了哪些操作
-cp -r /source /destination/                         # 递归复制
+\cp -r /source /destination/                        # 递归复制, \ 表示不使用 alias 解析 cp 命令
+
 
 
 mv -i /source /destination/                         # 覆盖前提示
