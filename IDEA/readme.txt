@@ -36,4 +36,5 @@ IntelliJ IDEA Concept and Architecture {
     Kubernetes                      # K8s 配置文件提示
     RestfulTool                     # http client 及 spring controller 开发
     HTTP Client                     # http 客户端工具
+    RestfulTool                     # Spring MVC/Boot Controller 搜索
 }
