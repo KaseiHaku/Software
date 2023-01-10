@@ -194,3 +194,22 @@ mysql> show master status;                              # 查看主库信息
 mysql> set global sql_slave_skip_counter = 1;           # 设置跳过错误步数，数字任意，用于 binlog+position 方式部署的主从模式
 
 
+
+
+/******************************* Dead Lock 死锁处理 ******************************/
+mysql> show variables like '%innodb_rollback_on_timeout%';  # 事务超时自动回滚
+
+mysql> show open tables where in_use > 0;       # 查看当前有那些表是打开的，In_use 列表示有多少线程正在使用某张表，Name_locked 表示表名是否被锁
+mysql> show full processlist;                # 查看所有线程
+mysql> kill id;             # id 为  show processlist; 的 id 列
+
+
+
+mysql> select t.trx_id,t.trx_tables_locked, t.trx_rows_locked, t.trx_requested_lock_id, t.* from information_schema.innodb_trx t;   # 查看当前有 锁 的事务
+mysql> kill trx_mysql_thread_id;     # 杀掉线程
+
+
+
+
+
+
