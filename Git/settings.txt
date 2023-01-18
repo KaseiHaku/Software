@@ -146,7 +146,7 @@ Git 初始化配置 {
     shell> git remote set-url origin git@github.com:yourusername/yourrepositoryname.git     # 修改为 ssh 协议
 
 
-    
-    
+Windows 下 %GIT_HOME%/bin/bash.exe 启动脚本配置：
+    shell> echo 'source /etc/profile.d/aliases.sh' >> %GIT_HOME%/bash.bashrc
     
     
