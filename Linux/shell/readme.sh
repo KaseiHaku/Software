@@ -12,11 +12,14 @@ Shell 的启动方式：
         交互 非登录:             例如: GUI 界面中的 terminal emulator 
         非交互 登录：             例如: shell> bash --login xxx.sh
         非交互 非登录：            例如: 执行 shell 脚本；shell> source xxx.sh
-        
-    登录式启动, shell 执行的相关脚本及顺序：
-        /etc/profile -> /etc/profile.d/* -> (~/.bash_profile | ~/.bash_login | ~/.profile) -> ~/.bashrc -> /etc/bash.bashrc -> ~/.bash_logout
-    非登录式启动，shell 执行的相关脚本及顺序：
-        ~/.bashrc -> /etc/bash.bashrc
+    
+    启动时 shell 执行的相关脚本及顺序:
+        登录式：
+            /etc/profile -> (~/.bash_profile | ~/.bash_login | ~/.profile) -> ~/.bash_logout -> /etc/bash.bash_logout 
+        交互式 + 非登录:
+            ~/.bashrc
+        非交互：
+            $BASH_ENV
 
 查看当前使用的 shell:
     shell> echo $0          # 通用
