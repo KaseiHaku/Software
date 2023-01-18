@@ -51,6 +51,7 @@ Query {
 
 Create {
     shell> git push origin localBranch:remoteBranch         # 将本地库的 localBranch 分支推送到 origin 远程库的 remoteBranch 分支上，若远程分支没有，则创建远程分支
+    shell> git push origin --tags                           # 将本地库 tag 推到远程库
 
 }
 
