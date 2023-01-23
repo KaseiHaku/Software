@@ -48,13 +48,16 @@ Personalize Settings {
     }
 
     Maven 依赖报红处理 {
-         1. File -> Settings -> Build,Execution,Deployment -> Build Tools -> Maven -> [不勾选] Work offline
-         2. 检查 IDEA Maven 的配置 和 仓库地址是否正确
-         3. View -> Tool Windows -> Maven 窗口左上角的 刷新图标
-         4. View -> Tool Windows -> Maven 根模块 右键菜单，Unlink Maven Projects，
-            移除后，选择项目 pom.xml 文件右键 Add as Maven Project
-         5. 找到 maven 本地仓库，删除 .repositories 文件，再 点击 刷新图标
-         6. 关闭项目，或者 File -> Invalidate Caches...
+        0. 检查是否将 IDEA 的 build runner 委托给 maven 执行：因为 IDEA 启动程序按钮 和 maven 的 build 使用的 jar 包环境不一样
+           File -> Settings -> Build,Execution,Deployment -> Build Tools -> Maven -> Runner
+           => [勾选] Delegate IDE build/run actions to Maven
+        1. File -> Settings -> Build,Execution,Deployment -> Build Tools -> Maven -> [不勾选] Work offline
+        2. 检查 IDEA Maven 的配置 和 仓库地址是否正确
+        3. View -> Tool Windows -> Maven 窗口左上角的 刷新图标
+        4. View -> Tool Windows -> Maven 根模块 右键菜单，Unlink Maven Projects，
+           移除后，选择项目 pom.xml 文件右键 Add as Maven Project
+        5. 找到 maven 本地仓库，删除 .repositories 文件，再 点击 刷新图标
+        6. 关闭项目，或者 File -> Invalidate Caches...
          
     }
 
@@ -429,6 +432,10 @@ Personalize Settings {
         Maven 自动下载 Sources 和 Documentation 配置： 
         File -> Settings -> Build,Execution,Deployment -> Build Tools -> Maven -> Importing
         Automatically download: [勾选]Sources [勾选]Documentation
+        
+        将 IDEA 的 build runner 委托给 maven 执行：
+            File -> Settings -> Build,Execution,Deployment -> Build Tools -> Maven -> Runner
+            => [勾选] Delegate IDE build/run actions to Maven
     }
 
 
