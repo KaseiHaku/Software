@@ -114,9 +114,9 @@ Linux 查看当前 Terminal 所有可以运行的命令
     >>fileName 2>&1             # 追加，输出重定向 stdout 到 fileName，stderr 使用 stdout 的管道，也输出到 fileName
     &>>fielName                 # 同上
     
-    # word 不会经过 shell 进行处理，如果 word 任何部分是引用，here-document 中的 ${var} 不会被 处理
-    # delimiter 是 word 删除所有 引号 过后的值
-    # 如果 word 中 任何字符 被 引号 包含，那么 here-document 中的值会被 shell 变量替换
+    # shell 不会处理 word 中的字符，
+    # 如果 word 中任何 char 是引用，那么 delimiter 是 word 删除所有 引用 过后的值，且 here-document 中的 ${var} 不会被 处理
+    # 如果 word 中任何 char 都不是引用，那么 here-document 中的值会被 shell 变量替换，\<newline> 会被忽略，且 \, $, ` 必须使用 \ 进行转义，即: \\, \$, \`
     # - 代表删除 here-document 中的前置 tab 字符
     [n]<<[-]word                # 该格式的作用是，以 here-document 作为 输入源
         here-document
