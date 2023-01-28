@@ -76,6 +76,7 @@ find . ! -iregex '.*.cnf' ! -iregex '.*' -exec command {} \+    # 跟 \; 的区�
                                                             
 find . -iname 'pattern' ! -type d                           # 排除目录 
 find . -regextype egrep -iregex '.*[a-z].*'                 # 使用 egrep 类型的正则表达式匹配
+find / -path '/proc' -prune -ipath 'pattern'                # 搜索 根目录，但是排除 /proc 目录
 
 
 
