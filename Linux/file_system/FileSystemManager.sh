@@ -53,8 +53,9 @@ locate                                              # 从 mlocate.db 索引库�
 
 find findOpt path expOpt (tests) action             # find 命令格式
 find / exp1 exp2                    # and
-find / exp1,exp2                    # union
+find / exp1 -a exp2                 # and
 find / !exp1 -o exp2                # not 和 or
+find / exp1 , exp2                  # union
 find / exp1 -print                  # 默认 action 为 print
 
 find . ! -iregex '.*.cnf' ! -iregex '.*' -print
@@ -76,8 +77,8 @@ find . ! -iregex '.*.cnf' ! -iregex '.*' -exec command {} \+    # 跟 \; 的区�
                                                             
 find . -iname 'pattern' ! -type d                           # 排除目录 
 find . -regextype egrep -iregex '.*[a-z].*'                 # 使用 egrep 类型的正则表达式匹配
-find / -path '/proc' -prune -ipath 'pattern'                # 搜索 根目录，但是排除 /proc 目录
-
+find / -path '/proc*' -prune , -path '/var*' -prune , -path '/home*' -prune , -ipath 'pattern'      # 搜索 根目录，但是排除 /proc 目录
+find / -regextype egrep -iregex '/home*|/proc*|/var*' -prune , -ipath 'pattern'                     # 同上
 
 
 
