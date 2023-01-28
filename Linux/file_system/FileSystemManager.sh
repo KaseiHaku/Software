@@ -51,7 +51,7 @@ whereis command1                                    # 查找安装 command1 命�
 
 locate                                              # 从 mlocate.db 索引库中查找文件，最好使用 shell> updatedb 命令更新一遍索引，确保新建文件不会遗漏
 
-find findOpt path expOpt (tests) action             # find 命令格式
+find findOpt path {expOpt (tests) action}...        # find 命令格式
 find / exp1 exp2                    # and
 find / exp1 -a exp2                 # and
 find / !exp1 -o exp2                # not 和 or
