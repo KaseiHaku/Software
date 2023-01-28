@@ -11,6 +11,17 @@ V2Ray 安装：
             /etc/systemd/system/v2ray.service: Systemd
             /etc/init.d/v2ray: SysV
         
+    https://github.com/v2ray/v2ray-core/
+    https://github.com/v2ray/ext
+    https://github.com/XTLS
+    
+    
+    v2ray → v2fly → xray 大致是以下情况：
+        v2ray 是著名开源网络工具程序名，Project V 则是其曾经的项目名。
+        v2fly 是 v2ray 的创始人突然离开后社区重组的开源组织名。
+        Project X 是在 v2ray 无法合并 xtls 的情况下（开源协议许可证问题）另行组建的组织名。 xray 则是 Project X 组织下的程序名。
+        
+    Trojan 
     
 V2Ray 配置：
     shell> vi /etc/v2ray/config.json
