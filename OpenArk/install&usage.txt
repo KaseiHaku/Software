@@ -1,6 +1,9 @@
 download:
   https://github.com/BlackINT3/OpenArk/releases
   
+  GitHub 中最新的是 v1.2.2  无法适配 win11，需要使用当前库中的 v1.3.0-beta 版本才行
+  
 usage:
   Kernel -> System Hotkey -> Enter KernelMode
-  
+ 
+
