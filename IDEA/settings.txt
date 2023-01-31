@@ -105,6 +105,7 @@ Personalize Settings {
         常用:
             lib:java..*                     # jdk 的包
             file:*-client/src//*            # 前端代码
+            !file:*//dist//*                # 排除掉 前端编译后的文件
             
     }
 
