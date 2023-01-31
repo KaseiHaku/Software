@@ -181,8 +181,11 @@ services:
       - dc1.example.com
       - dc2.example.com
     container_name: my-web-container              # 自定义 container name 而不是使用默认的  
-    command: [bundle, exec, thin, -p, 3000]       # 用于覆盖 Dockerfile 中默认的 CMD 指令, 使用 exec 格式
-    entrypoint: [/code/entrypoint.sh]             # 覆盖 Dockerfile 中默认的 entrypoint 指令, 使用 exec 格式
+    # 命令执行
+    # @trap 因为 exec form 会解析成 JSON Array，所以 字符串 必须使用 " 包含，不能使用单引号
+    # @trap 因为 exec form 不会调用 /bin/bash 等命令，所以 ["echo", "$HOME"] 这种格式不会进行变量替换，如果需要替换变量则 ["/bin/bash", "-c", "echo", "$HOME"]
+    command: [bundle, exec, thin, -p, 3000]       # 用于覆盖 Dockerfile 中默认的 CMD 指令, 使用 exec 格式，字符串必须是 " 包含，不能使用单引号
+    entrypoint: [/code/entrypoint.sh]             # 覆盖 Dockerfile 中默认的 entrypoint 指令, 使用 exec 格式，字符串必须是 " 包含，不能使用单引号
     expose:         # 暴露 container_port 用于其他 container 连接
       - "3000-3010"
       - "8000"
