@@ -128,6 +128,8 @@ SHELL ["/bin/sh", "-c"]
 # 如果 shell> docker run containerId cmd 中 cmd 存在，那么 cmd 会替换掉 Dockerfile 中默认的 CMD 命令
 # shell> docker run containerId -i   那么实际运行的命令为 shell> -i
 # CMD 命令最好只使用 Exec 表示法，不要用 Shell 表示法
+#
+# @trap 因为 exec form 会解析成 JSON Array，所以 字符串 必须使用 " 包含，不能使用单引号
 # @trap 因为 ARG 是 image build-time 时才有效，而 CMD 是 image runtime 所以不能在 CMD 中使用 ARG
 #       例如: CMD ["echo", "${ARG1}"]  这样是不生效的
 CMD [ "ping", "start" ]
@@ -141,8 +143,8 @@ CMD [ "ping", "start" ]
 # 例如当前 Dockerfile 就是同时存在的 CMD 和 ENTRYPOINT，shell> docker run image  实际执行的是  shell> npm install ping start
 # 又因为 CMD 命令可以使用 shell> docker run image cmd 中的 cmd 替换，所以最终执行结果为 shell> npm install cmd
 #
-# @trap 不要在 Dockerfile 中使用 单引号，shell 命令会解析错误
-# @trap ["echo", "$HOME"] 这种格式不会进行变量替换，如果需要替换变量则 ["/bin/bash", "-c", "echo", "$HOME"]
+# @trap 因为 exec form 会解析成 JSON Array，所以 字符串 必须使用 " 包含，不能使用单引号
+# @trap 因为 exec form 不会调用 /bin/bash 等命令，所以 ["echo", "$HOME"] 这种格式不会进行变量替换，如果需要替换变量则 ["/bin/bash", "-c", "echo", "$HOME"]
 ENTRYPOINT [ "npm", "install" ]
 
 # HEALTHCHECK 
