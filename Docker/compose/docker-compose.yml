@@ -99,6 +99,7 @@ services:
       - default   # 因为定义了其他网络，所以 default 需要显式声明，否则不会连接到 default 上
       
   example:            # 运行的 docker 的 container name
+    # @doc https://docs.docker.com/compose/compose-file/build/
     build:          
       # 读取 指定目录下的 Dockerfile 文件，build 一个新的 image，再以新的 image 创建一个 constainer 运行 
       # 如果是相对路径，那么基于当前 docker-compose.yml 文件的路径
