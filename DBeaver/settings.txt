@@ -32,3 +32,22 @@
 配置显示行号：
     Window -> Preferences -> Editors -> Text Editors
     -> [勾选] Show line numbers
+
+
+连接 MongoDB:
+    File -> New -> DBeaver -> Database Connection -> NoSQL -> MongoDB
+        Main
+            Address
+                Replica Set:        # 需要注意
+            Credentails
+                Mechanism: SCRAM-SHA-256        # 需要跟 mongo 中配置的 user 的加密方式一致
+                Source: admin                   # 用户所在 db 的名称，需要跟 mongo 中 user 的配置一致
+        Driver properties:          
+            Miscellaneous:
+                Use client-side JavaScritp: [勾选]        # @trap 必须勾选，否则 sql editor 中不能使用 db.collection.find() 格式语句
+                
+ 连接 MySQL:
+    同 MongoDB 样一定要注意 Driver properties 中的值，不对可能导致连接失败
+                
+                
+                
