@@ -1,5 +1,18 @@
+下载:
+    https://dbeaver.com/files/22.1.0/
+    
+    windows 系统请使用ZIP包
+    mac 系统请使用DMG包
+    linux 系统请使用.TAR.GZ包
+    
+    
+
 安装：
-    dbeaver-ce 22.0.4.202205011839 版本无已知 bug
+    DBeaver:
+        dbeaver-ce 22.0.4.202205011839 版本无已知 bug
+    Java:
+        DBeaver 运行需要 java，请自行安装！不要使用 DBeaver 自带的 jre，它被人为阉割了，
+        @trap: 21.0.0 以上版本需要自己额外安装 jdk11 以上版本 
 
 
 使用方法:
@@ -7,12 +20,17 @@
  1. 先下载压缩包解压后得到dbeaver-agent.jar，把它放到你认为合适的文件夹内。
     下载页面：https://zhile.io/2019/05/08/dbeaver-license-crack.html
  2. 在DBeaverEE安装目录下找到Eclipse\dbeaver.ini文件
- 3. 在打开的dbeaver.ini编辑窗口末行添加："-javaagent:/absolute/path/to/dbeaver-agent.jar"
+ 3. 在打开的 dbeaver.ini 编辑窗口末行添加："-javaagent:/absolute/path/to/dbeaver-agent.jar"
     一定要自己确认好路径，填错会导致DBeaverEE打不开！！！最好使用绝对路径。
     示例:
       mac:      -javaagent:/Users/neo/dbeaver-agent.jar
       linux:    -javaagent:/home/neo/dbeaver-agent.jar
       windows:  -javaagent:C:\Users\neo\dbeaver-agent.jar
+    @trap 22.1.0 以上版本需要额外添加  -Dlm.debug.mode=true
+    @trap 21.0.0 以上版本需要额外自己安装 jdk11，并修改 dbeaver.ini 中的 -vm 指定的路径为自己的安装的
+          如果 dbeaver.ini 内没有 -vm 参数，请在首行添加你安装 jdk 的 java 路径： 坑: 这里是两行，必须换行
+          -vm 
+          /path/to/your/bin/java
  4. 启动DBeaverEE即可。
  5. 如果提示错误: 
     "Error opening zip file or JAR manifest missing : dbeaver-agent.jar"
