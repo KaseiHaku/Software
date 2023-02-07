@@ -50,3 +50,9 @@
 
 # 排除 /ProjectName/.gradle 目录
 /.gradle/
+
+
+# 排除指定目录下的内容，除了 yyy
+/xxx/**
+!/xxx/yyy
+
