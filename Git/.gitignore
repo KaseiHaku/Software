@@ -26,6 +26,7 @@
 # 检查一个 path 是否被 .gitignore 忽略，
 # @trap .gitignore 只针对 untracked 的文件，对已经 tracked 的文件不生效
 #   shell> git check-ignore -v ./path
+#   shell> git status --ignored     
 
 # ! 开头表示反规则
 # / 开头表示路径，为项目根路径， ** 表示任意层中间目录
