@@ -25,6 +25,8 @@ Run {
     shell> sudo mongod -f /etc/mongod.conf   # 使用配置文件启动 mongodb, root 权限
 
     shell> mongo --host 127.0.0.1 --port 27017          # MongoDB 默认是不需要认证就能读写任何数据库
+    shell> mongo -u zhnyMoMaster -p 'deviceData123!' --authenticationDatabase admin --authenticationMechanism SCRAM-SHA-1 mongos.zhny.com/deviceData   
+
     mongo> show dbs                 # 查看所有数据库
     mongo> use admin                # 使用 admin 数据库
     mongo> db.createUser(           # 创建超级管理员
