@@ -139,7 +139,13 @@ services:
       # 在 docker-compose.yml 中使用外部环境变量，如果环境变量比较多 projectDirectory 下的 .env 文件可以为 docker-compose.yml 统一配置环境变量，
       # shell> docker-compose --env-file .env.prod      # 可以指定使用哪个文件作为 .env 环境变量文件
       # shell> docker-compose run -e DEBUG=1            # 命令行指定 环境变量
-      # @doc https://docs.docker.com/compose/compose-file/#interpolation
+      # @doc https://docs.docker.com/compose/compose-file/#interpolation   
+      #   ${VARIABLE} 
+      #   ${VARIABLE:-default}          # unset 和 empty 时，都取默认值
+      #   ${VARIABLE-default}           # unset 时，取默认值
+      #   ${VARIABLE:?err}              # unset 和 empty 时都报错，错误信息=err
+      #   ${VARIABLE?err}               # unset 时报错，错误信息=err
+      #   ${VARIABLE:-${FOO}}           # 支持嵌套
       SHELL_ENV: ${SHELL_ENV_TRASMIT_2_DOCKER_COMPOSE}    
     # 指定多个 .env 环境变量文件，如果不配置，默认取当前文件同目录下的 .env 文件作为默认环境变量文件
     env_file:         
