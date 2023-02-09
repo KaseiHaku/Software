@@ -48,6 +48,29 @@
                 
  连接 MySQL:
     同 MongoDB 样一定要注意 Driver properties 中的值，不对可能导致连接失败
-                
+         
+ 驱动管理:
+    Database -> Driver Manager 
+        -> New
+            Settings:
+                Driver Name: TDEngine
+                Driver Type: Generic
+                Class Name: com.taosdata.jdbc.rs.RestfulDriver
+                URL Template: jdbc:TAOS-RS://{host}[:{port}]/[{database}]
+                Default Port: 6041
+                Default User: root
+            Libraries:
+                Add Artifact:
+                    <dependency>
+                        <groupId>com.taosdata.jdbc</groupId>
+                        <artifactId>taos-jdbcdriver</artifactId>
+                        <version>2.0.42</version>
+                    </dependency>
+                Dowload/Update
+            Ok
+
+    使用新的驱动连接数据库:
+        File -> New -> DBeaver -> Database Connection -> All
+            选择 TDEngine 然后常规配置即可
                 
                 
