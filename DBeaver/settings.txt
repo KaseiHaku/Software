@@ -72,5 +72,11 @@
     使用新的驱动连接数据库:
         File -> New -> DBeaver -> Database Connection -> All
             选择 TDEngine 然后常规配置即可
-                
+          
+使用 VPN 后，发现连接数据库一直超时（保证连接字符串都对的情况下），需要额外配置启动参数:
+    %DBEAVER_HOME%/dbeaver.ini     中追加一行 -Djava.net.preferIPv4Stack=true
+
+    因为部分网络使用之后，在 JDBC 连接时，会默认使用 IPV6 连接，
+    但是 jdbc 的 url 我们一般都是基于 IPV4 的，这就会导致 JDBC 无法连接上数据库，所以这时候，我们需要给 JVM 设置一个参数，优先使用 IPV4。
+    
                 
