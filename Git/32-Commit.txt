@@ -64,5 +64,25 @@ Modify {
     shell> git filter-branch --tree-filter 'rm -f ./password.txt' -- commit-ish   # 删除当前 commit 及其 父commit 指定的文件, 并重新提交
     shell> git filter-branch --tree-filter 'rm -f ./password.txt' -- --all        # 删除所有 commit 中指定的文件, 并重新提交
 
+    # 假设当前分支为 dev，那么该命令将 dev 分支上的提交都拼接到 master 分支后面
+    # p, pick <commit> = 应用该提交
+    # r, reword <commit> = 应用该提交，但是修改 commit message
+    # e, edit <commit> = 应用该提交，但是为了 修改 停止
+    # s, squash <commit> = 应用该提交，但是将当前提交 meld(合并入) 之前一个提交
+    # f, fixup [-C|-c] <commit> = 同 squash，但是只保留上一个提交的 commit message；-C 则只保留当前提交的 commit message；-c 打开编辑器，修改 commit message
+    # x, exec <command> = 使用 shell 运行 command(该行剩余的部分)
+    # b, break = 在此处停止并推出编辑器，可以使用 shell> git rebase --continue 继续
+    # d, drop <commit> = 删除提交
+    # l, label <label> = 将当前 HEAD 打个 label
+    # t, reset <label> = 将当前 HEAD reset 到指定的 label
+    # m, merge 
+    # u, update-ref <ref> = 
+    shell> git rebase -i master     
+        pick    hash1234    commitComment1      
+        pick    hash1235    commitComment2
+        pick    hash1236    commitComment3
+        # 以上命令会从上到下执行，调整以上行的顺序，会改变执行顺序
+        # 如果删除行，那么 commit 会丢失
+        # 如果全部删除，那么等价于 rebase abort
 }
 
