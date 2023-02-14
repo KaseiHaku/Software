@@ -118,6 +118,7 @@ Linux 查看当前 Terminal 所有可以运行的命令
     # 如果 word 中任何 char 是引用，那么 delimiter 是 word 删除所有 引用 过后的值，且 here-document 中的 ${var} 不会被 处理
     # 如果 word 中任何 char 都不是引用，那么 here-document 中的值会被 shell 变量替换，\<newline> 会被忽略，且 \, $, ` 必须使用 \ 进行转义，即: \\, \$, \`
     # - 代表删除 here-document 中的前置 tab 字符
+    # n 是文件描述符
     [n]<<[-]word                # 该格式的作用是，以 here-document 作为 输入源
         here-document
     delimiter                   
