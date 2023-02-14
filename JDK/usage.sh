@@ -99,7 +99,8 @@
             -XX:InitialCodeCacheSize        # JIT 编译期的 代码缓存，如果满了，字节码将不再会被编译成机器码
             -XX:+UseCodeCacheFlushing       # 当代码缓存被填满时让JVM放弃一些编译代码
             
-
+    # JVM 常用启动参数
+    shell> java -Djava.net.preferIPv4Stack=true     # 优先使用 IPv4
 
 
 # 查看 .class 文件的字节码信息
