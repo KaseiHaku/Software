@@ -37,4 +37,5 @@ IntelliJ IDEA Concept and Architecture {
     RestfulTool                     # http client 及 spring controller 开发
     HTTP Client                     # http 客户端工具
     RestfulTool                     # Spring MVC/Boot Controller 搜索
+    Graph Database support          # neo4j，识别 .cyp, .cypher, .cql 文件
 }
