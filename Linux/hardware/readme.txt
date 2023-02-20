@@ -34,6 +34,19 @@ shell> lshw -short      # 查看所有硬件摘要信息
     shell> gdisk -l     # 分区工具，适用于 GPT 分区
     shell> parted -l    # 分区工具，
     
+    
+    信息查看:
+        shell> iotop
+        shell> sar
+        shell> iostat
+        shell> vmstat 
+            bi      block-in    块设备每秒接收的块数量，这里的块设备是指系统上所有的磁盘和其他块设备
+            bo      block-out   块设备每秒发送的块数量，例如我们读取文件，bo 就要大于0
+            @caveat bi 和 bo 一般都要接近 0，不然就是 IO 过于频繁，需要调整
+    性能测试:
+        shell> dd 
+        shell> fio
+    
 #### Memory 内存
     shell> less /proc/meminfo   # 查看内存信息      
     shell> free -h -s 1     # 查看内存使用情况，-h 人类可读模式， 1秒输出一次
