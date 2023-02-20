@@ -279,8 +279,10 @@
              
     shell> ls /proc/ | xargs -rI{} echo {} | grep -E -e '[0-9]+' | xargs -rtI{} grep -a 'java' /proc/{}/cmdline     # 筛选所有进程启动命令 
         
-
-                                        
+# 查看一个进程 swap 的使用情况，特别是 redis
+    shell> cat /proc/$pid/smaps | egrep '^(Swap|Size)'      # 
+        Size:               1568 kB         # 当前 PID 使用的一块内存的大小
+        Swap:                  0 kB         # 这块大小的内存，有多少已经被 swap 到磁盘上了，如果这2个值相等，则说明这块内存的数据都已经被换到磁盘上了 
                                         
                                         
                                         
