@@ -116,9 +116,13 @@ services:
     # image 格式: registrydomain:port/path/tag:version
     # 例如: docker.io:4000/library/postgresql:1.0.1
     image: tomcat:8.5.65    
-    ports:            # 映射宿主机断口到 container 的端口上
+    # 映射宿主机断口到 container 的端口上
+    # @doc https://docs.docker.com/compose/compose-file/#ports
+    # 格式: [IP:](port | range):(port | range)[/PROTOCOL]     # 可用值：tcp, udp; 不填则匹配任何协议
+    ports:           
       - '5000:5002'     
       - '127.0.0.1:5000:5002'       # 将容器的 5002 端口映射到 宿主机 127.0.0.1 网卡的 5000 端口上
+      - '127.0.0.1:5000:5002/udp'
     # 映射宿主机的目录到 container 的目录上，转产时可以去掉该配置，这样 代码 就在容器中了，并且不会被修改
     # @trap 相对路径必须以 . 或 .. 开头，防止跟 顶层 volumes 定义的 name 冲突
     volumes:          
