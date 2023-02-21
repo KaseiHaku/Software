@@ -118,7 +118,7 @@ services:
     image: tomcat:8.5.65    
     # 映射宿主机断口到 container 的端口上
     # @doc https://docs.docker.com/compose/compose-file/#ports
-    # 格式: [IP:](port | range):(port | range)[/PROTOCOL]     # 可用值：tcp, udp; 不填则匹配任何协议
+    # 格式: [IP:](port | range):(port | range)[/PROTOCOL]     # 可用值：tcp, udp; 不填则默认 tcp
     ports:           
       - '5000:5002'     
       - '127.0.0.1:5000:5002'       # 将容器的 5002 端口映射到 宿主机 127.0.0.1 网卡的 5000 端口上
