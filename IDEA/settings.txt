@@ -123,6 +123,7 @@ Personalize Settings {
             shell> npm run dev              # 命令行启动 webpack-dev-server
             Run -> Edit Configurations... -> "+" 图标 -> npm -> dev      # 配置方式启动
         2. 配置 JavaScript Debug 
+            https://www.jetbrains.com/help/idea/2022.3/debugging-javascript-in-chrome.html
             方法一：
                 Run -> Edit Configurations... -> "+" 图标 -> JavaScript Debug 
                 -> Name: VueDebug
