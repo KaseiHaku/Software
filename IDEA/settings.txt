@@ -106,6 +106,8 @@ Personalize Settings {
             lib:java..*                     # jdk 的包
             file:*-client/src//*            # 前端代码
             !file:*//dist//*                # 排除掉 前端编译后的文件
+            !file:*//node_modules//*        # 排除掉 前端引入的文件
+            !file:*//dist//*||!file:*//node_modules//*  # 排除掉 前端 非项目代码文件
             
     }
 
