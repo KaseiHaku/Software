@@ -143,14 +143,24 @@ Personalize Settings {
                 -> 配置 node_modules/*     # 表示跳过符合该路径的 scripts，
         
         5. idea 打开的 chrome 页面丢失 书签 插件等信息的问题 
-            File -> Settings -> Tools -> Web Browsers -> 选择 Chrome -> "铅笔" 图标 
-            -> [勾选] Use custom user data directroy:  选择 chrome 的用户数据目录       # chrome://version   页面中的 Profile Path: 就是用户数据保存目录
-            坑：选择 chrome 用户数据目录，不能直接使用 chrome://version 中 Profile Path: 指定的父目录，
-                1. Windows 重命名 C:\Users\Administrator\AppData\Roaming\JetBrains\IntelliJIdea2020.2\chrome-user-data 为 chrome-user-data-bak
-                   Linux: 重命名 /home/kasei/.config/JetBrains/IntelliJIdea2021.2/chrome-user-data 为 chrome-user-data-bak
-                2. 复制 Profile Path: 的父目录 UserData ，到 C:\Users\Administrator\AppData\Roaming\JetBrains\IntelliJIdea2020.2\ 中
-                3. 重命名 UserData 为 chrome-user-data  
-                4. IDEA 中配置 Use custom user data directroy: C:\Users\Administrator\AppData\Roaming\JetBrains\IntelliJIdea2020.2\chrome-user-data 
+            @doc https://www.jetbrains.com/help/idea/2022.3/configuring-javascript-debugger.html#ws_js_debug_default_chrome_user_data
+            
+            Linux: 
+                chrome://version        # 查看 chrome 的 Profile Path(就是用户数据保存目录)，假设为 /home/kasei/.config/google-chrome/Default
+                shell> cd /home/kasei/.config/JetBrains/IntelliJIdea2022.3      # 进入 IDEA 的配置目录
+                shell> mv chrome-user-data chrome-user-data-bak     # 备份原来的数据
+                shell> cp -r /home/kasei/.config/google-chrome  .   # 复制 Profile Path 的父目录到 IDEA 配置目录
+                shell> mv google-chrome chrome-user-data            # 修改名称
+                shell> cd ./chrome-user-data
+                shell> rm -rf ./SingletonCookie ./SingletonLock ./SingletonSocket   # 删除软链接，否则会跟原有的 chrome 冲突
+                File -> Settings -> Tools -> Web Browsers -> 选择 Chrome -> "铅笔" 图标 
+                     -> [勾选] Use custom user data directroy:  并配置为 /home/kasei/.config/JetBrains/IntelliJIdea2022.3/chrome-user-data 
+                
+            
+            Windows:
+                shell> cd C:\Users\Administrator\AppData\Roaming\JetBrains\IntelliJIdea2020.2   # 进入 IDEA 的配置目录
+                其他同 Linux
+            
     
     }
 
