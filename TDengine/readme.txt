@@ -22,12 +22,19 @@ Frequently Used:
         #   replica 3       # 配置当前 db 的副本数量是 3， @trap dnode 数量必须大于 replica 的数量，否则报错
         # @trap 最多 4096 列
         taos> create database db1 keep 365 days 10 blocks 6 update 1;
+
+        # 查看建库语句
+        taos> show create database db_name;
     
     STable:
         # 创建超级表
         # 支持的数据类型文档： https://docs.tdengine.com/taos-sql/data-type/
         # @trap 第一列的数据类型必须是 timestamp 类型，且唯一
-        taos> create stable stab1 (ts timestamp, current float, voltage int, phase float) tags (location binary(64), groupid int);
+        taos> create stable if not exists stab1 (ts timestamp, current float, voltage int, phase float) tags (location binary(64), groupid int);
+
+        taos> show stables like tb_name_wildcard;   # 查看所有超级表
+        taos> show create stable stb_name;          # 查看建表语句
+        taos> describe stb_name;                    # 描述超级表
         
     SubTable:
         # 手动创建子表
@@ -72,7 +79,7 @@ Frequently Used:
     Mnode:   
         # tdengine 配置文件中的 numOfMNodes 可以控制主节点的数量，可用范围为 [1,3]，为保证数据一致性，主节点间数据复制是同步的  
         taos> show mnodes;
-        
+
     Vgroups:
         taos> use db1;
         taos> show vgroups;
