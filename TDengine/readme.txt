@@ -34,16 +34,21 @@ Frequently Used:
 
         taos> show stables like tb_name_wildcard;   # 查看所有超级表
         taos> show create stable stb_name;          # 查看建表语句
-        taos> describe stb_name;                    # 描述超级表
+        taos> describe stb_name;                    # 查看表定义
         
     SubTable:
         # 手动创建子表
         # 表文档: https://docs.tdengine.com/taos-sql/table/
         taos> create table stab1_dcpid using stab1 tags ("california.sanfrancisco", 2);
+        taos> create table stab1_dcpid using stab1 (tag1, tag2) tags ("california.sanfrancisco", 2);    # 创建子表时，只使用超级表中的一部分 tags，其他 tags 都设置为 null
 
         # 插入数据时自动创建子表
         # @docs https://docs.tdengine.com/taos-sql/insert/#automatically-create-table-when-inserting
         taos> insert into stab1_dcpid using stab1 tags ("california.sanfrancisco", 2) values (now, 10.2, 219, 0.32);
+
+        taos> show tables like tb_name_wildcard;    # 查看所有表
+        taos> show create table tb_name;            # 查看见表语句
+        taos> describe tb_name;                     # 查看表定义
         
     Tune:
         # @docs 性能优化： https://docs.tdengine.com/2.6/operation/optimize/
