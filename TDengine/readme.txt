@@ -30,9 +30,10 @@ Frequently Used:
         # 创建超级表
         # 支持的数据类型文档： https://docs.tdengine.com/taos-sql/data-type/
         # @trap 第一列的数据类型必须是 timestamp 类型，且唯一
+        # @trap tag 是一个特殊的列，不能和其他列 重名
         taos> create stable if not exists stab1 (ts timestamp, current float, voltage int, phase float) tags (location binary(64), groupid int);
 
-        taos> show stables like tb_name_wildcard;   # 查看所有超级表
+        taos> show stables like '%100';   # 查看所有超级表
         taos> show create stable stb_name;          # 查看建表语句
         taos> describe stb_name;                    # 查看表定义
         
@@ -46,7 +47,7 @@ Frequently Used:
         # @docs https://docs.tdengine.com/taos-sql/insert/#automatically-create-table-when-inserting
         taos> insert into stab1_dcpid using stab1 tags ("california.sanfrancisco", 2) values (now, 10.2, 219, 0.32);
 
-        taos> show tables like tb_name_wildcard;    # 查看所有表
+        taos> show tables like '%100';    # 查看所有表
         taos> show create table tb_name;            # 查看见表语句
         taos> describe tb_name;                     # 查看表定义
         
