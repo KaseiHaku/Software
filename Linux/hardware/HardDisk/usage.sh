@@ -153,3 +153,16 @@ shell> parted
 
 
 
+# 查看设备块大小 ########################
+parted> print list                        # Sector size (logical/physical): 512B/512B    逻辑扇区/物理扇区
+shell> stat -f /
+shell> tune2fs -l /dev/sda1 | grep "Block size"
+shell> blockdev --getbsz /dev/sda2
+
+
+
+
+
+
+
+
