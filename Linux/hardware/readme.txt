@@ -36,16 +36,16 @@ shell> lshw -short      # 查看所有硬件摘要信息
     
     
     信息查看:
-        shell> iotop
-        shell> sar
-        shell> iostat
+        shell> iotop            # 进程级别 IO 监控
+        shell> sar              # 最全面
+        shell> iostat           # 系统级别的 IO 监控
         shell> vmstat 
             bi      block-in    块设备每秒接收的块数量，这里的块设备是指系统上所有的磁盘和其他块设备
             bo      block-out   块设备每秒发送的块数量，例如我们读取文件，bo 就要大于0
             @caveat bi 和 bo 一般都要接近 0，不然就是 IO 过于频繁，需要调整
     性能测试:
         shell> dd 
-        shell> fio
+        shell> fio              # IO 压测工具 
     
 #### Memory 内存
     shell> less /proc/meminfo   # 查看内存信息      
