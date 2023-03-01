@@ -19,6 +19,11 @@
     shell> pacman -Sl           # 列出仓库中所有的包
     shell> pacman -Ss string    # 查询包
     shell> pacman -S package    # 安装包
+    shell> pacman -Scc          # 清楚已下载的安装包
     
     
     shell> pacman -F            # 查看包所包含的文件
+    
+    shell> pacman -Qdtq                 # 查看 不需要的 包
+    shell> pacman -R $(pacman -Qdtq)    # 清楚不需要的包
+    
