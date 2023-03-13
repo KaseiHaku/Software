@@ -89,3 +89,7 @@ Frequently Used:
     Vgroups:
         taos> use db1;
         taos> show vgroups;
+        
+    Command Line Parameters：
+        # @doc https://docs.tdengine.com/2.6/reference/taos-shell/
+        taos> SET MAX_BINARY_DISPLAY_WIDTH 1000;
