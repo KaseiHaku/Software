@@ -1,2 +1,2 @@
 shortcut:
-    Alt+Shit+A              多行编辑
+    Alt+Shit+A              进入/退出 多行编辑
