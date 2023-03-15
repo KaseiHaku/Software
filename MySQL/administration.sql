@@ -110,7 +110,7 @@ mysql> show indexes in tb_name;
 mysql> show keys from table_name;-- 查看某一数据库中某一张表的所有索引
 mysql> select * from information_schema.table_constraints; -- 查看某张表的所有约束条件
 mysql> select * from key_column_usage; -- 该表保存系统中所有外键的具体信息
-mysql> create index idx_name using btree on tb_name (col1, col2);  -- 创建索引
+mysql> create index idx_name using btree on tb_name (col1 asc, col2 desc);  -- 创建索引
 mysql> drop index idx_name on tb_name;  -- 删除索引
 
 
