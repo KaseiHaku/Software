@@ -17,6 +17,9 @@ limit 10 offset 100; -- 从 100 行开始读取，一共读取 10 行
 
 
 
+-- 强制走索引 https://dev.mysql.com/doc/refman/8.0/en/join.html
+select t.* from tb t force index(idx_name1, idx_name2) where ...;
+
 /* Advance Sql Operating */
 -- left join 右表具有多个值 只取一个值的操作
 select * 
