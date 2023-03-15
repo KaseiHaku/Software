@@ -52,6 +52,9 @@ Key {
     
     # 查看 0-16 database 中所有的 key, 及 key 所在 DB，DB index 存在一位的偏移，显示 2 实际 dbindex=1
     shell> echo {0..16} | xargs -t -I {} -d ' ' redis-cli -h 127.0.0.1 -n {} -a 'pwd' keys '*' | grep -E 'xargs|keyPattern' 
+    
+    # 删除 redis 中所有 key
+    shell> redis-cli -a pwd keys "*"| xargs redis-cli -a pwd del
    
 }
 
