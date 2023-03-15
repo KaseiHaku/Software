@@ -105,10 +105,12 @@ mysql> describe v_name; -- 查看某一个视图的结构
 mysql> show create view v_name; -- 查看某一个视图的创建语句
 
 -- Constraint and Index
+-- https://dev.mysql.com/doc/refman/8.0/en/create-index.html
 mysql> show indexes in tb_name;
 mysql> show keys from table_name;-- 查看某一数据库中某一张表的所有索引
 mysql> select * from information_schema.table_constraints; -- 查看某张表的所有约束条件
 mysql> select * from key_column_usage; -- 该表保存系统中所有外键的具体信息
+mysql> create index idx_name using btree on tb_name (col1, col2);  -- 创建索引
 
 
 -- Procedure
