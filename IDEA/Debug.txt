@@ -50,7 +50,7 @@ IDEA Debug {
         
         断点右击：
             Breakpoints 窗口中 [勾选] Suspend 并 [单选]Thread
-            Suspend： All 表示该断点将停止整个 JVM 执行(包括其他所有线程)，Thread 表示只暂停当前线程的执行（建议使用Thread）
+            Suspend： All 表示该断点将停止整个 JVM 执行(包括其他所有线程)，Thread 表示只暂停当前线程的执行；（建议共享环境使用 Thread, 独享环境使用 All）
             Condition: 可以设置该断点生效的条件
 
         Debugger 窗口 -> 选择 Frames 标签页 -> 下拉框中选择想要查看的线程 -> 选择 Thread Frame(框架) 
