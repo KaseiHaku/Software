@@ -32,6 +32,17 @@ shell> awk option -- 'program' file1 file2
 program:
     @include "file" pattern {action statements}
     function name(parameter list){statements}
+    
+    执行顺序:
+        执行命令行中定义的变量 shell> awk -v var1=val1 -v var2=val2    
+        执行 BEGIN {} 中的语句，会合并所有文件中的 BEGIN
+        读取 ARGV 数组中的每个文件，直到 ARGV[ARGC]；如果没有，那么从 stdin 中读取
+        如果命令行中 filename 的格式为： var=val，那么会被当做变量赋值
+        执行一个文件中的 BEGINFILE 语句块
+        执行一个文件中的语句
+        执行一个文件中的 ENDFILE 语句块
+        执行 END {} 中的语句，会合并所有文件中的 END
+    
 
 Variable: 变量
     第一次使用之后才存在，
