@@ -101,11 +101,11 @@ Field: 字段
 
     NF 变量保存当前 record 总共有多少个 field，使用 $(NF+2) = 5 给不存在的 field 赋值，会导致 NF 增加，介于中间的值都为 null
     
-Arrays:
-    ary[subscript]
-    ary[(exp1, exp2, exp3)]
+Array & Map:
+    ary[subscript]                  # subscript 可以是 字符串 ，所以 awk 的 array 可以当作 map 用，类似 JS 的设计
+    ary[(exp1, exp2, exp3)]         # 实际下标 = exp1 $SUBSEP exp2 $SUBSEP exp3,  这种 facility(方式) 可以很方便的模拟多维数组
     
-    if(val in array) 
+    if(val in array)                # 遍历 ary/map 的 subscript/key
         print arrays[val]
         delete array[2]
         delte array[]       # 删除所有元素
@@ -236,3 +236,6 @@ Examples:
     EOF
     
     shell> awk -- 'BEGIN {FIELDWIDTHS="1 10 117 32"} { print $4} END {}' dd.txt
+    
+    
+    shell> ss | awk -- '/^tcp/ {map[$2]++} END { for(key in map){ print key, map[key]} } '        # 统计重复行的数量，awk map 和 ary 语法相同
