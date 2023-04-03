@@ -49,11 +49,11 @@ Variable: 变量
     可以为 浮点数，字符串，一维数组，模拟的多维数组
     
     内建变量：
-        ARGC
-        ARGIND
-        ARGV
+        ARGC                # 命令行参数数量，不包含 options 和 program source
+        ARGIND              # 当前正在执行的 file，所在的 ARGV 的 index
+        ARGV                # 命令行参数数组， index = 0 ~ ARGC-1，
         BINMODE
-        CONVFMT
+        CONVFMT             # 数字转字符串格式，默认: "%.6g"
         ENVIRON
         ERRNO
         FIELDWIDTHS         # 不使用 FS 进行 record 分割，而是根据该变量指定的 宽度 来分割，
