@@ -2,6 +2,9 @@
 
 配置界面弹窗（ask me again）
     Window -> Preferences -> 搜 confirmations
+        -> User Interface
+            -> Confirmations
+                Close extra result tabs: Always
 
 配置文件编码格式：
     Window -> Preferences -> General -> Workspace
