@@ -159,6 +159,7 @@ services:
     # 存在 depends_on 时， profile 会传递给被依赖的 container，如果被依赖的 container 没有传递过来的 profile ，那么就会报错
     profiles: ["frontend"]      
     
+    # https://docs.docker.com/engine/reference/builder/#healthcheck
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]   # 用于判断是否 health 的命令
       timeout: 10s        # 命令执行超时时间
