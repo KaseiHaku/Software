@@ -61,8 +61,11 @@ Diff {
 }
 
 Modify {
+    # 该命令不建议使用，有 a glut of gotchas 并且生成 mangled(混乱的) history
+    # 推荐使用 https://github.com/newren/git-filter-repo/ 替代
     shell> git filter-branch --tree-filter 'rm -f ./password.txt' -- commit-ish   # 删除当前 commit 及其 父commit 指定的文件, 并重新提交
     shell> git filter-branch --tree-filter 'rm -f ./password.txt' -- --all        # 删除所有 commit 中指定的文件, 并重新提交
+    
 
     # 假设当前分支为 dev，那么该命令将 dev 分支上的提交都拼接到 master 分支后面
     # p, pick <commit> = 应用该提交
