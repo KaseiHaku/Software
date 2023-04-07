@@ -158,8 +158,26 @@ services:
     # shell> docker-compose --profile debug up    # 指定激活哪一个 profile，或者可以使用 环境变量 COMPOSE_PROFILES 进行激活
     # 存在 depends_on 时， profile 会传递给被依赖的 container，如果被依赖的 container 没有传递过来的 profile ，那么就会报错
     profiles: ["frontend"]      
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]   # 用于判断是否 health 的命令
+      timeout: 10s        # 命令执行超时时间
+      start_period: 40s   # 启动期时间，启动期内不进行 healthcheck
+      retries: 3          # 重试次数
+      interval: 1m30s     # 每次重试时间间隔
+       
     depends_on:       # 表名当前 container 依赖其他 container，必须在其他 container 之后启动
-      - redis
+      # 短格式
+      - redis        
+      # 长格式
+      redis:
+        restart: true   # 当 redis 容器更新时，会自动重启当前容器
+        # service_started: 默认，等价于短格式; 
+        # service_healthy: 等待 redis 容器 healthcheck 通过; 
+        # service_completed_successfully: 等待 redis 容器完全启动成功
+        condition: service_started      
+          
+      
     extends:
       # 引入公共的 docker-compose.yml ，可以减少当前文件的配置，注意：volumes_from 和 depends_on 是不会从 common-docker-compose.yml 引入的
       file: common-docker-compose.yml     
