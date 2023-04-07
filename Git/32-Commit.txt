@@ -75,7 +75,8 @@ Modify {
     
     shell> git filter-branch --tree-filter 'rm -f ./password.txt' -- commit-ish   # 删除当前 commit 及其 父commit 指定的文件, 并重新提交
     shell> git filter-branch --tree-filter 'rm -f ./password.txt' -- --all        # 删除所有 commit 中指定的文件, 并重新提交
-    shell> git filter-branch --index-filter 'git rm -rf --cached --ignore-unmatch config/secret.js' -- commit-ish    
+    shell> git filter-branch --index-filter 'git restore -s 22ffcc -S -- path' -- HEAD^^..HEAD      # 从指定提交恢复文件，用于误改文件
+    shell> git filter-branch --index-filter 'git rm -rf --cached --ignore-unmatch config/secret.js' -- commit-ish    # 删除文件
     
 
     # 假设当前分支为 dev，那么该命令将 dev 分支上的提交都拼接到 master 分支后面
