@@ -70,6 +70,9 @@ Modify {
     #   ^commit             # 不是 commit 祖先的所有 commit
     #   commit1..commit2 == ^commit1 commit2
     #   commit1...commit2 ==        # 获取 commit1 commit2 所有祖先中，只存在一边的所有 commit 
+    shell> git rev-list commit1 ^commit2 -- path        # 执行 shell> git filter-branch 前必须使用该命令，查看下会对哪些 commit 生效
+    shell> git rev-list ^HEAD^^ HEAD            # 对当前 commit 的前两个 commit 生效
+    
     shell> git filter-branch --tree-filter 'rm -f ./password.txt' -- commit-ish   # 删除当前 commit 及其 父commit 指定的文件, 并重新提交
     shell> git filter-branch --tree-filter 'rm -f ./password.txt' -- --all        # 删除所有 commit 中指定的文件, 并重新提交
     shell> git filter-branch --index-filter 'git rm -rf --cached --ignore-unmatch config/secret.js' -- commit-ish    
