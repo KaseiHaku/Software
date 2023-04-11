@@ -1,3 +1,8 @@
+################################ 帮助
+shell> apt --help
+shell> apt-get --help
+shell> apt              # tab tab 查看所有相关命令
+
 ################################ Query 软件包查询
 shell> apt-cache search all                                     # 查询仓库中所有软件包
 shell> apt-cache search package                                 # 搜索包
@@ -11,6 +16,7 @@ shell> apt-cache depends package                                # 了解使用�
 
 ################################ Install 软件包安装
 shell> apt-get install packagename                              # 安装一个新的软件包
+shell> apt-get install iputils-ping                                 # 安装 ping 命令
 
 
 
