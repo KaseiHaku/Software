@@ -264,7 +264,10 @@ services:
     # 外部连接，使当前 container 可以通过 container 或者 alias 来访问另一个容器
     external_links:
       - container:containerAlias
-    extra_hosts:    # 相当于 shell> docker --add-host   # 修改 /etc/hosts 文件
+    
+    # 相当于 shell> docker --add-host   # 修改 /etc/hosts 文件
+    # 该配置在 network_mode: host 模式下也是有效的
+    extra_hosts:    
       - "host.docker.internal:172.17.0.1"   # 保留域名: docker0 网卡的地址
       - "gateway.docker.internal:"          # 保留域名：网关地址
       - "somehost:162.242.195.82"
