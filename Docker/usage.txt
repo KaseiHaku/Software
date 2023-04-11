@@ -161,6 +161,7 @@ Container：
         # 查看 container 进程 和 host 进程 PID 的映射关系
         shell> cat /proc/<hostPID>/status                           # NSpid 行就是 container 中的 PID
         shell> grep NSpid.*10061 /proc/*/status 2> /dev/null        # 10061 是 containerPID，输出的文件路径中的 就是 hostPID
+        shell> grep threads /proc/*/sched                           # /proc/976/sched:java (976, #threads: 24)    中 976 是容器内部进程在 host 中的 PID
     
 
 Registry:
