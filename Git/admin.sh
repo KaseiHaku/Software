@@ -1,5 +1,5 @@
 # 清理
-shell> git gc
+shell> git gc --prune
 
 
 ################################## Plumbing Commands 管道命令 ###############################
