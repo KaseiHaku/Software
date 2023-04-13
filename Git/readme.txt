@@ -6,6 +6,13 @@
        git push = git fetch + git merge origin/branchId + git push 
 
 
+帮助:
+    shell> git -h
+    shell> git help -a
+    shell> git help command/concept     # 查看某个 命令 和 概念 的帮助
+    shell> git help git                 # 查看整体概览
+
+
 .git 目录结构介绍：
     .git 
       │
