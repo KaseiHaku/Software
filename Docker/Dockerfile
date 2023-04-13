@@ -71,6 +71,9 @@ EXPOSE 8080/udp
 RUN npm install             
 RUN echo finish
 
+# 存放 docker-entrypoint.sh 脚本中用到的所有文件的目录
+RUN mkdir /docker-entrypoint-initdb.d       
+
 # exec form
 # 该格式最终会被解析成 JSON Array，所以有如下限制:
 #   @trap 必须使用 双引号，不能用单引号
@@ -145,6 +148,9 @@ CMD [ "ping", "start" ]
 #
 # @trap 因为 exec form 会解析成 JSON Array，所以 字符串 必须使用 " 包含，不能使用单引号
 # @trap 因为 exec form 不会调用 /bin/bash 等命令，所以 ["echo", "$HOME"] 这种格式不会进行变量替换，如果需要替换变量则 ["/bin/bash", "-c", "echo", "$HOME"]
+# 
+# 最佳实践： 
+#   ENTRYPOINT ["docker-entrypoint.sh"]  并在 docker-entrypoint.sh 脚本中编写预配置代码，并将所用到的所有文件放到 /docker-entrypoint-initdb.d 目录下
 ENTRYPOINT [ "npm", "install" ]
 
 # HEALTHCHECK 
