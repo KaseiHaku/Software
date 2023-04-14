@@ -23,5 +23,12 @@ User defined bridge network:
     shell> docker run -dit --name containerName --network alpine-net image cmd      # 将启动的 container 连接到 alpine-net 网卡，而不是默认 bridge 网卡
     shell> docker network connect bridge container            # 将已经运行的 container 连接到 bridge 网卡上
     
+Docker 流量流向:
+    client > host eth0 > docker0/br-??? > veth(虚拟以太网卡，成对出现)
+    
+    veth = virtaul enthernet = 虚拟以太网卡:
+        作用: 在两个 network namespace 之间扮演 tunnel 的作用，实现把一个 网卡 bridge(桥接) 到另一个 network namespace 中
+        虚拟网卡一般成对出现，在 docker 中 veth 都会连接到 br-??? 上
+    
 
     
