@@ -97,5 +97,8 @@ Operation:
     shell> ip route list table 128 ...         // 查看指定路由表的内容
     
     
+    shell> ip route get 8.8.8.8         # 查看 8.8.8.8 这个 ip 在当前 host 是怎么路由的
+    
+    
 
     
