@@ -162,7 +162,11 @@ Container：
         shell> docker inspect -f '{{.State.Pid}}' containerId       # 查看容器所属 docker 子进程的 PID
         shell> docker ps -q | xargs -ri docker inspect --format '{{.State.Pid}}, {{.Name}}' {}      # 查看所有容器的 Pid
         shell> cat /sys/fs/cgroup/memory/docker/<containerId>/cgroup.procs  
-        
+    
+    # 查看 container 中名为 eth0 的 veth 在 host 中 对等的 veth 是哪个？
+        shell> docker exec -it ??? /bin/bash 
+        shell> cat /sys/class/net/eth0/iflink   # 如果显示的值为 32，那么在 host 中的 veth 为 12 即: veth???@if31
+        shell> grep '32' /sys/class/net/*/ifindex       # 出来的文件路径中的就是 对等虚拟网卡
     
 
 Registry:
