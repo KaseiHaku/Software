@@ -157,11 +157,12 @@ Container：
         shell> nsenter -t 7801 -n nslookup dubboadmin 127.0.0.11        # 指定 dns 服务器搜索域名
     
     # Pid 相关
+        # 查看容器中 进程 在 host 中的 PID
+        shell> docker container top containerId -ef                 # 查看容器中进程在 host 中的 PID，其中 -ef 和 ps 明明的选项相同
+        shell> docker inspect -f '{{.State.Pid}}' containerId       # 查看容器所属 docker 子进程的 PID
         shell> docker ps -q | xargs -ri docker inspect --format '{{.State.Pid}}, {{.Name}}' {}      # 查看所有容器的 Pid
-        # 查看 container 进程 和 host 进程 PID 的映射关系
-        shell> cat /proc/<hostPID>/status                           # NSpid 行就是 container 中的 PID
-        shell> grep NSpid.*10061 /proc/*/status 2> /dev/null        # 10061 是 containerPID，输出的文件路径中的 就是 hostPID
-        shell> grep threads /proc/*/sched                           # /proc/976/sched:java (976, #threads: 24)    中 976 是容器内部进程在 host 中的 PID
+        shell> cat /sys/fs/cgroup/memory/docker/<containerId>/cgroup.procs  
+        
     
 
 Registry:
