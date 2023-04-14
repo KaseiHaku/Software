@@ -68,6 +68,13 @@ Target:
     iptables-enxtensions(8)     # 表示执行 这个 man 文档中描述的 target
     
 Debug:
+    # 前置工作
+    shell> modprobe nf_log_ipv4         # 加载指定的 mod
+    shell> sysctl net.netfilter.nf_log.2=nf_log_ipv4        # 开启 IPv4 log
+    shell> cat /etc/rsyslog.conf | grep -e 'kern'           # 将 rsyslogd 中 kernel message 相关的信息记录到 /var/log/messages
+        kern.*;*.info;mail.none;authpriv.none;cron.none                /var/log/messages        # 添加 kern.*; 
+    shell> systemctl restart rsyslog                        # 重启
+
     shell> iptables -t raw -I PREROUTING 1 -p icmp -j TRACE     # 标记为 TRACE，只能用于 raw 表
     shell> iptables -t raw -I OUTPUT 1 -p icmp -j TRACE         # 标记为 TRACE，只能用于 raw 表
     shell> cat /var/log/messages        
