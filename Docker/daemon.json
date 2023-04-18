@@ -11,8 +11,13 @@
 {
   
   "containerd": "/run/containerd/containerd.sock",  
-    
-    
+  
+  /**
+   * 修改 docker 默认数据存储位置
+   * 该目录主要保存 docker 的 images, volumes, cluster state 等
+   * */ 
+  "data-root": "/var/lib/docker",         
+   
   
   /**
    * 开启 docker daemon 远程访问，格式: tcp://[host]:[port][path]  
