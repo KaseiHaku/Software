@@ -40,12 +40,13 @@ IntelliJ IDEA Concept and Architecture {
     Graph Database support          # neo4j，识别 .cyp, .cypher, .cql 文件
     
     # 代码规范
-    Alibaba Java Coding Guidelines  # 代码规范
-    SonarLint                       # 代码规范，推荐
     CheckStyle-IDEA                 # 格式规范，作为 SonarLint 的补充
+    SonarLint                       # 代码规范，推荐
+    Alibaba Java Coding Guidelines  # 代码规范
     
     # AI code
-    GitHub Copilot
-    Codota                          # AI 代码提示
-    Tabnine AI Code Completion
+    Codota                          # sunsetting, 被 tabnine 替代
+    Tabnine AI Code Completion      # 基于 GPT-2 本地学习，偏向于代码补全
+    GitHub Copilot                  # 基于 github 代码学习，偏向于功能猜测
+    
 }
