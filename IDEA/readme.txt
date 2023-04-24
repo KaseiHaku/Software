@@ -34,7 +34,6 @@ IntelliJ IDEA Concept and Architecture {
     MyBatisCodeHelperPro            # 写 sql 提示
     EnvFile                         # 配合 K8S 设置环境变量
     Kubernetes                      # K8s 配置文件提示
-    RestfulTool                     # http client 及 spring controller 开发
     HTTP Client                     # http 客户端工具
     RestfulTool                     # Spring MVC/Boot Controller 搜索
     Graph Database support          # neo4j，识别 .cyp, .cypher, .cql 文件
