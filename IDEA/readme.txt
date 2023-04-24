@@ -38,4 +38,14 @@ IntelliJ IDEA Concept and Architecture {
     HTTP Client                     # http 客户端工具
     RestfulTool                     # Spring MVC/Boot Controller 搜索
     Graph Database support          # neo4j，识别 .cyp, .cypher, .cql 文件
+    
+    # 代码规范
+    Alibaba Java Coding Guidelines  # 代码规范
+    SonarLint                       # 代码规范，推荐
+    CheckStyle-IDEA                 # 格式规范，作为 SonarLint 的补充
+    
+    # AI code
+    GitHub Copilot
+    Codota                          # AI 代码提示
+    Tabnine AI Code Completion
 }
