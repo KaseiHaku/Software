@@ -1,6 +1,12 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
 
+
+    热部署 {
+        File -> Settings -> Build,Execution,Deployment -> Debugger -> HotSwap 
+        修改代码后 Build -> Build Project -> 弹窗是否重新 reload 选是 即可
+    }
+
     项目启动时，提示 Command line is too long {
         Run -> Edit Configurations... -> Configuration -> Environment 
             -> Shorten command line: JAR manifest 
