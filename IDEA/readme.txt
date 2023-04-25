@@ -46,6 +46,6 @@ IntelliJ IDEA Concept and Architecture {
     # AI code
     Codota                          # sunsetting, 被 tabnine 替代
     Tabnine AI Code Completion      # 基于 GPT-2 本地学习，偏向于代码补全
-    GitHub Copilot                  # 基于 github 代码学习，偏向于功能猜测
+    GitHub Copilot                  # 基于 github 代码学习，偏向于功能猜测，要钱
     
 }
