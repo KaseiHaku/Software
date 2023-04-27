@@ -117,10 +117,16 @@ Personalize Settings {
         常用:
             lib:java..*                     # jdk 的包
             file:*-client/src//*            # 前端代码
+            !file:*/.npm//*                 # 排除所有 .npm 目录，官方案例， 不知道 */.npm 和 *//.npm 有啥区别
             !file:*//dist//*                # 排除掉 前端编译后的文件
             !file:*//node_modules//*        # 排除掉 前端引入的文件
-            !file:*//dist//*&&!file:*//node_modules//*  # 排除掉 前端 非项目代码文件
+            !file:*//dist//*&&!file:*//node_modules//*  # 排除掉 前端 非项目代码文件，@trap 该表达式有问题，原因如下
             
+            # 如果没有提供 'all scope', 即：只有排除选项的话，那么 IDEA 默认 scope 是 'Project and Libraries' 这会导致无法排除 node_modules 目录
+            # 所以我们需要自定义一个 'all scope', 即: file[*]:*//*&&
+            # @trap https://stackoverflow.com/questions/48615489/how-can-i-exclude-node-modules-wherever-this-path-occurs-in-find-in-path-searche
+            # @doc https://youtrack.jetbrains.com/issue/IDEA-145142#comment=27-1156171
+            file[*]:*//*&&!file:*//dist//*&&!file:*//node_modules//*    # 排除掉 前端 非项目代码文件，正确的方式
     }
 
     IDEA git log 视图配置 {
