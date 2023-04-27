@@ -1,6 +1,12 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
 
+    修改 IDEA 可以使用的内存大小: {
+        Help -> Edit Custom VM Options...
+        添加如下两行:
+            -Xmx4096m
+            -Dfile.encoding=UTF-8
+    }
 
     热部署 {
         File -> Settings -> Build,Execution,Deployment -> Debugger -> HotSwap 
