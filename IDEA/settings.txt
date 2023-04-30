@@ -126,7 +126,7 @@ Personalize Settings {
             # 所以我们需要自定义一个 'all scope', 即: file[*]:*//*&&
             # @trap https://stackoverflow.com/questions/48615489/how-can-i-exclude-node-modules-wherever-this-path-occurs-in-find-in-path-searche
             # @doc https://youtrack.jetbrains.com/issue/IDEA-145142#comment=27-1156171
-            file[*]:*//*&&!file:*//dist//*&&!file:*//node_modules//*    # 排除掉 前端 非项目代码文件，正确的方式
+            (file[*]:*||file[*]:*//*)&&!file:*//dist//*&&!file:*//node_modules//*           # 排除掉 前端 非项目代码文件，正确的方式
     }
 
     IDEA git log 视图配置 {
