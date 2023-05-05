@@ -7,13 +7,25 @@ from tb1 right join tb2 on
 from tb1 inner join tb2 on 
 
 
-/* 查询 */
-select col1, col2 
-from t 
+/* 查询
+ * @doc https://dev.mysql.com/doc/refman/8.0/en/select.html
+ * */
+select distinct 
+    col1, col2
+from tab1 partition( p1, p2, p3sp1)   -- p3sp1   p3 分区中的 sp1 子分区
 where 
-order by convert(chinese using gbk) asc  -- mysql 中文排序需要使用 gbk 编码才是对的，否则会乱序
+group by col1, col2 with rollup
+having 
+window winName as (...)
+order by convert(chinese using gbk) asc with rollup -- mysql 中文排序需要使用 gbk 编码才是对的，否则会乱序
 limit 100, 10; -- 从 100 行开始读取，一共读取 10 行
 limit 10 offset 100; -- 从 100 行开始读取，一共读取 10 行
+for update
+;
+
+
+
+
 
 
 
