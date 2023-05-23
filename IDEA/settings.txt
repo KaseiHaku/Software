@@ -29,11 +29,14 @@ Personalize Settings {
     }
 
     查找一个未知全类名的类在哪个三方依赖下面 {
+    
         第一种：
             将 类名 定义为一个 Field -> Alt+Enter -> Add Maven Dependency.../Search for Denpendency... -> 输入类名即可搜索
         第二种：
             View -> Tool Windows -> Dependencies -> 输入 类名
-        
+        第三种:
+            # 该方式适用于本地 lib 中没有引入对应 jar 的情况
+            Ctrl+Shift+A -> Add Maven dependency...             
     }
 
     XML: Schema and DTD: {
