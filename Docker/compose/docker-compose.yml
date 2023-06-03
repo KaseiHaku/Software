@@ -98,7 +98,7 @@ services:
     networks:
       - default   # 因为定义了其他网络，所以 default 需要显式声明，否则不会连接到 default 上
   
-  # @trap service-name 禁止带 . 号，例如: example.com，会导致未知的问题
+  # @trap service-name 最好不要带 . 号，例如: example.com，会导致未知的问题
   example:            # 运行的 docker 的 container name
     # @doc https://docs.docker.com/compose/compose-file/build/
     build:          
@@ -200,7 +200,9 @@ services:
         # 即: /etc/docker/daemon.json 中配置，{ "ipv6": true, "fixed-cidr-v6": "2001:db8:1::/64" }
         # 并添加 ${services.example.sysctls} IPv6 相关的内核参数
         ipv6_address: 2001:3984:3989::10
-        aliases:  # 配置当前 container 在该 network 中的别名
+        # 配置当前 container 在该 network 中的别名
+        # @trap alias 最好不要带 . 号，例如: example.com，可能会导致未知的问题
+        aliases:  
           - alias1
           - alias3
       net2:  
@@ -281,8 +283,9 @@ services:
     user: 1000:1000       # 指定当前容器内 进程使用哪个 user 进行执行；格式: uid:gid
     working_dir: /root    # 容器当中默认的工作目录
     
-    domainname: foo.com
-    hostname: foo
+    
+    hostname: foo                     # 对 compose 容器间访问无效，只在当前 container 内部有效，配置 alias 请使用 services.xxx.networks.default.aliases
+    domainname: bar.com               # 那么 FQDN（Fully Qualified Domain Name，完全限定域名）为: hostname.domainname = foo.bar.com，对 compose 容器间访问无效，只在当前 container 内部有效
     ipc: host                         # 用于实现 container 间的内存共享
     mac_address: 02:42:ac:11:65:43    # 自定义 MAC 地址
 
