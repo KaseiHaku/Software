@@ -97,7 +97,8 @@ services:
     command: [redis-server, --requirepass, "mypassword"]
     networks:
       - default   # 因为定义了其他网络，所以 default 需要显式声明，否则不会连接到 default 上
-      
+  
+  # @trap service-name 禁止带 . 号，例如: example.com，会导致未知的问题
   example:            # 运行的 docker 的 container name
     # @doc https://docs.docker.com/compose/compose-file/build/
     build:          
@@ -262,6 +263,7 @@ services:
       rollback_config:  # 回滚配置
       update_config:    # 更新配置
     # 外部连接，使当前 container 可以通过 container 或者 alias 来访问另一个容器
+    # @deprecated 使用 networks 替代
     external_links:
       - container:containerAlias
     
