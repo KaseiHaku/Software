@@ -6,3 +6,8 @@
 # DockerHub 中 tag 的区别
     Simple Tag: 指向唯一 image，推荐使用
     Sharde Tag: 指向一个 image，但是这个指向会随着时间的推移，会指向别的 image
+
+
+
+# WSL 2 安装 docker desktop 对应的 /var/lib/docker 目录
+    \\wsl.localhost\docker-desktop-data\data\docker\volumes\127517c94e73e80e97102a8549739182fab8c444436ccc48521efabc421eee6e\_data
