@@ -62,7 +62,7 @@
     shell> ss -raep         
 
     shell> ss -H    dst = 192.168.0.1 and src = 192.168.0.1            # = 两边必须带空格
-                    dport >= 3306 or not sport != 80
+                    dport >= [FAMILY:]:3306 or not sport != [FAMILY:]:80        # [FAMILY:] 和 ss 的 -f 选项一样，可以用 * 进行通配
                     dev = devName && dev != ifIdx
                     fwmark = 0x01/0x03 || fwmark != 0x01/0x03
                     cgroup = path && ! cgroup != path
