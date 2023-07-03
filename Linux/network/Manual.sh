@@ -45,6 +45,8 @@
 
 
 # ss   
+    # https://manpages.debian.org/bookworm/iproute2/ss.8.en.html
+    
     shell> ss -h                # 显示帮助信息
     
     shell> ss -n                # 以 IP 地址显示连接的主机名
@@ -58,6 +60,14 @@
     shell> ss -p                # 显示 socket 对应的进程信息，包括 pid
     
     shell> ss -raep         
+
+    shell> ss -H    dst=192.168.0.1 and src=192.168.0.1
+                    dport >= 3306 or not sport!=80
+                    dev=devName && dev!=ifIdx
+                    fwmark=0x01/0x03 || fwmark!=0x01/0x03
+                    cgroup=path && !cgroup!=path
+                    autobound        # 用于匹配当 源地址 自动分配的情况
+                    
 
 
 -o,--options    # 显示计时器信息
