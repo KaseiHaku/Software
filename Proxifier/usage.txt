@@ -35,4 +35,15 @@
         Profile -> Name Resolution
         -> 选择第二个Resolve hostnames through proxy（通过代理服务器解析域名）
         -> OK
+
+其他配置:
+    开启 HTTP Proxy Server:
+        Profile -> Advanced 
+        -> HTTP Proxy Servers...
+        -> [勾选] Enable HTTP Proxy Servers support
+
+    修改 Proxy Checker 使用的地址:
+        View -> Proxy Checker... -> Test Settings...
+        -> Test 2: Connection through the Proxy Server
+            Target host: www.baidu.com         Port: 80
         
