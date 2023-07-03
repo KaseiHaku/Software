@@ -46,8 +46,8 @@ ls -d -I oppositePattern path                       # 列出不符合 oppositePa
 file -i <file>                                      # 显示文件 MIME 类型，和文件字符编码格式
 stat <file>                                         # 查看文件信息
 stat -f <file>                                      # 查看磁盘信息
-which mysql                                         # 只查找可执行文件，基本只在 $PATH 中查找
-whereis command1                                    # 查找安装 command1 命令安装位置，比 which 搜索范围广
+which mysql                                         # 只查找可执行文件，只在 $PATH 中查找
+whereis command1                                    # 查找安装 command1 命令安装位置，只搜索标准位置（/bin、/sbin、/usr/bin、/usr/sbin）下的文件
 
 locate                                              # 从 mlocate.db 索引库中查找文件，最好使用 shell> updatedb 命令更新一遍索引，确保新建文件不会遗漏
 
