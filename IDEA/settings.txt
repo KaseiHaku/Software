@@ -548,11 +548,11 @@ Personalize Settings {
                     => [不勾选] Hide tabs if there is no space// 配置多行显示 Tabs
                 => [勾选] Mark modified tabs with asterisk// 配置 * 标识修改过的文件
             Tab Order:
-                => [勾选] Open new tabs at the end
+                => [不勾选] Open new tabs at the end
             Closing Policy:
                 => Tab limit: 100
                 When the current tab is closed, activate:
-                    => [单选] The tab on the right
+                    => [单选] The tab on the left
            
     }
 
