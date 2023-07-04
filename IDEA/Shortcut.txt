@@ -105,7 +105,7 @@ Alt+1                       显示 Project 侧边栏
 ESC                         退出当前调出的窗口
 Ctrl+Shift+Z                取消撤销（恢复上一次操作）
 Alt+9                       打开 vcs 界面
-Alt+`                       打开 git 面板
+Alt+`                       打开 git 面板，其中弹出的 上下文菜单，可以使用 Alt+Num 来触发菜单
 Ctrl+Shift+F8               打开所有 breakpoint 界面
 
 
