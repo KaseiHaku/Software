@@ -1,6 +1,16 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
 
+
+    修改 win 下快捷键 {
+        File -> Settings -> Keymap 
+            -> 右侧放大镜(Find Actions by Shortcut) 
+            -> 输入 Ctrl+F4 搜索 
+            -> 在所有 Ctrl+F4 快捷键对应的 actions 上添加一个额外的 shortcut: Ctrl+4
+    }
+
+
+
     修改 IDEA 可以使用的内存大小: {
         Help -> Edit Custom VM Options...
         添加如下两行:
