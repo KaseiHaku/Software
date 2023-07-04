@@ -317,8 +317,8 @@ Personalize Settings {
             File -> Settings -> Editor -> Color Scheme -> Console Colors 
             -> Scheme : [Darcula] 
             => Console 
-            => Standard output 
-            => 右侧 Foregroud : [8C65BB]
+                => Standard output 
+                    => 右侧 Foregroud : [8C65BB]
         }
     }
 
@@ -336,7 +336,10 @@ Personalize Settings {
 
     
     配置代码自动补充不区分大小写 {
-        File -> Settings -> Editor -> General -> Code Completion => Case sensitive completion : [None]
+        File -> Settings -> Editor -> General -> Code Completion 
+            => [不勾] Match Case: 
+            => [勾选] Sort sugguestions alphabetically
+            
     }
 
     修改代码模板 {
