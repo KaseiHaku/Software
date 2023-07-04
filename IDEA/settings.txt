@@ -6,6 +6,7 @@ Personalize Settings {
         添加如下两行:
             -Xmx4096m
             -Dfile.encoding=UTF-8
+            -Djava.net.preferIPv4Stack=true             # 有些 SB 环境会优先用 IPv6 导致无法连接
     }
 
     热部署 {
