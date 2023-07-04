@@ -300,8 +300,10 @@ Personalize Settings {
     字体设置： {
         1. 编辑器字体设置： {
             File -> Settings -> Editor -> Font 
-            -> Font : [Consolas]
-            -> Size : [13]
+            -> Font : [Consolas]                # 其他不错的字体: JetBrains Mono 
+            -> Size : [14]
+            -> Typography Settings
+                Fallback Font: Monospaced
         }
         
         2. 控制台字体设置： {
@@ -309,7 +311,7 @@ Personalize Settings {
             File -> Settings -> Editor -> Color Scheme -> Console Font 
             -> [勾选] Use console font instead of the deafualt
             -> Font = Consolas
-            -> Size = 13
+            -> Size = 14
             -> Line spaceing = 1.0
             -> Fallback font = Monospaced  如果主字体没有该符号的字型，则采用这个
             
