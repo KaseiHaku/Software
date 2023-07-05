@@ -62,8 +62,10 @@ Personalize Settings {
         2. IDEA 安装 Docker 插件（一般默认自带）
         3. File -> Settings -> Build,Execution,Deployment -> Docker -> Tools
             Docker executable: docker 命令的执行文件的位置
+                win: C:\Program Files\Docker\Docker\resources\bin\docker.exe
             Docker Machine executable: 用不到
             Docker Compose executable: docker-compose 命令执行文件的位置
+                win: C:\Program Files\Docker\Docker\resources\bin\docker-compose.exe
             
         4. File -> Settings -> Build,Execution,Deployment -> Docker
             点击 "+" 图标，添加一个 docker daemon，       # 该 docker daemon 必须是可以远程连接
