@@ -1,5 +1,8 @@
 下载当前目录下的安装文件，打开二进制编辑器，去掉第一个字节，第一个自己为 20， 即空格
 
+坑:
+    一定要安装 安装版，portable 版功能有问题
+
 注册码：用户名随便填
     Standard Edition
     5EZ8G-C3WL5-B56YG-SCXM9-6QZAP
@@ -47,3 +50,23 @@
         -> Test 2: Connection through the Proxy Server
             Target host: www.baidu.com         Port: 80
         
+抓包方式:
+    设置系统代理:  [Internet 选项] — [连接] — [局域网设置] — [高级] 
+        cons: 
+            只对以下情况有效:
+                IE Chrome等浏览器
+                程序使用WinInet库进行HTTP/HTTPS通信
+                程序内嵌Webbrowser
+            如果程序没有使用 Windows 提供的 WinInet 库进行 HTTP 通信，而是自带了一个库，
+            比如: 
+                VC 程序使用 libcurl，
+                JAVA 程序使用 JDK 中的 URLConnection 或第三方 OkHttp，
+                C# 使用 System.Net.Http 等，
+            这些库在程序内部实现了 HTTP 包的封装与拆解，那么最终他们将直接调用操作系统的 socket api 发送数据，操作系统当然就没法给他们设置 HTTP/HTTPS 代理了
+
+    使用软件自带的代理配置:
+        例如: shell> java -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=8888  设置 java http proxy
+
+    强行设置代理:
+        SocksCap64: 使用黑科技API HOOK技术，HOOK了Windows Sockets API，然后把所有的TCP/UDP包通过代{过}{滤}理转发
+        Proxifier: 是正规军，使用了Windows提供的正规接口，通过安装WinSock LSP模块过滤/转发TCP/UDP包
