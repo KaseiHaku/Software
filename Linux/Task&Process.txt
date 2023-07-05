@@ -57,6 +57,15 @@
     # 如果某个进程已经在前台运行了，需要这个进程忽略 HUP 信号
     Ctrl+Z   # 将前台命令放到后台，再执行 disown 命令即可
     shell> disown -h %jobnumber
+
+    # disown 其他命令解释
+    shell> disown                   # 默认 job 是当前 job 
+    shell> disown -a                # 删除 或 mark 所有 job
+    shell> disown -r                # 删除 或 mark 所有正在运行的 job 
+    shell> disown %jobnumber        # 删除 job
+    shell> disown -h %jobnumber     # 给 job 打 mark，当当前 shell 接收到 SIGHUP 时，不给 job 发送 SIGHUP 信号，即：不退出
+    
+    
     
     
     
