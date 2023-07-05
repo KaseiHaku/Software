@@ -101,6 +101,7 @@
             
     # JVM 常用启动参数
     shell> java -Djava.net.preferIPv4Stack=true     # 优先使用 IPv4
+    shell> java -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=8888    # java Http Proxy 配置
 
 
 # 查看 .class 文件的字节码信息
