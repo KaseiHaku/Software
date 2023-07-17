@@ -131,7 +131,7 @@ Personalize Settings {
         
         
         常用:
-            lib:jdk..*||lib:java..*||lib:javax..*||lib:sun..*||lib:com.sun..*||lib:org.w3c.dom..*||lib:org.xml.sax..*||lib:org.ietf.jgss..*||lib:netscape.javascript..*    # jdk 的包
+            lib:jdk..*||lib:java..*||lib:javax..*||lib:sun..*||lib:com.sun..*||lib:org.w3c.dom..*||lib:org.xml.sax..*||lib:org.ietf.jgss..*||lib:org.jcp.xml.dsig.internal..*||lib:netscape.javascript..*    # jdk 的包
             file:*-client/src//*            # 前端代码
             !file:*/.npm//*                 # 排除所有 .npm 目录，官方案例， 不知道 */.npm 和 *//.npm 有啥区别
             !file:*//dist//*                # 排除掉 前端编译后的文件
