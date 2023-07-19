@@ -15,7 +15,17 @@
 
 常用：
     shell> pacman -Q            # 查询所有已安装
-    shell> pacman -Sy           # 更新仓库
+    shell> pacman -Qu           # 查询已安装并过期的包
+    shell> pacman -Qs           # 查询本地已安装的包 
+
+    shell> pacman -S
+                  -y             # 更新本地包数据库
+                  -yy            # 更新包，包括已经被忽略的包
+                  -w             # 只下载包，但是不安装和升级
+                  -u             # 升级已安装的包
+                  -uu            # 允许降级
+                  --needed       # 不要重装已经是最新的包 
+
     shell> pacman -Sl           # 列出仓库中所有的包
     shell> pacman -Ss string    # 查询包
     shell> pacman -S package    # 安装包
