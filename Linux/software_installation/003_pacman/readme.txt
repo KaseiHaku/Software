@@ -21,19 +21,18 @@
     shell> pacman -S
                   -y             # 更新本地包数据库
                   -yy            # 更新包，包括已经被忽略的包
+                  -l             # 列出仓库中所有的包
                   -w             # 只下载包，但是不安装和升级
                   -u             # 升级已安装的包
                   -uu            # 允许降级
                   --needed       # 不要重装已经是最新的包 
-
-    shell> pacman -Sl           # 列出仓库中所有的包
-    shell> pacman -Ss string    # 查询包
-    shell> pacman -S package    # 安装包
-    shell> pacman -Scc          # 清楚已下载的安装包
-    
+                  -c             # 清除老包
+                  -cc            # 清除所有包
+                  -s             # 查询远程仓库
+                  
     
     shell> pacman -F            # 查看包所包含的文件
     
     shell> pacman -Qdtq                 # 查看 不需要的 包
-    shell> pacman -R $(pacman -Qdtq)    # 清楚不需要的包
+    shell> pacman -R $(pacman -Qdtq)    # 清除不需要的包
     
