@@ -1,6 +1,11 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
 
+    Test 配置: {
+        Java 17 JUnit5 测试方法运行必须配置:
+            Edit Configurations... -> JUnit -> test1 -> Modify Options -> 添加 Java: Don't use --module-path option
+            因为 idea 或者 JUnit5 的 java module 化支持不完整：IDEA 2022.3.3 UE
+    }
 
     修改 win 下快捷键 {
         File -> Settings -> Keymap 
