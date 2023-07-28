@@ -56,7 +56,17 @@
         /home               64G                 桌面系统，需要分大点
         swap                16G                 >=512M, 内存小于 16G，等于两倍内存大小，内存大于 16G 等于内存大小
         /var                ---                 以上目录独立挂载，其他全部挂载在 /var 目录下
-    
+
+    方案二(推荐 512G)：GUID Partition Table(GPT) 
+        bios-grub           64M                
+        /boot               512M                包含引导系统所需的静态文件，需要在硬盘第一个分区
+        /                   96G                 根分区
+        /opt                160G                 软件盘 or 数据盘
+        /home               96G                 桌面系统，需要分大点
+        swap                32G                 >=512M, 内存小于 16G，等于两倍内存大小，内存大于 16G 等于内存大小
+        /var                ---                 以上目录独立挂载，其他全部挂载在 /var 目录下
+
+
     方案三(Docker)：GUID Partition Table(GPT)
         bios-grub           64M                
         /boot               512M                包含引导系统所需的静态文件，需要在硬盘第一个分区
