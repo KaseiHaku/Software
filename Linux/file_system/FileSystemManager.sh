@@ -110,6 +110,15 @@ unlink /path                                        # 删除，使文件链接�
 rm -r xxx                                           # 删除 xxx 文件或目录
 rm -f xxx                                           # 删除，不提示任何信息
 
+# 删除恢复
+# 场景一: 删除以后在进程存在删除信息
+shell> lsof | grep deleted.txt            # 过滤出已经删除的文件
+shell> cd /proc/${pid}/fd              # 恢复
+shell> cp 1 /tmp/recover_deleted.txt                # 将 1 恢复到指定的路径
+
+
+# 场景二： 删除以后进程都找不到
+
                                                     
                                                     
 # 操作修改类 ###########################              
