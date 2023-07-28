@@ -1,7 +1,11 @@
 1. 安装 VMware 软件、激活、打开
 
 2. 创建 CentOS7 虚拟机
-    File -> New Virtual Machine... -> [单选] Custom(advanced) -> 点击 Next -> [单选] I will install the operating system later
+    File -> New Virtual Machine... -> [单选] Custom(advanced) -> 点击 Next 
+    -> Virtual machine hardware compatibility
+            Hardware compatibility: Workstation 17.x
+    -> 点击 Next 
+    -> [单选] I will install the operating system later
     -> [单选] Linux -> [下拉列表选中] CentOS 64-bit -> 点击 Next
     -> 输入虚拟机名称： 随便 -> 选择虚拟机创建目录： 自己新建个目录就行
     -> Number of processors: 2 -> Number of cores per processor: 1 -> 点击 Next
@@ -12,7 +16,27 @@
     -> [单选] Create a new Virtaul disk  -> 点击 Next
     -> Maximum disk size(GB)： 32 -> [不勾选] Allocate all disk space now -> [单选] Split virtual disk into mutiple files  如果： 宿主机性能好 且 文件系统是 NTFS 格式，那么可以选单文件
     -> 完成
+
+2.2 创建 Manjaro 虚拟机
+    File -> New Virtual Machine... -> [单选] Custom(advanced) -> 点击 Next 
+    -> Virtual machine hardware compatibility
+            Hardware compatibility: Workstation 17.x
+    -> 点击 Next 
+    -> [单选] I will install the operating system later -> 点击 Next 
+    -> [单选] Linux -> [下拉列表选中] Other Linux 5.x kernel 64-bit -> 点击 Next
+    -> 输入虚拟机名称： manjaro-kde-22.1.3-minimal -> 选择虚拟机创建目录： D:\VirtualMachines\manjaro-kde-22.1.3-minimal
+    -> Number of processors: 2 -> Number of cores per processor: 4 -> 点击 Next
+    -> Memory for this virtual machine: 24576 MB (24G) -> 点击 Next
+    -> [单选] Use bridged network  可以选其他，配置方式不一样而已 -> 点击 Next
+    -> [单选] LSI Logic (别选其他) -> 点击 Next
+    -> [单选] SCSI (别选其他) -> 点击 Next
+    -> [单选] Create a new Virtaul disk  -> 点击 Next
+    -> Maximum disk size(GB)： 512 -> [不勾选] Allocate all disk space now -> [单选] Store virtual disk as a single file  别选 mutiple files，性能不好 -> 点击 Next
+    -> Disk file: manjaro-kde-22.1.3-minimal.vmdk (一般不改这东西) -> 点击 Next
+    -> 点击 Finish
     
+
+
 3. CentOS7 虚拟机 安装操作系统
     点击左边新建的虚拟机 -> 点击 Edit virtual machine settings -> Hardware 选项卡 -> 点击 CD/DVD (IDE)
     -> 右侧 [单选] Use ISO image file -> 选择已经下载好的 .iso 操作系统镜像文件 -> 点击 OK
@@ -21,5 +45,6 @@
 4. 配置 虚拟机及操作系统网络
     概念梳理： 宿主机、 VMware 软件、 虚拟机、 虚拟机操作系统    这几个概念是不一样的 
     具体配置见 vm_network_man.txt 文件
-    
+
+
     
