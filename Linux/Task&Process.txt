@@ -10,7 +10,7 @@
 查看进程打开的文件：
     shell> lsof -h              # 获取帮助信息
  
-    shell> lsof -a              # 显示所有进程打开的所有文件
+    shell> lsof                 # 显示所有进程打开的所有文件
     
     shell> lsof aa.txt          # 显示在使用 aa.txt 文件的所有进程
     shell> lsof -d 4            # 显示在使用文件描述符为 4 的文件的 所有进程
@@ -20,9 +20,6 @@
     
     shell> lsof -c abc          # 显示 abc 进程当前打开的所有文件
     shell> lsof -p 1234         # 显示 进程号为 1234 的进程所打开的所有文件
-    
-    
-    
     shell> lsof -u 12           # 显示 UID 为 12 的用户的所有进程
     shell> lsof -g 12           # 显示 GID 为 12 的用户组内用户的所有进程
 
