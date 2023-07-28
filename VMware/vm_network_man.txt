@@ -13,6 +13,11 @@
 
 
 2. VMware 联网配置
+    实在不行:
+        1. VMware -> Edit -> Virtual Network Editor -> 重置下 Vmware 的网络配置
+        2. Host 网络断开重连一下
+    
+
     Host-Only（仅主机模式）： 
         虚拟网络是一个全封闭的网络,它唯一能够访问的就是主机,主机和虚拟机之间的通信是通过VMware Network Adapter VMnet1 虚拟网卡
         a. 本机共享网络给Vmnet1，此时修改vmnet1的IP为：192.168.0.1，关闭防火墙
