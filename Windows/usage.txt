@@ -4,7 +4,7 @@ windows 双网卡路由配置：
     # -p                            表示该路由永久有效
     # 10.0.0.0 mask 255.0.0.0       目标网络
     # 10.100.1.254                  gateway
-    # metric 64                     跃点数，越低优先级越高，一般需要配置成比常用网络要高，不然访问会很慢
+    # metric 64                     跃点数，越低级越高，一般需要配置成比常用网络要高，不然访问会很慢
     # if 12                         表示使用编号为 12 的网卡发送，编号可以通过 shell> route print    中的接口列表第一列获取到
     shell> route -p add 10.0.0.0 mask 255.0.0.0 10.100.1.254 metric 64 if 12
     
@@ -80,6 +80,21 @@ Ctrl+\ 快捷键失效：
 
     -> 如果占用的进程为： explorer.exe -> Win+R 打开一个 命令行窗口 -> 杀掉 explorer.exe 进程
     -> shell> del E:\ggh 删掉你所要删的文件 -> shell> explorer.exe -> 完成
+
+    右键 Start -> Event Viewer -> Custom Views -> Administrative Events 
+    -> 再次执行硬盘弹出 或 文件删除动作
+    -> 刷新事件 -> 点击第一条
+    -> 下方 General 栏 -> 找到阻止弹出移动硬盘的程序
+    -> 合理的关掉这个程序，这个方法 100% 可以找到占用磁盘的程序
+
+    使用以管理员身份运行 cmd
+    -> diskpart
+    -> list disk         找到移动硬盘的编号 X，一般是最后一个
+    -> select disk X
+    -> offline disk
+    -> online disk       必须得重新 online 一次，不然下次插入的时候，会不可用
+    -> 再次弹出移动硬盘
+
 
 7. 电脑无法解析 DNS 地址，但用手机却可以解析
     1. 清除本机 DNS 缓存： shell> ipconfig /flushdns
