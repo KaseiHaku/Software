@@ -1,7 +1,22 @@
 
 boot with open source drivers     使用开源驱动启动，适合集成显卡用户使用，独显也可用；VMware 一般用这个
 boot with proprietary drivers     使用专用驱动启动，适合所有独立显卡用户使用
+必备软件:
+    vim
+    v2ray
+    fctix-googlepinyin            # 不要用 ibus 的
+    google-chrome    
+    git
+    idea
 
+    # 以下软件需配置，不自动升级
+    docker
+    jdk17-openjdk                
+    jre17-openjdk
+    jre17-openjdk-headless
+    jdk8-openjdk
+    jre8-openjdk
+    jre8-openjdk-headless
 
 相关路径：
     /usr/share/vim/vim90/autoload/plug.vim            # vim 插件管理器
