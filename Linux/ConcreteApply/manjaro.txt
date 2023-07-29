@@ -11,6 +11,7 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
 
     # 以下软件需配置，不自动升级
     docker
+    docker-compose                # linux 下 docker 不自带 compose 命令
     jdk17-openjdk                
     jre17-openjdk
     jre17-openjdk-headless
