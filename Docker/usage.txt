@@ -175,6 +175,7 @@ Registry:
 Docker 允许其他 user 使用：
     shell> usermod -aG docker kasei
     shell> docker ps            # 如果可以运行，则说明已经分配了权限了
+    shell> reboot        # 必须重启才能生效
     
 
 
