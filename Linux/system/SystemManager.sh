@@ -20,25 +20,31 @@ startx      # 启动图形界面
 
 
 # 进入单用户模式 
-开机进入内核选项时，按 e 进入编辑
-找到 linux16 开头的行，按向右的方向键，定位到 ro， 把 ro 改成 "rw init=/sysroot/bin/sh"
-Ctrl+X，就进入单用户模式了，
+     # 单用户模式概念：
+        其实是一个安全模式下的内存系统，并不是平常使用的 linux 系统，
+        shell> ls /sysroot/         # 查看我们正常系统中的文件
+        shell> chroot /sysroot/     # 切换到正常系统中去
+        shell> passwd root          # 可以修改 root 密码了
+        shell> touch /.autorelabel  # 修改 root 密码后，必须执行该命令，不然会导致系统无法正常登陆，该命令让 selinux 重新标记文件
+        shell> exec /sbin/init      # 退出单用户模式
+        shell> reboot               # 重启方式退出单用户模式
 
-单用户模式：
-    其实是一个安全模式下的内存系统，并不是平常使用的 linux 系统，
-    shell> ls /sysroot/         # 查看我们正常系统中的文件
-    shell> chroot /sysroot/     # 切换到正常系统中去
-    shell> passwd root          # 可以修改 root 密码了
-    shell> touch /.autorelabel  # 修改 root 密码后，必须执行该命令，不然会导致系统无法正常登陆，该命令让 selinux 重新标记文件
-    shell> exec /sbin/init      # 退出单用户模式
-    shell> reboot               # 重启方式退出单用户模式
+    # GRUB 进入单用户模式
+        按 ESC or Space or Shift 进去编辑模式
+        找到 linux 开头的行，追加 init=/bin/bash 
+        Ctrl+X 启动
+
+   
+    # 新版进单用户模式
+    开机进入内核选项时，按 e 进入编辑
+        找到 linux16 开头的行，按向右的方向键，定位到 ro， 把 ro 改成 "rw init=/sysroot/bin/sh"
+        Ctrl+X，就进入单用户模式了，
     
-    
-# 老版进单用户模式
-找到 linux16 开头并带有 ro 的行，删除 rhgb 和 quiet，并添加init=/bin/sh
-ctrl+x      # 启动
-touch /.autorelabel
-exec /sbin/init
+    # 老版进单用户模式
+    找到 linux16 开头并带有 ro 的行，删除 rhgb 和 quiet，并添加init=/bin/sh
+    ctrl+x      # 启动
+    touch /.autorelabel
+    exec /sbin/init
 
 
 
