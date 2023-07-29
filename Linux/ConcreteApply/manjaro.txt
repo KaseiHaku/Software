@@ -12,5 +12,6 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
     /usr/share/zsh/manjaro-zsh-config                # zsh 配置文件
         搜索 alias ls='ls $LS_OPTIONS'  并追加 alias ll='ls -al'
         搜索 alias cp='cp -i' 并追加 alias rm='rm -i'
-    /home/kasei/.local/share/applications/'Intellij IDEA.desktop'        # manjaro 桌面菜单文件
+    /usr/share/applications/org.kde.khelpcenter.desktop                    # manjaro 系统级桌面文件
+    /home/kasei/.local/share/applications/'Intellij IDEA.desktop'        # manjaro 用户级桌面菜单文件
 
