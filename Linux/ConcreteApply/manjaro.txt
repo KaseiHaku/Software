@@ -12,6 +12,7 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
     /usr/share/zsh/manjaro-zsh-config                # zsh 配置文件
         搜索 alias ls='ls $LS_OPTIONS'  并追加 alias ll='ls -al'
         搜索 alias cp='cp -i' 并追加 alias rm='rm -i'
+    /usr/lib/jvm            # java 
 
     # GUI 系统配置相关
     shell> echo $(qtpaths --paths GenericConfigLocation)        # 配置目录
