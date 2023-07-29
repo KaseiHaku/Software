@@ -1,0 +1,16 @@
+
+boot with open source drivers     使用开源驱动启动，适合集成显卡用户使用，独显也可用；VMware 一般用这个
+boot with proprietary drivers     使用专用驱动启动，适合所有独立显卡用户使用
+
+
+相关路径：
+    /usr/share/vim/vim90/autoload/plug.vim            # vim 插件管理器
+    /etc/vimrc                                        # vim 全局配置文件
+    /etc/v2ray/config.json
+    /etc/docker/deamon.json
+    /etc/hosts
+    /usr/share/zsh/manjaro-zsh-config                # zsh 配置文件
+        搜索 alias ls='ls $LS_OPTIONS'  并追加 alias ll='ls -al'
+        搜索 alias cp='cp -i' 并追加 alias rm='rm -i'
+
+

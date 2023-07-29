@@ -1,5 +1,0 @@
-
-boot with open source drivers     使用开源驱动启动，适合集成显卡用户使用，独显也可用；VMware 一般用这个
-boot with proprietary drivers     使用专用驱动启动，适合所有独立显卡用户使用
-
-
