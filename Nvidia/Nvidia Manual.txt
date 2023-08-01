@@ -7,19 +7,33 @@ Nvidia 显卡游戏配置 {
     重头戏 manage 3D settings，配置如下
     
     上部选项框选 高性能的 NVIDIA 处理器
-    
-    三重缓冲：关
-    各向异性同步过滤：应用程序控制
-    垂直同步：关闭
+
+    Image Sharpening(图像锐化): off
+    Ambient Occlusion(环境光遮蔽): off
+    Anisotropic filtering(各向异性同步过滤)：应用程序控制
+    Antialiasing - FXAA(抗锯齿/平滑处理): 关
+    Antialiasing - Gamma correction(抗锯齿/平滑处理-灰度纠正): 关
+    Antialiasing - Mode(抗锯齿/平滑处理-模式)：性能
+    Antialiasing - Setting(抗锯齿/平滑处理-设置)：无
+    Antialiasing - Transparency(抗锯齿/平滑处理-透明度)：关
+    Background Application Max Frame Rate(后台应用最大帧速率):
+    CUDA - GPUs:
+    Low Latency Mode(低延迟模式): off
+    Max Frame Rate(最大渲染帧数): 256 FPS
+    Mutli-Frame Sampled AA(MFAA) (多帧采样): off
+    OpenGL GDU Compatibility: Auto
+    OpenGL Rendering GPU: Auto-selecting
+    Power management mode(电源管理模式): Prefer maximum performance
+    Shader Cache Size(着色器缓存大小): Driver Default
+    Texture filtering - Anisotropic sample optimize(纹理过滤-各向异性采样优化)：开
+    Texture filtering - Negative LOD bias(纹理过滤-负 LOD 偏移)：锁定/Clamp
+    Texture filtering - Quality(纹理过滤-质量)：高性能
+    Texture filtering - Triline Optimization(纹理过滤-三线优化)：开
+    Thread Optimization(线程优化)：自动
+    Triple Bufferring(三重缓冲): 关
+    Vertical Sync(垂直同步)：关闭
+    Virtual Reality pre-rendered frames(虚拟现实预渲染帧): 1
+    Vulkan/OpenGL present method(OpenGL 呈现方法): Auto
+
     多显示器/混合GPU加速：单一显示器性能模式
-    平滑处理模式：性能
-    平滑处理-灰度纠正：关
-    平滑处理-设置：无
-    平滑处理-透明度：关
-    最大渲染帧数：1
-    纹理过滤-三线优化：开
-    纹理过滤-各向异性采样优化：开
-    纹理过滤-负 LOD 偏移：锁定
-    纹理过滤-质量：高性能
-    线程优化：自动
 }
