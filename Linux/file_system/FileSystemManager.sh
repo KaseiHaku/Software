@@ -140,9 +140,10 @@ cp -v /source /destination/                         # 显示复制过程中做�
 mv -i /source /destination/                         # 覆盖前提示
 
                                                     
-tar -cf xx1.tar -C ./archive xx2 xx3 ..              # 打包，以 ./archive 作为 tar 的根目录，将 ./archive/xx2，./archive/xx3 打包成 xx1.tar
+tar -cf xx1.tar -C ./archive xx2 xx3 ..             # 打包，以 ./archive 作为 tar 的根目录，将 ./archive/xx2，./archive/xx3 打包成 xx1.tar
 tar -xf xxx.tar -C ./3                              # 拆包，-C 只当拆包到哪个目录
 tar -A                                              # --concatenate 追加 tar 文件至 .tar 文件
+    -p                                              # 保留文件所有信息，包括权限，owner，time 等
     -c                                              # 创建一个新的 .tar 文件
     -r                                              # 追加 file 到 .tar 文件结尾
     -x                                              # 从 .tar 文件中提取 file 到 filesystem
