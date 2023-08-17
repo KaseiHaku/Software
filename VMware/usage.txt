@@ -14,6 +14,9 @@
        -> File and Printer Sharing(Echo Request - ICMPv4-in)  Enable
        -> File and Printer Sharing(Echo Request - ICMPv6-in)  Enable
 
+如果 window 更新导致，虚拟机任何问题
+    admin 权限重新执行 安装包，选择 repair 修复即可
+
 
 ################################ VMWare ESXi ################################
 从 ESXi 导出虚拟机：
