@@ -17,6 +17,11 @@
 如果 window 更新导致，虚拟机任何问题
     admin 权限重新执行 安装包，选择 repair 修复即可
 
+VMX 进程 CPU 100%：
+    可能跟 Hyper-V 冲突，建议关闭该 window feature
+    HV Host Service: disable
+    Win+R(Admin) -> bcdedit /set hypervisorlaunchtype off
+
 
 ################################ VMWare ESXi ################################
 从 ESXi 导出虚拟机：
