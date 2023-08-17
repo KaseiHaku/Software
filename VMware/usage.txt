@@ -19,8 +19,8 @@
 
 VMX 进程 CPU 100%：
     可能跟 Hyper-V 冲突，建议关闭该 window feature
-    HV Host Service: disable
-    Win+R(Admin) -> bcdedit /set hypervisorlaunchtype off
+    Win+R -> services.msc -> HV Host Service: disable
+    Win+R(Admin) -> cmd -> bcdedit /set hypervisorlaunchtype off
 
 
 ################################ VMWare ESXi ################################
