@@ -38,5 +38,7 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
     shell> echo $(qtpaths --paths GenericDataLocation)        # 数据目录
     /usr/share/applications/org.kde.khelpcenter.desktop                    # manjaro 系统级桌面文件
     /home/kasei/.local/share/applications/'Intellij IDEA.desktop'        # manjaro 用户级桌面菜单文件
+    System Settings -> Power Management -> Energy Saving 
+        [不勾选]Suspend session                                 # 一定要禁掉，manjaro 在 vmware 下休眠就起不来了
     
 
