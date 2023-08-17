@@ -1,3 +1,40 @@
+windows 完全关闭自动更新:
+    Win+R -> regiedit 
+        -> Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WaaSMedicSvc
+            Name: Start   Value data: 4            # 改成 4
+        -> Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\UsoSvc
+            Name: Start   Value data: 4            # 改成 4
+
+    Win+R -> gpedit.msc 
+        -> Local Computer Policy -> Computer Configuration -> Administrative Templates -> Windows Components -> Windows Update
+        -> Configure Automatic Updates: Disable
+        -> Turn on recommended updates via Automatic Updates: Disable
+        -> Remove access to use all Windows Update features: Enable
+
+    Win+R -> services.msc 
+        -> Background Intelligent Transfer Service: Disable
+        -> Windows Update: Disable
+            -> 右键 Properties: 
+                -> General: 
+                    Startup type: Disabled
+                -> Recovery:
+                    First failure: Take No Action
+                    Second failure: Take No Action
+                    Subsequent failure: Take No Action
+                    Reset fail count after: 9999 days
+        -> Windows Update Medic Service: Disable
+
+    Settings -> Update & Security 
+        -> Windows Update
+            -> Advanced options
+                -> Delivery Optimization
+                    -> Allow downloads from other PCs: off
+
+    Win+R -> taskschd.msc 
+        -> Task Scheduler(Local) -> Task Scheduler Library -> Microsoft -> Windows -> WindowsUpdate 
+            Scheduled Start: Disable
+            sihpostreboot: Disable
+
 windows 双网卡路由配置：
     shell> route print      # 打印当前网卡信息
     
