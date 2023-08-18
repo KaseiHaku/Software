@@ -8,6 +8,7 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
     google-chrome    
     git
     idea
+    dnsutils                        # dig 命令
 
     # 以下软件需配置，不自动升级
     docker
