@@ -18,10 +18,12 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
     
     jdk17-openjdk                
     jre17-openjdk
-    jre17-openjdk-headless
+    jre17-openjdk-headless        # headless 表示没有 GUI 的 jdk
+    openjdk17-src                 # 源码包
     jdk8-openjdk
     jre8-openjdk
     jre8-openjdk-headless
+    openjdk8-src
 
 相关路径：
     /usr/share/vim/vim90/autoload/plug.vim            # vim 插件管理器
