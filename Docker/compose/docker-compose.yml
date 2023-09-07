@@ -299,7 +299,11 @@ services:
     shm_size: 64M         
     stdin_open: false    # 对应 shell> docker run --interactive; 即使没有连接，也保持 STDIN 为 open 状态，
     tty: false           # 对应 shell> docker run --tty; 分配一个 pseudo-tty
-       
+
+    # 挂载一个临时文件系统到容器内，每次重启都会清空
+    tmpfs:
+      - /var/lib/neo4j/run
+    
     # 覆盖容器默认 ulimit，ulimit 用于限制当前启动程序可以使用的资源大小
     ulimits:
       nofile:
