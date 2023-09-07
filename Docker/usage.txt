@@ -144,9 +144,9 @@ Container：
         shell> nsenter -t pid -n ip addr                    # 进入 pid 的命名空间；这个命令就没问题，因为没有进入 文件命名空间，所以 文件空间 还是宿主机的，可以找到 ip 命令
     
     # 查看 container 容器中虚拟文件系统在 host 下的路径
-    # LowerDir: 包含所有底层 layer 的 filesystem，除了最后一层的
-    # UpperDir：最上层 layer 的 filesystem
-    # MergedDir: 所有 layer 的 filesystem 合并之后的视图，
+    # LowerDir: 包含底层存储驱动使用的镜像层的路径列表。这些镜像层被合并以形成容器的文件系统。包含所有底层 layer 的 filesystem，除了最后一层的(即：compose 中新编辑的内容)
+    # UpperDir：容器特定的写入层的路径。在容器运行期间，所有对文件系统的写操作都会被记录在这个写入层中。这使得容器的文件系统可以与底层镜像层分离，以保持镜像的不可变性。
+    # MergedDir: 所有 layer 的 filesystem 合并之后的视图。如果 compose 中对 filesystem 没有做任何修改，则该目录不存在
     # WorkDir: 容器内部的工作目录
         shell> docker inspect contianerId | grep -i MergedDir   # @trap 并不是实际容器工作的文件系统，因为不包含动态配置的参数
         shell> ls -al /proc/<pid>/root/                         # 这里才是 container 实际使用的文件系统
