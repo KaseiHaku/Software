@@ -2,6 +2,9 @@
 # 配置文件位置 /etc/NetworkManager/NetworkManager.conf
 # nmcli 命令会自动把所做的修改配置到 /etc/sysconfig/network-scripts/ 目录下面的指定文件中
 
+# 如果 nmcli 命令找不到
+#     Debian: shell> apt-get install network-manager
+
 
 # 相关配置文件：优先级 从低到高，存在同名文件：只取高优先级的
 # /var/run/NetworkManager/conf.d/
