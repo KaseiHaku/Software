@@ -1,8 +1,13 @@
 # 简介
-# Linux 所有网卡设备信息都保存在 /etc/sysconfig/network-scripts 目录下
-# 该目录下，每一个 ifcfg- 开头的文件，都是一张网卡的配置文件
-# 比如：/etc/sysconfig/network-scripts/ifcfg-ens33 文件，就是网卡 ens33 的配置文件
-# /etc/sysconfig/network 该文件是所有网卡的全局默认配置，如果 ifcfg-* 文件中没有配置，默认采用该文件中的配置
+# 网卡配置文件保存位置：
+#     CentOS: 
+#         所有网卡设备信息都保存在 /etc/sysconfig/network-scripts 目录下
+#         该目录下，每一个 ifcfg- 开头的文件，都是一张网卡的配置文件
+#         比如：/etc/sysconfig/network-scripts/ifcfg-ens33 文件，就是网卡 ens33 的配置文件
+#         /etc/sysconfig/network 该文件是所有网卡的全局默认配置，如果 ifcfg-* 文件中没有配置，默认采用该文件中的配置
+#     Debian:
+#         /etc/network/interfaces
+#         /etc/network/interfaces.d   # @trap 这里的配置会覆盖 NetworkManager 中的配置，导致 NetworkManager 不生效
 
 
 
