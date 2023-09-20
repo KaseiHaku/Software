@@ -6,8 +6,9 @@
 #         比如：/etc/sysconfig/network-scripts/ifcfg-ens33 文件，就是网卡 ens33 的配置文件
 #         /etc/sysconfig/network 该文件是所有网卡的全局默认配置，如果 ifcfg-* 文件中没有配置，默认采用该文件中的配置
 #     Debian:
+#         shell> man interfaces        # 查看配置文件格式
 #         /etc/network/interfaces
-#         /etc/network/interfaces.d   # @trap 这里的配置会覆盖 NetworkManager 中的配置，导致 NetworkManager 不生效
+#         /etc/network/interfaces.d    # @trap 这里的配置会覆盖 NetworkManager 中的配置，导致 NetworkManager 不生效
 
 
 
