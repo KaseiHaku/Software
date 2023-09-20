@@ -34,8 +34,15 @@
 /srv                                    # 网络服务所需要的文件存放目录，比如 Web 服务的 HTML 文件，应该放在 /srv/Web 目录下
 
 
-/******************************* 常用分区方案 *************************************************************/
-硬盘大小 256G
+/******************************* 常用分区方案 ************************************************************
+ * Debian: 
+ *     Bootable Flag: /boot 挂载到哪里，哪个分区该标记必须开启
+ * 
+ * 老硬盘分区只能 3 Primary + 1 Logic 怎么办？
+ *     必须单独一个分区的目录：/boot, /, swap
+ *     其他分区挂到 逻辑分区: /home, /opt, /var
+ * */
+
     swap 分区大小配置规则:
         PhysicMemory                swap
         <= 4                        4
@@ -56,7 +63,7 @@
         /var                4G          xfs            随着系统的使用，该目录会越来越大，建议分大点，以上目录独立挂载，其他全部挂载在 /var 目录下
         
         
-    方案二(推荐)：GUID Partition Table(GPT)
+    方案二(推荐 256G)：GUID Partition Table(GPT)
         bios-grub           64M        xfs        
         /boot               512M       xfs             包含引导系统所需的静态文件，需要在硬盘第一个分区
         /                   64G        xfs             根分区
@@ -75,12 +82,21 @@
         /var                ---        xfs             以上目录独立挂载，其他全部挂载在 /var 目录下
 
 
-    方案三(Docker)：GUID Partition Table(GPT)
+    方案三(Docker 256G)：GUID Partition Table(GPT)
         bios-grub           64M        xfs         
         /boot               512M       xfs             包含引导系统所需的静态文件，需要在硬盘第一个分区
         /                   64G        xfs             根分区
         /opt                96G        xfs             软件盘 or 数据盘；以该顺序分区，后期 opt 可以吞了 home 和 swap
         /home               16G        xfs  
+        swap                16G        linuxswap       参考上面 swap 分区大小配置规则
+        /var                ---        xfs             以上目录独立挂载，其他全部挂载在 /var 目录下
+
+    方案四(Docker 512G)：GUID Partition Table(GPT)
+        bios-grub           64M        xfs         
+        /boot               512M       xfs             包含引导系统所需的静态文件，需要在硬盘第一个分区
+        /                   96G        xfs             根分区
+        /opt                160G        xfs             软件盘 or 数据盘；以该顺序分区，后期 opt 可以吞了 home 和 swap
+        /home               64G        xfs  
         swap                16G        linuxswap       参考上面 swap 分区大小配置规则
         /var                ---        xfs             以上目录独立挂载，其他全部挂载在 /var 目录下
     
