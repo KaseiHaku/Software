@@ -186,8 +186,8 @@ dd if=/dev/zero of=sun.txt bs=1M count=1            # 复制字节到指定文�
 cat -n <file>                                       # 一次性查看全部文件内容
 more <file>                                         # h 查看帮助, more 只能向下翻页不能向上,能用 less 用 less
 less <file>                                         # 查看文件内容，space 下翻页， b 上翻页，q 退出当前命令，h 查看帮助，-N 查看行号
-tail -10 -f file                                    # 读取文件最后 10 行并实时更新
-head -10                                            # 读取文件前 10 行
+tail -f -n -10 file                                 # 读取文件最后 10 行并实时更新
+head -n -10                                         # 读取整个文件，除了最后 10 行
 vi <file>                                           # vi 文本编辑器
 
 
