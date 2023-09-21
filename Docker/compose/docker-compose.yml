@@ -188,6 +188,7 @@ services:
     # 网络模式: bridge, host, none, service:[service name], container:[container name/id]; 其中 host 不能 和 links 混用
     # 相当于 shell> docker run --network 
     # @巨神坑: host 模式只在 linux 主机下有效，对 Docker Desktop(Mac or Windows) 都无效
+    # @trap host 模式下 容器之间不能通过容器名访问
     network_mode: "host"    
     networks:     # 指定当前 container 连接到哪些 network 上，这些 network 配置在 顶层的 networks 属性中
       default:   # 因为定义了其他网络，所以 default 需要显式声明，否则不会连接到 default 上
