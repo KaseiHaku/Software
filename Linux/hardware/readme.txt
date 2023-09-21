@@ -13,7 +13,21 @@
         /dev/usb/mouse[0-15]: USB接口鼠标。
   
 #### Summary
-shell> lshw -short      # 查看所有硬件摘要信息  
+# DMI 是什么：
+#    是 "Desktop Management Interface"（桌面管理接口）的缩写。
+#    它是一种由系统固件（如 BIOS 或 UEFI）提供的标准化接口，用于收集和提供关于计算机系统硬件配置的信息。
+
+shell> dmidecode         # 用于获取系统的硬件信息，包括 BIOS、主板、内存、处理器等
+shell> lshw -short      # 与 dmidecode 不同，lshw 不仅仅读取 DMI 数据，还通过其他机制（如/sys 文件系统）获取硬件信息 
+
+# 与 dmidecode 和 lshw 不同，
+# hwinfo 可以通过多种方式获取硬件信息，包括读取 DMI 数据、解析 /proc 和 /sys 文件系统中的信息，以及与设备进行交互
+shell> hwinfo           
+                        
+
+
+#### Baseboard
+shell> dmidecode -t baseboard        # 查看主板信息
 
 #### Hard Disk
     分区方式：
