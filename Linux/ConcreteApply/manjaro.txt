@@ -45,3 +45,14 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
         [不勾选]Suspend session                                 # 一定要禁掉，manjaro 在 vmware 下休眠就起不来了
     
 
+
+################################ 开发机清理备份 ################################
+shell> docker ps -aq | xargs -itI {} docker container rm {}  # 删除所有容器
+shell> docker image ls -a | tail -n +2 | awk -e '{print $3}' | xargs -rtI{} docker image rm {}   # 删除所有 docker image
+shell> 删除所有编译后的 target
+shell> rm -rf ~/.m2/repository
+shell> 删除所有 node_module
+shell> rm -rf /var/log/journal/f58e7beddc1349179b6b825ac036e08d/*   # 删除所有系统日志文件
+shell> rm -rf /var/cache/pacman/pkg/*           # 删除所有备份的软件包
+
+
