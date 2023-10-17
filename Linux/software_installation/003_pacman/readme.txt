@@ -29,6 +29,7 @@
                   -c             # 清除老包
                   -cc            # 清除所有包
                   -s             # 查询远程仓库
+    shell> pacman -Syu --noconfirm        # 更新所有更新，并且不需要每个确认
 
                   
 
