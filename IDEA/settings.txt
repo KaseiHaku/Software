@@ -194,8 +194,10 @@ Personalize Settings {
                 shell> mv google-chrome chrome-user-data            # 修改名称
                 shell> cd ./chrome-user-data
                 shell> rm -rf ./SingletonCookie ./SingletonLock ./SingletonSocket   # 删除软链接，否则会跟原有的 chrome 冲突
-                File -> Settings -> Tools -> Web Browsers -> 选择 Chrome -> "铅笔" 图标 
-                     -> [勾选] Use custom user data directroy:  并配置为 /home/kasei/.config/JetBrains/IntelliJIdea2022.3/chrome-user-data 
+                File -> Settings -> Tools -> Web Browsers -> 选择 Chrome 
+                     -> 将 Path 列中的内容(例如: google-chrome) 改成当前系统实际 chrome 在 term 中的启动命令，例如: google-chrome-stable
+                     -> "铅笔" 图标 
+                         -> [勾选] Use custom user data directroy:  并配置为 /home/kasei/.config/JetBrains/IntelliJIdea2022.3/chrome-user-data 
                 
             
             Windows:
