@@ -1,10 +1,13 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
 
-    Test 配置: {
+    Java17 Test 配置: {
         Java 17 JUnit5 测试方法运行必须配置:
             Edit Configurations... -> JUnit -> test1 -> Modify Options -> 添加 Java: Don't use --module-path option
             因为 idea 或者 JUnit5 的 java module 化支持不完整：IDEA 2022.3.3 UE
+                可以通过 运行 JUnit5 时的 java 命令行参数看到，
+                IDEA 把 maven 中的依赖放到 --module-path 或 -p 下去了，导致 maven 依赖变成了 Automatic Module(自动模块)
+                从而导致 --add-opens=java.base/java.lang=ALL-UNNAMED 命令行不生效
     }
 
     修改 win 下快捷键 {
