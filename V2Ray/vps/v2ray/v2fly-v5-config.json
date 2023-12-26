@@ -1,0 +1,102 @@
+// @trap 这是 v2fly:v5.x.x 的配置文件，需要跟 vps 上的匹配，目前不稳定，不建议使用
+{
+  "log":{
+    "access":{
+        "type": "None",
+        "path": "/tmp/v2ray/_error.log",        // 当 type=File 时有用
+        "level": "Info"
+    },
+    "error":{}
+  },
+  "dns": {},
+
+  "inbounds": [
+    {
+      "protocol": "vmess",
+      "settings": {
+        "users": ["uuid"]
+      },
+      "port": "40000",
+      "listen": "",  // 监听的 ip 地址 或者 说 网卡
+      "tag": "vmessIn",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [""],
+        "metadataOnly": true
+      },
+      "streamSettings": {
+        "transport":"ws",
+        "transportSettings":{
+          "path": "/ws"
+        },
+        "security":"none"
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "blocked"
+    }
+  ],
+  "router": {
+    "domainStrategy":"AsIs",
+    // 当一个规则生效时，即将这个连接转发至它所指定的 outboundTag 或 balancingTag。当没有匹配到任何规则时，流量默认被转发至第一个 outbound
+    "rule":[
+      {
+        "tag": "blocked",    // outboundTag
+        "balancingTag": "",   // 和 tag 是 互斥的，只能二选一
+        "domain": [
+          {
+            "type": "Plain",
+            "value": "localhost"
+          }
+        ],
+        "geoDomain": [
+          {
+            "domain": {
+              "type": "Plain",
+              "value": ""
+            },
+            "code": "", // GeoDomain 的类别名称（域名列表）
+            "filePath": ""  // GeoDomain 文件路径
+          }
+        ],
+        "geoip": [
+          {
+            "cidr": {
+              "ipAddr": "10.0.0.0/8", //  172.16.0.0/12   192.168.0.0/16
+              "prefix": ""
+            },
+            "inverseMatch": false,
+            "filePath": ""      // GeoIP 文件路径
+          }
+        ],
+        "portList": "53,443,1000-2000",
+        "networks": "tcp,udp",
+        "sourceGeoip": [],
+        "sourcePortList": ["53,443,1000-2000"],
+        "userEmail": [""],
+        "inboundTag": [""],
+        "protocol": [ "http", "tls", "bittorrent" ],   // 必须开启入站代理中的 sniffing 选项
+        "domainMatcher": "mph", 
+      }
+    ],
+    // 数组中每一项是一个负载均衡器的配置。当一个规则指向一个负载均衡器时，V2Ray 会通过此负载均衡器选出一个 outbound，然后由它转发流量
+    "balancingRule":[
+      {
+        "tag": "balancer",
+        "selector": [],
+        "strategy": {
+          "type": "random"
+        }
+      }
+    ]
+  },
+  "services": {}
+}
