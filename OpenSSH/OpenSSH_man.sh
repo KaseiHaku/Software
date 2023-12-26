@@ -15,3 +15,11 @@
 3. 重启服务
     shell> systemctl restart sshd.service
 
+
+使主机 B 信任 主机 A，即：A 可以无密码登录 B:
+    shellB> grep -i 'PubkeyAuthentication' /etc/ssh/sshd_config        # 检查是否为 yes，不然不能使用该方式登录
+
+    shellA> ssh-keygen -t ecdsa            # 一路回车
+    shellA> # 复制 pubkey 放到 主机 B 的  ~/.ssh/authorized_keys    中即可
+    shellA> ssh-add            # 把刚生成的 pvtkey 添加到 ssh 认证中
+
