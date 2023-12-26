@@ -23,3 +23,5 @@
     shellA> # 复制 pubkey 放到 主机 B 的  ~/.ssh/authorized_keys    中即可
     shellA> ssh-add            # 把刚生成的 pvtkey 添加到 ssh 认证中
 
+添加了 ssh key 后，仍然强制使用 password 登录
+    shell> ssh -l root -p 22 -o PreferredAuthentications=password 1.2.3.4
