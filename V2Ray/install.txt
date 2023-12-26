@@ -10,9 +10,16 @@ V2Ray 安装：
             /usr/bin/v2ray/geosite.dat：域名数据文件
             /etc/systemd/system/v2ray.service: Systemd
             /etc/init.d/v2ray: SysV
-        
+
+    # v2ray / Project V     @deprecated
     https://github.com/v2ray/v2ray-core/
     https://github.com/v2ray/ext
+
+    # v2fly
+    https://github.com/v2fly
+    https://www.v2fly.org/
+
+    # xray / Project X
     https://github.com/XTLS
     
     
