@@ -1,7 +1,14 @@
 {
   "log":{
-      "loglevel":"none"
+    "access":{
+        "type": "None",
+        "path": "/tmp/v2ray/_error.log",        // 当 type=File 时有用
+        "level": "Info"
+    },
+    "error":{}
   },
+  "dns": {},
+
   "inbounds": [
     {
       "port": 40000,
@@ -30,6 +37,12 @@
       "tag": "blocked"
     }
   ],
+  "router": {
+    "domainStrategy":"AsIs",
+    // 当一个规则生效时，即将这个连接转发至它所指定的 outboundTag 或 balancingTag。当没有匹配到任何规则时，流量默认被转发至第一个 outbound
+    "rule":[],
+    "balancingRule":[]
+  },
   "routing": {
     "rules": [
       {
@@ -38,5 +51,6 @@
         "outboundTag": "blocked"
       }
     ]
-  }
+  },
+  "services": {}
 }
