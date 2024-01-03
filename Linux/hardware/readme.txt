@@ -24,7 +24,7 @@
 #        bios_version：BIOS 版本信息。
 #        bios_date：BIOS 发布日期信息。
 
-shell> dmidecode         # 用于获取系统的硬件信息，包括 BIOS、主板、内存、处理器等
+shell> dmidecode         # 用于获取系统的硬件信息，包括 BIOS、主板、内存、处理器等，@trap 如果安装完找不到命令，直接 shell> /usr/sbin/dmidecode 调用
 shell> lshw -short      # 与 dmidecode 不同，lshw 不仅仅读取 DMI 数据，还通过其他机制（如/sys 文件系统）获取硬件信息 
 
 # 与 dmidecode 和 lshw 不同，
