@@ -69,6 +69,7 @@ shell> dmidecode -t baseboard        # 查看主板信息
         shell> fio              # IO 压测工具 
     
 #### Memory 内存
+    shell> dmidecode -t memory    # 查看内存条信息，@trap 如果条数超过物理内存条，那么可能是 虚拟内存模块，这些模块不会显示 Size 
     shell> less /proc/meminfo   # 查看内存信息      
     shell> free -h -s 1     # 查看内存使用情况，-h 人类可读模式， 1秒输出一次
     
