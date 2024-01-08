@@ -229,7 +229,7 @@
                                             Content:
                                                 c                           # Command-Line/Program-Name 切换开关
                                                 f, F                        # 显示 Field 的管理
-                                                o, O                        # 过滤
+                                                o, O                        # 不区分/区分大小写 过滤，
                                                 S                           # 时间累积模式 开关
                                                 u, U                        # 只显示指定 User 的 task
                                                 V                           # 树形图展示进程之间的关系
@@ -245,7 +245,6 @@
                                             
                                         Commands for Windows:
                                             -,                              # window 显示隐藏开关
-                                            =, +                            # 重新初始化 window
                                             A                               # 切换 window 显示模式
                                             a, w                            # 上一个 window, 下一个 window
                                             g                               # 选择另一个 window
@@ -263,6 +262,14 @@
                                         Searching in a Window:
                                             L                               # 定位一个 字符串
                                             &                               # 查找下一个
+                                        Filetering in a Window:
+                                            @trap 不是是否是数字，都是按字符串比较，所以如果使用 j J e 调整显示方式，对结果是有影响的
+                                            
+                                            o                               # 不区分大小写过滤，格式为: filed[>=<]value, 例如: %MEM>5.0，
+                                            O                               # 区分大小写过滤，
+                                            ^O                              # 查看当前过滤条件
+                                            =                               # 重置当前 window filter
+                                            +                               # 重置所有 window filter
 
     shell> top -b -n 1 -H -c > top.txt 
 
