@@ -181,6 +181,14 @@
                                         COMMAND         进程名称（命令名/命令行）
                                     
                                     # Interactive Commands
+                                        Color Mapping:
+                                            Z                               # 修改 Color Mapping
+                                            z                               # Color/Monochrome 彩色/单色 切换开关
+                                            B                               # 加粗开关
+                                            b                               # 正在运行的 task 加粗
+                                            x                               # 列高亮 开关
+                                            y                               # 行高亮 开关
+                                            
                                         Global Command:
                                             <Enter>                         # 刷新
                                             <Space>                         # 刷新
@@ -217,7 +225,7 @@
                                                 j                           # 调整列的对齐方式，字符方式表示列
                                                 x                           # 列高亮 开关
                                                 y                           # 行高亮 开关
-                                                z                           # Color/Monochrome 切换开关
+                                                z                           # Color/Monochrome 彩色/单色 切换开关
                                             Content:
                                                 c                           # Command-Line/Program-Name 切换开关
                                                 f, F                        # 显示 Field 的管理
@@ -233,18 +241,7 @@
                                                 <                           # Move-Sort-Field-Right，其实是移动选中列
                                                 f, F                        # Fields-Management
                                                 R                           # Reverse/Normal-Sort-Field 切换排序，正序 or 倒序
-                                        Color Mapping:
-                                            <Ret>
-                                            a, w                            # 应用并下一个, 应用并上一个
-                                            B                               # 加粗开关
-                                            b                               # 正在运行的 task 加粗
-                                            H                               # 
-                                            M
-                                            q                               # 放弃当前修改
-                                            S
-                                            T
-                                            z                               # color/mono  彩色/单色
-                                            0-7
+                                        
                                             
                                         Commands for Windows:
                                             -,                              # window 显示隐藏开关
