@@ -9,7 +9,9 @@
  * @doc https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file
  * */
 {
-  
+  /**
+   * 和 containerd 通信的 socket 地址
+   * */
   "containerd": "/run/containerd/containerd.sock",  
   
   /**
