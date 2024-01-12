@@ -16,6 +16,6 @@
 # Concept
     docker -[call]-> dockerd -[invoke]-> containerd -[call]-> runc    完成容器运行
     docker: 用户 Cli 工具
-    dockerd: 接受 docker 命令的 deamon 守护进程
-    containerd: 底层实际用来管理 container/image 的工具
+    dockerd: 接受 docker 命令的 deamon 守护进程, CLI 命令为: shell> docker --help
+    containerd: 底层实际用来管理 container/image 的 deamon, CLI 命令为: shell> ctr --help
     runc: 负责 容器运行 及 搜集运行数据
