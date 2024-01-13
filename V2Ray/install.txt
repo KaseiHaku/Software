@@ -29,13 +29,17 @@ V2Ray 安装：
         Project X 是在 v2ray 无法合并 xtls 的情况下（开源协议许可证问题）另行组建的组织名。 xray 则是 Project X 组织下的程序名。
         
     Trojan 
-    
+
+################################ Usage ################################
+# 后续建议使用 docker 部署及使用 
+#
 V2Ray 配置：
     shell> vi /etc/v2ray/config.json
     
 V2Ray 启动|停止：
     shell> service v2ray start          
     shell> service v2ray stop
+
 
 使用：
     win:
@@ -52,3 +56,24 @@ V2Ray 启动|停止：
                         -> *localhost*;127.*;192.*
             -> [勾选] Bypass proxy server for local address
     
+生成一个 UUID:
+    shell> cd /usr/bin/v2ray
+    shell> ./v2ctl uuid
+
+测试配置文件有效性：
+    shell> cd /usr/bin/v2ray
+    shell> ./v2ray -test -config /etc/v2ray/config.json
+
+启动 v2ray：
+    shell> cd /usr/bin/v2ray
+    shell> ./v2ray -config /etc/v2ray/config.json
+
+android 客户端：
+    https://github.com/2dust/v2rayNG
+    Android 12        <= v1.8.5        https://github.com/2dust/v2rayNG/releases/download/1.8.5/v2rayNG_1.8.5.apk
+    
+    
+
+
+
+
