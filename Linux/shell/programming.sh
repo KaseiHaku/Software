@@ -75,7 +75,8 @@ $[...]      在方括号里面执行整数表达式
 #   shell> set [+-abCdefhHklmnpPtuvx]           # -e 表示开启 shell e 功能, +e 表示关闭 shell e 功能
 #   shell> set -e                               # 若指令传回值不等于0，则立即退出shell。
 #   shell> set -u 　                            # 当执行时使用到未定义过的变量，则显示错误信息。
-#   shell> set -x                               # 用来在运行结果之前，先输出执行的那一行命令
+#   shell> set -v                               # 打印从 shell 中输入的命令，不展开扩展符
+#   shell> set -x                               # 用来在运行结果之前，先输出执行的那一行命令，展开扩展符
 set -- cmd "$@"             # 相当于 $@ = cmd "$@"
 
 
