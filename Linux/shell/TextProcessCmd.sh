@@ -177,10 +177,12 @@ shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 # @trap sed 默认正则为 BRE，使用 -r 可以改为 ERE，但是无法使用 PCRE
 #
 # Format := sed -e [addr]X[options] -e [addr]X[options] (file | -)
-# addr := [ 
+# 
+# addr := [         
 #   number | $ | first~step | /regexp/ | \%regexp% | /regexp/I | /regexp/M              # SingleAddr 单地址
 #   | number,number | 0,/regexp/ | SingleAddr,+number | SingleAddr,~number | SingleAddr,+number { SingleAddr }              # 范围地址
-# ]
+# ]!        # 如果存在 ! 后缀，则表示 addr 是 否定的，即: 非(not)
+# 
 # X := cmd
 #   @trap   X                   都是单字母的
 #   @trap   {,},b,t,T,:         命令可以被 semicolon 分隔
