@@ -229,10 +229,12 @@ shell> sed -i 'X' filename                  # -i 直接用修改后的内容，�
 shell> sed -r -n -e 'addr{X;X}options' -       # {X;X} 同时执行多命令 
 shell> sed 's/regex/replacement/' file1        # 替换每一行首次匹配的文本
 shell> sed 's/regex/replacement/g' file1        # 全局替换匹配的文本
+shell> seq 3 | sed ':a;N;$!ba;s/\n/:/g'        # 结果为 = 1:2:3   $!ba = 不是最后一行则跳回 a 执行
 
 shell> seq 6 | sed -e 1d -e 3d -e 5d            # 多 cmd 模式
 shell> seq 6 | sed '1d;3d;5d'
 shell> echo -n '  1234 567  ' | sed -r -e 's/^\s*(\S(.*)\S)\s*$/\1/'        # 巨神坑: ERE [] 中 \ 作为普通字符
+
 
 
 
