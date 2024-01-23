@@ -190,7 +190,7 @@ shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 #   @trap   r,R,w,W             命令认为 到 newline 字符之前的所有字符全是 filename
 # 
 #   a text              # 在当前行后 追加一行 text
-#   b label             #          
+#   b label             # 无条件分支（即：始终跳转到标签，跳过或重复其他命令，而不重新启动新循环）。与地址结合，可以在匹配的行上有条件地执行分支       
 #   c text              # 整行 替换为 text
 #   d                   # 删除
 #   D                   # 删除直到第一个 换行符
@@ -212,7 +212,8 @@ shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 #   r filename          # 读取文件
 #   R filename          # 读取文件，并插入到输出
 #   s/regexp/replacement/[flags]    # 替换， replacement 中 &=regexp 匹配的部分; \1-\9=捕获组
-#   t label             # 
+#   t label             # 仅当自读取最后一个输入行或采取另一个条件分支以来 s/// 命令成功时，才有条件分支（即：跳转到标签）
+#   T label             # 与 t 命令类似但相反：仅当自上次读取输入行以来没有成功替换时才分支
 #   v [version]
 #   w filename          # 将 pattern space 写入文件
 #   W filename          # 将 pattern space 直到 \n  写入文件
@@ -223,6 +224,9 @@ shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 #   { cmd ; cmd ... }   # 
 #   =                   # 在行尾打印行号
 #   : label             # 为分支命令(b,t,T) 指定 label 的位置
+#   [addr]X             # 分支条件，if[addr] 和当前 pattern space 匹配，则执行 X
+#   [addr]{ X ; X ; X } # 同上，分支条件，执行多个 X
+
 # OPTIONS :=
 shell> sed -r -n -e 'addrXoptions' -        # -r 使用扩展正则(egrep); -n 只输出执行过 sed 的行; -e 匹配脚本; -n 不自动打印读入的数据; - 表示文件从 stdin 读取
 shell> sed -i 'X' filename                  # -i 直接用修改后的内容，覆盖原文件
