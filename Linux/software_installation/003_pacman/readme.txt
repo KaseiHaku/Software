@@ -15,8 +15,17 @@
 
 常用：
     shell> pacman -Q            # 查询所有已安装
+    shell> pacman -Qd           # 列出所有作为 依赖项 安装的 pkg
+    shell> pacman -Qdtq         # 查看 不需要的 依赖项
+    shell> pacman -Qe           # 列出所有作为 依赖 root 安装的 pkg，即: 主动安装的软件，类似 webpack 的 entry
+    shell> pacman -Qg           # 列出所有 grouped packages
+    shell> pacman -Ql pkg       # 查询指定 pkg 中包含哪些文件
+    shell> pacman -Qm           # 查询不在 sync database 中的 pkg
+    shell> pacman -Qo /path/to/file    # 查询当前 file 是哪个 pkg 下的
+    shell> pacman -Qt           # 列出所有当前已安装的 pkg 都不 直接需要 或 选项需要 的 pkg
+    shell> pacman -Qs regexp    # 查询本地已安装的包 
     shell> pacman -Qu           # 查询已安装并过期的包
-    shell> pacman -Qs           # 查询本地已安装的包 
+
 
     shell> pacman -S pkg1 pkg2   # 只更新指定的软件包
                   -y             # 更新本地包数据库
@@ -37,6 +46,6 @@
 
     shell> pacman -F            # 查看包所包含的文件
     
-    shell> pacman -Qdtq                 # 查看 不需要的 包
+    
     shell> pacman -R $(pacman -Qdtq)    # 清除不需要的包
     
