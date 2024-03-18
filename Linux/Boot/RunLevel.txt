@@ -1,4 +1,7 @@
 Linux Run Level:
+    @tips 最新的 Linux 由于 init 程序被 systemd 替代，
+          所以 run level 的概念被 systemd 的 target 替代    
+
     0 = halt                                            系统默认运行级别不能设置为0，否则不能正常启动，一开机就自动关机
     1 = single-user-mode                                root权限，用于系统维护，禁止远程登陆，就像Windows下的安全模式登录
     2 = multi-user-mode                                 多用户模式，没有 NFS 网络支持 
@@ -26,6 +29,7 @@ Linux Run Level:
     3
     4
     5
+        shell> startx
     6
         shell> restart
 
