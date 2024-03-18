@@ -39,9 +39,17 @@ mkfs -t ext4 /dev/usb                             # 格式化操作，在设备�
 pwd                                                 # 查看当前工作目录绝对路径
 
 ls -al [path]                                       # 查看指定路径下所有文件，省略路径代表当前路径
-ls -al -L /path/softlink                            # -L:当显示符号链接的文件信息时，显示符号链接所指示的对象而并非符号链接本身的信息
+ls -al -H /path/softlink                            # -H:对 symbolic link 实际指向的文件，使用 ls 命令
+ls -al -L /path/softlink                            # -L:结果展示时，如果文件是 符号链接 时，显示 符号链接 指向的文件信息，而不是 符号链接 本身的信息
 ls -d file1 dir2                                    # 列出指定文件或者目录， -d 表示如果是目录，也当做文件显示
 ls -d -I oppositePattern path                       # 列出不符合 oppositePattern 的文件或目录，用了 -I 选项后 path 不能为 pattern 否则只会展示 pattern
+
+ls -al -t                # 根据时间排序
+ls -al -tu               # 根据 access time 排序 
+ls -al -tc               # 根据 change time 排序
+ls -al -tcr              # 根据 change time 倒序排序
+ls -al -S                # 根据 size 排序
+ls -al -X                # 根据 extension 排序
 
 file -i <file>                                      # 显示文件 MIME 类型，和文件字符编码格式
 stat <file>                                         # 查看文件信息
