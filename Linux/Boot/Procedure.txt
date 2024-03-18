@@ -31,10 +31,11 @@ CentOS7 启动过程 {
     
         @tips 新的 linux 发行版 /sbin/init -> /usr/lib/systemd/systemd  指向了 systemd 来启动了
     }
-    init {
-        
-    }
 
+    init {
+        从 /etc/inittab 读取配置，
+        执行 initdefault 所在行中配置的脚本，一般为 /etc/rc.d/rc 3
+    }
     systemd {
         systemd 程序读取 /etc/systemd/system/default.target 文件的内容，这个文件是一个软连接，
         根据软连接的指向不同，会启动不同的用户态，比如该软连接 /usr/lib/systemd/system/multi-user.target ，那么就会启动多用户交互界面，
