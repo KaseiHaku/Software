@@ -45,6 +45,18 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
         [不勾选]Suspend session                                 # 一定要禁掉，manjaro 在 vmware 下休眠就起不来了
     
 
+################################ TTY(Teletype)  ################################
+# getty = get tty
+# 怎么查找 error log
+#     @doc https://forum.manjaro.org/t/howto-find-error-logs/100999            
+# 怎么 troubleshoot
+#     @doc https://forum.manjaro.org/t/howto-reach-a-minimal-system/108687     
+# 纯字符界面 和 图形界面切换：
+#     @doc https://forum.manjaro.org/t/howto-use-the-terminal-tty/105222 
+#     一共 24 个 TTY，切换快捷键为: Ctrl+Alt+Fn(1-12) Ctrl+Alt+Shift+Fn(13-24)
+#         Ctrl+Alt+F1        # 默认 TTY
+#         Ctrl+Alt+F7        # 一般为 图形界面
+
 
 ################################ 开发机清理备份 ################################
 shell> docker ps -aq | xargs -itI {} docker container rm {}  # 删除所有容器
