@@ -3,7 +3,7 @@ CentOS7 启动过程 {
         上电
         读取主板 firmware(固件，ROM) 中的 UEFI 系统，或者传统的 BIOS 系统，并执行。该 firmware 会检查启动所需的硬件是否都正常
     }
-    MBR(选择启动设备) {
+    MBR(Master Boot Record: 计算机硬盘上的特定扇区) {
         UEFI 会根据配置的启动设备，读取启动设备的最初的 512Byte(MBR) = 446(BootLoader) + 64(分区表) + 2(错误标志位) 中的内容到 RAM(运行内存) 中
         MBR 中有记录 BootLoader(GRUB2) 的位置，并加载到 RAM 中
         然后将控制权交给 GRUB2
@@ -27,8 +27,14 @@ CentOS7 启动过程 {
     }
     Kernel(加载内核) {
         从 initrd 镜像文件中加载必要的 驱动模块
-        内核启动第一个进程，名为 systemd PID=1 
+        内核启动第一个进程 /sbin/init 并设置 PID=1
+    
+        @tips 新的 linux 发行版 /sbin/init -> /usr/lib/systemd/systemd  指向了 systemd 来启动了
     }
+    init {
+        
+    }
+
     systemd {
         systemd 程序读取 /etc/systemd/system/default.target 文件的内容，这个文件是一个软连接，
         根据软连接的指向不同，会启动不同的用户态，比如该软连接 /usr/lib/systemd/system/multi-user.target ，那么就会启动多用户交互界面，
