@@ -67,4 +67,11 @@ shell> 删除所有 node_module
 shell> rm -rf /var/log/journal/f58e7beddc1349179b6b825ac036e08d/*   # 删除所有系统日志文件
 shell> rm -rf /var/cache/pacman/pkg/*           # 删除所有备份的软件包
 
+################################ 内核管理 ################################
+# @doc https://forum.manjaro.org/t/switching-kernels/70658/2
+shell> mhwd-kernel -l                    # 列出所有版本内核
+shell> mhwd-kernel -li                   # 列出已安装的内核
+shell> mhwd-kernel -r linux61            # 删除已安装的内核
+shell> mhwd-kernel -i linux61            # 安装一个内核
+shell> # 重启，在 BIOS/UEFI 弹出时，立即按 Shift -> 进入 Grub boot loader 界面 -> 方向键选择第二项 -> 选择指定的内核版本进行启动
 
