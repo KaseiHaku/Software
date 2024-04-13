@@ -4,9 +4,11 @@ Redis Data Type {
     Set: 唯一，无序的 string 集合
     SortedSet: 每个元素都关联一个 float 类型的 score
     Hashe: 以关联复杂的字段当 key 关联到 value
-    BitArray: 比特位数组
-    HyperLogLog: 
     Stream: 
+    Geospatial indexes: 地理空间 索引
+    BitMap: 
+    Bitfield: 比特位数组
+    HyperLogLog: 
 }
 
 Connection {
