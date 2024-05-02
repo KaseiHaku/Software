@@ -45,6 +45,7 @@ Help {
     
     
     :h <name>                   # 查看命令的帮助文档
+    :h ^C                       # 查看 Ctrl+C 的帮助
     :help number<Ctrl-D>        # 列出显示当前输入的相关帮助, 使用 <Tab> 选中不同的列表项
     :helpgrep pattern           # :cnext 到下一个
                                 # :cwindow 打开 quickfix window
@@ -52,8 +53,9 @@ Help {
     :viu[sage]                  # Show help on Normal mode commands.
 
     
-    
+    :help key-notation          # 查看键盘 key 在 vim 中是怎么表示的，例如：M-C == Alt+C / Meta+C
     :help ins-special-keys      # 查看左右 insert mode 下的 特殊键
+    
 
 }
 
