@@ -20,4 +20,7 @@
     :lh[elpgrep] {pattern}[@xx]     # 列出匹配项
     :exu[sage]	                    # 查看 ex 模式下 vi 不支持的命令
     :viu[sage]                      # 查看 normal 模式下 vi 不支持的命令
+
+    :help key-notation              # 查看键盘 key 在 vim 中是怎么表示的，例如：M-C == Alt+C / Meta+C
+    :help ins-special-keys          # 查看左右 insert mode 下的 特殊键
 }
