@@ -22,6 +22,7 @@ shell> 上述命令运行后会输出 ws://127.0.0.1:9229/b5b82e77-5036-49ee-a2d
        控制台直接点击该链接，IDEA 会自动创建 "Attach to Node.js/Chrome" 类型的 debug 窗口
        
 # 方式三: 
+# @trap 实测 vite.config.js 中 breakpoint 不生效
 shell> Run/Debug Configuration 新增一个 Node 类型的
 shell> 配置好要运行的 .js 文件，点击 debug 按钮运行即可
 
