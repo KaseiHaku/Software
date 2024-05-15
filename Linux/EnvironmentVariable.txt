@@ -43,6 +43,7 @@
         export HELLO="Hello!"  # 新建环境变量 HELLO  value = Hello!
         
     b. 通过命令行添加
+        shell> NODE_ENV=production node xxx.js        # 为 node 命令添加环境变量 NODE_ENV=production
       
    
    
