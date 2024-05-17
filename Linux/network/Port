@@ -7,7 +7,7 @@
 
 查看正在监听的端口 {
     # @doc https://manpages.debian.org/bookworm/iproute2/ss.8.en.html
-    shell> ss -lntu
+    shell> ss -lnep                  # 查看正在监听的端口及其进程
     shell> lsof -i :3306    # lsof(list open files) 命令可以查看当前系统打开的所有文件。
                             # 而 linux 中任何事物都是以文件的形式存在，所以这个命令可以查到很多信息
     shell> fuser -a -n tcp 5005    # 
