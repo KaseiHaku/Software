@@ -16,6 +16,9 @@
 shell> man man          # 查看 page=man 的内容，该命令 按 section 编号，从小到大搜索，只显示第一个匹配项
 shell> man 8 man        # 查看指定 section 的内容
 shell> man -f cmd       # 查看命令的简短描述，等价于 shell> whatis cmd
+shell> man -ik regex           # 约等于 shell> apropos cmd，只搜索 manual page descriptions; -i 忽略大小写
+shell> man -IK regex           # 约等于 shell> apropos cmd，全文搜索; -I 不忽略大小写
+shell> man -aIK regex           # 默认 man 找到一定数量后就停止，-a 返回所有结果，不停止
 
 h                   # 查看帮助
 q                   # 推出
