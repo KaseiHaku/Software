@@ -4,8 +4,8 @@
 #   2. 将 record 分隔成若干个 field         # 分隔符 默认为 Space 或 Tab
 #   3. 对 field 进行细节处理
 
-shell> awk option -f program -- file1 file2
-shell> awk option -- 'program' file1 file2
+shell> gawk option -f program -- file1 file2
+shell> gawk option -- 'program' file1 file2
            -f progFile      --file=progFile         # 代码文件，可以多次，awk 将按序合并文件中的 program
            -F [:][,]        --field-separator=[:][,]     # 字段分隔符列表，以 : ] [ , 四个作为分隔符
            -v var=val       --assign=var=val               # 定义变量
@@ -239,23 +239,23 @@ ACTIONS:
         在 action 中的函数，包含: Numeric, String, Time, Bit Manipulations
         
 Examples:
-    shell> awk -F [,;] -v var=val -- 'program' file1 file2
-    shell> awk -F [,;] -v var=val -e 'program' -- file1 file2
+    shell> gawk -F [,;] -v var=val -- 'program' file1 file2
+    shell> gawk -F [,;] -v var=val -e 'program' -- file1 file2
     
     
-    shell> cat <<EOF | tee script.awk && cat bb.txt | awk -f script.awk -- -        # 先编写 script.awk 脚本，再对 awk 的标准输入执行该脚本
+    shell> cat <<EOF | tee script.awk && cat bb.txt | gawk -f script.awk -- -        # 先编写 script.awk 脚本，再对 awk 的标准输入执行该脚本
     {print \$2}             # 这里必须对 shell 中的 特殊字符做转义
     EOF
     
-    shell> cat <<EOF | awk -f '-' -- bb.txt             # 将 标准输入 作为 awk 的脚本文件，对 bb.txt 执行脚本
+    shell> cat <<EOF | gawk -f '-' -- bb.txt             # 将 标准输入 作为 awk 的脚本文件，对 bb.txt 执行脚本
     {print \$2}             # 这里必须对 shell 中的 特殊字符做转义
     EOF
     
-    shell> cat <<'EOF' | awk -f - -- bb.txt             # 将 标准输入 作为 awk 的脚本文件，对 bb.txt 执行脚本
+    shell> cat <<'EOF' | gawk -f - -- bb.txt             # 将 标准输入 作为 awk 的脚本文件，对 bb.txt 执行脚本
     {print $2}              # 因为 EOF 被 引号 包含，所以这里的字符不会被  shell 特殊对待
     EOF
     
-    shell> awk -- 'BEGIN {FIELDWIDTHS="1 10 117 32"} { print $4} END {}' dd.txt
+    shell> gawk -- 'BEGIN {FIELDWIDTHS="1 10 117 32"} { print $4} END {}' dd.txt
     
     
     shell> ss | awk -- '/^tcp/ {map[$2]++} END { for(key in map){ print key, map[key]} } '        # 统计重复行的数量，awk map 和 ary 语法相同
