@@ -157,6 +157,9 @@ PATTERNS：
         ! pattern                           # 匹配 不符合 pattern 的 record
         pattern1, pattern2                  # 范围模式，从匹配 pattern1 的 record 开始，到匹配 pattern2 的 record 结束
 
+    常见格式:
+        BEGIN {} pattern1,pattern2 {} END {}
+
 ACTIONS: 
     由多个 Statement 组成，Statement 之间使用 \n 或者 ; 分隔
     
