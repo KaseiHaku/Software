@@ -1,8 +1,10 @@
-# awk
+# gawk
 # 处理规则：
 #   1. 每次读取一个符合 pattern 的 record； record 分隔符见下
 #   2. 将 record 分隔成若干个 field         # 分隔符 默认为 Space 或 Tab
 #   3. 对 field 进行细节处理
+# @trap gawk 大多数情况下不支持对 正则表达式 捕获组 的 反向引用，即: /([:digit:]+)==\1/ 中的 \1 是不被支持的，
+#       这种场景下，考虑使用 sed 或 grep 替代 gawk
 
 shell> gawk option -f program -- file1 file2
 shell> gawk option -- 'program' file1 file2
