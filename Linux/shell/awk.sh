@@ -132,6 +132,23 @@ Variable Typing And Conversion
     str = "\ddd"      # 8 进制数字
     str = "\c"      # c
 
+Expression:
+    expr in array
+    (index) in array
+    
+    expr1 ? expr2 : expr3
+    
+    expr1 >= expr2
+
+    expr1 = expr2        # 赋值
+    expr1 += expr2       # 同 java  +=
+
+    expr1 && expr2        # 逻辑运算
+
+    $expr                # Field 引用
+
+    str ~ /regex/        # str 匹配 regex，return 1; else return 0;
+    str !~ /regex/       # str 匹配 regex，return 0; else return 1;
 
 PATTERNS：
     格式：pattern {action}
