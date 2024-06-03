@@ -18,6 +18,7 @@
     :help i_<Esc>               # Insert 模式下 <Esc> 命令的帮助
     :help :quit                 # Command 模式下 :quit 命令的帮助
     :help c_<Del>               # Command-edit 模式下 <Del> 命令的帮助
+    :help c_<S-Left>            # Command 模式下 Shift + Left 快捷键的帮助
     :help -r                    # shell> vim -r 中 -r 命令参数的帮助
     :help 'textwidth'           # Option 
     :help /[                    # Regexp 模式下 [ 字符的帮助
