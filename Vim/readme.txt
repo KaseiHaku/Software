@@ -25,39 +25,6 @@ Vim All Mode {
     Insert, CommandLine, Lang-Arg                   lnoremap
 }
 
-Help {
-    :help x                     # Normal 模式下 x 命令的帮助
-    :help v_x                   # Visual 模式下 x 命令的帮助
-    :help i_<Esc>               # Insert 模式下 <Esc> 命令的帮助
-    :help :quit                 # Command 模式下 :quit 命令的帮助
-    :help c_<Del>               # Command-edit 模式下 <Del> 命令的帮助
-    :help -r                    # shell> vim -r 中 -r 命令参数的帮助
-    :help 'textwidth'           # Option 
-    :help /[                    # Regexp 模式下 [ 字符的帮助
-    
-    Help 文档内的跳转 {
-        Ctrl-]                  # 就可以跳转到和当前光标所在单词相关的帮助信息
-        Ctrl-T                  # 切换回 Ctrl-] 原来的位置
-        Ctrl-O                  # 在前后浏览过的帮助信息之间进行切换。
-        Ctrl-I                  # 在前后浏览过的帮助信息之间进行切换。
-        CTRL-D                  # 查看匹配的其他帮助
-    }
-    
-    
-    :h <name>                   # 查看命令的帮助文档
-    :h ^C                       # 查看 Ctrl+C 的帮助
-    :help number<Ctrl-D>        # 列出显示当前输入的相关帮助, 使用 <Tab> 选中不同的列表项
-    :helpgrep pattern           # :cnext 到下一个
-                                # :cwindow 打开 quickfix window
-    :exu[sage]                  # Show help on Ex commands.
-    :viu[sage]                  # Show help on Normal mode commands.
-
-    
-    :help key-notation          # 查看键盘 key 在 vim 中是怎么表示的，例如：M-C == Alt+C / Meta+C
-    :help ins-special-keys      # 查看左右 insert mode 下的 特殊键
-    
-
-}
 
 
 Vim Comprehensive Information {
