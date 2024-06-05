@@ -1,5 +1,6 @@
-
-
+/**
+ * @trap 如果使用 v2fly/v2fly-core:v4.45.2 进行 docker 部署透明代理，那么 docker 的网络模式只能是 host，即: network_mode: host
+ **/
 {
   "log": { "loglevel": "debug"  },
   "dns": {
