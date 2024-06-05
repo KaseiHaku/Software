@@ -16,7 +16,7 @@ Query：
 Operate:
     shell> systemctl daemon-reload                                  # 当 unit-file 变更后，需要使用该命令重新加载
     shell> systemctl start postfix.service                          # 启动一个服务
-    shell> systemctl start postfix@arg1                             # 启动服务时，传入参数，
+    shell> systemctl start postfix@arg1.service                     # 启动服务时，传入参数(有且只有一个)，在 template-unit-file 中使用 %i 来获取该参数值; shell> man systemd.unit
     shell> systemctl stop postfix.service                           # 关闭一个服务
     shell> systemctl restart postfix.service                        # 重启一个服务
 
