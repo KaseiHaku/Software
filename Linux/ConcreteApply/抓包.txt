@@ -123,7 +123,7 @@ shell> tcpdump -i eth0 -n -nn -A -tttt
 shell> tcpdump -i eth0 -nn ip proto \\icmp      # 抓 eth0 网卡的 icmp 协议
 shell> tcpdump -i eth0 -nn dst port 9092      # 抓 eth0 网卡，目标端口为 9092 的包
 shell> tcpdump -i eth0 -nnf '(src 172.16.0.24 && dst 172.16.30.14 && dst portrange 3307-3309) || (dst 172.16.0.24 && src 172.16.30.14 && src portrange 3307-3309)'
-
+shell> tcpdump -i eth0 -nnf -tttt 'dst 192.168.0.200 && !src net 192.168.0.0/16'        # 目标是指定 ip，且 src 不属于 192.168.0.0/16(CIDR) 的 pkg
 
 shell> tcpdump -vvvi ens33 -ASQ out -#enl > ~/networkCard.dump & tail -f  ~/networkCard.dump
 shell> tcpdump -i lo -nnfvvX port 53
