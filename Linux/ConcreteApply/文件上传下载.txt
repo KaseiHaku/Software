@@ -22,6 +22,7 @@ curl {
         {"key":"value"}
     EOF
     shell> curl -k https://xxx.com      # -k 当证书不对时，继续访问
+    shell> curl -X GET -L https://xxx.com         # follow redirect
 
 
     # 下载文件
