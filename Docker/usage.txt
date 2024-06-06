@@ -70,8 +70,8 @@ Image：
     shell> docker build -t kasei/myapp:1.0.0 -t shykes/myapp:latest .
     
     # 镜像导入导出
-    shell> docker image save niginx:1.21.1 -o niginx-1.21.1.tar     # 将 image 导出为 tar 文件
-    shell> docker image load -i niginx-1.21.1.tar                   # 从 tar 文件中加载 image
+    shell> docker image save nginx:1.21.1 -o nginx-1.21.1.tar     # 将 image 导出为 tar 文件
+    shell> docker image load -i nginx-1.21.1.tar                   # 从 tar 文件中加载 image
     
     # 删除镜像
     shell> docker image prune
