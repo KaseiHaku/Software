@@ -83,7 +83,7 @@ spec:
 
   # IP 家族策略
   #   SingleStack: 默认值，单栈
-  #   PreferDualStack: 最好爽栈
+  #   PreferDualStack: 最好双栈
   #   RequireDualStack: 必须双栈，否则失败
   ipFamilyPolicy: SingleStack
 
