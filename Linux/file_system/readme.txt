@@ -64,7 +64,7 @@
         
         
     方案二(推荐 256G)：GUID Partition Table(GPT)
-        bios-grub           64M        xfs        
+        bios-grub           64M        xfs             @trap 必须先分配分区，然后再删除，切记不能格式化
         /boot               512M       xfs             包含引导系统所需的静态文件，需要在硬盘第一个分区
         /                   64G        xfs             根分区
         /opt                64G        xfs             软件盘 or 数据盘
@@ -73,31 +73,31 @@
         /var                ---        xfs             以上目录独立挂载，其他全部挂载在 /var 目录下
 
     方案二(推荐 512G)：GUID Partition Table(GPT) 
-        bios-grub           64M        xfs         
+        bios-grub           64M        xfs             @trap 必须先分配分区，然后再删除，切记不能格式化
         /boot               512M       xfs             包含引导系统所需的静态文件，需要在硬盘第一个分区
         /                   96G        xfs             根分区
-        /opt                160G       xfs              软件盘 or 数据盘
+        /opt                160G       xfs             软件盘 or 数据盘
         /home               128G       xfs             桌面系统，需要分大点
         swap                16G        linuxswap       参考上面 swap 分区大小配置规则
         /var                ---        xfs             以上目录独立挂载，其他全部挂载在 /var 目录下
 
 
     方案三(Docker 256G)：GUID Partition Table(GPT)
-        bios-grub           64M        xfs         
+        bios-grub           64M        xfs             @trap 必须先分配分区，然后再删除，切记不能格式化
         /boot               512M       xfs             包含引导系统所需的静态文件，需要在硬盘第一个分区
-        /                   64G        xfs             根分区
-        /opt                96G        xfs             软件盘 or 数据盘；以该顺序分区，后期 opt 可以吞了 home 和 swap
-        /home               16G        xfs  
+        /                   32G        xfs             根分区
+        /opt                64G        xfs             软件盘 or 数据盘；以该顺序分区，后期 opt 可以吞了 home 和 swap
+        /home               64G        xfs  
         swap                16G        linuxswap       参考上面 swap 分区大小配置规则
         /var                ---        xfs             以上目录独立挂载，其他全部挂载在 /var 目录下
 
     方案四(Docker 512G)：GUID Partition Table(GPT)
-        bios-grub           64M        xfs         
+        bios-grub           64M        xfs             @trap 必须先分配分区，然后再删除，切记不能格式化
         /boot               512M       xfs             包含引导系统所需的静态文件，需要在硬盘第一个分区
         /                   96G        xfs             根分区
-        /opt                160G        xfs             软件盘 or 数据盘；以该顺序分区，后期 opt 可以吞了 home 和 swap
-        /home               64G        xfs  
-        swap                16G        linuxswap       参考上面 swap 分区大小配置规则
+        /opt                128G       xfs             软件盘 or 数据盘；以该顺序分区，后期 opt 可以吞了 home 和 swap
+        /home               96G        xfs  
+        swap                32G        linuxswap       参考上面 swap 分区大小配置规则
         /var                ---        xfs             以上目录独立挂载，其他全部挂载在 /var 目录下
     
         
