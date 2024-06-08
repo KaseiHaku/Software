@@ -16,8 +16,8 @@ Linux Run Level:
         shell> shutdown 
     1
         进入 grub:
-            如果 formware 是 BIOS 类型：MBR 阶段长按 Shift 进入 grub
-            如果 formware 是 BIOS 类型：MBR 阶段长按 ESC 进入 grub
+            如果 firmware 是 BIOS 类型：MBR 阶段长按 Shift 进入 grub
+            如果 firmware 是 UEFI 类型：MBR 阶段长按 ESC 进入 grub
         修改启动参数：
             grub 界面选择 "Manjaro Linux" 选项，按 e 进入编辑
                 找到 linux /boot/vmlinuz-5.4-x86_64 root=UUID=xxx rw quiet ... 行，追加 single 参数到该行末尾
