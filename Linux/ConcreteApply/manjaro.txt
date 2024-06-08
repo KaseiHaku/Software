@@ -1,4 +1,4 @@
-
+################################ Install & Initialize  ################################
 boot with open source drivers     使用开源驱动启动，适合集成显卡用户使用，独显也可用；VMware 一般用这个
 boot with proprietary drivers     使用专用驱动启动，适合所有独立显卡用户使用
 必备软件:
@@ -44,6 +44,9 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
     System Settings -> Power Management -> Energy Saving 
         [不勾选]Suspend session                                 # 一定要禁掉，manjaro 在 vmware 下休眠就起不来了
     
+
+shell> groupmems -g docker -a kasei            # 给 docker 组添加 user1 作为 member
+shell> vim /usr/lib/systemd/system/docker.service   # ExecStart 修改为 "ExecStart=/usr/bin/dockerd"，删除额外参数
 
 ################################ TTY(Teletype)  ################################
 # getty = get tty
