@@ -44,10 +44,16 @@
   // 配置镜像库
   "registry-mirrors": [
     "https://registry.docker-cn.com",    // Docker中国区官方镜像
-    "http://hub-mirror.c.163.com", // 网易
     "https://docker.mirrors.ustc.edu.cn", // 中国科学技术大学
+    "https://mirrors.tuna.tsinghua.edu.cn", // 清华
+    "https://docker.nju.edu.cn", // 南京大学
+    "http://hub-mirror.c.163.com", // 网易
     "https://mirror.ccs.tencentyun.com", // 腾讯
     "https://registry.cn-hangzhou.aliyuncs.com", // 阿里
+    "https://docker.m.daocloud.io",
+    "http://mirror.azure.cn/", // Azure中国镜像地址
+    
+
     // 登录 阿里云: https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors 镜像工具 -> 镜像加速器 复制地址
     "https://nwko12eb.mirror.aliyuncs.com",
   ],
