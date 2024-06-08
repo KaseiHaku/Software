@@ -10,7 +10,8 @@ export NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node
 
 # 安装  NVM
 # 下面命令下载 nvm，并执行
-#       https://github.com/coreybutler/nvm-windows    windows 下的 nvm
+#     https://github.com/nvm-sh/nvm        Linux 
+#     https://github.com/coreybutler/nvm-windows    Windows 下的 nvm
 # 该脚本将 clone nvm 库到 ~/.nvm
 # 该脚本会自动往 profile 文件中添加环境变量：NVM_DIR, 
 # export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
