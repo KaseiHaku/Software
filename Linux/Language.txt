@@ -36,4 +36,37 @@ shell> localectl set-locale LANG=zh_CN.UTF-8    #
 shell> vim /etc/locale.conf                     # 修改配置文件
 shell> shutdown -r now
 
+################################ ArchLinux 安装 Fcitx5 ################################
+# ibus 框架的不好，别用
+# @doc https://wiki.archlinux.org/title/Fcitx5
+# 
+shell> pacman -Sy fcitx5-im 
+shell> pacman -Sy fcitx5 fcitx5-qt fcitx5-gtk fcitx5-configtool fcitx5-chinese-addons fcitx5-rime    # 同上
+
+shell> cat <<'EOF' >> /etc/environment
+    # Fcitx5 相关配置
+    INPUT_METHOD=fcitx                    # 表明当前 输入法框架 是 fcitx
+    GTK_IM_MODULE=fcitx                   # 指定基于 GTK 的 UI 使用的 输入法模块
+    QT_IM_MODULE=fcitx                    # 指定基于 QT 的 UI 使用的 输入法模块
+    XMODIFIERS='@im=fcitx'                # 指定普通 X11 UI 使用的 输入法模块
+    SDL_IM_MODULE=fcitx                   # 一些游戏使用 SDL2 库
+    GLFW_IM_MODULE=ibus                   # 用于支持 kitty
+EOF
+
+shell> ll ~/.config/fcitx5        # 默认 fcitx5 的配置目录，可以安装 fcitx5-configtool 使用图形界面编辑
+
+shell> # Add Input Method 时，不要添加 "Keyboard - Chinese" 这种的只是键盘布局，并不是输入法，只适合用于输入 普通英文字符
+       # 应该搜索  "Pinyin" 然后添加 "Pinyin" 才是真的添加了 拼音输入法
+
+
+
+
+
+
+
+
+
+
+
+
 
