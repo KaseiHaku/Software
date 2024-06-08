@@ -228,7 +228,7 @@ services:
     
     # 重启策略配置，非 swarm 模式，swarm 模式重启策略查看 service.xxx.deploy
     # 可用值: no,always,on-failure,unless-stopped
-    restart: no   
+    restart: on-failure:3    # 3 表示最多重启 3 次 
     # swarm 相关配置，如果不是 swarm 部署，则需要使用 shell> docker-compose --compatibility up -d
     # 部署相关的匹配，比如 CPU 内存的使用限制等
     # @doc https://docs.docker.com/compose/compose-file/deploy/
