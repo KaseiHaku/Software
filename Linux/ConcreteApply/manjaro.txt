@@ -3,12 +3,13 @@ boot with open source drivers     使用开源驱动启动，适合集成显卡�
 boot with proprietary drivers     使用专用驱动启动，适合所有独立显卡用户使用
 必备软件:
     vim
-    v2ray
+    v2ray                         # 使用 docker 启动啦，可以不用装
     fctix-googlepinyin            # 不要用 ibus 的
     google-chrome    
     git
     idea
     dnsutils                        # dig 命令
+    nvm
 
     # 以下软件需配置，不自动升级
     docker
