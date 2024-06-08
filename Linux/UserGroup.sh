@@ -54,7 +54,12 @@ shell> groupadd -g 128 -o dba       # 新建用户组 dba，并指定 GID 为 12
 
 shell> groupdel dbs                 # 删除用户组
 
-shell> groupmod -n admin dba        # 将 dba 重命名为 admin
+shell> groupmod -n admin dba                 # 将 dba 重命名为 admin
+shell> groupmod -aU user1 group1           # 将 user1 添加到 group1 中
+
+shell> groupmems -g docker -l                  # 查看 docker 组所有 member
+shell> groupmems -g docker -a user1            # 给 docker 组添加 user1 作为 member
+shell> groupmems -g docker -d user1            # 从 docker 组中删除 user1 
 
 
 
