@@ -49,6 +49,16 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
 shell> groupmems -g docker -a kasei            # 给 docker 组添加 user1 作为 member
 shell> vim /usr/lib/systemd/system/docker.service   # ExecStart 修改为 "ExecStart=/usr/bin/dockerd"，删除额外参数
 
+
+# 开始菜单添加 item
+shell> 右键任务栏中的 "Start"
+shell> Edit Applications...
+shell> New Item
+shell> 配置 Name:
+       点击图标，选择 FS 中的 图标文件，例如: .svg .png
+       Program: 选择 app 启动脚本
+       保存即可
+
 ################################ TTY(Teletype)  ################################
 # getty = get tty
 # 怎么查找 error log
