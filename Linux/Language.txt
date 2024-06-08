@@ -31,7 +31,7 @@ shell> locale -m            # 查看支持的字符编码格式
 
 shell> localectl status                         # 查看当前 本地化 配置
 shell> localectl list-locales                   # 查看所有可用的 本地化 配置
-shell> localectl set-locale LANG=zh_CN.utf8     # 
+shell> localectl set-locale LANG=zh_CN.UTF-8    # 
 
 shell> vim /etc/locale.conf                     # 修改配置文件
 shell> shutdown -r now
