@@ -1,0 +1,34 @@
+# 默认使用同目录下的 .env 文件作为 环境变量 配置文件，可以通过 shell> docker-compose --env-file /path 来自定义环境变量配置文件
+version: "3.8"    # 表示当前 docker-compose(Compose specification) 的版本，版本 "3.9"  需要 docker 的版本为 19.03.0+
+
+# 扩展字段 YAML Anchor: key 必须是 "x-" 开头
+# 扩展字段：各镜像版本
+x-nginx-img: &x-nginx-img nginx:1.25.3
+x-v2fly-core-img: &x-v2fly-core-img v2fly/v2fly-core:v4.45.2
+
+
+services:
+
+  # 该 container 部署在 client 可以直接访问的服务器(VPS) 上
+  # @tips 在运行过程中，建议先启用 bridge，再启用 portal
+  v2fly-portal:
+    image: *x-v2fly-core-img
+    ports: [ 40000:40000, 49152:49152, 49153:49153 ]
+    volumes:
+      - ./v2ray/portal.config.json5:/etc/v2ray/config.json:ro
+    #entrypoint: [sleep, 1d, 2m]
+    #command: []
+
+  nginx:
+    image: *x-nginx-img
+    ports: [ 80:80, 443:443 ]
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro   # 覆盖 nginx 默认配置
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/tls:/etc/nginx/tls:ro
+      # 普通前端项目
+      # @trap /usr/share/nginx/html 是 nginx 镜像自带的，不建议覆盖
+      #- ./nginx/apps:/usr/share/nginx/apps:ro
+    environment:
+      TZ: "Asia/Shanghai"      # 用于保证容器时区正确
+    depends_on: [ v2fly-portal ]
