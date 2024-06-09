@@ -58,6 +58,16 @@ alias rm='rm -i'
 EOF
 
 
+shell> cat <<-'EOF' >> /etc/vimrc
+" @kasei
+set number
+set cursorline
+set encoding=utf-8
+EOF
+
+
+
+
 shell> groupmems -g docker -a kasei            # 给 docker 组添加 user1 作为 member
 shell> vim /usr/lib/systemd/system/docker.service   # ExecStart 修改为 "ExecStart=/usr/bin/dockerd"，删除额外参数
 
