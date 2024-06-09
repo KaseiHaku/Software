@@ -10,6 +10,7 @@ define vars = { $var1, $var2}           # 引用变量
 table ip tb_v2ray {
     # 根据 域名 解析出来的 VPS 的 IPv4 地址的 集合，
     # 因为 VPS 使用 CDN 做转发，所以 IPv4 地址会变
+    # @trap 不再需要安装 ipset 和 dnsmasq；NFT 自带名为 set 的元素类型，可用于替代 ipset
     set vps4 {
         type            ipv4_addr                   # 表示当前 Set 存放的内容是 IPv4 地址
         # timeout         1d2h3m4s                    # 整个 Set 中的元素超时时间
@@ -88,6 +89,7 @@ table ip6 tb_v2ray_ip6 {
 
     # 根据 域名 解析出来的 VPS 的 IPv6 地址的 集合，
     # 因为 VPS 使用 CDN 做转发，所以 IPv6 地址会变
+    # @trap 不再需要安装 ipset 和 dnsmasq；NFT 自带名为 set 的元素类型，可用于替代 ipset
     set vps6 {
         type            ipv6_addr                   # 表示当前 Set 存放的内容是 IPv6 地址
         # timeout         1d2h3m4s                    # 整个 Set 中的元素超时时间
