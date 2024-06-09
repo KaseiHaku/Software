@@ -3,3 +3,6 @@ ReverseProxyPublic(当前配置) 和 ReversePRoxy 的区别是什么?
     ReverseProxyPublic: client 不需要安装 v2ray，直接通过公网(internet) 即可访问 内网服务
 
 
+内网穿透整体架构图:
+    Browser -> CloudFlare -> Nginx(VPS) -> v2fly-portal(VPS)
+        -> v2fly-bridge(ether) -> Nginx(ether) -> Boot/Docker
