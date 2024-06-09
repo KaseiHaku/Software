@@ -15,9 +15,9 @@ Shell 的启动方式：
     
     启动时 shell 执行的相关脚本及顺序:
         登录式：
-            /etc/profile -> (~/.bash_profile | ~/.bash_login | ~/.profile) -> ~/.bash_logout -> /etc/bash.bash_logout 
+            /etc/profile -> /etc/bash.bashrc -> (~/.bash_profile | ~/.bash_login | ~/.profile) -> ~/.bash_logout -> /etc/bash.bash_logout 
         交互式 + 非登录:
-            /etc/bash.bashrc -> ~/.bashrc
+            ~/.bashrc
         非交互：
             $BASH_ENV
 
