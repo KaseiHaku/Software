@@ -32,10 +32,10 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
     /etc/v2ray/config.json
     /etc/docker/deamon.json
     /etc/hosts
-    /usr/share/zsh/manjaro-zsh-config                # zsh 配置文件
-        搜索 alias ls='ls $LS_OPTIONS'  并追加 alias ll='ls -al'
-        搜索 alias cp='cp -i' 并追加 alias rm='rm -i'
     /usr/lib/jvm            # java 
+
+    
+
 
     # GUI 系统配置相关
     shell> echo $(qtpaths --paths GenericConfigLocation)        # 配置目录
@@ -45,6 +45,11 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
     System Settings -> Power Management -> Energy Saving 
         [不勾选]Suspend session                                 # 一定要禁掉，manjaro 在 vmware 下休眠就起不来了
     
+shell> cat <<'EOF' >> /etc/bash.bashrc
+# @kasei
+alias ll='ls --color=auto -al'
+alias rm='rm -i'
+EOF
 
 shell> groupmems -g docker -a kasei            # 给 docker 组添加 user1 作为 member
 shell> vim /usr/lib/systemd/system/docker.service   # ExecStart 修改为 "ExecStart=/usr/bin/dockerd"，删除额外参数
