@@ -1,0 +1,110 @@
+{
+  "log":{
+    "loglevel": "info"
+  },
+  /******************************** DNS 配置 ********************************/
+  "dns": {
+    "tag": "dnsIn",
+    "hosts": {
+      "domain:kaseihaku.com": ["192.168.0.200"],  // 指定域名及其子域名
+      "example.com": ["127.0.0.1", "::1", "proxy.example.com", "127.0.0.2"]
+    },
+    "servers": [
+      {
+        "address": "223.5.5.5",
+        "port": 53,
+        "domains": [
+          "domain:baidu.com",
+          "geosite:cn"
+        ]
+      },
+      "8.8.8.8",
+      "localhost"
+    ]
+  },
+  /******************************** 反向代理 Bridge 配置 ********************************/
+  "reverse": {
+    /**
+     * 反向代理 Bridge 配置
+     *  bridge 可以理解为是一个 inbound，区别是：bridge 可以与 vps 建立连接，从而接收来自 vps 的流量
+     *
+     * Bridge 数据处理过程：
+     * 以下 client(browser/home), portal(internet/vps), bridge(ethernet/company)
+     * 1. bridge 发送一个 domain 标识的请求到 portal，
+     * 2. portal 识别到该 domain 标识，并不直接返回响应信息，而是持有该请求，并等待 client 请求的到来
+     * 3. client 发送请求到 portal，portal 将该请求当作第 1 步 bridge 请求的响应信息返回，该响应信息不使用 domain 标识
+     * 4. bridge 接收到响应，并发现该响应没有用指定的 domain 标识，所以 bridge 将该响应当做请求信息发送到内网服务器
+     * 5. 内网服务器响应请求，并返回响应信息到 bridge，bridge 标识该信息，发送给 portal
+     * 6. portal 将响应信息返回给对应的 client
+     * @trap 注意只能是 bridge 先发送请求，portal 只能通过对请求响应，返回数据，而不能直接访问 bridge，因为 bridge 没有公网 ip，无法直接访问
+     * */
+    "bridges": [
+      // domain 不用真实存在，只用作反向代理的标识，但是 bridge.config.json 和 portal.config.json 中的配置必须保持一样
+      { "tag": "bridgeInX", "domain": "xxx.reverse.kaseihaku.com" }
+    ]
+  },
+  /******************************** 出站配置 ********************************/
+  "outbounds": [
+    /** 用于将 bridge 流量转发到 vps */
+    {
+      "tag": "outWsBridge",
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "1291114093.top",
+            // "port":40000 , // 直连 v2ray 使用该配置
+            "port": 443,      // 使用 nginx 转发使用该配置
+            "users": [
+              // 这里 alterId 必须为 0，代表启用 VMessAEAD
+              { "id": "uuid", "alterId": 0, "security":"auto", "level": 1 }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/ws/reverse/bridge",
+          "headers": {
+            "Host": "1291114093.top"
+          }
+        },
+        //"security": "none", // 直连 v2ray 使用该配置
+        "security": "tls",    // 使用 nginx 转发使用该配置
+        "tlsSettings": {
+          "serverName": "1291114093.top"
+        }
+      }
+    },
+    {
+      "tag": "outFreedom",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIP"
+      }
+    }
+  ],
+  /******************************** 路由配置 ********************************/
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "domainMatcher": "mph",
+    "rules": [
+      // bridgeInX 主动发起的请求，domain == xxx.reverse.kaseihaku.com 的流量，转发到 vps
+      {
+        "type": "field",
+        "inboundTag": ["bridgeInX"],
+        "domain": ["full:xxx.reverse.kaseihaku.com"],
+        "outboundTag": "outWsBridge"
+      },
+      // client 请求流量，通过 portalOutX -> bridgeInX 流入的数据，domain !== xxx.reverse.kaseihaku.com 的流量直连
+      // 这里由于 v2fly-portal 中的 dokodemo 协议写死了目标 IP 地址，所以这里不会走 DNS 解析
+      {
+        "type": "field",
+        "inboundTag": ["bridgeInX", "dnsIn"],
+        "outboundTag": "outFreedom"
+      }
+    ]
+  }
+
+}
