@@ -51,6 +51,13 @@ alias ll='ls --color=auto -al'
 alias rm='rm -i'
 EOF
 
+shell> cat <<-'EOF' >> /usr/share/zsh/manjaro-zsh-config
+# @kasei
+alias ll='ls --color=auto -al'
+alias rm='rm -i'
+EOF
+
+
 shell> groupmems -g docker -a kasei            # 给 docker 组添加 user1 作为 member
 shell> vim /usr/lib/systemd/system/docker.service   # ExecStart 修改为 "ExecStart=/usr/bin/dockerd"，删除额外参数
 
