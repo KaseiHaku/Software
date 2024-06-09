@@ -287,7 +287,7 @@ endif
 if has('win64') || has('win32')
     call plug#begin()                                                   " 使用插件默认的保存路径
 else
-    call plug#begin('/usr/share/vim/vimfiles/plugged')                  " 修改插件默认保存路径为 '/usr/share/vim/vimfiles/plugged'            
+    call plug#begin('~/.vim/plugged')                                   " @tips 全局插件默认保存路径为 '/usr/share/vim/vimfiles/plugged'            
 endif
 Plug 'https://github.com/scrooloose/nerdtree.git'                   " 文件浏览器插件，:NERDTreeToggle 切换该插件
 Plug 'https://github.com/tpope/vim-ragtag.git'                      " xml 格式文件辅助编辑
