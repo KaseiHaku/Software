@@ -1,0 +1,37 @@
+# 默认使用同目录下的 .env 文件作为 环境变量 配置文件，可以通过 shell> docker-compose --env-file /path 来自定义环境变量配置文件
+version: "3.8"    # 表示当前 docker-compose(Compose specification) 的版本，版本 "3.9"  需要 docker 的版本为 19.03.0+
+
+# 扩展字段 YAML Anchor: key 必须是 "x-" 开头
+# 扩展字段：各镜像版本
+x-v2fly-core-img: &x-v2fly-core-img v2fly/v2fly-core:v4.45.2
+
+# 扩展字段：统一配置环境变量
+x-environment: &x-environment
+  # @doc {EnvVar 官方文档} https://www.v2fly.org/config/env.html
+  'v2ray.ray.buffer.size': 2                    # 单位：MB; 默认: 2; 0: 表示无上限
+  'v2ray.buf.readv': auto                       # Scatter/Gather IO (分散读取); 这一特性可以在大流量（超过 100 MByte/s）的时候依然使用较低的内存
+  'v2ray.conf.geoloader': standard              # Geodata 文件加载器; standard=标准加载器，memconservative=专为内存受限（小内存）设备优化的加载器 (v4.39.0+)
+
+x-extra-hosts: &x-extra-hosts
+  - 'as.kaseihaku.com=192.168.0.200'
+  - 'cloud.kaseihaku.com=192.168.0.200'
+  - 'bpm.kaseihaku.com=192.168.0.200'
+
+
+# Ports 分类：
+#   0 ~ 1023          知名端口（Well-known Ports）是为一些常见的服务分配的
+#   1024 ~ 49151      注册端口（Registered Ports）用于一些已注册的应用程序或服务
+#   49152 ~ 65535     动态/私有端口（Dynamic/Private Ports）
+services:
+
+  # 该 container 部署在 client 不可以直接访问的(即: 内网) 服务器上
+  # 用于和 v2fly-portal 建立通信渠道
+  v2fly-bridge:
+    image: *x-v2fly-core-img
+    #network_mode: host
+    extra_hosts: *x-extra-hosts
+    volumes:
+      - ./v2ray/bridge.config.json5:/etc/v2ray/config.json:ro
+    #entrypoint: [sleep, 1d, 2m]
+    #command: []
+
