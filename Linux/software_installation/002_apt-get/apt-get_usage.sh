@@ -18,6 +18,7 @@ shell> apt-cache showpkg package                                # 显示软件�
 shell> apt-cache pkgnames                                       # 打印软件包列表中所有包的名字
 shell> apt-cache dumpavail                                      # 打印软件包列表中所有包的简介信息
 shell> apt-cache depends package                                # 了解使用依赖
+shell> apt-cache madison pkg                                    # 列出指定包的所有版本
 
 
 
