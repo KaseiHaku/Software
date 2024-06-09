@@ -78,6 +78,7 @@
         "domainStrategy": "UseIP"        
       },
       "streamSettings": {
+        // 给当前 outbound 发出的 流量包 打上 SO_MARK=255 的防火墙标记，防火墙碰到 SO_MARK=255 的流量包要直接放行，不做处理
         // 所有的 outbound 都需要加 mark，只有 blackhole 不用加，用于表示 v2ray outbound 发送的数据包都带有 255 防火墙标记
         "sockopt": {"mark": 255}     
       }  
