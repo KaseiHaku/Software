@@ -1,0 +1,131 @@
+{
+  "log":{
+    "loglevel": "info"
+  },
+
+  /******************************** 入站配置 ********************************/
+  "inbounds": [
+    // 用于接收 client 需要 翻墙 的流量
+    {
+      "tag": "inWsLadder",
+      "port": 40000,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          // 这里 alterId 必须为 0，代表启用 VMessAEAD
+          {"id": "uuid", "level": 1, "alterId": 0, "email": "love@kaseihaku.com"}
+        ],
+        "disableInsecureEncryption": true
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none", // 此处 TLS 加密放在 Nginx 端处理
+        "wsSettings": { "path": "/ws"}
+      }
+    },
+
+
+    // 用于接收 reverse bridge(即: 部署在内网的 用于内网穿透的 v2ray) 主动发起的请求
+    {
+      "tag": "inWsBridge",
+      "port": 49152,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {"id": "uuid", "level": 1, "alterId": 0, "email": "love@kaseihaku.com"}
+        ],
+        "disableInsecureEncryption": true
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none", // 此处 TLS 加密放在 Nginx 端处理
+        "wsSettings": { "path": "/ws/reverse/bridge"}
+      },
+      "sniffing": { "enabled": true,  "destOverride": ["http", "tls"] }
+    },
+    /* 用于接收 client 访问 内网 的请求，即：需要通过 reverse bridge 转发的请求
+     * */
+    {
+      "tag": "inDokodemoPortal",
+      "port": 49153,
+
+      // @deprecated 该方案不可行，该 inbound 类型只能接收 http 协议，无法处理 https 协议，
+      //"protocol": "http",
+      //"settings": { "allowTransparent": true },
+
+      // 由于使用了 Nginx 作为前置代理，且 Nginx 只能代理 HTTP 流量，所以这里可以用 dokodemo-door 协议，否则应该限制接入协议为 http/https
+      "protocol": "dokodemo-door",
+      "settings": {
+        // 由于实际请求是 v2fly-bridge 发出的，所以这里要配置成 内网的 IP+Port
+        "address": "192.168.0.200", "port": 443,
+        "network": "tcp,udp",
+        "timeout": 300,
+        "followRedirect": false,
+        "userLevel": 1
+      },
+      "sniffing": {
+        "enabled": true,
+        /**
+         * 当流量为指定类型时，按其中包括的目标地址重置当前连接的目标
+         * 例如:
+         *  - browser 发送请求 https://xxx.kh.com 到 nginx
+         *  - nginx 代理转发到 https://v2fly-portal:49153 进入到当前 inbound    # 注意此时连接地址已经不是原始的 xxx.kh.com 而是 v2fly-portal
+         *  - 如果不配置 destOverride，那么接收当前流量的 server 会认为地址是 v2fly-portal，从而导致错误
+         *    如果配置了 destOverride，那么会重置当前连接的地址为 xxx.kh.com
+         * */
+        "destOverride": ["http", "tls"]
+      }
+    }
+  ],
+  /******************************** 出站配置 ********************************/
+  "outbounds": [
+    {
+      "tag": "outFreedom",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs",
+        "userLevel": 1
+      }
+    }
+  ],
+  /******************************** 反向代理 Portal 配置 ********************************/
+  "reverse": {
+    /* 反向代理 Portal 配置
+     * portal 可以理解为是一个 outbound
+     * */
+    "portals": [
+      // domain 不用真实存在，只用作反向代理的标识，但是 bridge.config.json 和 portal.config.json 中的配置必须保持一样
+      { "tag": "portalOutX", "domain": "xxx.reverse.kaseihaku.com" }
+    ]
+  },
+
+  /******************************** 路由配置 ********************************/
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "domainMatcher": "mph",
+    "rules": [
+      // 将 bridge 主动发起的请求流量 路由到 portalOutX
+      // 从而让 portal 能够识别这是 bridge 主动发起的 内网穿透 连接
+      {
+        "type":"field",
+        "inboundTag":["inWsBridge"],
+        "domain":["full:xxx.reverse.kaseihaku.com"],
+        "outboundTag":"portalOutX"
+      },
+      // 将 client 访问 内网 的请求，路由到 portalOutX 完成内网穿透
+      {
+        "type": "field",
+        "inboundTag":["inDokodemoPortal"],
+        "outboundTag":"portalOutX"
+      },
+
+      // 翻墙/梯子 请求，直接走 freedom 出站
+      {
+        "type": "field",
+        "inboundTag":["inWsLadder"],
+        "outboundTag": "outFreedom"
+      }
+    ]
+  }
+
+}
