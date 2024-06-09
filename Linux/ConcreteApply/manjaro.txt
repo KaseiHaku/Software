@@ -45,7 +45,7 @@ boot with proprietary drivers     使用专用驱动启动，适合所有独立�
     System Settings -> Power Management -> Energy Saving 
         [不勾选]Suspend session                                 # 一定要禁掉，manjaro 在 vmware 下休眠就起不来了
     
-shell> cat <<'EOF' >> /etc/bash.bashrc
+shell> cat <<-'EOF' >> /etc/bash.bashrc
 # @kasei
 alias ll='ls --color=auto -al'
 alias rm='rm -i'
