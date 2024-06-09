@@ -17,7 +17,7 @@ Shell 的启动方式：
         登录式：
             /etc/profile -> (~/.bash_profile | ~/.bash_login | ~/.profile) -> ~/.bash_logout -> /etc/bash.bash_logout 
         交互式 + 非登录:
-            ~/.bashrc
+            /etc/bash.bashrc -> ~/.bashrc
         非交互：
             $BASH_ENV
 
