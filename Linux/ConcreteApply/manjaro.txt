@@ -57,6 +57,8 @@ alias ll='ls --color=auto -al'
 alias rm='rm -i'
 EOF
 
+shell> echo -e '# @kasei \nexport LESSCHARSET=utf-8' >> /etc/profile.d/less.sh
+
 
 shell> cat <<-'EOF' >> /etc/vimrc
 " @kasei
