@@ -101,7 +101,7 @@
             // "port":40000 ,
             "port": 443,
             "users": [
-              { "id":"f45499fa-6c4b-3e55-adbb-bd50bc4137b8", "security":"chacha20-poly1305", "alterId":64, "level":1 }
+              { "id":"f45499fa-6c4b-3e55-adbb-bd50bc4137b8", "security":"chacha20-poly1305", "alterId":0, "level":1 }
             ]
           }
         ]
