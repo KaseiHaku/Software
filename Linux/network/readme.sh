@@ -1,4 +1,24 @@
 ################################ Concept ################################
+各命令总览: {
+    
+    # 网卡/虚拟网卡 配置
+    shell> ip link         
+
+    # 路由配置
+    shell> ip rule         
+    shell> ip route        
+
+    # 网络/连接 配置
+    shell> ip addr                # 只能操作当前生效的 配置，相当于 只有一个配置文件
+    shell> nmcli                # 可以有不同的 网络连接配置文件(connection)，类似于 可以自由切换连接哪个 wifi
+
+    # 防火墙 配置
+    shell> iptables
+    shell> iptables6
+    shell> nft
+
+}
+
 网络配置方法 {
     直接修改配置文件 {
         # Debian
