@@ -9,7 +9,8 @@
     shell> ip route        
 
     # 网络/连接 配置
-    shell> ip addr                # 只能操作当前生效的 配置，相当于 只有一个配置文件
+    shell> vim xxx.conf         # 直接修改网卡配置文件，相当于 只有一个配置文件
+    shell> ip addr              # 只是临时生效，重启后丢失
     shell> nmcli                # 可以有不同的 网络连接配置文件(connection)，类似于 可以自由切换连接哪个 wifi
 
     # 防火墙 配置
