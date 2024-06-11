@@ -39,7 +39,7 @@ table ip tb_v2ray {
         ip daddr 10.0.0.0/8 accept                              # 私有地址
         ip daddr 172.16.0.0/12 accept                           # 私有地址
 
-        #ip saddr != 192.168.0.0/16 accept                       # 非当前网段的 packet 不走代理，@trap 未测试
+        ip saddr != 192.168.0.0/16 accept                       # 非当前网段的 packet 不走 v2ray
         ip daddr 192.168.0.0/16 udp dport != {53,5353} accept   # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS）
         ip daddr 192.168.0.0/16 tcp dport != {53,5353} accept   # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS），
                                                                 # 避免 V2Ray 无法启动时无法连网关的 SSH，
