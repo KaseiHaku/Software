@@ -30,6 +30,7 @@ table ip tb_v2ray {
 
     # IPv4 Transparent Proxy
     # 代理局域网设备流量
+    # @trap 该配置也会处理 本机请求 的响应数据，因为响应是从外部发送到本地的，所以肯定会走 prerouting
     chain chain_lan_v2ray {
         type filter hook prerouting priority -150; policy accept; comment "";
 
@@ -111,6 +112,7 @@ table ip6 tb_v2ray_ip6 {
 
     # IPv6 Transparent Proxy
     # 代理局域网设备流量
+    # @trap 该配置也会处理 本机请求 的响应数据，因为响应是从外部发送到本地的，所以肯定会走 prerouting
     chain chain_lan_v2ray_ip6 {
         type filter hook prerouting priority -150; policy accept; comment "";
 
