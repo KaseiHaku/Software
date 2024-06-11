@@ -27,6 +27,7 @@ shell> nmcli general hostname newHostName       # 修改 hostname
 # connection
 shell> nmcli connection show        # 查看所有 连接
 shell> nmcli connection show id ens33        # 查看 ens33 连接的所有配置信息
+shell> nmcli connection show uuid 88df       # 查看 UUID=88df 的连接的所有配置信息
 
 # 配置静态 IP
 shell> nmcli connection show id ens33 | cat -n | grep -i xxx    # 找到想要修改的配置
