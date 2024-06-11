@@ -50,6 +50,7 @@ table ip tb_v2ray {
         ip daddr @vps4 accept                                   # 如果目标 ip 地址在名为 vps4 的 ipset 中，那么放行
 
         # 给 TCP, UDP 打标记 1，转发至 12345 端口
+        #ip protocol { tcp, udp } meta mark set 1 tproxy to :12345 meta nftrace set 1 accept    # debug 或 shell> nft monitor trace 时使用
         ip protocol { tcp, udp } meta mark set 1 tproxy to :12345 accept
 
     }
@@ -131,6 +132,7 @@ table ip6 tb_v2ray_ip6 {
         ip6 daddr @vps6 accept                                   # 如果目标 ip 地址在名为 vps6 的 ipset 中，那么放行
 
         # 给 TCP, UDP 打标记 1，转发至 12345 端口
+        #meta l4proto { tcp, udp } meta mark set 1 tproxy to :12345 meta nftrace set 1 accept        # debug 或 shell> nft monitor trace 时使用
         meta l4proto { tcp, udp } meta mark set 1 tproxy to :12345 accept
     }
 
