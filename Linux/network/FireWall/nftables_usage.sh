@@ -203,3 +203,11 @@ shell> nft list ruleset     # 显示当前所有规则集
 shell> nft flush ruleset    # 清空规则
 
 
+
+
+################################ Debug ################################
+# 需要先使用 meta nftrace set 1 打标记 才能跟踪
+# 
+shell> nft add rule filter input ip saddr 10.0.0.1 meta nftrace set 1            # 打标记
+shell> nft monitor trace            # 监控
+
