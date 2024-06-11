@@ -1,7 +1,14 @@
+################################ Concept ################################
 网络配置方法 {
     直接修改配置文件 {
-        /etc/sysconfig/network-scripts/ifcfg-ethX
+        # Debian
+        shell> less /etc/network/interfaces
+        shell> ll /etc/network/interfaces.d
+
+        # CentOS
+        shell> vim /etc/sysconfig/network-scripts/ifcfg-ens33        # 用于配置某一张网卡相关参数
         /etc/sysconfig/network-scripts/route-ethX
+        
     }
     
     # CentOS 8 以后版本只支持这种方式
@@ -114,16 +121,6 @@
 
 
 ################################# 网卡查看及配置
-# 
-################ Debain 配置文件位置
-shell> less /etc/network/interfaces
-shell> ll /etc/network/interfaces.d
-
-################ CentOS 配置文件位置
-shell> vim /etc/sysconfig/network-scripts/ifcfg-ens33        # 用于配置某一张网卡相关参数
-
-
-
 shell> ip a                     # 查看系统中的网卡
 shell> lshw -class network      # 查看网卡
 
