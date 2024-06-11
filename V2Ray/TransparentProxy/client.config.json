@@ -55,7 +55,6 @@
       "streamSettings": {
         "sockopt": { 
           "tcpFastOpen": true,
-          "mark": 1,    // 表示防火墙标记为 1 的都是转发到当前入口的
           // 表示接收到的数据是使用透明代理传过来的，且透明代理的方式为 TPROXY 方式，这里有 mark 表示接收到的数据包都带有防火墙标记
           "tproxy": "tproxy"  
         } 
