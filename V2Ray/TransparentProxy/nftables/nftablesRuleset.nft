@@ -51,8 +51,8 @@ table ip tb_v2ray {
         ip daddr @vps4 accept                                   # 如果目标 ip 地址在名为 vps4 的 ipset 中，那么放行
 
         # 给 TCP, UDP 打标记 1，转发至 12345 端口
-        #ip protocol { tcp, udp } meta mark set 1 tproxy to :12345 meta nftrace set 1 accept    # debug 或 shell> nft monitor trace 时使用
-        ip protocol { tcp, udp } meta mark set 1 tproxy to :12345 accept
+        #ip protocol { tcp, udp } meta mark set 1 tproxy to 127.0.0.1:12345 meta nftrace set 1 accept    # debug 或 shell> nft monitor trace 时使用
+        ip protocol { tcp, udp } meta mark set 1 tproxy to 127.0.0.1:12345 accept
 
     }
 
@@ -134,8 +134,8 @@ table ip6 tb_v2ray_ip6 {
         ip6 daddr @vps6 accept                                   # 如果目标 ip 地址在名为 vps6 的 ipset 中，那么放行
 
         # 给 TCP, UDP 打标记 1，转发至 12345 端口
-        #meta l4proto { tcp, udp } meta mark set 1 tproxy to :12345 meta nftrace set 1 accept        # debug 或 shell> nft monitor trace 时使用
-        meta l4proto { tcp, udp } meta mark set 1 tproxy to :12345 accept
+        #meta l4proto { tcp, udp } meta mark set 1 tproxy to [::1]:12345 meta nftrace set 1 accept        # debug 或 shell> nft monitor trace 时使用
+        meta l4proto { tcp, udp } meta mark set 1 tproxy to [::1]:12345 accept
     }
 
 
@@ -170,12 +170,11 @@ table ip6 tb_v2ray_ip6 {
 }
 
 # 新建 DIVERT 规则，避免已有连接的包二次通过 TPROXY，理论上有一定的性能提升
-# @trap 该配置 未测试，
-#table inet tb_divert {
-#chain chain_divert {
-#        type filter hook prerouting priority mangle-5; policy accept; comment "";
-#        meta l4proto {tcp} socket transparent 1 meta mark set 1            # 匹配 socket "IP_TRANSPARENT" option 的值，如果匹配则打标记为 1
-#    }
-#}
+table inet tb_divert {
+    chain chain_divert {
+        type filter hook prerouting priority mangle - 5; policy accept; comment "";
+        meta l4proto {tcp} socket transparent 1 meta mark set 1 accept            # 匹配 socket "IP_TRANSPARENT" option 的值，如果匹配则打标记为 1
+    }
+}
 
 
