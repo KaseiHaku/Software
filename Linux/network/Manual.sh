@@ -89,13 +89,18 @@
 
 
 ################################# 网卡查看及配置
-shell> ip a                     # 查看系统中的网卡
-shell> lshw -class network      # 查看网卡
+# 
+################ Debain 配置文件位置
+shell> less /etc/network/interfaces
+shell> ll /etc/network/interfaces.d
 
-
-
+################ CentOS 配置文件位置
 shell> vim /etc/sysconfig/network-scripts/ifcfg-ens33        # 用于配置某一张网卡相关参数
 
+
+
+shell> ip a                     # 查看系统中的网卡
+shell> lshw -class network      # 查看网卡
 
 ################################# Host 网络主机名称配置
 shell> vim /etc/hostname      # 配置网络主机名称
