@@ -67,6 +67,7 @@
       },
       "sniffing": { "enabled": true, "destOverride": ["http", "tls"] }    // 嗅探加密协议的域名
     },
+    /** 不管 本机 还是 LAN 中其他 host，都禁止直接发送 packet 到该端口(即: 目标 IP:Port=本机IP:12345)，会造成 死循环 */
     {
       "tag": "transparentIn",
       "protocol": "dokodemo-door",
