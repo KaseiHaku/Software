@@ -47,8 +47,13 @@ table ip tb_v2ray {
                                                                 # 如果你配置的是其他网段（如 10.x.x.x 等），则修改成自己的
         ip daddr 224.0.0.0-255.255.255.255 accept               # 跳过 D 类 和 E 类地址，即 224.0.0.0 朝上的地址，其中 255.255.255.255 为 全局广播地址
 
+        
 
         ip daddr @vps4 accept                                   # 如果目标 ip 地址在名为 vps4 的 ipset 中，那么放行
+
+        # 直连 SO_MARK 为 0xff 的流量(0xff 是 16 进制数，数值上等同与上面V2Ray 配置的 255)，此规则目的是解决v2ray占用大量CPU（https://github.com/v2ray/v2ray-core/issues/2621）
+        # meta mark 128 accept          # 老写法
+        socket mark 128 accept          # 新写法
 
         # 给 TCP, UDP 打标记 1，转发至 12345 端口
         #ip protocol { tcp, udp } meta mark set 1 tproxy to 127.0.0.1:12345 meta nftrace set 1 accept    # debug 或 shell> nft monitor trace 时使用
@@ -130,6 +135,10 @@ table ip6 tb_v2ray_ip6 {
 
 
         ip6 daddr @vps6 accept                                   # 如果目标 ip 地址在名为 vps6 的 ipset 中，那么放行
+
+        # 直连 SO_MARK 为 0xff 的流量(0xff 是 16 进制数，数值上等同与上面V2Ray 配置的 255)，此规则目的是解决v2ray占用大量CPU（https://github.com/v2ray/v2ray-core/issues/2621）
+        # meta mark 128 accept          # 老写法
+        socket mark 128 accept          # 新写法
 
         # 给 TCP, UDP 打标记 1，转发至 12345 端口
         #meta l4proto { tcp, udp } meta mark set 1 tproxy to [::1]:12345 meta nftrace set 1 accept        # debug 或 shell> nft monitor trace 时使用
