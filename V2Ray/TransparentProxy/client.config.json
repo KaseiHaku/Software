@@ -13,6 +13,7 @@
     /** 
      * 假设要解析的 domain 在 domains 列表里面，则优先使用指定的 dns 服务器，否则按从上到下解析 
      * 坑：不要配多个相同地址的 dns，即使是不同类型的，比如 "8.8.8.8" 和 { "address": "8.8.8.8" }
+     * @ref {常用 DNS} https://github.com/KaseiHaku/Software/blob/master/Linux/network/DNS
      */
     "servers": [
       // 国内域名，使用阿里的 DNS 服务器解析，这里配上 vps 域名，让 vps 域名使用 223.5.5.5 解析，因为该 ip 不需要经过 vps，否则就造成死循环了
@@ -30,6 +31,12 @@
       },
       "208.67.222.222",  // OpenDNS
       "208.67.220.220",  // OpenDNS 备  
+
+      "2400:3200::1",          // Alibaba
+      "2606:4700:4700::1111",  // Cloudflare
+      "2001:4860:4860::8888",  // Google
+      
+
       
       // 保留 使用默认 DNS 服务器的能力，以下两种 任选其一
       // 这种需要配合  NetworkManager, dnsmasq, ipset 一起使用，还需要处理 SELinux 的安全问题，虽然麻烦，但是用起来最爽
@@ -89,7 +96,7 @@
       "streamSettings": {
         // 给当前 outbound 发出的 流量包 打上 SO_MARK=255 的防火墙标记，防火墙碰到 SO_MARK=255 的流量包要直接放行，不做处理
         // 所有的 outbound 都需要加 mark，只有 blackhole 不用加，用于表示 v2ray outbound 发送的数据包都带有 255 防火墙标记
-        "sockopt": {"mark": 255}     
+        "sockopt": { "mark": 255 }     
       }  
     },
     {
@@ -167,7 +174,12 @@
      {
         "type": "field",
         "network": "tcp,udp",
-        "ip": [ "geoip:private", "geoip:cn", "223.5.5.5" ], // 同时配置 domain 和 ip 是且的关系，所以此处要分成两个
+        // 同时配置 domain 和 ip 是且的关系，所以此处要分成两个
+        "ip": [
+          "::1/128", "fc00::/7", "fe80::/10", "geoip:private", 
+          "ff00::/8",
+          "geoip:cn", "223.5.5.5", "2400:3200::1"
+        ],
         "outboundTag": "direct"
      },     
      {
