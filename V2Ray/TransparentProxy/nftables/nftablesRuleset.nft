@@ -176,12 +176,11 @@ table ip6 tb_v2ray_ip6 {
 }
 
 # 新建 DIVERT 规则，避免已有连接的包二次通过 TPROXY，理论上有一定的性能提升
-# @trap CPU 飙升
-#table inet tb_divert {
-#    chain chain_divert {
-#        type filter hook prerouting priority mangle - 5; policy accept; comment "";
-#        meta l4proto {tcp} socket transparent 1 meta mark set 1 accept            # 匹配 socket "IP_TRANSPARENT" option 的值，如果匹配则打标记为 1
-#    }
-#}
+table inet tb_divert {
+    chain chain_divert {
+        type filter hook prerouting priority mangle - 5; policy accept; comment "";
+        meta l4proto {tcp} socket transparent 1 meta mark set 2 accept            # 匹配 socket "IP_TRANSPARENT" option 的值，如果匹配则打标记为 2，重路由
+    }
+}
 
 
