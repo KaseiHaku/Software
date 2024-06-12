@@ -104,8 +104,10 @@
         "domainStrategy": "UseIP"        
       },
       "streamSettings": {
-        // 给当前 outbound 发出的 流量包 打上 SO_MARK=255 的防火墙标记，防火墙碰到 SO_MARK=255 的流量包要直接放行，不做处理
-        // 所有的 outbound 都需要加 mark，只有 blackhole 不用加，用于表示 v2ray outbound 发送的数据包都带有 255 防火墙标记
+        /* 给当前 outbound 发出的 流量包 打上 SO_MARK=255 的防火墙标记，防火墙碰到 SO_MARK=255 的流量包要直接放行，不做处理
+         * 所有的 outbound 都需要加 mark，只有 blackhole 不用加，用于表示 v2ray outbound 发送的数据包都带有 255 防火墙标记
+         * @trap sockopt.mark 会导致 packet 重新走 PREROUTING 链，具体参考 wsLadderOut 中的描述
+         * */
         "sockopt": { "mark": 255 }     
       }  
     },
@@ -114,7 +116,7 @@
       // dns 协议类型的 outbound 会将 dns 请求发送给内建 dns,
       "protocol": "dns",
       "streamSettings": {
-        "sockopt": { "mark": 128 } 
+        "sockopt": { "mark": 255 } 
       }
     },
     {
@@ -140,6 +142,11 @@
         //"security": "none", // 直连 v2ray 使用该配置
         "security": "tls",    // 使用 nginx 转发使用该配置
         "sockopt": {
+          /**
+           * @巨神坑 sockopt.mark 是在 OUTPUT 链打标记(mark)，而根据 Netfilter 特性: 在 OUTPUT 链打标记(mark)会使相应的包重路由到 PREROUTING 链上;
+           *        所以数据包实际不是直接从 OUTPUT 链发送的，而是经过 OUPUT -> PREROUTING -> FORWARD -> POSTROUTING 再发送的
+           *        当开启 透明代理 时，如果没有在 prerouting 链上对 SO_MARK=255 的 packet 进行放行，会导致流量重新进入 transparentIn，
+           * */
           "mark": 255, //这里是 SO_MARK，用于 iptables 识别，每个 outbound 都要配置；255可以改成其他数值，但要与下面的 iptables 规则对应；如果有多个 outbound，最好将所有 outbound 的 SO_MARK 都设置成一样的数值
           "tcpFastOpen": true,
           "tproxy": "tproxy"
@@ -156,8 +163,8 @@
     "rules": [
       /**
        * todo 劫持 dns 流量，走 v2ray 内建 dns
-       * @巨神坑 DNS Outbound 是通过将流量重新发送到 prerouting 链，然后才会进入 v2ray 内建的 DNS(即：dnsIn)
-       *        当开启 透明代理 时，如果没有在 prerouting 链上对该类型的 packet 进行放行，会导致流量重新进入 transparentIn，
+       * @巨神坑 因为 DNS Outbound 配置链 sockopt.mark=255, 会导致 netfilter 将 packet 重新发送到 prerouting 链，然后才会进入 v2ray 内建的 DNS(即：dnsIn)
+       *        当开启 透明代理 时，如果没有在 prerouting 链上对 SO_MARK=255 的 packet 进行放行，会导致流量重新进入 transparentIn，
        *        又因为当前路由的存在，会直接导致 死循环，CPU 飙升
        * */
       {
