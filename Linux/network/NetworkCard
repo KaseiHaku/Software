@@ -9,7 +9,10 @@
 #         shell> man interfaces        # 查看配置文件格式
 #         /etc/network/interfaces
 #         /etc/network/interfaces.d    # @trap 这里的配置会覆盖 NetworkManager 中的配置，导致 NetworkManager 不生效
-
+#
+# 如何判断网卡是否处于 混杂(promiscuous)模式?
+#    shell> cat /sys/class/net/ens33/flags        # 0x1003: 常规模式; 0x1103: 混杂模式
+#    shell> ip link set dev ens33 promisc on      # 开启混杂模式 
 
 
 # 网卡信息配置
