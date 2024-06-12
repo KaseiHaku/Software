@@ -34,6 +34,12 @@ table ip tb_v2ray {
     chain chain_lan_v2ray {
         type filter hook prerouting priority -150; policy accept; comment "";
 
+        # 禁止直接访问本机 transparentIn 监听端口，会造成死循环
+        # 这里为了方便，把所有 dest port = transparentIn 端口 的流量全禁了，可能造成误杀
+        udp dport 12345 drop
+        tcp dport 12345 drop
+
+
         udp dport { 123 } accept                                # 放行 ntp 协议
 
         ip daddr 127.0.0.0/8 accept                             # 回环地址
@@ -66,6 +72,12 @@ table ip tb_v2ray {
     # 代理本机流量
     chain chain_local_v2ray {
         type route hook output priority -150; policy accept; comment "";
+
+        # 禁止直接访问本机 transparentIn 监听端口，会造成死循环
+        # 这里为了方便，把所有 dest port = transparentIn 端口 的流量全禁了，可能造成误杀
+        udp dport 12345 drop
+        tcp dport 12345 drop
+
 
         udp dport { 123 } accept                                # 放行 ntp 协议
 
@@ -123,6 +135,12 @@ table ip6 tb_v2ray_ip6 {
     chain chain_lan_v2ray_ip6 {
         type filter hook prerouting priority -150; policy accept; comment "";
 
+        # 禁止直接访问本机 transparentIn 监听端口，会造成死循环
+        # 这里为了方便，把所有 dest port = transparentIn 端口 的流量全禁了，可能造成误杀
+        udp dport 12345 drop
+        tcp dport 12345 drop
+
+
         udp dport { 123 } accept                                # 放行 ntp 协议
 
         ip6 daddr ::1/128 accept                                # 回环地址
@@ -153,6 +171,12 @@ table ip6 tb_v2ray_ip6 {
     # 代理本机流量
     chain chain_local_v2ray_ip6 {
         type route hook output priority -150; policy accept; comment "";
+
+        # 禁止直接访问本机 transparentIn 监听端口，会造成死循环
+        # 这里为了方便，把所有 dest port = transparentIn 端口 的流量全禁了，可能造成误杀
+        udp dport 12345 drop
+        tcp dport 12345 drop
+
 
         udp dport { 123 } accept                                # 放行 ntp 协议
 
