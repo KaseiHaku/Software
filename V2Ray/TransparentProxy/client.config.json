@@ -39,8 +39,9 @@
 
       
       /* 保留 使用默认 DNS 服务器的能力，以下两种 任选其一 */
-      // 方式一: 自己搭建 DNS 服务器 
-      //   这种需要配合  NetworkManager, dnsmasq, ipset 一起使用，还需要处理 SELinux 的安全问题，虽然麻烦，但是用起来最爽
+      /* 方式一: 自己搭建 DNS 服务器 
+       *   这种需要配合  NetworkManager, dnsmasq, ipset 一起使用，还需要处理 SELinux 的安全问题，虽然麻烦，但是用起来最爽
+       * */
       //{ "address": "127.0.0.1", "port": 53, "domains": [ "geosite:cn", "1291114093.ml"] }  
 
       /* 方式二：直接使用默认的 DNS 查询
