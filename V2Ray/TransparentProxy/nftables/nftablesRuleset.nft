@@ -119,8 +119,7 @@ table ip6 tb_v2ray_ip6 {
         udp dport { 123 } accept                                # 放行 ntp 协议
 
         ip6 daddr ::1/128 accept                                # 回环地址
-        ip6 daddr fc00::/8 accept                               # Unique-local(本地唯一地址) 放行
-        ip6 daddr fd00::/8 accept                               # Unique-local(本地唯一地址) 放行
+        ip6 daddr fc00::/7 accept                               # Unique-local(全球唯一本地地址) 放行
         ip6 daddr ff00::/8 accept                               # 组播地址 放行
         
         # Link-local(本地链接地址) 放行
@@ -145,8 +144,7 @@ table ip6 tb_v2ray_ip6 {
         udp dport { 123 } accept                                # 放行 ntp 协议
 
         ip6 daddr ::1/128 accept                                # 回环地址
-        ip6 daddr fc00::/8 accept                               # Unique-local(本地唯一地址) 放行
-        ip6 daddr fd00::/8 accept                               # Unique-local(本地唯一地址) 放行
+        ip6 daddr fc00::/7 accept                               # Unique-local(全球唯一本地地址) 放行
         ip6 daddr ff00::/8 accept                               # 组播地址 放行
         
         # Link-local(本地链接地址) 放行
