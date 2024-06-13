@@ -21,6 +21,10 @@ Shell 的启动方式：
         非交互：
             $BASH_ENV
 
+    shell> su -            # 当前用户切换到 登录模式 的 shell
+    shell> su -l           # ditto 
+    shell> su --login      # ditto
+
 查看当前使用的 shell:
     shell> echo $0          # 通用
     shell> echo $SHELL      # 不一定正确
