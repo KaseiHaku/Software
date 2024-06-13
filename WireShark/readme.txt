@@ -10,6 +10,11 @@ Wiresharke filter 分为两种:
         ip|ether proto <protocol>
         ether|ip broadcast|multicast
         <expr> relop <expr>
+    dispaly filter: 用于显示过滤，防止抓到太多包
+        
+
+
+
 
 # 过滤器表达式
 # https://www.tcpdump.org/manpages/pcap-filter.7.html
