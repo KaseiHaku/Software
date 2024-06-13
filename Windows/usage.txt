@@ -69,6 +69,17 @@ windows 双网卡路由配置：
                 -> 重启电脑
         移动：同上，@trap 同时只有一个 disk 可以作为 虚拟内存，所以移动必须先删除其他 盘 上的 虚拟内存 才行
     
+查看指定网卡是否开启 forward:
+shell> route print	# 查看 网卡对应的序号
+shell> netsh interface ipv4 show interface 2 | findstr /I forward		# 查看 2 号网卡是否开启 forward
+shell> Meta+R -> services.msc		# 找到 Routing and Remote Access 右键启动，然后再次检查 网卡 forward
+shell> 或者 
+shell> Meta+R -> regedit -> Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
+	-> ForwardBroadcasts： 0 修改为 1
+	-> IPEnableRouter: 0 修改为 1
+	-> reboot
+
+
 数据盘格式化：
     Win+R -> compmgmt.msc -> 
 
