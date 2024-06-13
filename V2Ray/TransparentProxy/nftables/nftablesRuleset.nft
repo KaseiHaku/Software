@@ -64,6 +64,9 @@ table ip tb_v2ray {
         socket mark 255 accept          # 新写法
 
         # 给 TCP, UDP 打标记 1，转发至 12345 端口
+        # @巨神坑 tproxy to IP:PORT 并不会使 packet 发送到指定 IP:PORT，实际还是需要经过 路由表，所以这里实际控制 packet 流向的配置是 meta mark set 1
+        #        如果这里配置了跟 chain_local_v2ray 中不同的 mark 值，会导致来自 LAN 的流量不会被代理
+        #        但是本机流量依旧能成功，可能是 chain_local_v2ray 设置的 mark 值在此处同样有效，且多次设置 mark 不会覆盖，只会追加
         #ip protocol { tcp, udp } meta mark set 1 tproxy to 127.0.0.1:12345 meta nftrace set 1 accept    # debug 或 shell> nft monitor trace 时使用
         ip protocol { tcp, udp } meta mark set 1 tproxy to 127.0.0.1:12345 accept
 
