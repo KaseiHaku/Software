@@ -46,7 +46,7 @@ table ip tb_v2ray {
         ip daddr 10.0.0.0/8 accept                              # 私有地址
         ip daddr 172.16.0.0/12 accept                           # 私有地址
 
-        ip saddr != 192.168.0.0/16 accept                       # 非当前网段的 packet 不走 v2ray
+        ip saddr != 192.168.0.0/16 accept                       # 非当前网段的 packet 不走 v2ray，防止被蹭 VPS
         ip daddr 192.168.0.0/16 udp dport != {53,5353} accept   # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS）
         ip daddr 192.168.0.0/16 tcp dport != {53,5353} accept   # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS），
                                                                 # 避免 V2Ray 无法启动时无法连网关的 SSH，
@@ -156,8 +156,10 @@ table ip6 tb_v2ray_ip6 {
         ip6 daddr ::1/128 accept                                # 回环地址
         ip6 daddr fc00::/7 accept                               # Unique-local(全球唯一本地地址) 放行
         ip6 daddr ff00::/8 accept                               # 组播地址 放行
+
         
-        # Link-local(本地链接地址) 放行
+        # Link-local(链路本地地址，即: LAN) 放行
+        #ip6 saddr != 2408:8240:941b:e551::/64 accept            # 非当前网段的 packet 不走 v2ray，防止被蹭 VPS
         ip6 daddr fe80::/10 udp dport != {53,5353} accept       # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS）
         ip6 daddr fe80::/10 tcp dport != {53,5353} accept       # 私有地址，53 端口除外（因为要使用 V2Ray 解析 DNS），
                                                                 # 避免 V2Ray 无法启动时无法连网关的 SSH，
