@@ -148,6 +148,9 @@ shell> lshw -class network      # 查看网卡
 ################################# Host 网络主机名称配置
 shell> vim /etc/hostname      # 配置网络主机名称
 
+################################# MAC 地址
+shell> ip addr                  # 查看网卡 MAC 地址
+shell> ip neighbor show         # 查看 ARP(ipv4)/NDP(ipv6) 缓存条目
 
 ################################# IP 地址配置
 # Ubuntu 18.04
@@ -223,6 +226,9 @@ shell> lsof -i:22                   # 查看指定端口
 
 ################################# Protocol 协议配置
 shell> vim /etc/protocols           # 查看本机使用的协议以及各个协议的协议号
+
+
+
 
 
 
