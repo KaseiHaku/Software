@@ -9,6 +9,7 @@ define vars = { $var1, $var2}           # 引用变量
 
 # 经过 艰苦卓绝 的研究，VM(虚拟机) Bridge 模式是无法作为 旁路由/透明代理 的，理由如下:
 #     @ref {其他解释文档} https://blog.csdn.net/txl199106/article/details/39324485
+#     @ref {完全相同的场景} https://github.com/wangyu-/UDPspeeder/issues/87
 #     Bridge 模式网络拓扑图如下:
 #         Router -> Host NIC - bridge - VMnet0(虚拟交换机) -> Host/VM1/VM2
 #     由于 Router 直接相连的只有 Host NIC，
