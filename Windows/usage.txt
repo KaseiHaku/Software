@@ -79,6 +79,10 @@ shell> Meta+R -> regedit -> Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet
 	-> IPEnableRouter: 0 修改为 1
 	-> reboot
 
+查看 ARP 映射缓存:
+    shell> arp -av                                    # ipv4
+    shell> netsh interface ipv6 show neighbors        # ipv6
+
 
 数据盘格式化：
     Win+R -> compmgmt.msc -> 
