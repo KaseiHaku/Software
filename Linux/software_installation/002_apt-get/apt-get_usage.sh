@@ -5,7 +5,8 @@ shell> apt              # tab tab 查看所有相关命令
 
 
 ################################ APT
-
+shell> apt -a list docker-ce            # 查看指定 pkg 的所有版本
+shell> 
 
 
 ################################ Query 软件包查询
@@ -18,7 +19,10 @@ shell> apt-cache showpkg package                                # 显示软件�
 shell> apt-cache pkgnames                                       # 打印软件包列表中所有包的名字
 shell> apt-cache dumpavail                                      # 打印软件包列表中所有包的简介信息
 shell> apt-cache depends package                                # 了解使用依赖
-shell> apt-cache madison pkg                                    # 列出指定包的所有版本
+
+
+shell> apt-cache policy pkg                                     # 列出指定 pkg 的所有版本 
+shell> apt-cache madison pkg                                    # 列出指定 pkg 的所有版本
 
 
 
