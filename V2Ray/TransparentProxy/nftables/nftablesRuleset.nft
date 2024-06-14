@@ -7,6 +7,17 @@ define var2 = 1234                      # 定义变量
 define vars = { $var1, $var2}           # 引用变量
 
 
+# 经过 艰苦卓绝 的研究，VM(虚拟机) Bridge 模式是无法作为 旁路由/透明代理 的，理由如下:
+#     @ref {其他解释文档} https://blog.csdn.net/txl199106/article/details/39324485
+#     Bridge 模式网络拓扑图如下:
+#         Router -> VMnet0(虚拟路由器,不是 虚拟交换机) -> Host/VM1/VM2
+#     如果是 虚拟交换机，那么 Router 就可以获取到 VM 的 MAC 地址了; 
+#     是 虚拟路由器，那么 Router 就只能获取到 VMnet0 的 MAC 地址，而 VMnet0MAC === HostMAC
+#     所以在 Router 上，VM 和 Host 的 MAC 地址是一样，当 VM 作为默认网关时，流量只能发送到 Host                             
+
+
+
+
 table ip tb_v2ray {
     # 根据 域名 解析出来的 VPS 的 IPv4 地址的 集合，
     # 因为 VPS 使用 CDN 做转发，所以 IPv4 地址会变
