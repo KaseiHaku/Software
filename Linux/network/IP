@@ -11,6 +11,10 @@ IPv6 Address: 固定 IPv6 地址，当使用 IPv6 连接外网时，暴露给公
 Temporary IPv6 Address: 临时 IPv6 地址，用于保护用户隐私，有效期较短，一定时间后会自动换成其他临时 IPv6 地址
 Link-local IPv6 Address: 本地链接 IPv6 地址; 一般 fe80: 开头
 
+# ipv6 后面以 %2 结尾是什么意思?
+%2 是对 IPv6 地址进行 作用域限定 的一种表示方式
+例如: fe80::533:bd7d:2f99:78ff%2   表示该 IPv6 地址的 作用域 为 序号为 2 的 NIC(网卡)，即: 仅在 序号为 2 的 NIC 卡上才有效
+
 
 # IP 地址冲突检测
 shell> arping -I ens33 192.168.1.200
