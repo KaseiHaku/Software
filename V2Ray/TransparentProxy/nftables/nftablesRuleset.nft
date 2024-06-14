@@ -30,12 +30,17 @@ define vars = { $var1, $var2}           # 引用变量
 # nft add rule     inet tb_log_all chain_log_all log prefix \"kh-nf-trace-log: \" level debug flags all continue         # 输出信息到 kernel log 中，可以使用 dmsg 或 syslog 查看
 # nft add rule     inet tb_log_all chain_log_all meta nftrace set 1 continue
 #
-table inet tb_log_all {
+table netdev tb_log_all {
     chain chain_log_all {
-        type filter hook ingress priority raw + 5; policy accept; comment "";           # ingress require Linux kernel>=5.10
-        
-        #log prefix "kh-nf-trace-log: " level debug flags all continue                   # 输出信息到 kernel log 中，可以使用 dmsg 或 syslog 查看
-        meta nftrace set 1 continue                                                     # shell> nft monitor trace 查看  
+        # ingress require Linux kernel>=5.10 且 必须设置 device 参数
+        type filter hook ingress device ens33 priority filter - 5; policy accept; comment "";
+
+        # 输出信息到 kernel log 中，可以使用 dmsg 或 syslog 查看
+        #log prefix "kh-nf-trace-log: " level debug flags all continue
+
+        # shell> nft monitor trace 查看
+        #meta protocol {ip, ip6, arp} meta l4proto {icmp, icmpv6} meta nftrace set 1 continue
+        meta l4proto {icmp, icmpv6} meta nftrace set 1 continue
     }
 }
 
