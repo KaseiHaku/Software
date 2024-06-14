@@ -14,7 +14,11 @@ define vars = { $var1, $var2}           # 引用变量
 #         Router -> Host NIC - bridge - VMnet0(虚拟交换机) -> Host/VM1/VM2
 #     由于 Router 直接相连的只有 Host NIC，
 #     所以 Router 就只能获取到 Host NIC 的 MAC 地址
-#     所以在 Router 上，所有 VM 的 MAC 和 Host 的 MAC 地址是一样，当 VM 作为默认网关时，流量只能发送到 Host                             
+#     所以在 Router 上，所有 VM 的 MAC 和 Host 的 MAC 地址是一样，当 VM 作为默认网关时，流量只能发送到 Host      
+# 
+# @trap 因为 tcpdump 是工作在 数据链路层，而 netfilter 是运行在 Linux 内核中的，
+#       所以 tcpdump 无法 capture iptables/nftables 中处理的包
+#       如果想查看 netfilter 中包的处理过程，可以使用 iptables/nftables 的日志功能
 
 
 
