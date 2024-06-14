@@ -22,6 +22,25 @@ define vars = { $var1, $var2}           # 引用变量
 
 
 
+# 打印所有数据包 Debug 时使用:
+# 
+# 对应的命令行命令: 
+# nft create table inet tb_log_all { comment \"\"\; }
+# nft create chain inet tb_log_all chain_log_all { type filter hook ingress priority raw + 5\; policy accept\; comment \"\"\; }         # ingress require Linux kernel>=5.10
+# nft add rule     inet tb_log_all chain_log_all log prefix \"kh-nf-trace-log: \" level debug flags all continue         # 输出信息到 kernel log 中，可以使用 dmsg 或 syslog 查看
+# nft add rule     inet tb_log_all chain_log_all meta nftrace set 1 continue
+#
+table inet tb_log_all {
+    chain chain_log_all {
+        type filter hook ingress priority raw + 5; policy accept; comment "";           # ingress require Linux kernel>=5.10
+        
+        #log prefix "kh-nf-trace-log: " level debug flags all continue                   # 输出信息到 kernel log 中，可以使用 dmsg 或 syslog 查看
+        meta nftrace set 1 continue                                                     # shell> nft monitor trace 查看  
+    }
+}
+
+
+
 
 table ip tb_v2ray {
     # 根据 域名 解析出来的 VPS 的 IPv4 地址的 集合，
