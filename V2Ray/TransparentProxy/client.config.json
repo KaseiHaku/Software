@@ -56,6 +56,20 @@
     "tag": "dnsIn"                  // 当前内建 dns 发起的 dns 请求流量的标识，可以在路由中使用 inboundTag 进行匹配
   },
   "inbounds": [
+    /**
+     * 使用方法:
+     *   shell> export http_proxy=http://127.0.0.1:1080
+     *   shell> export https_proxy=$http_proxy
+     * */
+    {
+      "tag": "httpIn",
+      "protocol": "http",
+      "port": 1080,
+      "settings": {
+        "accounts": [],
+        "userLevel": 1
+      }
+    },
     {
       "tag": "socksIn",             // 普通翻墙，用于测试不挂透明代理时，是否可以翻墙
       "protocol": "socks",
@@ -215,7 +229,7 @@
       {
         "type": "field",
         "network": "tcp,udp",
-        "inboundTag": ["transparentIn", "socksIn", "dnsIn"],
+        "inboundTag": ["transparentIn", "httpIn", "socksIn", "dnsIn"],
         "outboundTag": "wsLadderOut"
       }
     ]
