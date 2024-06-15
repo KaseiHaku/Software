@@ -63,7 +63,7 @@
      * */
     {
       "tag": "httpIn",
-      "protocol": "http",
+      "protocol": "http",            // http 协议可以同时支持 http 和 https
       "port": 1080,
       "settings": {
         "accounts": [],
