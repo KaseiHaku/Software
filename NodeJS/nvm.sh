@@ -18,6 +18,17 @@ export NVM_NODEJS_ORG_MIRROR=https://npm.taobao.org/mirrors/node
 shell> curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 
 
+# 如果不是通过上述命令执行的，那么需要以下步骤
+shell> cd ~
+shell> git clone --single-branch -b v0.39.7 -- https://github.com/nvm-sh/nvm.git .nvm
+shell> cat <<-'EOF' >> tee -a ~/.bashrc
+# @kasei nvm 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+EOF
+
+
 
 # 信息查看
 shell> nvm ls-remote --lts                  # 查看远程可用的版本  nvm-sh
