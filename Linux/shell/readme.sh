@@ -40,36 +40,7 @@ Command Style 命令语法风格：
     shell> cmd -a -- file1      # -- 表示 cmd 命令的 option 选项结束， -- 之后的是命令的参数
     shell> cmd opt \            # 命令行换行输入，\ 结尾
     > another line              # 
- 
-命令行中各种字符的含义：
-    ''                  # 单引号，表示单引号内部的符号全部都是字符，不转义，单引号 内部使用 单引号: shell> echo 'It'\''s raining';    shell> echo 'It'"'"'s raining';
-    ""                  # 双引号，内部字符 $（参数替换） 和 `（命令替换） 是生效的
-    ()                  # 起一个 子shell 并执行其中的命令，并将输出返回
-    [[...]]             # 用作 if 条件判断的条件
-    {}                  # 在当前 shell 中执行命令，并将输出返回
 
-Wildcard 命令通配符：
-    *                               # 匹配 0 或多个字符
-    ?                               # 匹配任意一个字符
-    [list]	                        # 匹配 list 中的任意单一字符
-    [!list]	                        # 匹配 除list 中的任意单一字符以外的字符
-    [c1-c2]	                        # 匹配 c1-c2 中的任意单一字符 如：[0-9] [a-z]
-    {string1,string2,...}	          # 匹配 sring1 或 string2 (或更多)其一字符串
-    {c2..c2}	                      # 匹配 c1-c2 中全部字符 如{1..10}
-    ?(pattern1|patten2)             # shopt -s extglob, 0-1
-    *(pattern1|patten2)             # shopt -s extglob, 0-n
-    +(pattern1|patten2)             # shopt -s extglob, 1-n
-    @(pattern1|patten2)             # shopt -s extglob, 1
-    !(pattern1|patten2)             # shopt -s extglob, 反向匹配
-
-
-Command Format 命令格式：
-    command [option] [arguments]
-    command1 ; command2 ; command3                 # 顺序执行命令，不管前一条命令是否执行成功
-    command1 && command2 && command3               # 前一条命令退出码为 0（成功），才继续执行后面命令
-    command1 || command2 || command3               # 前一条命令退出码为 非0（失败），才继续执行后面命令
-    cmd1 | ( cmd2; cmd3; cmd4 ) | cmd5             # 子 shell ，子 shell 里面的所有东西只属于 子 shell，不影响 父shell
-    
 Linux 执行脚本文件的方式：
     shell> source /etc/profile          # 在当前 进程 中执行，不需要文件有执行权限
     shell> . /etc/profile               # 同上
@@ -85,14 +56,202 @@ Linux 查看当前 Terminal 所有可以运行的命令
     shell> compgen -A function          # 列出所有可运行的 function
 
 
-# alias 指令别名
+Alias 指令别名
     shell> alias                                    # 查看当前所有别名
     shell> alias ls='ls --color=auto'               # 设置别名，临时
     shell> \cp -rf ./aa ./bb                        # 当 cp 存在别名时，使用 \cp 将不应用别名
     shell> unalias ls                               # 删除别名 ls，临时
     shell> cat ~/.bashrc                            # 永久 alias
 
-重定向：
+
+############################ Definitions ############################
+blank                 = space tab
+workd/token           = 一连串字符
+name/identifier       = alphanumeric + underscore
+metacharacter         = |  & ; ( ) < > space tab newline
+control operator	  = || & && ; ;; ;& ;;& ( ) | |& <newline>
+
+############################ Reserved Words ############################
+! case  coproc  do done elif else esac fi for function if in select then until while { } time [[ ]]
+
+############################ Shell Grammar ############################
+Pipelines 管道命令：就是把 左边命令 原本输出到 /dev/stdout(1) 的数据 重定向成 右边命令 的 /dev/stdin(0) 输入 
+
+    cmd1 | cmd2			# cmd1 的 stdout 作为 cmd2 的 stdin		
+    cmd1 |& cmd2		# cmd1 的 stdout 和 stderr 作为 cmd2 的 stdin，等价于 cmd1 2>&1 | cmd2
+
+    
+    # 左边的命令应该有向 /dev/stdout 文件写入操作 | 右边的命令应该有从 /dev/stdin 读取的操作
+    ls -al /dev | grep 'cdrom'                # 管道命令：将前面的最后一次的标准输出作为后面的标准输入，坑：不包括之前输出的
+    
+    # 部分命令 不能 grep 的原因：因为部分命令将输出打到了 /dev/stderr(2) 上了，而 grep 只接收 /dev/stdin(0) 的数据
+    shell> ip | grep c          # grep 没有生效
+    shell> ip 2>&1 | grep c     # 把输出到 FD2 的数据 重定向 到 FD1 当前活动的管道中，不能直接 2>1 
+    
+    
+
+Lists
+    cmd1 ; cmd2 ; cmd3                 # 顺序执行命令，不管前一条命令是否执行成功
+    cmd1 && cmd2 && cmd3               # 前一条命令退出码为 0（成功），才继续执行后面命令
+    cmd1 || cmd2 || cmd3               # 前一条命令退出码为 非0（失败），才继续执行后面命令
+
+Compound Commands
+    (list)                             # 起一个 子shell 并执行其中的命令，并将输出返回
+    { list; }                          # group command; 必须以 newline 或 semicolon 结尾
+    (( exp ))                          # ARITHMETIC EVALUATION; exp != 0 ? 0 : 1; 
+    [[ exp ]]                          # CONDITIONAL EXPRESSIONS; 
+    
+    if list; then list; [ elif list; then list; ] ... [ else list; ] fi
+    case word in [ [(] pattern [ | pattern ] ... ) list ;; ] ... esac
+    while list-1; do list-2; done
+    until list-1; do list-2; done
+    for name [ [ in [ word ... ] ] ; ] do list ; done
+    for (( expr1 ; expr2 ; expr3 )) ; do list ; done
+    select name [ in word ] ; do list ; done
+
+Coprocesses: 协程，相当于 subshell
+    coproc [NAME] command [redirections]
+    coproc NAME { command [redirections]; }        # 推荐格式
+
+Shell Function Definitions: 函数
+    fname () compound-command [redirection]
+    function fname [()] compound-command [redirection]        # 推荐
+
+QUOTING：
+    ''                  # 单引号，表示单引号内部的符号全部都是字符，不转义，单引号 内部使用 单引号: shell> echo 'It'\''s raining';    shell> echo 'It'"'"'s raining';
+    ""                  # 双引号，内部字符 $（参数替换） 和 `（命令替换） 是生效的
+
+COMMENTS
+    #                   # 注释
+
+############################ PARAMETERS ############################
+name=value
+
+Positional Parameters
+    $0
+    $1
+Special Parameters
+    $*                # == $1c$2c...        c: IFS
+    $@                # "$1" "$2" ...
+    $#
+    $?
+    $-                # 当前 shell 的 options，即: 用 set 命令设置的 option
+    $$                # PID，subshell 中也是当前 shell 的 PID
+    $!                
+    $0                # 当前 shell 名称
+    
+    
+Shell Variables
+    _                 # 
+
+Arrays
+    name[subscript]=value        # 直接赋值给 ary 下标
+    declare -a name              # 明确定义一个 ary，不赋值
+    declare -A name              # 明确定义一个当作 map 用的 ary，不赋值
+    name=(value1 ... valuen)     # 一次赋值多个 ary 下标
+    name=( key1 value1 key2 value2 ...)    # ary 当作 map 用
+    name=( [key1]=value1 [key2]=value2 ...)
+
+    ary1 += ary2                 # 拼接 ary2
+
+    ${ary}                        # 等价于 ${ary[0]}
+    ${ary[1]}
+    ${ary[@]} ${ary[*]}
+    ${!ary[@]} ${!ary[*]}         # ary 当作 map 用时，获取 map 的 key
+
+    unset ary
+    unset ary[1]
+    unset ary[@]                  # map 用的 ary 清空 key=@，纯 ary 清空整个数组
+    unset ary[*]                  # ditto
+
+############################ EXPANSION ############################
+# Expansion 之后，所有未加引号的 且不是 Expansion 结果的字符(\ ' ") 将会被删除
+# 扩展优先级:
+#    brace expansion; 
+#    tilde expansion, parameter and variable expansion, arithmetic expansion, and  command  substitution (done in a left-to-right fashion); 
+#    word splitting; and pathname expansion
+Brace Expansion
+    a{d,c,b}e
+    a{0..9..2}e            # 0-9 每次增加 2
+
+Tilde Expansion
+    ~                    # HOME
+    ~+                   # PWD
+    ~-                   # OLD PWD
+    
+Parameter Expansion
+    ${parameter}
+    ${parameter:-word}
+    ${parameter:=word}
+    ${parameter:?word}
+    ${parameter:+word}
+    ${parameter:offset}
+    ${parameter:offset:length}
+    
+    ${!prefix*}            # 字符串前缀匹配
+    ${!prefix@}            # ditto
+    
+    ${!name[@]}            # ary
+    ${!name[*]}            # ditto
+    
+    ${#parameter}
+    
+    ${parameter#word}
+    ${parameter##word}
+
+    ${parameter%word}
+    ${parameter%%word}
+
+    ${parameter/pattern/string}
+    ${parameter//pattern/string}
+    ${parameter/#pattern/string}
+    ${parameter/%pattern/string}
+
+    ${parameter^pattern}
+    ${parameter^^pattern}
+    ${parameter,pattern}
+    ${parameter,,pattern}
+
+    ${parameter@operator}
+    
+Command Substitution
+    $(command)
+    `command`
+
+Arithmetic Expansion
+    $((expression))
+
+Process Substitution
+    <(list)
+    >(list)
+
+Word Splitting
+
+Pathname Expansion
+    *                               # 匹配 0 或多个字符
+    ?                               # 匹配任意一个字符
+    [abcd]	                        # 匹配 a b c d 中的任意单一字符
+    [!abcd]	                        # 匹配 除 a b c d 中的任意单一字符以外的字符
+    [a-d]	                        # 匹配 a-d 中的任意单一字符 如：[0-9] [a-z]
+    [:alnum:]
+
+    ?(pattern-list)            # shopt -s extglob, 0-1
+    *(pattern-list)            # shopt -s extglob, 0-n
+    +(pattern-list)            # shopt -s extglob, 1-n
+    @(pattern-list)            # shopt -s extglob, 1
+    !(pattern-list)            # shopt -s extglob, 反向匹配
+    
+History Expansion    
+    !                            # 开始一个 history expansion，除非下一个字符是 blank, newline, carriage return, =, ( 
+    !n                           
+    !-n                          # history 中倒数第 n 条命令
+    !!                           # synonym !-1
+    !string
+    !?string[?]
+    ^string1^string2^
+    !#                            # 到目前为止，命令行中的输入
+
+############################ REDIRECTION ############################
     FD = File Descriptor = 文件描述符: 
         Linux 系统中一切皆文件，当进程打开现有文件或创建新文件时，内核向进程返回一个文件描述符。
         文件描述符就是内核为了高效管理已被打开的文件所创建的索引，用来指向被打开的文件，所有执行I/O操作的系统调用都会通过文件描述符
@@ -165,14 +324,7 @@ Linux 查看当前 Terminal 所有可以运行的命令
 
 
 
-管道命令：就是把 左边命令 原本输出到 /dev/stdout(1) 的数据 重定向成 右边命令 的 /dev/stdin(0) 输入 
 
-    # 左边的命令应该有向 /dev/stdout 文件写入操作 | 右边的命令应该有从 /dev/stdin 读取的操作
-    ls -al /dev | grep 'cdrom'                # 管道命令：将前面的最后一次的标准输出作为后面的标准输入，坑：不包括之前输出的
-    
-    # 部分命令 不能 grep 的原因：因为部分命令将输出打到了 /dev/stderr(2) 上了，而 grep 只接收 /dev/stdin(0) 的数据
-    shell> ip | grep c          # grep 没有生效
-    shell> ip 2>&1 | grep c     # 把输出到 FD2 的数据 重定向 到 FD1 当前活动的管道中，不能直接 2>1 
 
 
 Shell 信息查询
