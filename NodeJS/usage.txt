@@ -36,7 +36,7 @@ npm 配置：
     shell> npm config get proxy
     shell> npm config delete proxy
     shell> npm config edit      # 直接编辑配置文件
-    shell> npm config set registry https://registry.npmmirror.com      # 将 npm 源 替换为 淘宝的
+    shell> npm config set registry https://registry.npm.taobao.org        # 将 npm 源 替换为 淘宝的
     shell> npm config set registry https://registry.npmjs.org           # npm 官方源
 
 初始化：
