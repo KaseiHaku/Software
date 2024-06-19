@@ -85,13 +85,30 @@ Maven 项目目录结构{
 
 
 Maven 构建生命周期 {
-    shell> mvn validate    验证：     验证项目是否正确且所有必须信息是可用的
-    shell> mvn compile     编译：     源代码编译在此阶段完成
-    shell> mvn test        测试：     使用适当的单元测试框架（例如JUnit）运行测试。
-    shell> mvn package     打包：     创建JAR/WAR包如在 pom.xml 中定义提及的包
-    shell> mvn verify      检查：     对集成测试的结果进行检查，以保证质量达标
-    shell> mvn install     安装：     安装打包的项目到本地仓库，以供其他项目使用
-    shell> mvn deploy      部署：     拷贝最终的工程包到远程仓库中，以共享给其他开发人员和工程
+    @ref { 完整的 lifecycle phase 列表 }  https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference
+
+    clean
+        pre-clean
+        clean
+        post-clean
+    default
+        shell> mvn validate    验证：     验证项目是否正确且所有必须信息是可用的
+        shell> mvn compile     编译：     源代码编译在此阶段完成
+        shell> mvn test        测试：     使用适当的单元测试框架（例如JUnit）运行测试。
+        shell> mvn package     打包：     创建JAR/WAR包如在 pom.xml 中定义提及的包
+        shell> mvn verify      检查：     对集成测试的结果进行检查，以保证质量达标
+        shell> mvn install     安装：     安装打包的项目到本地仓库，以供其他项目使用
+        shell> mvn deploy      部署：     拷贝最终的工程包到远程仓库中，以共享给其他开发人员和工程
+    site
+        pre-site
+        site
+        post-site
+        site-deploy
+
+
+
+
+    
     
 }
 
