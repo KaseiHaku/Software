@@ -6,6 +6,10 @@ project:
     default target:
         task: 可以使用 build-in task 或者 自定义 task
             <taskname id="taskId" name="nameInLog" attr1="val1" attr2="val2" />
+
+@ref {official doc} https://ant.apache.org/
+@ref {manual} https://ant.apache.org/manual/index.html
+@ref {outline} https://ant.apache.org/manual/using.html#buildfile 
 -->
 <project name="MyAntProject" basedir="." default="target">
   <description>just description current project</description>
