@@ -92,6 +92,11 @@ Key Code(键码) {
     
 }
 
+Vim 编辑二进制文件 {
+    shell> vim -b binaryFile            # 二进制模式打开文件
+    vim> :%!xxd                         # 用外部命令 xxd 将 二进制(binary) 转为 十六进制(hex)
+    vim> :%!xxd -r                      # 将 hex 转为 binary
+} 
 
 FAQ: {
     Question: gvim 每行后面出现 ^M 等标记
