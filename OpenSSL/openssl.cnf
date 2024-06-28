@@ -208,13 +208,13 @@ localityName_default            = KH                                            
 0.organizationName_default      = KH                                                        # 默认公司名
 organizationalUnitName          = Organizational Unit Name (eg, section)                    # 部门名
 organizationalUnitName_default  = KH                                                        # 默认部门名
-commonName                      = Common Name (eg, your name or your server\'s hostname)    # 域名 = rootca.kasei.haku 
+commonName                      = Common Name (eg, your name or your server\'s hostname)    # 域名 = rootca.kaseihaku.com
                                                                                             # @巨神坑 这里的域名无效，只有 SAN 中的才有效
-commonName_default              = rootca.kasei.haku                                         # 默认域名，@巨神坑 同上
+commonName_default              = rootca.kaseihaku.com                                      # 默认域名，@巨神坑 同上
 commonName_max                  = 64                                                        # 最大域名长度
-emailAddress                    = Email Address                                             # 邮箱地址 = kasei@kasei.haku
+emailAddress                    = Email Address                                             # 邮箱地址 = kasei@kaseihaku.com
 emailAddress_max                = 64                                                        # 最大邮箱地址长度
-emailAddress_default            = kasei@kasei.haku                                          # 默认邮箱地址
+emailAddress_default            = kasei@kaseihaku.com                                       # 默认邮箱地址
 
 
 [ req_distinguished_name_intermediate_ca_req ]
@@ -230,13 +230,13 @@ localityName_default            = KH                                            
 0.organizationName_default      = KH                                                        # 默认公司名
 organizationalUnitName          = Organizational Unit Name (eg, section)                    # 部门名
 organizationalUnitName_default  = KH                                                        # 默认部门名
-commonName                      = Common Name (eg, your name or your server\'s hostname)    # 域名 = interca.kasei.haku
+commonName                      = Common Name (eg, your name or your server\'s hostname)    # 域名 = interca.kaseihaku.com
                                                                                             # @巨神坑 这里的域名无效，只有 SAN 中的才有效
-commonName_default              = interca.kasei.haku                                        # 默认域名，@巨神坑 同上
+commonName_default              = interca.kaseihaku.com                                     # 默认域名，@巨神坑 同上
 commonName_max                  = 64                                                        # 最大域名长度
-emailAddress                    = Email Address                                             # 邮箱地址 = haku@kasei.haku
+emailAddress                    = Email Address                                             # 邮箱地址 = haku@kaseihaku.com
 emailAddress_max                = 64                                                        # 最大邮箱地址长度
-emailAddress_default            = haku@kasei.haku                                           # 默认邮箱地址
+emailAddress_default            = haku@kaseihaku.com                                        # 默认邮箱地址
 
 
 
