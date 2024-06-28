@@ -182,14 +182,17 @@ default_md                      = sha256                        # 证书请求�
 string_mask                     = utf8only                      #
 
 # @trap 根据生成不同的 .csr, 需要修改为不同的配置
-req_extensions                  = v3_nginx_crt_ext              # 加入到普通证书请求文件中的扩展项
+#req_extensions                  = v3_root_ca_ext               # 加入到 root ca 证书请求文件中的扩展项；以下三者留一
+#req_extensions                  = v3_inter_ca_ext              # 加入到 inter ca 证书请求文件中的扩展项
+req_extensions                  = v3_nginx_crt_ext              # 加入到 nginx 证书请求文件中的扩展项
+
 x509_extensions                 = v3_root_ca_ext                # 加入到自签名证书请求文件中的扩展项
 # prompt                        = no                            # 表示不提示，直接取配置文件中配置的 distinguished_name
 utf8                            = yes                           # 表示 field 字段值使用 utf8 格式解析，否则使用 ascii 码解析
 # DN = Distinguish Name; 证书请求文件的唯一性标识
-distinguished_name              = req_distinguished_name_root_ca_req            # 用于创建 root ca 证书请求文件，以下三者留一
+#distinguished_name              = req_distinguished_name_root_ca_req            # 用于创建 root ca 证书请求文件；以下三者留一
 #distinguished_name              = req_distinguished_name_intermediate_ca_req    # 用于创建 inter ca 证书请求文件
-#distinguished_name              = req_distinguished_name_nginx_crt_req          # 用于创建 nginx 证书请求文件
+distinguished_name              = req_distinguished_name_nginx_crt_req           # 用于创建 nginx 证书请求文件
 
 ######## todo 添加到证书请求文件中的 subject 信息配置
 [ req_distinguished_name_root_ca_req ]
