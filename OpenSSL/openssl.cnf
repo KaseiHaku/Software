@@ -273,14 +273,14 @@ emailAddress_default            = admin@1291114093.ml                           
 default_ca              = default_ca                    # 引用 [ default_ca ] 的配置
 
 [ default_ca ]
-dir                     = /home/kasei/ca                      # 证书认证机构根目录
+dir                     = /home/kasei/ca                # 证书认证机构根目录; @trap 使用时要修改为 rootca.crt.pem 文件所在的目录
 #oid_file                =
 certs                   = $dir/certs                    # 当前 CA 已颁发的证书保存目录
 new_certs_dir           = $dir/newcerts                 # 当前 CA 新生成的证书保存目录
 certificate             = $dir/rootca.crt.pem           # 当前 CA 的根证书
 private_key             = $dir/private/rootca.key.pem   # 当前 CA 的密钥（包含公私钥）
 RANDFILE                = $dir/private/.rand            # 随机数种子文件
-default_days            = 365                           # 默认签署的证书文件有效期
+default_days            = 3650                          # 默认签署的证书文件有效期
 #default_startdate
 #default_enddate
 default_md              = sha256                        # 当前 CA 对文件进行 数字签名 时所使用的 消息摘要算法
