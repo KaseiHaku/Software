@@ -111,13 +111,13 @@ issuerAltName                   = issuer:copy                                   
 
 [ v3_root_ca_ext_subjectAltName ]
 email.0                         = copy                  # email 的特殊值，表示复制 证书主体 中所有的 email 地址到 扩展中来
-email.1                         = kasei@kasei.haku
-email.2                         = haku@kasei.haku
+email.1                         = kasei@kaseihaku.com
+email.2                         = haku@kaseihaku.com
 
-URI.1                           = https://kasei.haku
+URI.1                           = https://kaseihaku.com
 
-DNS.1                           = kasei.haku
-DNS.2                           = *.kasei.haku
+DNS.1                           = kaseihaku.com
+DNS.2                           = *.kaseihaku.com
 DNS.3                           = localhost
 
 # RID = registered OID =
