@@ -13,7 +13,7 @@
 #   csr = Certificate Signing Request
 #   crl = Certificate Revocation Lists
 #   ca = Certificate Authority
-#   crt = Cetificate
+#   crt = Certificate
 #
 # Implicit section
 #   ENV                 # 外部 environment 变量，映射到该 section
