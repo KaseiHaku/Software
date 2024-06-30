@@ -154,7 +154,13 @@ shell> parted
 
 
 # 查看设备块大小 ########################
+shell> cat /proc/partitions
+shell> blkid -o list 
+shell> lsblk -f                           # 推荐
+shell> fdisk -l                           # @deprecated 使用 parted 替代
 parted> print list                        # Sector size (logical/physical): 512B/512B    逻辑扇区/物理扇区
+shell> df -h
+
 shell> stat -f /
 shell> tune2fs -l /dev/sda1 | grep "Block size"        # 用于修改 ext? 文件系统的参数
 shell> blockdev --getbsz /dev/sda2
