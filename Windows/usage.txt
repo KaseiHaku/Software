@@ -211,7 +211,7 @@ Ctrl+\ 快捷键失效：
     查看当前主板内存插槽有几个，当前内存条频率？
         方法一：
             Win+R -> cmd -> taskmgr -> Performance -> Memory 
-                -> Slots used: 2 of 4       表示插槽有 4 个，插了两个
+                -> Slots used: 2 of 4       表示插槽有 4 个，插了两个; @trap 有虚拟插槽的存在，很多笔记本显示 4 个，实际只有 2 个，具体要拆机看，要么官网查主板型号
                 -> Speed: 2667 MHz          表示内存频率
         方法二：
             Win+R -> cmd -> wmic -> memorychip -> ConfiguredClockSpeed 列下面指定的就是内存频率 -> exit
