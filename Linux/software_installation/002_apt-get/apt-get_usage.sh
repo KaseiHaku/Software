@@ -68,6 +68,7 @@ shell> apt-get autoclean                                        # apt 卸载或�
 shell> apt-get install apt-rdepends        
 shell> apt-rdepends -p -f Depends,PreDepends,Conflicts,Replaces,Obsoletes -s Depends,PreDepends,Conflicts,Replaces,Obsoletes docker-ce
 shell> apt-cache --recurse --no-recommends --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances depends docker-ce
+shell> apt-get download $(apt-cache --recurse --no-recommends --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances depends docker-ce | grep -E '^[-_[:alnum:]]')    # 下载所有依赖
 
 
 shell> mkdir /opt/localapt
@@ -83,7 +84,7 @@ shell> mkdir /opt/localapt                                          # 创建本�
 shell> tar -zxf localapt.tar.gz -C /opt/localapt
 # shell> man sources.list
 shell> cat <<-'EOF' >> /etc/apt/sources.list
-deb [ allow-insecure=yes ] file:/mnt/localpacks ./
+deb [ trusted=yes, allow-insecure=yes ] file:/mnt/localpacks ./
 EOF
 shell> apt-get update
 shell> apt-get install ansible                                       # 使用 离线软件源 安装软件
