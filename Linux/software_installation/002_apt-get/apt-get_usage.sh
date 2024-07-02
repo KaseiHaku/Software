@@ -2,6 +2,8 @@
 shell> apt --help
 shell> apt-get --help
 shell> apt              # tab tab 查看所有相关命令
+shell> man apt.conf
+shell> less /usr/share/doc/apt/examples/configure-index        # 查看所有 options
 
 
 ################################ APT
@@ -56,3 +58,27 @@ shell> apt-get dist-upgrade                                     # 根据更新�
 ################################ Clean 软件包清理、缓存备份等
 shell> apt-get clean                                            # 清除已安装软件的备份软件包
 shell> apt-get autoclean                                        # apt 卸载或者安装软件是会有备份，这个命令来删除您已卸载掉的软件的备份
+
+
+
+
+
+################################ 制作本地仓库
+#### 在线服务器相关命令
+shell> mkdir /opt/localapt
+shell> apt-get --install-suggests --download-only --dry-run --assume-yes --option=Dir::Cache::Archives=/opt/localapt reinstall docker-ce    # 下载所有依赖
+shell> apt-get --install-suggests -d -s -y -o Dir::Cache::Archives=/opt/localapt reinstall docker-ce    # ditto
+shell> apt-cache --recurse depends docker-ce
+
+shell> apt-get install dpkg-dev
+shell> dpkg-scanpackages . | gzip -9c > Packages.gz                 # 创建仓库信息; 解压并显示 shell> gzip -dc Packages.gz | less   
+shell> tar -zcf localapt.tar.gz -C /opt/localapt .                  # 打包，然后将该包放到离线服务器上
+#### 离线服务器相关命令
+shell> mkdir /opt/localapt                                          # 创建本地 yum repo 目录
+shell> tar -zxf localapt.tar.gz -C /opt/localapt
+# shell> man sources.list
+shell> cat <<-'EOF' >> /etc/apt/sources.list
+deb [ allow-insecure=yes ] file:/mnt/localpacks ./
+EOF
+shell> apt-get update
+shell> apt-get install ansible                                       # 使用 离线软件源 安装软件
