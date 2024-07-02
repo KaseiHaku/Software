@@ -65,6 +65,11 @@ shell> apt-get autoclean                                        # apt 卸载或�
 
 ################################ 制作本地仓库
 #### 在线服务器相关命令
+shell> apt-get install apt-rdepends        
+shell> apt-rdepends -p -f Depends,PreDepends,Conflicts,Replaces,Obsoletes -s Depends,PreDepends,Conflicts,Replaces,Obsoletes docker-ce
+shell> apt-cache --recurse --no-recommends --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances depends docker-ce
+
+
 shell> mkdir /opt/localapt
 shell> apt-get --install-suggests --download-only --dry-run --assume-yes --option=Dir::Cache::Archives=/opt/localapt reinstall docker-ce    # 下载所有依赖
 shell> apt-get --install-suggests -d -s -y -o Dir::Cache::Archives=/opt/localapt reinstall docker-ce    # ditto
