@@ -52,7 +52,7 @@
 
 
     方案一：
-        /boot/efi           200M        xfs            当固件为 UEFI 时，必须存在
+        /boot/efi           512M        xfs            当固件为 UEFI 时，必须存在
         /biosboot           2M          xfs            硬盘采用 GPT 分区，而固件为 BIOS 时，必须存在
         /boot               512M        xfs            包含引导系统所需的静态文件，需要在硬盘第一个分区
         /                   64G         xfs            根分区
