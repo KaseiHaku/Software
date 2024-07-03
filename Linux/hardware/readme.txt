@@ -88,6 +88,8 @@ shell> dmidecode -t baseboard        # 查看主板信息
 
 #### USB
     shell> lsusb            # 查看 USB 接口的设备信息
+    shell> eject -n                 # 显示所有找到的 device
+    shell> eject /dev/sr0           # 弹出设备 
 
 #### PCI
     shell> lspci            # 查看所有在 PCI 总线上的设备
