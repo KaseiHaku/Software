@@ -3,12 +3,37 @@ CentOS7 启动过程 {
         上电
         读取主板 firmware(固件，ROM) 中的 UEFI 系统，或者传统的 BIOS 系统，并执行。该 firmware 会检查启动所需的硬件是否都正常
     }
-    MBR(Master Boot Record: 计算机硬盘上的特定扇区) {
-        UEFI 会根据配置的启动设备，读取启动设备的最初的 512Byte(MBR) = 446(BootLoader) + 64(分区表) + 2(错误标志位) 中的内容到 RAM(运行内存) 中
-        MBR 中有记录 BootLoader(GRUB2) 的位置，并加载到 RAM 中
-        然后将控制权交给 GRUB2
+    BIOS/UEFI {
+        BIOS(Basic Input Output System) {
+            BIOS 会读取硬盘的第一个扇区(即：MBR) 中的内容到 RAM(运行内存) 中，并将控制权交给 MBR 中的引导程序
+            
+        }
+        UEFI(Unified Extensible Firmware Interface) {
+            UEFI 固件会读取硬盘上的 EFI 系统分区（ESP）中的引导程序（Boot Loader），并将控制权交给引导程序
+        }
+
+        硬盘分区表类型: {
+            MBR Partition Table:
+                Schema: 
+                    512Byte(MBR) = 446(BootLoader) + 64(分区表) + 2(错误标志位) 
+                
+                最多只能有 4 个分区，最大 2TB
+                
+            GUID Partition Table(GPT):
+                Schema:
+                    Protective MBR: 512Byte
+                        GPT分区表的第0柱面（LBA 0）处保留一个 512字节的 MBR 分区记录，用来保护GPT分区表免受旧版BIOS的破坏。
+                    GPT Header: 512Byte
+                        GPT分区表的头部，占据了磁盘的第一个物理块512字节。它包含了GPT分区表的基本信息，包括分区表的位置、大小、版本号、磁盘类型、GUID等。
+                    Partition Entries（分区表项）: 每个 128Byte
+                        磁盘上每个分区的描述信息，每个分区的信息占据了128字节。它包含了分区的GUID、起始位置、结束位置、分区属性等信息
+                    Partition Array CRC32（分区表项数组校验和）：
+                        用于检测分区表项数组数据是否正确的校验和。
+
+                基本无限制
+        }
     }
-    GRUB2 {
+    BootLoader(GRUB2) {
         grub 是什么？
             Grand Unified Bootloader：一个多操作系统启动引导管理程序，用于引导主机装载指定的操作系统到内存中
         如何进入 grub ？
