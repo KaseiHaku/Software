@@ -68,7 +68,7 @@
     "env": "os,customer",
     "labels": "somelabel",
     "max-file": "2",          // 最多 5个 日志文件
-    "max-size": "10m"         // 每个日志文件最大 10m
+    "max-size": "128m"         // 每个日志文件最大 10m
   },
     
     
