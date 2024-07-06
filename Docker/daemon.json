@@ -4,7 +4,7 @@
  *  Windows: %programdata%\docker\config\daemon.json
  * @trap: 当前文件中的配置，如果跟 命令行中的重复，那么 dockerd 服务会启动失败
  *        shell> systemctl cat docker           # 找到 docker.service 文件所有在的位置，在第一行
- *        shell> vim                            # 删除所有命令行参数
+ *        shell> vim                            # 删除所有命令行参数，只保留 ExecStart=/usr/bin/dockerd
  *        shell> systemctl daemon-reload        # 重新加载
  * @doc https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file
  * */
