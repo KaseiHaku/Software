@@ -41,7 +41,7 @@ IntelliJ IDEA Concept and Architecture {
     EnvFile                         # 配合 K8S 设置环境变量
     Kubernetes                      # K8s 配置文件提示
     HTTP Client                     # http 客户端工具
-    RestfulTool                     # Spring MVC/Boot Controller 搜索
+    RESTFul-Tool                    # Spring MVC/Boot Controller 搜索
     Graph Database support          # neo4j，识别 .cyp, .cypher, .cql 文件
     
     # 代码规范
