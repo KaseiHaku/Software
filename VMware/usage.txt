@@ -1,4 +1,7 @@
 ################################ VMWare Workstation Pro ################################
+Download link：
+    https://support.broadcom.com/group/ecx/productdownloads?subfamily=VMware+Workstation+Pro
+
 兼容性列表：
     VMware        Host                Guest
     16            <= Win10            <= Linux Kernel 5.x
