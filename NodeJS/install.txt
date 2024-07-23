@@ -25,8 +25,6 @@
     shell> vim %NVM_HOME%/settings.txt
     root: D:\NVM\nvm
     path: D:\NVM\nodejs
-    node_mirror: https://npm.taobao.org/mirrors/node/       # 修改成 淘宝镜像 否则 下不下来
-    npm_mirror: https://npm.taobao.org/mirrors/npm/
 
 
 
