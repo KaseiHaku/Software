@@ -331,11 +331,14 @@ Shell 信息查询
     shell> history                      # 查看控制台命令历史, 快捷键 Ctrl+R 反向搜索命令，再次 Ctrl+R 搜索上一个
     shell> type -t cmd                  # 可以显示 build-in, alias, cmd path
     shell> typeset -f func              # 查看 func 函数的实际定义内容
+    shell> echo $HISTFILE               # 查看命令历史文件位置
+    shell> echo '' > $HISTFILE          # 清空历史命令
 
     
 直接在控制台输出
     shell> echo "kasei haku"        # 直接输出到终端
-    shell> echo -e "123\n456"         # echo 解析转义字符
+    shell> echo -e "123\n456"       # echo 解析转义字符
+    shell> echo -n 'aaa'            # 不默认输出结尾 \n 
 
 Shell 的可配置项 shopt(shell option)
     shell> shopt                    # 查看所有选项，并显示选项当前状态
