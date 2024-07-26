@@ -39,6 +39,8 @@ mkfs -t ext4 /dev/usb                             # 格式化操作，在设备�
 pwd                                                 # 查看当前工作目录绝对路径
 
 ls -al [path]                                       # 查看指定路径下所有文件，省略路径代表当前路径
+ls -al --full-time                                  # 以 full-ios 格式显示时间
+ls -al -h                                           # human readable file size
 ls -al -H /path/softlink                            # -H:对 symbolic link 实际指向的文件，使用 ls 命令
 ls -al -L /path/softlink                            # -L:结果展示时，如果文件是 符号链接 时，显示 符号链接 指向的文件信息，而不是 符号链接 本身的信息
 ls -d file1 dir2                                    # 列出指定文件或者目录， -d 表示如果是目录，也当做文件显示
