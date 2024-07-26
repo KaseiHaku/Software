@@ -1,3 +1,5 @@
+shell> git rev-list --help                      # revision 文档
+
 # 修订范围
 shell> git log <sha1>                           # 通过 SHA-1 指定修订范围
 shell> git log dae86e         
