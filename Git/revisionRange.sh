@@ -1,4 +1,4 @@
-shell> git rev-list --help                      # revision 文档
+shell> man 7 gitrevisions                       # 中的 Specifying Ranges 段
 
 # 修订范围
 shell> git log <sha1>                           # 通过 SHA-1 指定修订范围
