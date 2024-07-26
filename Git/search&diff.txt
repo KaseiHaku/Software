@@ -35,6 +35,9 @@ shell> git log -G 'regex' -- path
 # 查看指定文件，提交历史中，改动的内容中包含 object_id 的提交,例如： 新增 或 删除 文件
 shell> git log --find-object=object-id 
 
+# 查看删除了 *Upload.vue 文件的 commit
+shell> git log --diff-filter=D --name-status --graph @ -- *Upload.vue
+
 
 ################################ Diff ################################
 # 查看指定 commit 跟上一个 commit 的改动内容
