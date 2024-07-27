@@ -1,6 +1,10 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
 
+    SSL/TLS Certificate 信任配置: {
+        File -> Settings -> Tools -> Server Certificates
+    }
+
     Java17 Test 配置: {
         Java 17 JUnit5 测试方法运行必须配置:
             Edit Configurations... -> JUnit -> test1 -> Modify Options -> 添加 Java: Don't use --module-path option
