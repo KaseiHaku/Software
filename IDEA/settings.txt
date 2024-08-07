@@ -1,5 +1,12 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
+    彻底清理 IDEA {
+        - File -> Invalidate Caches...  然后关闭项目
+        - 删除项目根目录下的 .idea 文件夹
+        - shell> rm -rf ~/.cache/JetBrains/IntelliJIdea2024.1/*
+        - shell> rm -rf ~/.config/JetBrains/IntelliJIdea2024.1/workspace/*
+        - 再重新打开项目
+    } 
 
     SSL/TLS Certificate 信任配置: {
         File -> Settings -> Tools -> Server Certificates
