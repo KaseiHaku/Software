@@ -6,6 +6,12 @@
 
 # 普通登录方式
 shell> ssh -l root -p 22 ip    # 使用用户名 root 和端口 22 登陆远程主机 ip  
+shell> ssh -L 
+shell> ssh -R [bind_address:]port:host:hostport dest           # 指定连接到 dest 指定端口的流量会被 forward 到 local 中
+                                                               # @trap bind_address 只有在 dest 开启了 GatewayPorts 后才能指定
+                                                               # @trap remote_port 设置为 0; 那么 dest 会随机分配端口
+                                                               # @trap IPv6 必须带方括号，即： [::1]
+shell> ssh -L [bind_address:]port:host:hostport dest           # 该操作和 -R 相反; 指定发送到 local port 的流量，会 forward 到 host:hostport; 
 
 
 # ssh 服务器端配置
