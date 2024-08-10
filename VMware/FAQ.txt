@@ -1,0 +1,3 @@
+bridge 模式下 ping xxx.com 返回内容出现 (DUP!) 字样:
+    window 对应的网卡开启 forward 模式，需要关闭。
+    具体关闭步骤参考 ../Windows/usage.txt 中的内容
