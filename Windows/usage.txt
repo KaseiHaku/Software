@@ -4,7 +4,7 @@ Windows 关闭 Microsoft Wi-Fi Direct Virtual Adapter：
     Win+X -> Device Manager -> View -> Show hidden divices
                             -> Network adapters
                                 -> Microsoft Wi-Fi Direct Virtual Adapter       右键 Disable device
-                                -> Microsoft Wi-Fi Direct Virtual Adapter ＃2   右键 Uninstall device
+                                -> Microsoft Wi-Fi Direct Virtual Adapter ＃2   右键 Uninstall device; 其他同类型的都 uninstall
 
 
 windows 完全关闭自动更新:
