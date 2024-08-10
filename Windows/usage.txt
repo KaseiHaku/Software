@@ -1,3 +1,12 @@
+Windows 关闭 Microsoft Wi-Fi Direct Virtual Adapter：
+    Win+I -> System -> Projecting to this PC 
+        ->  Some Windows and Android devices can project to this PC when you say it's OK： 选择 Always Off (Recommended)
+    Win+X -> Device Manager -> View -> Show hidden divices
+                            -> Network adapters
+                                -> Microsoft Wi-Fi Direct Virtual Adapter       右键 Disable device
+                                -> Microsoft Wi-Fi Direct Virtual Adapter ＃2   右键 Uninstall device
+
+
 windows 完全关闭自动更新:
     Win+R -> regiedit 
         -> Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WaaSMedicSvc
