@@ -25,7 +25,8 @@
         # Debian
         shell> less /etc/network/interfaces
         shell> ll /etc/network/interfaces.d
-        shell> systemctl restart networking
+        # shell> systemctl restart networking        # 该命令无效
+        shell> reboot
 
         # CentOS
         shell> vim /etc/sysconfig/network-scripts/ifcfg-ens33        # 用于配置某一张网卡相关参数
