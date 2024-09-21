@@ -61,7 +61,7 @@ dns=none
     
     
 免费 DDNS 服务商:
-    https://www.duckdns.org/
+    https://www.duckdns.org/                    # 可以申请 *.duckdns.org 作为后缀的子域名
     https://desec.io/                        # 已经无法申请子域名了
     https://ydns.io/
     
