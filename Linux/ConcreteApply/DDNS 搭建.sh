@@ -14,6 +14,7 @@ DuckDNS 搭建:
     #     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&clear=true" | curl -k -K -
     # 更新 DNS Record: 
     #     # @doc https://www.duckdns.org/spec.jsp
+    #     # ?domain         值可以为 xxx 或者 xxx.duckdns.org; 如果有多个，那么使用 ',' 分隔，即: xxx,yyy,zzz
     #     # &ip             值可以为 ipv4 或者 ipv6 或者为空，为空表示自动检测当前 ipv4 和 ipv6 地址
     #     # &ipv6           值可以为 ipv6，如果该参数存在，则自动检测失效
     #     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&verbose=true&ip=" | curl -k -o ~/Script/duckdns/duck.log -K -
