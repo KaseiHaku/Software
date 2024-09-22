@@ -267,7 +267,7 @@ shell> expr     # 字符串截取
 #       length: h, l, L
 shell> printf "八进制整数 %o, 十进制整数 %d, 十进制浮点数 %f, 十六进制整数 %x, 科学计数 %e, 字符串 %s, 字符 %c, %%\n" 010 10 10.1 0xff 100 str c 
 shell> echo -e 'as\ndsa'                    # echo 解析转义字符
-shell> shell> echo -n 'aaa'                 # 不默认输出结尾 \n
+shell> echo -n 'aaa'                        # 不默认输出结尾 \n
 shell> column -t -s 'delimiter' file        # 格式化为列，-s 指定分隔符
 
 # hexdump
