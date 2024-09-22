@@ -10,7 +10,16 @@ DuckDNS 搭建:
     shell> mkdir duckdns
     shell> cd duckdns
     shell> cat <<-'EOF' | tee ./duck.sh
-    echo url="https://www.duckdns.org/update?domains=exampledomain&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&ip=&ipv6=" | curl -k -o ~/duckdns/duck.log -K -
+    curIpv6=`ip -br -family inet6 addr show dev wlp3s0 scope global -deprecated mngtmpaddr | head -n 1 | tr -s [:blank:] | cut -d ' ' -s -f 3- | cut -d / -f 1`
+    # 清除 DNS Record: 
+    #     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&clear=true" | curl -k -K -
+    # 更新 DNS Record: 
+    #     # @doc https://www.duckdns.org/spec.jsp
+    #     # &ip             值可以为 ipv4 或者 ipv6 或者为空，为空表示自动检测当前 ipv4 和 ipv6 地址
+    #     # &ipv6           值可以为 ipv6，如果该参数存在，则自动检测失效
+    #     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&ip=" | curl -k -o ~/Script/duckdns/duck.log -K -
+    #     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&ipv6=2002::1001" | curl -k -o ~/Script/duckdns/duck.log -K -
+    echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&ipv6=${curIpv6}" | curl -k -o ~/Script/duckdns/duck.log -K -
     EOF
     shell> chmod 700 duck.sh
     shell> crontab -e        # 新增一行: */5 * * * * ~/duckdns/duck.sh >/dev/null 2>&1
