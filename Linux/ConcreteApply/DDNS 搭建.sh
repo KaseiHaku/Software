@@ -7,8 +7,8 @@ DuckDNS 搭建:
     shell> # 登陆 https://www.duckdns.org/   这里是三方登陆，选自己喜欢的就行，这里是 github
     shell> # 复制 token 保存
     shell> # 新建一个子域名，例如: xxx.duckdns.org
-    shell> mkdir duckdns
-    shell> cd duckdns
+    shell> mkdir -p ~/Script/duckdns 
+    shell> cd ~/Script/duckdns
     shell> cat <<-'EOF' | tee ./duck.sh
     curIpv6=`ip -br -family inet6 addr show dev wlp3s0 scope global -deprecated mngtmpaddr | head -n 1 | tr -s [:blank:] | cut -d ' ' -s -f 3- | cut -d / -f 1`
     # 清除 DNS Record: 
@@ -21,8 +21,19 @@ DuckDNS 搭建:
     #     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&ipv6=2002::1001" | curl -k -o ~/Script/duckdns/duck.log -K -
     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&ipv6=${curIpv6}" | curl -k -o ~/Script/duckdns/duck.log -K -
     EOF
-    shell> chmod 700 duck.sh
+    shell> chmod 700 duck.sh              # 修改文件权限
+    shell> . ./duck.sh                    # 手动触发
+    shell> tail -fn 500 ./duck.log        # 查看日志
+    
+
+
     shell> crontab -e        # 新增一行: */5 * * * * ~/duckdns/duck.sh >/dev/null 2>&1
-    shell> ./duck.sh        # 手动触发
+    # 配置定时任务自动触发
+    shell> cat <<-"EOF" >> /etc/crontab
+    
+    # Duck DDNS 定时更新，每隔 15 分钟更新一次
+    0-50/2 * * * * kasei . /home/kasei/Script/duckdns/duck.sh >/dev/null 2>&1
+    EOF
+    
     
     
