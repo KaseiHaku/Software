@@ -29,10 +29,12 @@ DuckDNS 搭建:
 
     
     # 配置定时任务自动触发
-    # @tips 使用 shell> crontab -e       编辑定时任务，保存时可以校验 cron 表达式是否正确
+    # @tips 使用 shell> crontab -e 编辑定时任务，保存时可以校验 cron 表达式是否正确
+    #       格式如下: 
+    #           # 不需要像 /etc/crontab 中一样配置 username，因为 shell> crontab -e 命令默认使用当前用户
+    #           */5 * * * *     ~/duckdns/duck.sh >/dev/null 2>&1
     # 
     shell> cat <<-"EOF" >> /etc/crontab
-    
     # Duck DDNS 定时更新，每隔 15 分钟更新一次
     0-50/15 * * * * kasei . /home/kasei/Script/duckdns/duck.sh >/dev/null 2>&1
     EOF
