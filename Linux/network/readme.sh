@@ -71,6 +71,9 @@
     
 
 # ip 
+# shell> ip addr 中字段解释
+#     mngtmpaddr                Manage Temporary Addresses    管理临时地址，IPv6 中用于防止跟踪和提高隐私保护
+# 
     shell> ip help                                 # 查看帮助文档
     
     shell> ip neigh help                           # 查看指定命令的帮助文档
@@ -97,6 +100,8 @@
 
     shell> ip route show                           # 查看路由信息
     shell> ip route add to 10.0.0.0/8 dev ens33 via 172.16.16.1    # 设置路由
+
+    
 
 
 # ss   
