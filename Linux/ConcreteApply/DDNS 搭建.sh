@@ -17,9 +17,9 @@ DuckDNS 搭建:
     #     # @doc https://www.duckdns.org/spec.jsp
     #     # &ip             值可以为 ipv4 或者 ipv6 或者为空，为空表示自动检测当前 ipv4 和 ipv6 地址
     #     # &ipv6           值可以为 ipv6，如果该参数存在，则自动检测失效
-    #     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&ip=" | curl -k -o ~/Script/duckdns/duck.log -K -
-    #     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&ipv6=2002::1001" | curl -k -o ~/Script/duckdns/duck.log -K -
-    echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&ipv6=${curIpv6}" | curl -k -o ~/Script/duckdns/duck.log -K -
+    #     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&verbose=true&ip=" | curl -k -o ~/Script/duckdns/duck.log -K -
+    #     echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&verbose=true&ipv6=2002::1001" | curl -k -o ~/Script/duckdns/duck.log -K -
+    echo url="https://www.duckdns.org/update?domains=xxx.duckdns.org&token=a7c4d0ad-114e-40ef-ba1d-d217904a50f2&verbose=true&ipv6=${curIpv6}" | curl -k -o ~/Script/duckdns/duck.log -K -
     EOF
     shell> chmod 700 duck.sh              # 修改文件权限
     shell> . ./duck.sh                    # 手动触发
