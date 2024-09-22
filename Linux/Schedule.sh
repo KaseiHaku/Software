@@ -23,8 +23,9 @@
     
     /etc/cron.deny
     /etc/cron.allow
-    /var/spool/cron             # shell> crontab -e 编辑的定时任务保存位置
-    /var/spool/cron/username    # shell> crontab -e 编辑的定时任务保存位置，根据 username 分类
+    /var/spool/cron                     # shell> crontab -e 编辑的定时任务保存位置
+    /var/spool/cron/username            # shell> crontab -e 编辑的定时任务保存位置，根据 username 分类
+    /var/spool/cron/crontabs/username   # shell> crontab -e 编辑的定时任务保存位置，根据 username 分类
     /var/log/cron.log           # crontab 日志
     
     
