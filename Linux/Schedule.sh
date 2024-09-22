@@ -41,7 +41,11 @@
     PATH=/sbin:/bin:/usr/sbin:/usr/bin
     MAILTO=root
 
-    * * * * * root mkdir -p /opt/docker &&  date +"%Y-%m-%dT%H:%M:%S" >> /opt/docker/prune.log && docker image prune -f >> /opt/docker/prune.log
+    # 测试，巨神坑：特殊字符
+    #* * * * * root date +"\%Y-\%m-\%dT\%H:\%M:\%S" >> /opt/cron.log
+    
+    # 星期天 凌晨 0 点 定时清理多余 docker image 文件，最后一个 0 表示星期天
+    0 0 * * 0 root mkdir -p /opt/docker && date +"\%Y-\%m-\%dT\%H:\%M:\%S" >> /opt/docker/prune.log && docker image prune -f >> /opt/docker/prune.log
     EOF
     
     
