@@ -41,7 +41,17 @@
     shell> tail -fn 1000 /var/log/cron.log          # crontab 日志
     
 # 定时任务
-    shell> cat <<"EOF" | tee /etc/cron.d/docker-prune
+
+    # 使用 crontab 命令
+    # 格式如下: 
+    #     # 不需要像 /etc/crontab 中一样配置 username，因为 shell> crontab -e 命令默认使用当前用户
+    #     */5 * * * *     ~/duckdns/duck.sh >/dev/null 2>&1
+    shell> crontab -e                # 给当前 username 添加定时任务
+    shell> crontab -u username -e    # 给指定的 username 添加定时任务
+     
+
+    # 直接编辑文件的方式
+    shell> cat <<-"EOF" | tee /etc/cron.d/docker-prune
     # 定时清理多余 docker image 文件
     SHELL=/bin/bash
     PATH=/sbin:/bin:/usr/sbin:/usr/bin
