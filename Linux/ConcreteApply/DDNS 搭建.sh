@@ -27,12 +27,14 @@ DuckDNS 搭建:
     
 
 
-    shell> crontab -e        # 新增一行: */5 * * * * ~/duckdns/duck.sh >/dev/null 2>&1
+    
     # 配置定时任务自动触发
+    # @tips 使用 shell> crontab -e       编辑定时任务，保存时可以校验 cron 表达式是否正确
+    # 
     shell> cat <<-"EOF" >> /etc/crontab
     
     # Duck DDNS 定时更新，每隔 15 分钟更新一次
-    0-50/2 * * * * kasei . /home/kasei/Script/duckdns/duck.sh >/dev/null 2>&1
+    0-50/15 * * * * kasei . /home/kasei/Script/duckdns/duck.sh >/dev/null 2>&1
     EOF
     
     
