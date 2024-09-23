@@ -3,6 +3,10 @@
     https://ydns.io/
 
 DuckDNS 搭建:
+    shell> # 进光猫 超级管理员 登陆界面，注意不是普通 user 
+           # 联通光猫地址: 192.168.1.1/cu.html         密码不知道可以打维修师傅电话帮查，如果不行那只能试试 路由模式 能否 DDNS 了，IPv6
+           # 登陆 超级管理员，将光猫从 路由模式 改为 桥接模式，然后使用路由器拨号上网，这样路由器才能获取到 IPv6 地址，
+           # 光猫 路由模式 也可以获取到 IPv6 地址，但是我没尝试过
     shell> # 登陆 https://www.duckdns.org/   这里是三方登陆，选自己喜欢的就行，这里是 github
     shell> # 复制 token 保存
     shell> # 新建一个子域名，例如: xxx.duckdns.org
