@@ -9,8 +9,9 @@
     shell> pacman -Q --help
 
 换源：
-    shell> sudo pacman-mirrors -c China
-
+    shell> sudo pacman-mirrors -c China -m rank
+    shell> vim /etc/pacman.d/mirrorlist            # 删除所有不要的 "Server =" 行
+    shell> sudo pacman -Syu                        # 滚动更新系统
 
 
 常用：
