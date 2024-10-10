@@ -22,7 +22,7 @@ shell> apt-cache pkgnames                                       # 打印软件�
 shell> apt-cache dumpavail                                      # 打印软件包列表中所有包的简介信息
 shell> apt-cache depends package                                # 了解使用依赖
 
-
+shell> apt list --all-versions                                  # 列出指定 pkg 的所有版本
 shell> apt-cache policy pkg                                     # 列出指定 pkg 的所有版本 
 shell> apt-cache madison pkg                                    # 列出指定 pkg 的所有版本
 
