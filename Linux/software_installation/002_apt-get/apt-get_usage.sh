@@ -30,6 +30,7 @@ shell> apt-cache madison pkg                                    # 列出指定 p
 
 ################################ Install 软件包安装
 shell> apt-get install packagename                              # 安装一个新的软件包
+shell> apt-get install pkg=version                              # 安装指定版本的软件包
 shell> apt-get install iputils-ping                                 # 安装 ping 命令
 
 
