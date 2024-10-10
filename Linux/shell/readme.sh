@@ -282,7 +282,7 @@ History Expansion
     # 如果 word 中任何 char 都不是引号(', ")，那么 here-document 中的值会被 shell 变量替换，\<newline> 会被忽略，且 \, $, ` 必须使用 \ 进行转义，即: \\, \$, \`
     # - 代表删除 here-document 中的前置 tab 字符
     # n 是文件描述符
-    [n]<<[-]word                # 该格式的作用是，以 here-document 作为 输入源
+    [n]<<[-]word                # 该格式的作用是，以 here-document 作为 输入源，例如: shell> <<EOF cat     表示以 here-document 作为 cat 命令的输入
         here-document
     delimiter                   
     
