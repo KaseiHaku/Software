@@ -137,15 +137,19 @@ shell> sort unsort.txt | uniq         # 消除重复行
 shell> sort unsort.txt | uniq -c      # 统计各行在文件中出现的次数
 shell> sort unsort.txt | uniq -d      # 找出重复行
 
-
-
-
-
+# column
+# 格式化为列
+shell> column
 
 # cut
 # 按列切分文本
 shell> cut -d ';'   # 指定分割符
 shell> cut -f 1-2   # 输出 第1列 到 第2列
+
+# pr
+# Paginate or columnate FILE(s) for printing.
+shell> pr
+
 
 # paste
 # 按列拼接文本
@@ -155,12 +159,9 @@ shell> paste file1 file2  # 将 file1 file2 按列合并
 # 分割文件
 shell> split 
 
-# pr
-# Paginate or columnate FILE(s) for printing.
-shell> pr
-
 # wc
 # 行及字符统计工具
+shell> wc
 
 # tr
 # translate，squeeze，delete 单字符工具
