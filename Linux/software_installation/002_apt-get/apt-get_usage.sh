@@ -14,7 +14,7 @@ shell>
 ################################ Query 软件包查询
 shell> apt list --installed                                     # 查询所有已安装的包
 
-shell> apt-cache search all                                     # 查询仓库中所有软件包
+shell> apt-cache search '.*'                                    # 查询仓库中所有软件包
 shell> apt-cache search package                                 # 搜索包
 shell> apt-cache show package                                   # 获取包的相关信息，如说明、大小、版本等
 shell> apt-cache showpkg package                                # 显示软件包信息，包括包的依赖关系，包的提供者， 
