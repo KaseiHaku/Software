@@ -10,7 +10,7 @@ shell> uname -a
 
 # 检查系统发行版本
 shell> ls -al /etc/*release*        # 查看当前系统的发行版本
-shell> dmesg | grep Linux                 
+shell> sudo dmesg | grep Linux                 
 
 # 常用命令
 logout                                                      # 命令行终端登出
