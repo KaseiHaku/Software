@@ -85,6 +85,13 @@ RUN mkdir /docker-entrypoint-initdb.d
 RUN [ "echo", "$HOME" ]                     # @trap $HOME 不会被替换
 RUN [ "/bin/bash", "-c", "echo $HOME" ]     # @trap $HOME 会被替换
 
+# here-document
+RUN <<EOT cat
+#!/usr/bin/env node
+console.log('use node.js to execute current script!!!');
+EOT
+
+
 
 # ADD 用于 复制 文件，目录 到 容器中的 dest 目录
 # 相对路径相对于 构建 context，且不能引用 当前文件所在目录 的外部路径
@@ -109,6 +116,9 @@ ADD http://example.com/foobar/ /
 # COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
 # @trap dest 如果是 目录，则必须用 / 结尾
 COPY package.json .
+COPY <<-"EOT" /script.sh
+  echo "hello ${FOO}"
+EOT
 
 
 
