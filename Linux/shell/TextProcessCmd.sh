@@ -155,6 +155,9 @@ shell> paste file1 file2  # 将 file1 file2 按列合并
 # 分割文件
 shell> split 
 
+# pr
+# Paginate or columnate FILE(s) for printing.
+shell> pr
 
 # wc
 # 行及字符统计工具
