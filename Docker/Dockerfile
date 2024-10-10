@@ -25,6 +25,10 @@ ARG  CODE_VERSION=defaultVal
 # FROM [--platform=<platform>] <image> [AS <name>]
 # FROM [--platform=<platform>] <image>[:<tag>] [AS <name>]
 # FROM [--platform=<platform>] <image>[@<digest>] [AS <name>]
+# FROM scratch
+#   表示你不以任何镜像为基础，接下来所写的指令将作为镜像第一层开始存在。
+#   不以任何系统为基础，直接将可执行文件复制进镜像，
+#   因为 Linux 下静态编译的程序来说，并不需要有操作系统提供运行时支持，所需的一切库都已经在可执行文件里
 FROM node:current-slim
 
 
