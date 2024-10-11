@@ -97,6 +97,37 @@ services:
     command: [redis-server, --requirepass, "mypassword"]
     networks:
       - default   # 因为定义了其他网络，所以 default 需要显式声明，否则不会连接到 default 上
+
+  # 在 compose 中使用 Dockerfile 构建 demo
+  dockerfile:
+    pull_policy: build                  # 每次都重新构建 image，不管本地是否已经存在
+    build:
+      context: .
+      #additional_contexts:             # 额外 context，支持 绝对路径，相对路径，Git-Repo-URL, type://xxxx
+      dockerfile: ../docker/Dockerfile
+      network: host                     # 在构建期间为 RUN 指令设置网络容器连接。
+      args:
+        - KH_VERSION=12                 # 替换 Dockerfile 中 ARG KH_VERSION 中的值
+      platforms:
+        - linux/amd64
+        - linux/arm64/v8
+      pull: false                       # true 每次都重新拉取 FROM 中的镜像
+      # 构建缓存配置
+      no_cache: false                   # 是否启用 cache 总开关；false: 开启
+      cache_from:
+        #- type=local,src=./cache/debian:bookworm-slim
+        - type=registry,ref=debian:bookworm-slim
+      # 需要在 /etc/docker/deamon.json 中配置 $.features.containerd-snapshotter: true
+      # 是否开启检查命令：
+      #   shell> docker info -f '{{ .DriverStatus }}'
+      #   [[driver-type io.containerd.snapshotter.v1]]      # 表示已经开启，其他都不是
+      #cache_to:
+      #  - type=local,dest=${BASE_PATH:-.}/dockerfile-build-cache
+
+      # 除了 services.xxx.image 外，为该构建产品打额外的镜像标签
+      tags:
+        - local.registry:5000/kh-root/kh-nginx-stream:1.0.0
+    image: kh-nginx-stream:1.0.0
   
   # @trap service-name 最好不要带 . 号，例如: example.com，会导致未知的问题
   example:            # 运行的 docker 的 container name
