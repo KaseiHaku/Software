@@ -101,5 +101,10 @@
   // 存储驱动
   "storage-driver": "overlay2",
 
+  // 开启指定特性
+  "features": {
+    // true: 使 docker-compose 中 $.services.xxx.build.cache_to 的配置生效
+    "containerd-snapshotter": true
+  }
   
 }
