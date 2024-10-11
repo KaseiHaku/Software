@@ -11,7 +11,7 @@ shell> tar -xzf nginx_1.25.3.orig.tar.gz                            # 会解压�
 
 # 使用 make 编译
 shell> cd nginx-1.25.3                                                # 进入源码目录
-shell> ./configure --add-module=/path/to/nginx-rtmp-module            # 修改编译参数
+shell> ./configure --add-module=/path/to/nginx-rtmp-module            # 修改编译参数，并生成 Makefile 文件
 shell> make
 shell> sudo make install
 shell> make clean
