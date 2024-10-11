@@ -1,3 +1,22 @@
+################################ Compile 软件包编译
+# 将 source code 打包成 .deb / .rpm 文件
+#     nginx_1.25.3.orig.tar.gz                        源码包的原始压缩包
+#     nginx_1.25.3-1~bookworm.debian.tar.xz           Debian 包装器（debian/ 目录，包含了构建软件包所需的控制文件和补丁）和 Debian 包装规范来完成的
+#                                                     其中 1~bookworm 是 Debian 包装器的版本
+#     nginx_1.25.3-1~bookworm.dsc                     Debian 包装器描述文件，用于描述 源码的版本，所需的依赖 等
+# 
+shell> cd nginx-1.25.3                                                # 进入源码目录
+shell> ./configure --add-module=/path/to/nginx-rtmp-module            # 修改编译参数
+
+# 使用 make 编译
+shell> make
+shell> sudo make install
+shell> make clean
+
+# 使用 dpkg-buildpackage 编译
+shell> dpkg-buildpackage -b -uc -us
+shell> dpkg-buildpackage -b --no-sign
+
 ################################ Install 软件包安装
     shell> dpkg -i                                              # 安装 .deb 方式打包的软件
     
