@@ -242,6 +242,9 @@ shell> seq 3 | sed ':a;N;$!ba;s/\n/:/g'        # 结果为 = 1:2:3   $!ba = 不�
 shell> seq 6 | sed -e 1d -e 3d -e 5d            # 多 cmd 模式
 shell> seq 6 | sed '1d;3d;5d'
 shell> echo -n '  1234 567  ' | sed -r -e 's/^\s*(\S(.*)\S)\s*$/\1/'        # 巨神坑: ERE [] 中 \ 作为普通字符
+shell> cat <<EOF | sed -nEf - xxx.txt                    # 从 stdin 中读取 script
+{ cm1; cmd2}
+EOF
 
 
 
