@@ -216,7 +216,7 @@ shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 #   Q[exit-code]        # 同上，但是不打印 pattern space
 #   r filename          # 读取文件
 #   R filename          # 读取文件，并插入到输出
-#   s/regexp/replacement/[flags]    # 替换， replacement 中 &=regexp 匹配的部分; \1-\9=捕获组
+#   s/regexp/replacement/[flags]    # 替换， replacement 中 &=regexp 匹配的部分; \1-\9=捕获组; flags=w 表示将替换结果写入文件; flags=e 表示将替换结果当作命令执行; 有 flags 的情况下只能使用 newline 进行命令分隔
 #   t label             # 仅当自读取最后一个输入行或采取另一个条件分支以来 s/// 命令成功时，才有条件分支（即：跳转到标签）
 #   T label             # 与 t 命令类似但相反：仅当自上次读取输入行以来没有成功替换时才分支
 #   v [version]
