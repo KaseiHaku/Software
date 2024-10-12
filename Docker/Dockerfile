@@ -97,8 +97,8 @@ EOT
 # 相对路径相对于 构建 context，且不能引用 当前文件所在目录 的外部路径
 # @trap dest 如果是 目录，则必须用 / 结尾
 # @trap 所有文件目录的 UID 和 GID 都是 0， 除非使用 --chown 修改，如果单指定一个，那么默认两个相同
-ADD [--chown=<user>:<group>] <src>... <dest>                
-ADD [--chown=<user>:<group>] ["<src>",... "<dest>"]    # 适用于当 path 中包含 空格 的情况
+ADD [--chown=<user>:<group>] [--chmod=755] <src>... <dest>                
+ADD [--chown=<user>:<group>] [--chmod=755] ["<src>",... "<dest>"]    # 适用于当 path 中包含 空格 的情况
 
 ADD hom* /mydir/
 ADD hom?.txt /mydir/
