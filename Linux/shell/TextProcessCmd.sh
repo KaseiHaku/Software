@@ -193,7 +193,7 @@ shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 #   @trap   a,c,i               命令不能用 simicolons(;) 作为命令分隔符，必须使用 \n(newline) 或者将命令放在脚本最后
 #   @trap   r,R,w,W             命令认为 到 newline 字符之前的所有字符全是 filename
 # 
-#   a text              # 在当前行后 追加一行 text
+#   a text              # 在当前行后 追加一行 text; text 一直读取到一个 /n 才会结束，前缀空格会忽略
 #   b label             # 无条件分支（即：始终跳转到标签，跳过或重复其他命令，而不重新启动新循环）。与地址结合，可以在匹配的行上有条件地执行分支       
 #   c text              # 整行 替换为 text
 #   d                   # 删除
