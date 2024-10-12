@@ -188,6 +188,7 @@ shell> echo 12225 | tr -s '2'         # 压缩重复字符2
 # ]!        # 如果存在 ! 后缀，则表示 addr 是 否定的，即: 非(not)
 # 
 # X := cmd
+#   @tips cmd 之间可以使用 \n(newline) 和 ; 分隔，但是 ; 分隔有以下限制，而 newline 没有 
 #   @trap   X                   都是单字母的
 #   @trap   {,},b,t,T,:         命令可以被 semicolon 分隔
 #   @trap   a,c,i               命令不能用 simicolons(;) 作为命令分隔符，必须使用 \n(newline) 或者将命令放在脚本最后
@@ -243,7 +244,8 @@ shell> seq 6 | sed -e 1d -e 3d -e 5d            # 多 cmd 模式
 shell> seq 6 | sed '1d;3d;5d'
 shell> echo -n '  1234 567  ' | sed -r -e 's/^\s*(\S(.*)\S)\s*$/\1/'        # 巨神坑: ERE [] 中 \ 作为普通字符
 shell> cat <<EOF | sed -nEf - xxx.txt                    # 从 stdin 中读取 script
-{ cm1; cmd2}
+cmd1
+cmd2
 EOF
 
 
