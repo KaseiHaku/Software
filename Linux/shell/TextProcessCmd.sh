@@ -139,9 +139,9 @@ shell> sort unsort.txt | uniq -d      # 找出重复行
 
 # column
 # 格式化为列
-shell> column -t file                # 以 列 的形式展示 文件，默认 column 之间的分隔符为 两个 space
-              -s ' '                 # 指定 file 中 column 之间的分隔符 
-              -o '::'                # 以指定 字符串 输出列分隔符
+shell> column -t file                # 以 列 的形式展示 文件
+              -s ' '                 # 指定 file 中 column 之间的分隔符; 默认为 space
+              -o '::'                # 以指定 字符串 输出列分隔符; 默认为 两个 space
               -L                     # 不忽略空行
               -i colname             # 以指定列名，树型格式输出文件内容
 
