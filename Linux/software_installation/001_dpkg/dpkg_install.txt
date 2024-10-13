@@ -25,7 +25,8 @@ shell> curl -o nginx_1.25.3-1~bookworm.dsc URL
 shell> dpkg-source -x nginx_1.25.3-1~bookworm.dsc                    # 以上两步，可以由该条命令直接完成
 # 正式开始编译
 shell> cd nginx-1.25.3                                               # 进入源码目录
-shell> dpkg-buildpackage -b -uc -us                                  # -uc -us 表示不需要签名
+shell> dpkg-buildpackage -b -uc -us                                  # -uc -us 表示跳过 GPG 签名
+shell> cd .. && ls -ald *.deb                                        # 一旦构建完成，你会在上一级目录中找到生成的 .deb 文件 
 
 ################################ Install 软件包安装
     shell> dpkg -i                                              # 安装 .deb 方式打包的软件
