@@ -62,6 +62,7 @@ Image：
     # shell> docker build 目标镜像名称  "Dockerfile 所在目录路径"
     shell> docker build kasei/centos:haku .
     shell> docker build -t test/myapp .         # 测试 Dockerfile 语法是否正确
+    shell> docker buildx build -t test/myapp .         # 需要安装 docker-buildx 组件，原本的 build 已经过时了
 
     # 设置镜像标签
     shell> docker tag imgId host:port/path/imgName:tag
