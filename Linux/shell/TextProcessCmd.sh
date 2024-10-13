@@ -139,12 +139,17 @@ shell> sort unsort.txt | uniq -d      # 找出重复行
 
 # column
 # 格式化为列
-shell> column
+shell> column -t file                # 以 列 的形式展示 文件，默认 column 之间的分隔符为 两个 space
+              -s ' '                 # 指定 file 中 column 之间的分隔符 
+              -o '::'                # 以指定 字符串 输出列分隔符
+              -L                     # 不忽略空行
+              -i colname             # 以指定列名，树型格式输出文件内容
+
 
 # cut
 # 按列切分文本
-shell> cut -d ';'   # 指定分割符
-shell> cut -f 1-2   # 输出 第1列 到 第2列
+shell> cut -d ';'   # 指定字符为分割符，@trap 不能为 字符串
+shell> cut -d ' ' -f 1-2   # 输出 第1列 到 第2列
 
 # pr
 # Paginate or columnate FILE(s) for printing.
@@ -277,7 +282,7 @@ shell> expr     # 字符串截取
 shell> printf "八进制整数 %o, 十进制整数 %d, 十进制浮点数 %f, 十六进制整数 %x, 科学计数 %e, 字符串 %s, 字符 %c, %%\n" 010 10 10.1 0xff 100 str c 
 shell> echo -e 'as\ndsa'                    # echo 解析转义字符
 shell> echo -n 'aaa'                        # 不默认输出结尾 \n
-shell> column -t -s 'delimiter' file        # 格式化为列，-s 指定分隔符
+
 
 # hexdump
 # 字符串转 十六进制
