@@ -6,7 +6,7 @@
 #     nginx_1.25.3-1~bookworm.dsc                     Debian 包装器描述文件，用于描述 源码的版本，所需的依赖 等
 # 
 shell> curl -o nginx_1.25.3.orig.tar.gz  URL
-shell> tar -xzf nginx_1.25.3.orig.tar.gz                            # 会解压出一个名为 nginx-1.25.3 的目录
+shell> tar -xzf nginx_1.25.3.orig.tar.gz                            # 会解压出一个名为 nginx-1.25.3 的 源码目录
 
 
 # 使用 make 编译
@@ -17,11 +17,11 @@ shell> sudo make install
 shell> make clean
 
 # 使用 dpkg-buildpackage 编译
-shell> curl -o nginx_1.25.3-1~bookworm.debian.tar.xz  URL
-shell> curl -o nginx_1.25.3-1~bookworm.dsc URL
+shell> curl -o nginx_1.25.3-1~bookworm.debian.tar.xz  URL            # 下载包装器
+shell> curl -o nginx_1.25.3-1~bookworm.dsc URL                       # 下载包装器描述文件
 # 准备 源码+包装器 目录
 #shell> tar -xJf nginx_1.25.3-1~bookworm.debian.tar.xz               # 会解压出一个名为 debian 的目录
-#shell> cp -r ./debian ./nginx-1.25.3 && rm -rf debian               # 将 debian 目录复制到 源码目录中，因为 dpkg-buildpackage 默认会在当前路径下寻找 debian 目录
+#shell> cp -r ./debian ./nginx-1.25.3 && rm -rf debian               # 将 debian 目录复制到 源码目录 中，因为 dpkg-buildpackage 默认会在当前路径下寻找 debian 目录
 shell> dpkg-source -x nginx_1.25.3-1~bookworm.dsc                    # 以上两步，可以由该条命令直接完成
 # 正式开始编译
 shell> cd nginx-1.25.3                                               # 进入源码目录
