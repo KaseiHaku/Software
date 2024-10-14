@@ -33,7 +33,8 @@ ffmpeg -formats            # 指定类别的帮助
 
 
 
-################################ Help ########################
+################################ Command ########################
+ffmpeg [options] [[infile options] -i infile]... {[outfile options] outfile}...
 
 
 
