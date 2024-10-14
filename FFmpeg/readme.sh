@@ -47,7 +47,7 @@ shell> ffmpeg -formats            # 指定类别的帮助
         -hwaccels           show available HW acceleration methods
 
 
-shell> ffmpeg -h full | grep -B4 -A2 --color=auto -i '^\-f '            # 常用查询帮助格式
+shell> ffmpeg -h full | grep -B4 -A2 -n --color=auto -i '^\-f '            # 常用查询帮助格式
 
 
 ################################ Command ########################
