@@ -66,16 +66,26 @@ shell> ffmpeg -n \                                               # 全局配置
               -g 150 
               -an                                                # 关闭 audio
               -f webm                                            # 输出的封装格式
-              -dash 1 
+              -dash 1                                            # 是否创建符合 WebM DASH 规范的 webm 文件; shell 中的 Boolean 值: true/false, 1/0
               video_1920x1080_1500k.webm                         # 处理后的文件名
 
 
+shell> ffmpeg -i bunny_1080p_60fps.mp4 -c:v libvpx-vp9 -s 1280x720 -b:v 1500k -keyint_min 150 -g 150 -an -f webm -dash 1 video_1280x720_1500k.webm        # 从 mp4 容器中提取 视频 并重新封装为 webm 格式
+shell> ffmpeg -i bunny_1080p_60fps.mp4 -c:a libvorbis -b:a 128k -vn -f webm -dash 1 audio_128k.webm                                                       # 从 mp4 容器中提取 音频 并重新封装为 webm 格式
+
 # webm 转 MPEG-DASH 
 shell> ffmpeg -n \                                                         # 全局配置结束;
-              -f webm_dash_manifest -i video_1920x1080_1500k.webm \        # 输入配置结束;
+              -f webm_dash_manifest -i video_160x90_250k.webm \            # 不同 码率 和 分辨率 的视频文件
+              -f webm_dash_manifest -i video_320x180_500k.webm \
+              -f webm_dash_manifest -i video_640x360_750k.webm \
+              -f webm_dash_manifest -i video_640x360_1000k.webm \
+              -f webm_dash_manifest -i video_1280x720_500k.webm \
+              -f webm_dash_manifest -i audio_128k.webm \                   # 音频文件; 
+              # 输入配置结束;
               -c copy -map 0 -map 1 -map 2 -map 3 -map 4 -map 5 \
-              -f webm_dash_manifest -adaptation_sets "id=0,streams=0,1,2,3,4 id=1,streams=5" \
-               manifest.mpd
+              -f webm_dash_manifest 
+              -adaptation_sets "id=0,streams=0,1,2,3,4 id=1,streams=5" \        # 表示 stream(流) 0,1,2,3,4 分为一组，5 单独分为一组
+              manifest.mpd
 
 
 
