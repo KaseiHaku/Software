@@ -26,6 +26,8 @@ shell> locale -a            # 查看支持的区域
 shell> locale -m            # 查看支持的字符编码格式
 
 
+shell> locale -a && export LANG=C.utf8 && echo "curLang=$LANG"        # 修改当前语言环境防止中文乱码，其中 'C.utf8' 必须在 locale -a 中存在才行
+
 
 
 
