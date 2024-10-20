@@ -44,8 +44,10 @@
     
     
 5. 配置 apt 代理
-    /etc/apt.conf           # apt 配置文件
-    /etc/apt.conf.d         # apt 片段配置文件保存目录，其中的配置片段在运行时会整合到 /etc/apt.conf 中去，相当于 C 语言的 include
+    shell> man apt.conf         # 查看 apt 配置文件帮助
+    /etc/apt/apt.conf           # apt 配置文件
+    /etc/apt/apt.conf.d         # apt 片段配置文件保存目录，其中的配置片段在运行时会整合到 /etc/apt.conf 中去，相当于 C 语言的 include
+    
     
 
     shell> cd /etc/apt/apt.conf.d           # apt fragment configuration directory 片段配置文件目录
