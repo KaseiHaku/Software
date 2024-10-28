@@ -33,6 +33,8 @@ lsmod  # 查看已经加载的所有驱动程序，如果有 xxx 则表明安装
 
 
                            
-
+################################## CPU/GPU 温度监控 ############################
+shell> cat /sys/class/thermal/thermal_zone?/temp
+shell> watch -cdn2 cat /sys/class/thermal/thermal_zone0/temp
 
 
