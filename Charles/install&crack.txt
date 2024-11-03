@@ -11,4 +11,8 @@
 
     @latest
     运行 main.go 文件，可以直接生成 license key 
+    例如: 
+        Registered Name: qwer
+        License Key: 4e2a7ce20f5d3a32f6
+        License Key: 9b47f1255175c36773
     
