@@ -1,3 +1,10 @@
+Windows 删除任务管理器开机自启动项：
+    Win+R -> shell:Startup
+    Win+R -> shell:Common Startup
+    Win+R -> regedit 
+          -> HKEY_CURRENT_USER_\Software\Microsoft\Windows\CurrentVersion\Run    # 删除 当前用户 不必要的项目
+          -> HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run    # 删除 当前电脑 不必要的项目
+
 Windows 关闭 Microsoft Wi-Fi Direct Virtual Adapter：
     Win+I -> System -> Projecting to this PC 
         ->  Some Windows and Android devices can project to this PC when you say it's OK： 选择 Always Off (Recommended)
