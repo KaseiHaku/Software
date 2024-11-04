@@ -20,3 +20,15 @@ APK download 网址:
 ################################ Root ################################
 Root 工具:
     Magisk         https://github.com/topjohnwu/Magisk        
+
+################################ FAQ ################################
+Adroid 安装了 CA Root Certificate 还是无法解码抓取的 https 请求，为什么?
+    @ref { Network Security Configuration 官方文档 } https://developer.android.com/training/articles/security-config.html
+    Adroid 7 之后，一个名为 Network Security Configuration 的安全功能出来后，
+    所有使用 SDK>=24 开发的 App，都只会信任 系统证书（甚至连 系统证书 都不信任，只信任自己配的），用户自己安装的证书不会被信任了，
+    所以想要完整 Charles 抓包解码，必须将 CA 证书安装到 系统证书 中，
+    而操作 系统证书 需要 Root 权限，所以只能先刷机
+
+
+
+
