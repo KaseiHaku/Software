@@ -1,3 +1,8 @@
+# 给 Java 配置 CA Root 证书
+shell> cd $JAVA_HOME/jre/lib/security/cacerts
+shell> sudo keytool -import -alias charles -file ~/Desktop/charles-ssl-proxying-certificate.pem -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass changeit
+shell> keytool -list -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass changeit
+
 # 运行一个 java 程序
     shell> cd $JAVA_HOME/bin
     shell> ./java -jar myapp.jar        # 启动一个 jvm 实例，运行一个 ./myapp.jar 文件
