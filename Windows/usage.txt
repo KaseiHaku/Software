@@ -3,6 +3,12 @@
           -> Certificates - Current User -> Trusted Root Certification Authorities -> Certificates 
           -> 菜单栏 Action -> All tasks -> Import...
 
+    Win+R -> mmcd
+          -> File -> Add/Remove Snap-in... 
+          -> Certificates -> Add -> OK       # 完成管理单元的添加
+          -> Certificates(Local Computer) -> Trusted Root Certification Authorities -> Certificates 
+          -> 菜单栏 Action -> All tasks -> Import...    # 开始导入 ca 证书文件
+    
 
 Windows 删除任务管理器开机自启动项：
     Win+R -> shell:Startup
