@@ -1,3 +1,8 @@
-调试转发 http 请求
+竞品软件：
+    fiddler:  
 
-fiddler:  同类型竞争软件
+
+没有 Request 和 Response 选项卡:
+    Edit -> Preferences... -> Viewers
+        -> [不勾选] Combine header and body viewers
+        -> [不勾选] Combine request and response
