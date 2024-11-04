@@ -6,3 +6,6 @@
     Edit -> Preferences... -> Viewers
         -> [不勾选] Combine header and body viewers
         -> [不勾选] Combine request and response
+
+http://chls.pro/ssl 访问失败:
+    该地址需要 Ladder
