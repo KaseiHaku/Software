@@ -1,3 +1,9 @@
+安装 CA 证书:
+    Win+R -> certmgr.msc 
+          -> Certificates - Current User -> Trusted Root Certification Authorities -> Certificates 
+          -> 菜单栏 Action -> All tasks -> Import...
+
+
 Windows 删除任务管理器开机自启动项：
     Win+R -> shell:Startup
     Win+R -> shell:Common Startup
