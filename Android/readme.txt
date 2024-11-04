@@ -16,3 +16,7 @@ APK download 网址:
 # @trap 一定要下载 apk 格式的，其他格式的不行(例如: apkm)
 - 翻墙下载，并安装 Google Play services。        
 
+
+################################ Root ################################
+Root 工具:
+    Magisk         https://github.com/topjohnwu/Magisk        
