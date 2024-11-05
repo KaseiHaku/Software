@@ -44,6 +44,8 @@ DuckDNS 搭建:
     # Duck DDNS 定时更新，每隔 15 分钟更新一次
     0-50/15 * * * * kasei . /home/kasei/Script/duckdns/duck.sh >/dev/null 2>&1
     EOF
-    
+
+坑:
+    如果使用 CloudFlare 配置 CNAME 映射到 xxx.duckdns.org 上，切忌不能配置 Proxied, 只能是 DNS Only 模式
     
     
