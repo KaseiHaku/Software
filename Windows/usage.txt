@@ -188,6 +188,7 @@ Ctrl+\ 快捷键失效：
     5. mstsc	# 远程桌面连接
     6. perfmon	# 性能监视器
     7. taskmgr	# 任务管理器
+    8. mmc      # CA 证书管理等
     
     清空 Win+R 历史记录
     Win+R -> regedit -> HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU -> 清空里面的值即可
@@ -222,6 +223,7 @@ Ctrl+\ 快捷键失效：
     PS> Get-Command         # 获取当前 session 中所有可用命令
     PS> Get-Help            # 获取一个命令的帮助
     PS> Get-Member
+    PS> Get-Command | findstr /I str
     
 13. 查看端口占用及杀进程
     shell> netstat -ano | findstr "port"
