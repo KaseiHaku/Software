@@ -227,6 +227,7 @@ Ctrl+\ 快捷键失效：
     
 13. 查看端口占用及杀进程
     shell> netstat -ano | findstr "port"
+    ps> Get-NetTCPConnection      # 同上，获取当前监听端口
     shell> tasklist | findstr "PID"
     shell> taskkill /f /t /pid PID 
     
