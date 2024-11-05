@@ -36,7 +36,9 @@
         坑：如果 Applications 添加了不生效，可以把软件打开，进任务管理器找进程名，然后把进程名添加到 Applications 中，这是因为有些进程名跟文件名不一致导致的
     3. 域名解析设置:
         Profile -> Name Resolution
-        -> 选择第二个Resolve hostnames through proxy（通过代理服务器解析域名）
+        -> Proxifier DNS Settings
+            [不勾选] Detect DNS settings automatically
+            [勾选] Resolve hostnames through proxy（通过代理服务器解析域名）
         -> OK
 
 其他配置:
