@@ -1,3 +1,7 @@
+查看 window 所有命令行命令:
+    cmd> help | findstr /I "str"                        # @trap 只能用 双引号
+    powershell> get-command  | findstr /I "str"         # @trap 只能用 双引号
+
 安装 CA 证书:
     Win+R -> certmgr.msc 
           -> Certificates - Current User -> Trusted Root Certification Authorities -> Certificates 
