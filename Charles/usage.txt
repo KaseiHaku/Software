@@ -1,6 +1,8 @@
 竞品软件：
     fiddler:  
 
+由于默认会开启 windows 系统代理，所以使用 Proxifier 时，建议关闭系统代理
+
 
 没有 Request 和 Response 选项卡:
     Edit -> Preferences... -> Viewers
