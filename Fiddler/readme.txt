@@ -26,3 +26,15 @@
               - 查看 use a proxy server 按钮是否开启来判断
 }
 
+
+Adroid 抓包配置: {
+    Tools -> Options... 
+        -> Connections 
+            -> [不勾选] Act as system proxy on start up 
+            -> [勾选] Allow remote computers to connect
+        -> HTTPS 
+            -> [勾选] Decypt HTTPS Traffic 
+            -> [勾选] Ignore server certificate errors (unsafe)
+            -> [不勾选] Check for certificate revocation
+}
+
