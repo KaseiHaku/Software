@@ -172,6 +172,12 @@ Personalize Settings {
             -> [√] Collapse Linear Branches         # 合并一个分支中线性提交的部分
     }
 
+    NodeJS remote debug 配置 {
+        Run -> Edit Configurations... -> "+" 图标 -> Attach to Node.js/Chrome
+            -> Host: localhost
+               Port: 9229
+            -> OK
+    }
 
     webpack 前端项目 IDEA debug 配置 {
         1. 运行 webpack-dev-server 来部署前端项目
