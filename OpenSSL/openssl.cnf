@@ -108,6 +108,9 @@ issuerAltName                   = issuer:copy                                   
 # codeSigning                             # 可用于 代码签名
 # emailProtection                         # 可用于 邮件加密
 # timeStamping                            # 可用于 时间戳认证
+# OCSPSigning                             # 表明该证书的私钥可以用来签署 OCSP(Online Certificate Status Protocol) 响应，以证明证书的状态；OCSP 是一种用于验证 数字证书状态 的协议
+# anyExtendedKeyUsage                     # 表示该证书的持有者可以在任何需要扩展密钥用法的情况下使用其公钥
+# Any OID string                          # 其他 OID 字符串，例如: 1.2.840.113549.1.1.1(表示 RSA 加密算法)
 
 
 
