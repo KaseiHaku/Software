@@ -34,7 +34,9 @@ shell> keytool -list -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass ch
 
 
 # jvm 启动参数分类
-#   https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#advanced-runtime-options-for-java
+#   https://docs.oracle.com/en/java/javase/21/index.html                         # -> Tools -> JDK Tool Specifications
+#   https://docs.oracle.com/en/java/javase/21/docs/specs/man/index.html          # 进入 java 命令页面
+#   https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html           # 点击 "Advanced Runtime Options for Java" 链接
 #   1. 标准参数（-），所有的JVM实现都必须实现这些参数的功能，而且向后兼容；
 #   2. 非标准参数（-X），默认jvm实现这些参数的功能，但是并不保证所有jvm实现都满足，且不保证向后兼容；
 #   3. 非Stable参数（-XX），此类参数各个jvm实现会有所不同，将来可能会随时取消，需要慎重使用；
@@ -144,7 +146,7 @@ jdk 自带的文件编码转换工具 {
 
 
 ################################ bin 下工具 ################################
-# https://docs.oracle.com/en/java/javase/17/docs/specs/man/
+# https://docs.oracle.com/en/java/javase/21/docs/specs/man/index.html
 jar                     jar文件管理工具，主要用于打包压缩、解压jar文件
 jarsigner               jar密匙签名工具          
 java                    Java运行工具，用于运行.class字节码文件或.jar文件
