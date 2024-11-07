@@ -1,3 +1,7 @@
+# 查看 所有可以使用的 shell> java -Dxxx  中的 xxx
+shell> # 下载 jdk 源码，src.zip 并解压
+shell> grep --color -inr 'System.getProperty(' jdkSrcDir        # 可以看到所有用到的 参数
+
 # 给 Java 配置 CA Root 证书
 shell> cd $JAVA_HOME/jre/lib/security/cacerts
 shell> sudo keytool -import -alias charles -file ~/Desktop/charles-ssl-proxying-certificate.pem -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass changeit
