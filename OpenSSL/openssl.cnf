@@ -60,6 +60,8 @@ tsa_policy3 = 1.2.3.4.5.7
 
 ################################################################ 证书中的 x509v3 扩展字段配置，shell> man x509v3_config
 ######## todo 添加到 root ca （自签名）证书请求文件中的扩展项
+# critical            表示如果接收者无法理解一个被标记为 critical 的扩展，根据 X.509 标准，该接收者应该停止证书的验证，并且不应该信任这个证书。
+# 
 [ v3_root_ca_ext ]
 # Standard Extensions 标准扩展字段
 basicConstraints                = critical, CA:TRUE, pathlen:1                  # pathlen:1 表示只能有一级中间证书
