@@ -103,8 +103,8 @@ issuerAltName                   = issuer:copy                                   
 # decipherOnly                            # 只能用于 解密
 
 [ v3_root_ca_ext_extendedKeyUsage ]
-# serverAuth                              # 表示 Client 可以使用该 CA 证书对 Server 提供的证书进行验证
-# clientAuth                              # 表示 Server 可以使用该 CA 证书对 Client 提供的证书进行验证
+# serverAuth                              # 表示可以用于 证明服务器的身份，即: 当客户端与服务器建立安全连接时，服务器将会发送其证书，客户端可以验证证书中的 serverAuth 密钥用法来确认服务器证书的合法性；即：可以部署到 Nginx 上
+# clientAuth                              # 表示可以用于 证明客户端的身份，即: 当客户端连接到需要客户端身份验证的服务器时，服务器可以要求客户端提供具有 clientAuth 密钥用法的证书以进行身份验证。
 # codeSigning                             # 可用于 代码签名
 # emailProtection                         # 可用于 邮件加密
 # timeStamping                            # 可用于 时间戳认证
