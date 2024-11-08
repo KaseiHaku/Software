@@ -59,8 +59,14 @@ tsa_policy3 = 1.2.3.4.5.7
 
 
 ################################################################ 证书中的 x509v3 扩展字段配置，shell> man x509v3_config
+#
+# @trap eku(extendedKeyUsage) 中 anyExtendedKeyUsage 存在时，eku 字段不能为 critical，即: extendedKeyUsage = critical, ...
+# @trap 如果 ku(keyUsage) 和 eku(extendedKeyUsage) 同时存在，那么证书只能被应用于 两者的交集，如果没有 交集 那么禁止使用该证书
+# @trap 中间 CA 证书不能添加 eku(extendedKeyUsage) 字段，否则 firefox 会报错
+# 
 ######## todo 添加到 root ca （自签名）证书请求文件中的扩展项
 # critical            表示如果接收者无法理解一个被标记为 critical 的扩展，根据 X.509 标准，该接收者应该停止证书的验证，并且不应该信任这个证书。
+# 
 # 
 [ v3_root_ca_ext ]
 # Standard Extensions 标准扩展字段
@@ -146,7 +152,7 @@ CN                              = "My Name"
 [ v3_inter_ca_ext ]
 basicConstraints                = critical, CA:true, pathlen:0          # pathlen:0 表示不能有中间证书了，该证书只能直接签署用户证书
 keyUsage                        = critical, digitalSignature, nonRepudiation, keyCertSign, cRLSign        # 使用该项表示该证书只能当作 CA 证书，而不能当作 自签名证书
-extendedKeyUsage                = critical, OCSPSigning
+#extendedKeyUsage                = critical, OCSPSigning                # 中间 CA 证书不能添加 extendedKeyUsage 字段，否则 firefox 报错
 subjectKeyIdentifier            = hash
 authorityKeyIdentifier          = keyid:always,issuer:always            # 从父证书复制 subjectKeyIdentifier，如果失败，则从父证书 复制发行者 和 serial number
 subjectAltName                  = email:copy
