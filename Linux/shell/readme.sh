@@ -37,7 +37,9 @@ Command Style 命令语法风格：
     UNIX 风格，选项可以组合在一起，并且选项前必须有“ - ”连字符
     BSD 风格，选项可以组合在一起，但是选项前不能有“ - ”连字符
     GNU 风格的长选项，选项前有两个“ - ”连字符
-    shell> cmd -a -- file1      # -- 表示 cmd 命令的 option 选项结束， -- 之后的是命令的参数
+    shell> cmd -a -- file1      # -- 表示 cmd 命令的 option 选项结束，
+                                # -- 之后的字符不管是否是 - 开头都当作是 filename 和 positional parameters(位置参数)，而不是选项；
+                                # 单个 - 也具有相同的效果
     shell> cmd opt \            # 命令行换行输入，\ 结尾
     > another line              # 
 
