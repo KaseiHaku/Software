@@ -85,9 +85,12 @@ networks:
     external: true
     name: none
 
+# 定一个 虚拟的 volume 来使多个 service 可以同时对一个目录进行读写
 volumes:
-  vol-example-data:
+  # 由 docker 自行分配共享路径，默认是在 /var/lib/docker 目录下
+  vol-shared-data:
     driver: local
+  # 自定义共享路径
   vol-common-path:
     external: true    # true: 表示该 volume 在当前 platform 已经存在，且不受当前 compose 管理; 除了 name 属性以外，其他属性都是 irrelevant(不相关的)
     name: /actual/path/to/volume
@@ -166,7 +169,7 @@ services:
     # @trap 相对路径必须以 . 或 .. 开头，防止跟 顶层 volumes 定义的 name 冲突
     volumes:          
       - /opt/docker/example/data:/data:rw       # hostPath:containerPath:readWrite; readWrite=[ro,rw]
-      - vol-example-data:/var/lib/redis       # 引用顶层 volumes 定义的路径
+      - vol-shared-data:/var/lib/redis       # 引用顶层 volumes 定义的路径
       - type: volume                # 挂载类型：volume, bind, tmpfs or npipe
         source: /root/data          # 宿主机路径
         target: /data               # 容器中的路径
