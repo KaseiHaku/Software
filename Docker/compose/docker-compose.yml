@@ -43,6 +43,10 @@ version: "3.9"    # 表示当前 docker-compose(Compose specification) 的版本
 
 name: compose_project_name    # 该值如果定义则使用该值，否则默认使用 工作目录 名
 
+# 扩展字段：各镜像版本
+x-jdk-img: &x-jdk-img eclipse-temurin:21.0.4_7-jdk-noble
+
+
 # 因为 shell> docker-compose run 时，会自动创建一个 projectName_default 的虚拟 docker 网卡用作所有 container 的桥接
 # 使用该字段可以创建自定义 network，最终创建的 network 在 docker network list 中的名字为 projectName_networkName
 networks:
@@ -82,8 +86,11 @@ networks:
     name: none
 
 volumes:
-  example-data:
+  vol-example-data:
     driver: local
+  vol-common-path:
+    external: true    # true: 表示该 volume 在当前 platform 已经存在，且不受当前 compose 管理; 除了 name 属性以外，其他属性都是 irrelevant(不相关的)
+    name: /actual/path/to/volume
  
 services:
   redis:    
@@ -159,7 +166,7 @@ services:
     # @trap 相对路径必须以 . 或 .. 开头，防止跟 顶层 volumes 定义的 name 冲突
     volumes:          
       - /opt/docker/example/data:/data:rw       # hostPath:containerPath:readWrite; readWrite=[ro,rw]
-      - example-data:/var/lib/redis       # 引用顶层 volumes 定义的路径
+      - vol-example-data:/var/lib/redis       # 引用顶层 volumes 定义的路径
       - type: volume                # 挂载类型：volume, bind, tmpfs or npipe
         source: /root/data          # 宿主机路径
         target: /data               # 容器中的路径
