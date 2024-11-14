@@ -27,8 +27,11 @@ Network controller: Qualcomm Atheros AR9485 Wireless Network Adapter (rev 01)
 # @ref { 同类型报错，及解决方案 } https://bbs.archlinux.org/viewtopic.php?id=230745
 ################ Answer
 # 添加 kernel parameters 
-shell> sudo echo 'intel_iommu=off' >> /etc/sysctl.d/00-kh.conf
-shell> sysctl --system
+shell> vim /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=off"
+GRUB_CMDLINE_LINUX=""
+shell> sudo update-grub
+shell> reboot
 
 
 
