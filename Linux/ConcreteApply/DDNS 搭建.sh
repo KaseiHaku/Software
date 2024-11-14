@@ -47,5 +47,9 @@ DuckDNS 搭建:
 
 坑:
     如果使用 CloudFlare 配置 CNAME 映射到 xxx.duckdns.org 上，切忌不能配置 Proxied, 只能是 DNS Only 模式
+    如果光猫改 bridge 之后，网速变慢
+        - 尝试修改路由器 MTU <= 1400
+        - 尝试光猫时间戳是否正确，不正确修改 NTP 服务器
+        
     
     
