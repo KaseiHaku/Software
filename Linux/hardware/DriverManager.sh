@@ -32,6 +32,19 @@ modprobe xxx  # 探测驱动程序
 lsmod  # 查看已经加载的所有驱动程序，如果有 xxx 则表明安装成功
 
 
+
+# Debian 系安装驱动 ################################
+# shell> ls -alH /lib/modules/6.1.0-10-amd64/kernel/drivers/net/wireless/        # 查看当前网卡驱动
+# 
+
+sudo apt install -y git build-essential
+git clone https://github.com/lwfinger/rtw89.git
+cd rtw89
+make
+sudo make install
+sudo mkdir /usr/lib/firmware/rtw89
+sudo cp  rtw8852a_fw.bin  /usr/lib/firmware/rtw89/
+sudo modprobe rtw89pci
                            
 ################################## CPU/GPU 温度监控 ############################
 shell> cat /sys/class/thermal/thermal_zone?/temp
