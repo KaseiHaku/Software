@@ -1,4 +1,21 @@
 ################################ Concept ################################
+术语  Terminology: {
+    MTU(Max Trasport Unit/最大传输单元)：
+        默认 1500，超过该值就会被丢包
+    PMTU(路径 MTU)：
+        两台 host 之间所有网络设置的 MTU 值，取最小值
+    MSS(Max Segment Size/最大报文段长度):
+        表示 TCP 传往另一端的最大块数据的长度。当一个连接建立时，连接的双方都要通告各自的MSS。
+        通常 TCP 通信的双方协商这个值，以避免 TCP 分片。
+        一般说来，如果没有分段发生，MSS 还是越大越好。报文段越大允许每个报文段传送的数据就越多，相对IP和TCP首部/有效载荷 payload 的比率就越低，就有更高的网络利用率。
+        避免分片还能减少 IP 报文数量（每个TCP 分片都会对应一个IP报文），则减少了路由查询，IP/TCP头开销等等网络资源。
+        MSS 值通常设置为外出接口上的 MTU 长度减去固定的 IP 首部和 TCP 首部长度。对于一个以太网，MSS 值可达 1460 字节（1500-20-20）
+        
+    TCP MSS Clamping(TCP 钳制):
+        限制 MSS 大小
+}
+
+
 网络协议: {
     shell> less /etc/protocols
 
@@ -65,6 +82,8 @@
     shell> 查看防火墙是否阻止  icmp 协议数据包
     
     shell> ping -c 4 202.108.22.5 -I [ens33|182.168.1.10]    # 采用指定的网卡发送 ping 数据，该命令中的ip是百度的
+    shell> ping -f -s 1500 baidu.com                        # -f    Send Don't Fragment flag in packet(IPv4 only)
+                                                            # -s    发送多少个 byte 
     
     
 # 测试目的主机的 TCP 端口是否开放
