@@ -17,7 +17,26 @@
     shell> sysctl -p           // 从默认配置文件（/etc/sysctl.conf）中读取参数值，并使参数值立刻生效
     shell> sysctl -p /etc/sysctl.conf.bak   // 从指定配置文件中读取参数值，并使参数值立刻生效
     shell> sysctl --system      // 是系统中所有配置文件生效
-    
+
+
+    通过 GRUB 添加内核参数
+    shell> vim /etc/default/grub
+    GRUB_CMDLINE_LINUX="quiet splash my_kernel_param=value"
+    shell> sudo update-grub
+    shell> reboot
+
+    通过修改内核启动命令行
+    shell> #在系统引导时，可以按下 Shift 或 Esc 键进入 GRUB 菜单，选择启动项并按 e 键编辑启动命令行，手动添加内核参数。
+
+    永久性内核参数设置（对于某些特定内核参数）
+    shell> vim /etc/sysctl.conf    # 添加以下行
+    my_kernel_param=value
+    shell> sysctl -p 
+
+
+
+
+
     
 内核模块管理:
     相关文件：   
