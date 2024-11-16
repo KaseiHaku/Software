@@ -45,7 +45,7 @@
 网络配置方法 {
     直接修改配置文件 {
         # Debian
-        shell> less /etc/network/interfaces
+        shell> less /etc/network/interfaces          # 查看该文件的说明文档：shell> man interfaces  
         shell> ll /etc/network/interfaces.d
         # shell> systemctl restart networking        # 该命令无效
         shell> reboot
