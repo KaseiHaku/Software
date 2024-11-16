@@ -184,20 +184,42 @@ shell> ip addr                  # 查看网卡 MAC 地址
 shell> ip neighbor show         # 查看 ARP(ipv4)/NDP(ipv6) 缓存条目
 
 ################################# IP 地址配置
-# Ubuntu 18.04
+# Debian/Ubuntu 18.04
 1. 查看自己的网卡编号，假设为 wlp3s0
     shell> ip a   
 
 2. 打开配置文件
     shell> vim /etc/network/interfaces 
 
-3. 添加或修改如下行
-    auto wlp3s0
+3. 添加或修改如下行（@trap 行尾的注释 是无效的，实际编写时要删除）
+    # 配置 loopback 网卡
+    auto lo                    # 自动启动名为 lo 的网卡
+    iface lo inet loopback     # 将 lo 网卡配置为 IPv4 的 loopback 网卡
+    iface lo inet6 loopback    # 将 lo 网卡配置为 IPv6 的 loopback 网卡
+
+    # 无线网卡 
+    allow-hotplug wlp3s0            # allow-hotplug 表示该网卡是 热拔插 网卡，检测到了就自动启动
+    # 编写网卡 wlp3s0 的 inet(IPv4) 的配置，配置方法为 static(静态 IP)
     iface wlp3s0 inet static
-    address 192.168.43.128          # 本机 IP 地址
-    netmask 255.255.255.0           # 子网掩码
-    gateway 192.168.43.1            # 网关地址，表示在当前局域网内找不到的 IP 地址，直接转发 网关
+        address 192.168.43.128/24        # 本机 IP/Mask 地址
+        gateway 192.168.43.1             # 网关地址，表示在当前局域网内找不到的 IP 地址，直接转发 网关
+        # 如果是 无线网卡/Wifi
+        wpa-ssid TP-LINK_xxxx            # wifi 名称
+        wpa-psk  password                # wifi 密码
+    # 编写网卡 wlp3s0 的 inet6(IPv6) 的配置，配置方法为 dhcp(DHCPv6 自动分配)
+    iface wlp3s0 inet6 dhcp
+        hostname 2408:8240:9416:dc01:2268:9dff:feb9:81f9        # DHCPv6 服务器 IP，不配置默认为: 自动获取
+    # 编写网卡 wlp3s0 的 inet6(IPv6) 的配置，配置方法为 auto(SLAAC 自动分配)；一个 inet6 只能选一种进行配置
+    #iface wlp3s0 inet6 auto
+
+    # 有线网卡
+    auto enp2s0                    # 配置 enp2s0 开机自动启动，auto === allow-auto
+    iface enp2s0 inet static
+        address 192.168.0.201/24        # 本机 IP/Mask 地址
+        gateway 192.168.0.1
+    iface enp2s0 inet6 dhcp
     
+
 4. 保存退出
 
 5. 使配置生效
