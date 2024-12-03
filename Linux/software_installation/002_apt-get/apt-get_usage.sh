@@ -39,6 +39,16 @@ shell> apt list --all-versions                                  # 列出指定 p
 shell> apt-cache policy pkg                                     # 列出指定 pkg 的所有版本 
 shell> apt-cache madison pkg                                    # 列出指定 pkg 的所有版本
 
+# 查找包含 指定文件 的软件包，效果同 shell> yum provides *bin/less    
+shell> apt-get install apt-file                                 # 先安装软件
+shell> apt-file update                                          # 更新包文件信息
+shell> apt-file -i find 'pattern'                               # -i 忽略大小写
+                -x                                              # pattern 是 regexp，默认为 glob
+                --substring-match                               # pattern 是 子串匹配，不是 regexp 和 glob
+                -l                                              # 仅显示包名
+                
+                                       
+
 
 
 ################################ Install 软件包安装
