@@ -1,16 +1,59 @@
 ################################ Concept ########################
+# @doc {official} https://www.ffmpeg.org/documentation.html
 # @doc {优秀文档} https://juejin.cn/post/7064869914347044878
-# 
-# codec: 编解码 - 压缩数据
-# container: 容器/封装格式 - 整合 视频/音频/字幕 等内容的地方，例如: .webm .mp4 .mkv
 # 
 # 视频转换操作:
 #     transcoding(转码)：将一个 视频流 或者 音频流 从一个编码格式转换到另一个格式
 #     transmuxing(转 封装/容器 格式)：将视频的从某一格式（容器）转换成另外一个
 #     transrating(转码率): 每秒传输的比特位数，单位: bps(bit per second)
 #     transsizing(转分辨率): 480p 720p(1280*720) 1080p(1920*1080=2k) 2160p(3840*2160=4K)       指 宽:高=16:9 的情况下，高度对应的像素个数
-#
-#
+# 
+# 
+# container: 容器/封装格式 - 整合 视频/音频/字幕 等内容的地方，例如: .webm .mp4 .mkv
+# stream type: 流类型
+#     video            # 视频
+#     audio            # 音频
+#     subtitle         # 字幕
+#     attachment
+#     data
+# 
+# 
+################ FFmpeg 相关组件
+# Demuxers: demultiplexers 解复用器，deinterlacing(反交织)
+#     从一个 input 中提取 elementary(基础) stream, 例如: video stream, audio stream 等
+#     stream 为一系列 packets 的集合
+# Decoder: 解码器
+#     将 stream(packet) 解码为 raw frame(原始帧)
+#     video stream -> pixels
+#     audio stream -> PCM(Pulse Code Modulation/脉冲编码调制)
+# Filtergraph: 过滤器图
+#     -filter: simple
+#         绑定一个 output stream，并使用 yadif 进行格式转换，然后使用 scale 进行大小转换
+#     -filter_complex: complex
+#         不绑定任何具体的 stream, 
+#         可能有 0-n 个 input，可以从 decoder 或其他 complex filtergraph's output 接收数据
+#         可能有 0-n 个 output, 然后 喂给 encoder 或其他 complex filtergraph's input
+# Encoder: 编码器
+#     接收 raw frame ，并重新编码为 stream(packet)
+#     执行 编码，压缩 等操作
+#     video/audio encoder 可以从 filtergraph 的 output 获取 input data
+#     subtitle encoder 只能从 decoder output 获取 input data,因为不支持对 subtitle 进行 filtering
+#     每个 encoder 都和某个 muxer 的 output elementary stream 相关联，并将 output 发送给该 muxer
+# Muxers: multiplexers 复用器
+#     从 encoder 的 output 获取数据（转码操作）
+#     直接从 demuxer 获取数据（流复制）
+#     然后将这些 stream interleave(交织) 最终输出为 file，pipe stream 等
+#     
+# 
+# 
+################ FFmpeg Options
+# options:
+#    # 除了 global option(必须放在选项最前面) 以外，所有命令行选项都只对最近的 input(-i) 和 output 生效
+#    # input 和 output 不能 mix(混合)， 所以只能是 input0 input1 input2 output0 output1
+# 
+#    -map 2:4       # 指定从哪个 stream input 输出到哪个 output 中， 2:4 = 表示第 3 个 input 的第 5 个 stream
+#                   # 命令行中只能通过 indices(0-based) 来选择 input 和 stream, 格式：input:stream = 2:4    表示第 3 个 input 的第 5 个 stream
+#    
 
 
 ################################ Help ########################
