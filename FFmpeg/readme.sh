@@ -53,6 +53,10 @@
 # 
 #    -map 2:4       # 指定从哪个 stream input 输出到哪个 output 中， 2:4 = 表示第 3 个 input 的第 5 个 stream
 #                   # 命令行中只能通过 indices(0-based) 来选择 input 和 stream, 格式：input:stream = 2:4    表示第 3 个 input 的第 5 个 stream
+# 
+#    -ss 00:00:30        # 指定从 30s 处开始处理
+#    -to 00:01:00        # 指定处理到 1 分钟处结束
+#    -t 10               # 指从 -ss 开始，往后处理 10s 的持续时间，并结束; -10 表示往前处理 10s
 #    
 
 
