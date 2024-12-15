@@ -1,7 +1,13 @@
 # 在远程机配置密钥，使本地 ssh 可以免密登录
     shell> ssh-keygen -t rsa                # passphare 不输入，该命令会在 ~/.ssh 目录下生成 id_rsa 和 id_rsa.pub 文件
     shell> ssh-copy-id -n -i ~/.ssh/id_rsa.pub -p 12345 -o sshOption root@192.168.0.123     # 将公钥 id_rsa.pub 安装到 192.168.0.123 服务器的 root 用户下
+    shell> 
     shell> ssh -p 12345 root@192.168.0.123          # 免密登录  192.168.0.123
+
+    # Aliyun ECS 免密登陆配置
+    shell> chmod 600 ~/.ssh/aliyun-ecs.pem            # 必须修改权限为：只能自己可读
+    shell> ssh -l root -p 22 -i ~/.ssh/aliyun-ecs.pem 192.168.0.123
+
 
 
 # 普通登录方式
@@ -12,6 +18,10 @@ shell> ssh -R [bind_address:]port:host:hostport dest           # 指定连接到
                                                                # @trap remote_port 设置为 0; 那么 dest 会随机分配端口
                                                                # @trap IPv6 必须带方括号，即： [::1]
 shell> ssh -L [bind_address:]port:host:hostport dest           # 该操作和 -R 相反; 指定发送到 local port 的流量，会 forward 到 host:hostport; 
+
+
+
+
 
 
 # ssh 服务器端配置
