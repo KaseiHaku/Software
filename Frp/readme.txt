@@ -4,8 +4,8 @@
 
 
 下载: {
-    Win x86_64:             frp_0.50.0_windows_amd64.zip
-    Linux x86_64:           frp_0.50.0_linux_amd64.tar.gz
+    Win x86_64:             frp_0.61.1_windows_amd64.zip
+    Linux x86_64:           frp_0.61.1_linux_amd64.tar.gz
 }
 
 
