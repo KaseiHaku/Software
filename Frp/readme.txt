@@ -12,31 +12,31 @@
 TCP 流量转发(frps -> frpc): {
 
     frps: {
-        frps.ini: {
-            [common]
-            bind_port = 7000
+        frps.toml: {
+            bindPort = 7000
         }    
 
         启动命令:
-            shell> nohup ./frps -c ./frps.ini &         # Linux 下命令
+            shell> nohup ./frps -c ./frps.toml &         # Linux 下命令
 
     }
 
     frpc: {
-        frpc.ini: {
-            [common]
-            server_addr = 11.64.4.199
-            server_port = 7000
+        frpc.toml: {
+            serverAddr = 11.64.4.199
+            serverPort = 7000
 
 
-            [web]
+            [[proxies]]
+            name = "web"
             type = tcp
-            local_port = 9201
-            remote_port = 9999
+            localIP = "127.0.0.1"
+            localPort = 9201
+            remotePort = 9999
         } 
 
         启动命令:
-            shell> .\frpc.exe -c .\frpc.ini         # Win 下命令
+            shell> .\frpc.exe -c .\frpc.toml         # Win 下命令
 
     }
 
