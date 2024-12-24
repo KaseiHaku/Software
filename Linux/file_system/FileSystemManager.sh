@@ -27,6 +27,8 @@ du -sb /root/a.txt              # 显示文件大小，单位 Byte
 du -ch --max-depth=1 /path      # 表示列出 /path 目录及其第一级子目录的大小
 du -hc -d 1 -B M /path          # -d 表示执行深度；-B 表示显示 单位       
 
+du -achd1 /path                 # 最常用
+
 
 
 
