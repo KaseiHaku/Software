@@ -41,6 +41,7 @@ sftp {
     可以进行文件管理
     
     shell> sftp -P 22 root@192.168.1.2
+    shell> sftp -P 22 -i ~/.ssh/aliyun-ecs.pem root@192.168.1.2            # 使用密钥对免密登陆，注意 aliyun-ecs.pem 的权限必须 只能自己可读，即： shell> chmod 600 ~/.ssh/aliyun-ecs.pem  
     sftp> help
     sftp> get -r /remote/dir /local/dir
     sftp> put -r /local/dir/*  /remote/dir
