@@ -148,6 +148,7 @@ cp /source /destination/newfilename                 # 复制文件，并重命�
 cp -i /source /destination/                         # 复制过程中如果出现覆盖，则提示
 cp -v /source /destination/                         # 显示复制过程中做了哪些操作
 \cp -r /source /destination/                        # 递归复制, \ 表示不使用 alias 解析 cp 命令
+cp -aRT /source /destination                        # 这里 destination 直接就是 source 的别名，而不是目标目录
 
 
 
