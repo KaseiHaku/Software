@@ -1,3 +1,8 @@
+免费 SSL/TLS 证书网站:
+    https://zerossl.com/
+    https://letsencrypt.org/
+
+
 CipherSuit(加密算法套件): 
     Kx: 1 个 key exchange(密钥交换)算法
     Au: 1 个 authentication (认证，数字签名)算法 
