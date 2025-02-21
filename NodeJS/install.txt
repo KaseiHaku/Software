@@ -18,7 +18,7 @@
     shell> npm install webpack -g       # 命令执行后可到 npm 全局安装位置去查看
 
 安装 NVM:
-    Windows: https://github.com/nvm-sh/nvm/blob/master/README.md
+    Windows: https://github.com/coreybutler/nvm-windows
     Linux: https://github.com/nvm-sh/nvm
     
     修改 nvm 镜像
