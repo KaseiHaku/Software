@@ -17,14 +17,23 @@
 安装 webpack :
     shell> npm install webpack -g       # 命令执行后可到 npm 全局安装位置去查看
 
-安装 NVM:
-    Windows: https://github.com/coreybutler/nvm-windows
+Linux 安装 NVM:
     Linux: https://github.com/nvm-sh/nvm
-    
+
+Windows 安装 NVM:
+    Windows: https://github.com/coreybutler/nvm-windows
+
+    修改环境变量：
+        NVM_HOME     F:\NVM\nvm-noinstall
+        NVM_SYMLINK    
+        Path         Path;%NVM_HOME%;%NVM_SYMLINK%
+
     修改 nvm 镜像
-    shell> vim %NVM_HOME%/settings.txt
-    root: D:\NVM\nvm
-    path: D:\NVM\nodejs
+    powershell> vim %NVM_HOME%/settings.txt
+    root: F:\NVM\nvm
+    path: F:\NVM\nodejs
+    arch: 64
+    proxy: none
 
 
 
