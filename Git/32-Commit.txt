@@ -83,7 +83,7 @@ Modify {
     # p, pick <commit> = 应用该提交
     # r, reword <commit> = 应用该提交，但是修改 commit message
     # e, edit <commit> = 应用该提交，但是为了 修改 停止
-    # s, squash <commit> = 应用该提交，但是将当前提交 meld(合并入) 之前一个提交
+    # s, squash <commit> = 应用该提交，但是将当前提交 meld(合并入) 之前一个提交，commit message 也合并
     # f, fixup [-C|-c] <commit> = 同 squash，但是只保留上一个提交的 commit message；-C 则只保留当前提交的 commit message；-c 打开编辑器，修改 commit message
     # x, exec <command> = 使用 shell 运行 command(该行剩余的部分)
     # b, break = 在此处停止并推出编辑器，可以使用 shell> git rebase --continue 继续
@@ -102,9 +102,11 @@ Modify {
     #     将每个 commit 重新逐个的应用到 <newbase> 上
     # 
     shell> git rebase -i master     
-        pick    hash1234    commitComment1      
-        pick    hash1235    commitComment2
-        pick    hash1236    commitComment3
+        pick        hash1234    commitComment1              # 第一个必须为 pick 不能为 squash 和 fixup
+        squash      hash1235    commitComment2
+        squash      hash1236    commitComment3
+        squash      hash1237    commitComment4
+        fixup -c    hash1238    commitComment5
         # 以上命令会从上到下执行，调整以上行的顺序，会改变执行顺序
         # 如果删除行，那么 commit 会丢失
         # 如果全部删除，那么等价于 rebase abort
