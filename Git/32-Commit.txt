@@ -101,7 +101,10 @@ Modify {
     #     shell> git log <upstream>..<branch> 或者  shell> git log 'fork_point'..<branch>  之间的所有 commit 放到 temporary area   # 除非使用了 --root 选项，那么会选中当前 branch 所有 commit
     #     将每个 commit 重新逐个的应用到 <newbase> 上
     # 
-    shell> git rebase -i master     
+    shell> git rebase -i branch1                                             # 以 branch1 为基准，重新提交 current Branch 上所有在 branch1 上没有的 commit    
+    shell> git rebase -i --fork-point branch1 branch2                        # 以 branch1 和 branch2 的分叉点为基准，重新提交 branch2 上的 commit 
+    shell> git rebase -i --root                                              # 以 空库 为基准重新提交 current branch 上所有 commit
+    shell> git rebase -i --onto baseCommit beginCommit endCommit             # 以 baseCommit 为基准，重新提交 beginCommit 到 endCommit 之间所有提交
         pick        hash1234    commitComment1              # 第一个必须为 pick 不能为 squash 和 fixup
         squash      hash1235    commitComment2
         squash      hash1236    commitComment3
