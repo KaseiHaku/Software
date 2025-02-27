@@ -92,6 +92,15 @@ Modify {
     # t, reset <label> = 将当前 HEAD reset 到指定的 label
     # m, merge 
     # u, update-ref <ref> = 
+    # 
+    # git rebase 实际执行过程：
+    #     shell> git reset --hard <upstream> <branch>         # <newbase> 默认为 branch.<name>.remote
+    #                                                         # 当指定了 --fork-point 选项，那么 <newbase> 为 <upstream> 和 <branch> 的 fork-point(分叉点)，即: branch.<name>.merge
+    #                                                         # --onto baseCommit 可以强行修改 <newbase> 为 baseCommit
+    #                                                         # <branch> 未指定默认为 HEAD
+    #     shell> git log <upstream>..<branch> 或者  shell> git log 'fork_point'..<branch>  之间的所有 commit 放到 temporary area   # 除非使用了 --root 选项，那么会选中当前 branch 所有 commit
+    #     将每个 commit 重新逐个的应用到 <newbase> 上
+    # 
     shell> git rebase -i master     
         pick    hash1234    commitComment1      
         pick    hash1235    commitComment2
