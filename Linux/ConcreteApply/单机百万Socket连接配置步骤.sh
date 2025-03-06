@@ -4,7 +4,10 @@
 # Linux 内核是通过 (local_ip, local_port, remote_ip, remote_port) 四元组来标识一条 TCP 连接的
 # 由于 local_port 最大值为 65535，所以常规 (local_ip, local_port) 最多只能支持 65535 个 TCP 连接
 # 突破该限制的方法是：给 host 配置多个 虚拟 IP 或 增加网卡，总之就是增加 local_ip 的数量
-
+# 
+# nginx 本身限制了 websocket 连接数量怎么办
+#     使用 LVS(Linux Virtual Server) + DR 来负载均衡
+# 
 
 
 ################################ 突破 1024 ################################ 
