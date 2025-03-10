@@ -1,8 +1,23 @@
-# CentOS7 系统介绍
+################################ TTY 详解 ################################ 
 # tty ：终端设备的统称，源于 teletypes
 # pty(pseudo-tty) ：虚拟终端，远程登录中的概念，或者在 gnome 桌面环境中的终端也是 pty
 # pts(pseudo-terminal slave) 是 pty 的实现方法，与 ptmx(pseudo-terminal master) 配合使用实现 pty
 # CentOS7 中一共有 7 个 tty ，每个终端相互独立，1-6 是命令行终端，7 是 X-window 图形终端
+# 
+# shell> tty                             # 查看当前 shell 关联到哪个 tty 上
+# shell> lsof /dev/pts/1                 # 查看 /dev/pts/1 这个 tty 被哪些进程打开
+# shell> echo aaa > /dev/pts/1           # 往当前 shell 关联的 tty 中写数据，跟直接在键盘上按 aaa 是一样的
+# Ctrl+Alt+F[1-7]                        # 可以切换 tty，如果切入的 tty 没有绑定进程，那么会自动绑定 login 进程
+# 
+# tty 和 process(进程) 的关系
+#     tty - 1:1 - user space - 1:n - process
+#     但是 user space 最多只有一个当前前端进程和 tty 绑定
+
+
+
+
+
+
 
 # 查看 Linux 内核版本：
 shell> cat /proc/version        
