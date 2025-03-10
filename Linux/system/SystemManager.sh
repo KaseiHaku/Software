@@ -5,9 +5,12 @@
 # CentOS7 中一共有 7 个 tty ，每个终端相互独立，1-6 是命令行终端，7 是 X-window 图形终端
 # 
 # shell> tty                             # 查看当前 shell 关联到哪个 tty 上
-# shell> lsof /dev/pts/1                 # 查看 /dev/pts/1 这个 tty 被哪些进程打开
+# shell> fuser /dev/pts/1                # 查看 /dev/pts/1 这个 tty 被哪些进程打开
+# shell> lsof /dev/pts/1                 # 同上
 # shell> echo aaa > /dev/pts/1           # 往当前 shell 关联的 tty 中写数据，跟直接在键盘上按 aaa 是一样的
 # Ctrl+Alt+F[1-7]                        # 可以切换 tty，如果切入的 tty 没有绑定进程，那么会自动绑定 login 进程
+# shell> pkill -kill -t tty1             # 强制某个 tty 上的用户登出
+# shell> ps -ef | grep -i xorg           # 查看正在使用图形界面的进程
 # 
 # tty 和 process(进程) 的关系
 #     tty - 1:1 - user space - 1:n - process
