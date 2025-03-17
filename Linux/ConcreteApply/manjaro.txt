@@ -96,6 +96,15 @@ shell> 配置 Name:
 #         Ctrl+Alt+F7        # 一般为 图形界面
 
 
+# 图形界面 unlock 失败解决
+shell> # Ctrl+Alt+F3        # 登陆 root 账号
+shell> loginctl -h
+shell> loginctl list-sessions        # 找到对应的 session id
+shell> loginctl lock-session 2       # 解锁 id 为 2 的 session
+shell> # Ctrl+Alt+F2        # 回到图形界面
+
+
+
 ################################ 开发机清理备份 ################################
 shell> docker ps -aq | xargs -rtI {} docker container rm {}  # 删除所有容器
 shell> docker image ls -a | tail -n +2 | awk -e '{print $3}' | xargs -rtI{} docker image rm {}   # 删除所有 docker image
