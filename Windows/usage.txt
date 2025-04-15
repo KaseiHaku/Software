@@ -1,3 +1,8 @@
+修改 hosts 文件
+    windows 系统的 hosts 文件在 C:\Windows\System32\drivers\etc 路径下，
+    @trap 直接修改无效，必须复制一份修改，然后复制回去才行
+
+
 防火墙配置:
     Control Panel\System and Security\Windows Defender Firewall
         -> Advanced settings    
