@@ -338,7 +338,8 @@ services:
     # 共享内存(shared memory) 大小， 默认 64M，
     # swap: 是将 硬盘空间 的一部分 作为 内存 使用
     # shm: 是将 内存 挂载为 tmpfs(临时文件系统)，允许数据在 不同进程间 访问，挂载分区为: /dev/shm, 可以使用 shell> df -h 查看
-    shm_size: 64M         
+    shm_size: 64M   
+    # 以下两个选项为 true，可以把 container 作为命令行 命令 一样使用，可以进行交互
     stdin_open: false    # 对应 shell> docker run --interactive; 即使没有连接，也保持 STDIN 为 open 状态，
     tty: false           # 对应 shell> docker run --tty; 分配一个 pseudo-tty
 
