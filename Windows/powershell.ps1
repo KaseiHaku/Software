@@ -2,7 +2,7 @@
 
 # 列出所有可用命令
 get-command
-get-command | findstr "substr"
+get-command | findstr /I "substr"
 
 
 # 脚本启动参数
