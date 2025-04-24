@@ -5,6 +5,10 @@ get-command
 get-command | findstr /I "substr"
 
 
+# 查看环境变量
+get-childitem env:
+
+
 # 脚本启动参数
 # 可以通过 `$args` 数组或者定义参数名接收外部传入的参数
 param(
