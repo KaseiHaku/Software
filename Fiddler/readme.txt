@@ -1,6 +1,10 @@
 官网：https://www.telerik.com/fiddler  
 下载 Fiddler Classic，别选 Fiddler Everywhere(要钱)
 
+################################ Fiddler Everywhere Crack ################################
+1、安装 Fiddler Everywhere 软件并关闭
+2、右键管理员运行补丁，将安装路径复制进去回车默认安装路径：C:\Users\用户名\AppData\Local\Programs\Fiddler Everywhere
+
 ################################ 安装 CA Root 证书 ################################
 运行：{
     @trap 必须使用 Run as administrator 启动
