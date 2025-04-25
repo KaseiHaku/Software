@@ -11,3 +11,11 @@
 
 http://chls.pro/ssl 访问失败:
     该地址需要 Ladder
+
+################################ 安装 CA Root 证书 ################################
+安装 CA Root 证书 {
+    Tools -> Options... -> HTTPS 
+          -> [勾选] Decypt HTTPS Traffic 
+          -> Actions -> Trust Root Certificate
+          -> Trusted Root Certification Authorities        # 安装证书到该位置，一定要选择 Local Machine 而不是 Current User
+}
