@@ -123,3 +123,8 @@ shell> mhwd-kernel -r linux61            # 删除已安装的内核
 shell> mhwd-kernel -i linux61            # 安装一个内核
 shell> # 重启，在 BIOS/UEFI 弹出时，立即按 Shift -> 进入 Grub boot loader 界面 -> 方向键选择第二项 -> 选择指定的内核版本进行启动
 
+################################ CA 证书配置 ################################
+shell> update-ca-trust --help
+shell> cp ./root.ca.crt.pem /etc/ca-certificates/trust-source            # 复制 ca 证书到指定目录
+shell> cp ./root.ca.crt.pem /usr/share/ca-certificates/trust-source      # ditto
+shell> update-ca-trust                # 提取以上两个目录中的证书到 /etc/ca-certificates/extracted 中
