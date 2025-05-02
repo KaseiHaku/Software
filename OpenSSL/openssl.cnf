@@ -70,9 +70,9 @@ tsa_policy3 = 1.2.3.4.5.7
 # 
 [ v3_root_ca_ext ]
 # Standard Extensions 标准扩展字段
-basicConstraints                = critical, CA:TRUE, pathlen:1                                                # pathlen:1 表示只能有一级中间证书
-keyUsage                        = critical, digitalSignature, nonRepudiation, keyCertSign, cRLSign            # 证书用途限制，所有值枚举在 [v3_root_ca_ext_keyUsage]
-extendedKeyUsage                = critical, anyExtendedKeyUsage, OCSPSigning                                  # 证书公钥的用途限制，所有值枚举在 [v3_root_ca_ext_extendedKeyUsage]
+basicConstraints                = critical, CA:TRUE, pathlen:1                                                # 必须 critical，pathlen:1 表示只能有一级中间证书
+keyUsage                        = critical, digitalSignature, nonRepudiation, keyCertSign, cRLSign            # 必须 critical，证书用途限制，所有值枚举在 [v3_root_ca_ext_keyUsage]
+extendedKeyUsage                = anyExtendedKeyUsage, OCSPSigning                                            # 证书公钥的用途限制，所有值枚举在 [v3_root_ca_ext_extendedKeyUsage]
 subjectKeyIdentifier            = hash                                                                        # 主体键标识符格式，只有 hash 一个值
 
 # 如果 keyid 存在，那么从父证书复制 subjectKeyIdentifier，如果有 always 标记，那么如果父证书没有，则会报错
@@ -88,13 +88,14 @@ issuerAltName                   = issuer:copy                                   
 #authorityInfoAccess
 #crlDistributionPoints
 #issuingDistributionPoint
-#certificatePolicies
-#policyConstraints
+#certificatePolicies                                    # 必须 critical
+#policyConstraints                                      # 必须 critical
 #inhibitAnyPolicy
-#nameConstraints
+#nameConstraints                                        # 必须 critical
 #noCheck
 #tlsfeature
-#1.2.3.4=critical,ASN1:UTF8String:Some random data      # Arbitrary Extensions: 用于添加 OpenSSL 不支持的扩展
+#policyMapping                                          # 必须 critical，@trap 在字段在 openssl 不一定存在，从其他文档复制过来的
+#1.2.3.4=ASN1:UTF8String:Some random data      # Arbitrary Extensions: 用于添加 OpenSSL 不支持的扩展
 
 
 [ v3_root_ca_ext_keyUsage ]
@@ -152,7 +153,7 @@ CN                              = "My Name"
 [ v3_inter_ca_ext ]
 basicConstraints                = critical, CA:true, pathlen:0          # pathlen:0 表示不能有中间证书了，该证书只能直接签署用户证书
 keyUsage                        = critical, digitalSignature, nonRepudiation, keyCertSign, cRLSign        # 使用该项表示该证书只能当作 CA 证书，而不能当作 自签名证书
-#extendedKeyUsage                = critical, OCSPSigning                # 中间 CA 证书不能添加 extendedKeyUsage 字段，否则 firefox 报错
+#extendedKeyUsage               = OCSPSigning                           # 中间 CA 证书不能添加 extendedKeyUsage 字段，否则 firefox 报错
 subjectKeyIdentifier            = hash
 authorityKeyIdentifier          = keyid:always,issuer:always            # 从父证书复制 subjectKeyIdentifier，如果失败，则从父证书 复制发行者 和 serial number
 subjectAltName                  = email:copy
@@ -163,7 +164,7 @@ proxyCertInfo                   = critical,language:id-ppl-anyLanguage,pathlen:3
 [ v3_nginx_crt_ext ]
 basicConstraints                = critical, CA:FALSE
 keyUsage                        = critical, digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement
-extendedKeyUsage                = critical, serverAuth
+extendedKeyUsage                = serverAuth
 subjectKeyIdentifier            = hash
 authorityKeyIdentifier          = keyid:always,issuer:always            # 生成请求文件时，这个扩展项要先注释掉，ca 签名时再放出来
 subjectAltName                  = @v3_nginx_crt_ext_subjectAltName
