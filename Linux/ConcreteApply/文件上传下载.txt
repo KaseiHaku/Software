@@ -21,9 +21,11 @@ curl {
     shell> curl -X POST -d @- http://localhost/path <<EOF              # http body 的内容是 stdin(/dev/stdin) 的内容
         {"key":"value"}
     EOF
-    shell> curl -k https://xxx.com      # -k 当证书不对时，继续访问
-    shell> curl -X GET -L https://xxx.com         # follow redirect
+    shell> curl -k https://xxx.com                  # -k 当证书不对时，继续访问
+    shell> curl -k -vvvv https://xxx.com            # 查看当前 TLS 证书内容
+    shell> curl -X GET -L https://xxx.com           # follow redirect
     shell> curl --socks5 192.168.0.106:12346 https://download.docker.com/linux/debian/gpg        # 通过 socks5 协议的代理服务器 发送请求
+    
 
 
     # 下载文件
