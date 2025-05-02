@@ -15,4 +15,7 @@ CA 证书配置：
     Arch:
         shell> cp xxx.crt /etc/ca-certificates/trust-source/anchors/ 
         shell> chmod 644 xxx.crt
+        # 这会更新系统的信任锚点，并兼容旧的 /etc/ssl/certs 结构。
         shell> trust extract-compat
+        shell> trust list        # 查看所有 CA 证书
+        
