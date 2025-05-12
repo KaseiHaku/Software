@@ -21,7 +21,9 @@ Linux 安装 NVM:
     Linux: https://github.com/nvm-sh/nvm
 
 Windows 安装 NVM:
-    Windows: https://github.com/coreybutler/nvm-windows
+    Windows: 
+        https://github.com/coreybutler/nvm-windows
+        https://github.com/coreybutler/nvm-windows/releases        # 下载 nvm-noinstall.zip(手动安装版)
 
     修改环境变量：
         NVM_HOME     F:\NVM\nvm-noinstall
