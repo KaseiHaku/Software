@@ -37,7 +37,7 @@ IntelliJ IDEA Concept and Architecture {
     ide eval reset                  # idea 破解
     MyBatis Log Free                # 拼接好 mybatis 中的 sql 和 param，用于直接在 sql 工具执行
     MyBatisX                        # XxxMapper.java 和 XxxMapper.xml 之间跳转
-    MyBatisCodeHelperPro            # 写 sql 提示
+    MyBatisCodeHelperPro            # 写 sql 提示，和 MyBatisX 二选一
     EnvFile                         # 配合 K8S 设置环境变量
     Kubernetes                      # K8s 配置文件提示
     HTTP Client                     # http 客户端工具
