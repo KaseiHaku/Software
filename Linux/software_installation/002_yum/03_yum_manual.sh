@@ -90,12 +90,15 @@ shell> yum localinstall xxx.rpm bbb.rpm                                 # 用 yu
 # 更新
 shell> yum list updates                                                 # 列出所有可更新的包（yum源）
 shell> yum check-update                                                 # 检查可更新的程序（本地）
+shell> yum check-update pack1                                           # 检查指定包是否有更新
 
 shell> yum update *.rpm                                              # 更新程序包
 shell> yum groupupdate "GNOME Desktop"                               # 更新程序组
 
 shell> yum update                                                       # 升级所有包，改变软件设置和系统设置，系统版本内核都升级
-shell> yum upgrade                                                   # 升级所有包，不改变软件设置和系统设置，系统版本升级，内核不改变
+shell> yum update pkg1 pkg2                                            # 升级指定包
+shell> yum install -y pkg1-ver pkg2-ver                                # 升级指定的包到指定的版本
+shell> yum upgrade                                                       # 升级所有包，不改变软件设置和系统设置，系统版本升级，内核不改变
 shell> yum downgrade                                                    # 降级
 
 
