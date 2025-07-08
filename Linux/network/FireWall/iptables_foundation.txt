@@ -1,3 +1,11 @@
+相关文件:
+    CentOS 7:
+        /etc/sysconfig/iptables
+        /etc/sysconfig/iptables-config
+        /etc/sysconfig/ip6tables
+        /etc/sysconfig/ip6tables-config
+
+
 Concept:
     iptables: 不是真正的防火墙，只是一个操作防火墙的工具，位于用户空间，计划要被 nftables 替代
     netfilter: linux 中真正的防火墙，位于内核空间
