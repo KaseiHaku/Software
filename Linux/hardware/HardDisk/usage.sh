@@ -23,7 +23,8 @@ ls -al /dev                                       # 查看当前系统连接的�
 
 
 # 把设备添加到系统，即被系统管理
-mount -t ext4 -o rw /dev/cdrom /mnt/cdrom         # 添加设备到系统，挂载
+mkdir /mnt/newMntPoint                            # 在 FS 中创建新的挂载点。当然也可以挂载到现有的目录上 
+mount -t ext4 -o rw /dev/cdrom /mnt/newMntPoint   # 添加设备到系统，挂载
       -t ntfs                                     # 标明被挂载设备的文件系统格式
               -o loop                             # 用来把一个文件当成硬盘分区挂载到系统上
               -o ro                               # 只读挂载
