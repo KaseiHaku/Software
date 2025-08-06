@@ -49,50 +49,67 @@ shell> systemctl restart sshd            # 重启 ssh 服务端
 
 
 ################################ 配置多次密码失败后锁定 ################################
-# 
+# @巨神坑 一定要开两个 tty，一个用来改文件，一个用于登录测试
+#        如果只开一个 tty，万一修改错误，将会导致服务器无法登录
+
 # 配置登陆失败后，指定账号一段时间内禁止登陆
 shell> grep 'UsePAM' /etc/ssh/sshd_config                # 确保值为 yes
 shell> ll /etc/pam*
-
-
 
 # PAM(Pluggable Authentication Modules) 配置 (Debian 11) 以后
 shell> less /etc/pam.conf         # PAM 配置文件
 shell> ll /etc/pam.d            # PAM 配置目录
 shell> find / -iname 'pam_faillock.so'  # 检查 PAM 是否安装，如果不存在，则需要安装
+shell> apt install libpam-modules        # 安装
 
 # 修改锁定配置
 shell> vim /etc/security/faillock.conf 
-# 允许最大错误尝试次数
-deny = 3
-# 指定时间间隔内，最多尝试 deny 次，单位：秒
-fail_interval = 900
-# 锁定 600 秒后自动解锁
-unlock_time = 600
-# root 也有错误次数限制
-even_deny_root
-# root 锁定 900 秒自动解锁
-root_unlock_time = 900
+deny = 3                        # 允许最大错误尝试次数
+fail_interval = 900            # 900 秒内，密码错误 deny 次(不需要连续)，那么账号就会被锁定
+unlock_time = 600                # 锁定 600 秒后自动解锁
+even_deny_root                    # root 也有错误次数限制
+root_unlock_time = 900            # root 锁定 900 秒自动解锁
 
-# 修改配置文件
+# 备份配置文件
 shell> man pam.d
 shell> cd /etc/pam.d
 shell> cp /etc/pam.d/common-auth /etc/pam.d/common-auth.bak
+shell> cp /etc/pam.d/common-account /etc/pam.d/common-account.bak
+
+# 查看 /lib/x86_64-linux-gnu/security/pam_faillock.so 怎么用
+shell> man pam_faillock                
+
+# 修改认证(auth)配置
+# 文件内容格式：service type control module-path module-arguments
+# service                        # 在 /etc/pam.d 目录下，由文件名替代
+# type                            # account, auth, password, session
+# control                        # required, requisite, sufficient, optional, include, substack, [value1=action1 value2=action2 ...]
+# module-path                    # 绝对路径; 相对于 /lib/security/ or /lib64/security/ 的相对路径
+# module-arguments                # [query=select user_name]  如果参数包含空格，那么需要放到 [] 中
 shell> vim /etc/pam.d/common-auth  
 # 原配置
 #auth    [success=1 default=ignore]      pam_unix.so nullok
 #auth    requisite                       pam_deny.so
 #auth    required                        pam_permit.so
 # 修改成以下内容
-auth    requisite                       pam_faillock.so preauth silent
-auth    [success=4 default=ignore]      pam_unix.so nullok
+# @kasei
+auth    requisite                       pam_faillock.so preauth
+auth    [success=1 default=ignore]      pam_unix.so nullok
 auth    [default=die]                   pam_faillock.so authfail   
 auth    sufficient                      pam_faillock.so authsucc
 auth    requisite                       pam_deny.so
 auth    required                        pam_permit.so
 
+# 修改账号(account)配置
+shell> vim /etc/pam.d/common-account
+# @kasei 添加一行到头部
+account required                        pam_faillock.so
 
-shell> faillock --user username       # 可以用来解锁
+shell> pam-auth-update --force  # 更新 PAM 配置，使配置生效
+
+shell> faillock --user username       # 可以用来解锁， Valid 列: V 代表锁定有效，I 代表锁定无效;
+shell> rm /var/run/faillock/<username> # 删除文件解锁
+shell> faillock --user username --reset # 命令解锁，推荐
 
 
 ################################ 免密登陆 配置 ################################
