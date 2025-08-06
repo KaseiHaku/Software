@@ -32,6 +32,8 @@
         service --> /etc/service中的 service name (可以不止一个)
         port --> 端口号 (可以不止一个)
 
+    shell> pwdx PID             # 查看指定 PID 运行时的工作目录
+
 进程前后台切换：
     shell> ping 8.8.8.8 &           # 命令最后的 & 表示把这个命令放到后台执行，关闭当前终端，这个后台执行的命令也会被 kill 掉
     Ctrl+Z                          # 将当前终端正在前台执行的命令放到后台，并处于暂停状态
