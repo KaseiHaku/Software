@@ -66,11 +66,17 @@ networks:
     driver_opts:            # docker 网络模式相关的可选项配置
       foo: "1"
       bar: "2"
+    attachable: true
+    enable_ipv4: true
+    enable_ipv6: false
     ipam:     # ip allocate manager  地址分配管理器
       driver: default     # ipam 驱动，默认 default，不过好像没找到其他的
       config:
         - subnet: "172.16.238.0/24"       # 必须是 CIDR format 格式的 IP 地址范围
         - subnet: "2001:3984:3989::/64"
+      options:            # ipam 驱动参数
+        foo: bar
+        baz: "0"
   net2:                       # 当前 compose 中 outside_network 的别名
     name: outside_network     # shell> docker network ls 中的名字
     internal: true      # docker 默认会将该网络 bridge 到 宿主机上，用来提供给 其他主机连接，true 表示不 bridge ，当前网络完全隔离外网环境
