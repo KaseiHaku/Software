@@ -71,13 +71,13 @@ even_deny_root                    # root 也有错误次数限制
 root_unlock_time = 900            # root 锁定 900 秒自动解锁
 
 # 备份配置文件
-shell> man pam.d
 shell> cd /etc/pam.d
 shell> cp /etc/pam.d/common-auth /etc/pam.d/common-auth.bak
 shell> cp /etc/pam.d/common-account /etc/pam.d/common-account.bak
 
-# 查看 /lib/x86_64-linux-gnu/security/pam_faillock.so 怎么用
-shell> man pam_faillock                
+# 查看配置文件帮助文档
+shell> man pam.d                            # 查看 /etc/pam.d 下文件内容的格式
+shell> man pam_faillock                    # 查看 /lib/x86_64-linux-gnu/security/pam_faillock.so 怎么用
 
 # 修改认证(auth)配置
 # 文件内容格式：service type control module-path module-arguments
@@ -94,7 +94,7 @@ shell> vim /etc/pam.d/common-auth
 # 修改成以下内容
 # @kasei
 auth    requisite                       pam_faillock.so preauth
-auth    [success=1 default=ignore]      pam_unix.so nullok
+auth    [success=1 default=ignore]      pam_unix.so nullok                    # success=1 表示 success 时，跳过下一条规则; default=ignore 表示其他情况忽略当前规则的结果
 auth    [default=die]                   pam_faillock.so authfail   
 auth    sufficient                      pam_faillock.so authsucc
 auth    requisite                       pam_deny.so
