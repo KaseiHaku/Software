@@ -74,6 +74,15 @@
     
     shell> kill -l                         # 显示信号列表
     shell> kill [-信号] <PID>                # kill -9 1234：终止PID(进程号)为1234 的进程
+
+    shell> pkill -u username                # 终止指定用户所有进程
+    shell> killall -u username              # 同上
+    shell> killall5 -u username             # 同上
+
+    shell> pgrep -u username                # 查看指定用户所有进程
+    shell> kill -9 $(pgrep -u username)     # 终止指定用户所有进程
+
+    shell> kill -9 $(ps -u username -o pid=)    # 终止指定用户所有进程
     
     # 图形界面 kill 窗口
     shell> xkill                # 然后点击窗口即可
