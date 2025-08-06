@@ -105,7 +105,12 @@ shell> vim /etc/pam.d/common-account
 # @kasei 添加一行到头部
 account required                        pam_faillock.so
 
-shell> pam-auth-update --force  # 更新 PAM 配置，使配置生效
+# 更新 PAM 配置，使配置生效
+# 交互式界面:
+#     按 方向键 移动
+#     按 空格键 选中/取消选中模块
+#     按 Enter 确认更改
+shell> pam-auth-update --force  
 
 shell> faillock --user username       # 可以用来解锁， Valid 列: V 代表锁定有效，I 代表锁定无效;
 shell> rm /var/run/faillock/<username> # 删除文件解锁
