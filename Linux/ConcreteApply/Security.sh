@@ -7,8 +7,15 @@ EOF
 shell> sysctl --system
 
 ################################ sshd 配置 ################################
-# 
 # sshd 安全配置：一键配置 sshd_config
+# 
+# 修改 ssh 默认端口
+shell> vim /etc/ssh/sshd_config
+# 修改默认端口，可以减少很多自动化攻击
+#Port 22
+Port 46530
+
+# 修改端口 添加自定义 sshd 配置
 shell> cat <<-'EOF' | tee /etc/ssh/sshd_config.d/kh.conf
 # yes    开启 Pulggable Authentication Module interface
 UsePAM yes
