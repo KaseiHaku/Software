@@ -1,6 +1,9 @@
 # /etc/ssh/sshd_config   当前文件路径
 # shell> man sshd_config
 
+# 修改默认端口，可以减少很多自动化攻击
+#Port 22
+Port 46530
 
 # 只允许指定 group 下的用户登陆，不能配置 group id
 AllowGroups groupNamePattern
