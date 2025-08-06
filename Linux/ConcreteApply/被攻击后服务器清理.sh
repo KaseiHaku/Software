@@ -2,6 +2,8 @@
 shell> mkdir /evidence                            # 创建证据记录
 shell> cp -a /var/log /evidence/logs_backup        # 备份被攻击记录
 
+shell> less /var/log/auth.log        # 查看认证日志
+
 ################################ 清理定时任务 ################################
 shell> ls -la /etc/cron* /var/spool/cron/*        # 检查定时任务
 
