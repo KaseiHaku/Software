@@ -32,7 +32,7 @@ shell> usermod -l haku kasei                # 修改用户名为 kasei
 shell> usermod -c -d -m -s -u               # 跟 useradd 中一样的
                -g -G -a                     # 用户组相关
 
-
+shell> passwd                            # 修改自己的密码
 shell> passwd -l kasei                  # 禁用该账号
 shell> passwd -u kasei                  # 解禁该账号
 shell> passwd -d kasei                  # 使账号无口令
