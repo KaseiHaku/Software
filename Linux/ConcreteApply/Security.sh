@@ -1,11 +1,13 @@
-# 禁 ping
+################################ 禁 ping ################################
+# 
 shell> cat <<-'EOF' | tee /etc/sysctl.d/00-security.conf
 net.ipv4.icmp_echo_ignore_all = 1
 net.ipv6.icmp.echo_ignore_all = 1
 EOF
 shell> sysctl --system
 
-
+################################ sshd 配置 ################################
+# 
 # sshd 安全配置：一键配置 sshd_config
 shell> cat <<-'EOF' | tee /etc/ssh/sshd_config.d/kh.conf
 # yes    开启 Pulggable Authentication Module interface
@@ -46,17 +48,58 @@ EOF
 shell> systemctl restart sshd            # 重启 ssh 服务端
 
 
+################################ 配置多次密码失败后锁定 ################################
+# 
 # 配置登陆失败后，指定账号一段时间内禁止登陆
 shell> grep 'UsePAM' /etc/ssh/sshd_config                # 确保值为 yes
 shell> ll /etc/pam*
+
+
+
+# PAM(Pluggable Authentication Modules) 配置 (Debian 11) 以后
+shell> less /etc/pam.conf         # PAM 配置文件
+shell> ll /etc/pam.d            # PAM 配置目录
+shell> find / -iname 'pam_faillock.so'  # 检查 PAM 是否安装，如果不存在，则需要安装
+
+# 修改锁定配置
+shell> vim /etc/security/faillock.conf 
+# 允许最大错误尝试次数
+deny = 3
+# 指定时间间隔内，最多尝试 deny 次，单位：秒
+fail_interval = 900
+# 锁定 600 秒后自动解锁
+unlock_time = 600
+# root 也有错误次数限制
+even_deny_root
+# root 锁定 900 秒自动解锁
+root_unlock_time = 900
+
+# 修改配置文件
+shell> man pam.d
 shell> cd /etc/pam.d
+shell> cp /etc/pam.d/common-auth /etc/pam.d/common-auth.bak
+shell> vim /etc/pam.d/common-auth  
+# 原配置
+#auth    [success=1 default=ignore]      pam_unix.so nullok
+#auth    requisite                       pam_deny.so
+#auth    required                        pam_permit.so
+# 修改成以下内容
+auth    requisite                       pam_faillock.so preauth silent
+auth    [success=4 default=ignore]      pam_unix.so nullok
+auth    [default=die]                   pam_faillock.so authfail   
+auth    sufficient                      pam_faillock.so authsucc
+auth    requisite                       pam_deny.so
+auth    required                        pam_permit.so
 
 
-# 免密登陆
+shell> faillock --user username       # 可以用来解锁
+
+
+################################ 免密登陆 配置 ################################
 shell> ssh-keygen        # client 端生成 密钥对; pubkey 一般保存在 ~/.ssh/id_rsa.pub 目录中; id 文件一般保存在 ~/.ssh/id_rsa 文件中
 shell> ssh-copy-id -l root -p 22 192.168.0.200        # 将公钥发送到 server 端
 
-# Troubleshoot
+################################ Troubleshoot ################################
 shell> alias -p                        # 检查是否有异常的 别名
 shell> less /var/log/auth.log            # 查看异常认证信息
 shell> less /var/log/secure                # ditto
