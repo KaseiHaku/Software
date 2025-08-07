@@ -12,6 +12,9 @@ shell> sysctl --system
 # 修改 ssh 默认端口
 shell> vim /etc/ssh/sshd_config
 # 修改默认端口，可以减少很多自动化攻击
+# @tips 可以存在多个 Port 46531 行，sshd 会同时监听所有 Port 行中的配置
+# @trap 添加 Port 时，应该先添加，然后测试新 port，测试通过后，再关闭老的 port;  
+#       注意每次修改后需要 shell> systemctl restart sshd
 #Port 22
 Port 46530
 
