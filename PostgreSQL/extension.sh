@@ -1,4 +1,12 @@
 ################################ pgsql 安装插件 ################################ 
+# 常用插件官网:
+#     PostGIS        https://github.com/postgis/docker-postgis/blob/master/17-master/Dockerfile        地理空间扩展
+#     pg_jieba       https://github.com/jaiminpan/pg_jieba                                             中文全文检索扩展
+#     zhparser       https://github.com/amutu/zhparser                                                 中文全文检索扩展2
+# 
+# 
+
+
 
 
 
