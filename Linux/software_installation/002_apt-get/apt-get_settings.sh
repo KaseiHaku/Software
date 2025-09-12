@@ -26,7 +26,19 @@
     shell> touch google.list                    # 新建一个文件，表示是 google 的镜像源
     shell> vim aliyun.list
     添加如下行
-    deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe mutiverse
+    
+    # 安装源
+    deb https://mirrors.aliyun.com/debian/ bookworm main non-free-firmware
+    deb-src https://mirrors.aliyun.com/debian/ bookworm main non-free-firmware
+    # 安全更新源
+    deb https://mirrors.aliyun.com/debian-security/ bookworm-security main non-free-firmware
+    deb-src https://mirrors.aliyun.com/debian-security/ bookworm-security main non-free-firmware
+    # 更新安装源
+    # bookworm-updates, to get updates before a point release is made;
+    # see https://www.debian.org/doc/manuals/debian-reference/ch02.en.html#_updates_and_backports
+    deb https://mirrors.aliyun.com/debian/ bookworm-updates main non-free-firmware
+    deb-src https://mirrors.aliyun.com/debian/ bookworm-updates main non-free-firmware
+
     保存
     
 
