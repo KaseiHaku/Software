@@ -25,6 +25,8 @@ Shell 的启动方式：
     shell> su -l           # ditto 
     shell> su --login      # ditto
 
+    
+
 查看当前使用的 shell:
     shell> echo $0          # 通用
     shell> echo $SHELL      # 不一定正确
@@ -64,6 +66,13 @@ Alias 指令别名
     shell> \cp -rf ./aa ./bb                        # 当 cp 存在别名时，使用 \cp 将不应用别名
     shell> unalias ls                               # 删除别名 ls，临时
     shell> cat ~/.bashrc                            # 永久 alias
+
+    # 新机初始化
+    shell> cat <<EOF | tee -a /etc/bash.bashrc
+    # @kasei
+    alias ll='ls --color=auto -al'
+    alias rm='rm -i'
+    EOF
 
 
 ############################ Definitions ############################
