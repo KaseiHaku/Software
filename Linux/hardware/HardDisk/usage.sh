@@ -1,4 +1,14 @@
 ################################## CentOS7 设备管理 ############################
+# 挂载全新硬盘的步骤：
+#     - shell> lsblk -a 或 parted            # 检查硬盘是否被 Host 识别
+#     - shell> parted                        # 分区（可选）
+#     - shell> mkfs -t xfs /dev/vdb          # 格式化。如果分区了，需要对每个分区进行格式化
+#     - shell> mkdir /mnt/newdisk            # 创建新的挂载点
+#     - shell> mount /dev/vdb /mnt/newdisk   # 挂载
+#     - shell> vim /etc/fstab                # 配置开机自动挂载
+#     /dev/sdX1  /mnt/newdisk  xfs  defaults  0  2
+#     - shell> df -h                         # 检查挂载是否成功
+# 
 # 相关文件
 /etc/fstab														#所有挂载在系统上的文件系统
 /dev/hd[a-d]													#IDE 硬盘 
@@ -16,6 +26,7 @@
 /dev/stderr                      # 标准错误输出
 /dev/null                        # 丢弃数据
 /dev/zero                        # 是一个字符设备，会不断返回0值字节（\0）
+
 
 
 # 查看所有连接到系统的设备
