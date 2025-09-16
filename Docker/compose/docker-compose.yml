@@ -67,7 +67,7 @@ networks:
     driver_opts:            # docker 网络模式相关的可选项配置
       foo: "1"
       com.kaseihaku.bar: "2"
-    enable_ipv4: true
+    #enable_ipv4: true      # Docker Compose >= 2.33.1 放出来才不报错
     enable_ipv6: false
     ipam:     # ip allocate manager  地址分配管理器
       driver: default     # ipam 驱动，默认 default，不过好像没找到其他的
