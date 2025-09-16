@@ -6,11 +6,28 @@
 #     - shell> mkdir /mnt/newdisk            # 创建新的挂载点
 #     - shell> mount /dev/vdb /mnt/newdisk   # 挂载
 #     - shell> vim /etc/fstab                # 配置开机自动挂载
-#     /dev/sdX1  /mnt/newdisk  xfs  defaults  0  2
+#     # 设备(/dev/sda1 或 UUID)    挂载点    文件系统类型    挂载选项    转储选项    文件系统检查顺序    
+#     /dev/vdb        /mnt/newdisk    xfs    defaults    0    2
+#     UUID=af2e4b0c-aa90-4dca-86fd-71c2222388c9    /mnt/newdisk    xfs    defaults    0    2
 #     - shell> df -h                         # 检查挂载是否成功
 # 
-# 相关文件
+
+
+# 开机自动挂载配置文件
+# /etc/fstab 文件格式
+# 设备：要挂载的设备或文件系统的路径（例如，/dev/sda1 或 UUID）。
+# 挂载点：设备挂载到的目录（例如，/mnt/mydisk）。
+# 文件系统类型：文件系统的类型（如 ext4, xfs, vfat, ntfs 等）。
+# 挂载（mount）选项：指定挂载时的选项（如 defaults, ro, rw, noauto 等）。是一个 逗号分隔的字符串
+# 转储（dump）选项：用于备份的选项，通常设置为 0(不 dump) 或 1。
+# 文件系统检查（fsck）顺序：用于在启动时检查文件系统的顺序，0 表示不检查，1 代表根文件系统，2 表示其他文件系统。
+# 设备    挂载点    文件系统类型    挂载选项    转储选项    文件系统检查顺序   
+# /dev/vdb        /mnt/newdisk    xfs    defaults    0    2
+# UUID=af2e4b0c-aa90-4dca-86fd-71c2222388c9    /mnt/newdisk    xfs    defaults    0    2        # 这里 UUID 可以通过 shell> blkid 命令获取
 /etc/fstab														#所有挂载在系统上的文件系统
+
+
+# 当前 host 上所有 设备/硬件 文件
 /dev/hd[a-d]													#IDE 硬盘 
 /dev/sd[a-p]													#USB|SATA|SCSI 硬盘 
 /dev/lp[0-2]													#25针 打印机 
