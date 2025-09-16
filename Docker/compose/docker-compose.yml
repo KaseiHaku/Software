@@ -73,9 +73,9 @@ networks:
       driver: default     # ipam 驱动，默认 default，不过好像没找到其他的
       config:
         - subnet: 172.18.0.0/16          # 必须是 CIDR format 格式的 IP 地址范围
-          ip_range: 172.18.1.0/24
+          ip_range: 172.18.1.0/24        # 在给定的 IP 地址范围内，给容器自动分配 IP
           gateway: 172.18.0.1
-          aux_addresses:
+          aux_addresses:                  # Auxiliary(辅助性的) 配置 hostname 和 IP 地址映射关系
             host1: 172.18.1.5
             host2: 172.18.1.6
             host3: 172.18.1.7
