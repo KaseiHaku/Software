@@ -169,8 +169,8 @@ tar -A                                              # --concatenate 追加 tar �
     -h --dereference                                # 打包碰到 软链接 时，直接打包指向的源文件，一般不用                                                
     --hard-dereference                              # 打包碰到 硬链接 时，直接打包指向的源文件，一般不用
 
-tar -czpf xx1.tar.gz -C ./*
-tar -xzpf xx1.tar.gz -C ./unTarDir
+tar -czpf xx1.tar.gz -C ./ ./dir1 ./file2           # 以 ./ 作为 tar 的根目录，将 ./dir1 ./file2 打包成 xx1.tar.gz
+tar -xzpf xx1.tar.gz -C ./unTarDir                  # 将 xx1.tar.gz 拆到 ./unTarDir 目录下
                                                     
 zip                                                 # 压缩 
 unzip -d ./unzip filename                           # 将文件解压到当前目录下的 unzip 文件夹下
