@@ -35,7 +35,8 @@ VMX 进程 CPU 100%：
     打开虚拟机 -> 打开 Terminal 
         shell> vmware-hgfsclient                    # 如果回显 WinShareDir 则表示开启成功
         shell> mkdir /home/kasei/Desktop/WinShareDir        # 如果该目录不存在，则先创建
-        shell> vmhgfs-fuse .host:/WinShareDir /home/kasei/Desktop/WinShareDir -o allow_other -o uid=$(id -u) -o gid=$(id -g)    # 执行挂载命令，重启失效，可以写自动脚本 
+        # 执行挂载命令，重启失效，可以写自动脚本；需要放出 /etc/fuse.conf 中的 user_allow_other 注释
+        shell> vmhgfs-fuse .host:/WinShareDir /home/kasei/Desktop/WinShareDir -o allow_other -o uid=$(id -u) -o gid=$(id -g)    
         shell> umount /home/kasei/Desktop/WinShareDir              # 卸载共享目录
         
 
