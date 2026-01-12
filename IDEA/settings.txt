@@ -210,7 +210,7 @@ Personalize Settings {
                 chrome://version        # 查看 chrome 的 Profile Path(就是用户数据保存目录)，假设为 /home/kasei/.config/google-chrome/Default
                 shell> cd /home/kasei/.config/JetBrains/IntelliJIdea2022.3      # 进入 IDEA 的配置目录
                 shell> mv chrome-user-data chrome-user-data-bak     # 如果该目录存在，则备份原来的数据，没有则跳过
-                shell> cp -r /home/kasei/.config/google-chrome  .   # 复制 Profile Path 的父目录到 IDEA 配置目录
+                shell> cp -a /home/kasei/.config/google-chrome  .   # 复制 Profile Path 的父目录到 IDEA 配置目录
                 shell> mv google-chrome chrome-user-data            # 修改名称
                 shell> cd ./chrome-user-data
                 shell> rm -rf ./SingletonCookie ./SingletonLock ./SingletonSocket   # 删除软链接，否则会跟原有的 chrome 冲突
