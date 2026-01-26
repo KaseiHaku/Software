@@ -34,8 +34,9 @@
         # 自定义变量
         shell> set                  # 显示 环境变量 + 自定义变量 = 所有变量
         shell> declare              # 显示 环境变量 + 自定义变量 = 所有变量，按变量名排序，同 shell> typeset ; 但是 typeset 已弃用
-        shell> echo $PTAH           # 查看 PATH 这个变量的内容
-        
+        shell> echo $PATH           # 查看 PATH 这个变量的内容
+    c. 查看指定环境变量来源
+        shell> grep -r 'GTK_IM_MODULE' /etc/environment /etc/profile* /etc/bash* ~/.bash*
         
 4. 添加环境变量
     a. 直接在配置文件中写入
