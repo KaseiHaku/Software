@@ -179,6 +179,9 @@ chown -R oracle:dba /home/oracle                    # 更改文件夹属主为 o
 chgrp                                               # 修改文件属组
 chmod -Rc MODE dir                                  # 更改文件属性
                                                     # MODE 的格式符合以下正则表达式 [ugoa]*([-+=]([rwxXst]*|[ugo]))+
+find . -type d -exec chmod 755 {} \;                # 目录常规权限为 755
+find . -type f -exec chmod 644 {} \;                # 文件常规权限为 644
+
 
                                                     
 iconv -l                                             # 查看所有可用的字符编码格式
