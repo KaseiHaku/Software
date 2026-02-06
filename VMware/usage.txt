@@ -41,9 +41,16 @@ VMX 进程 CPU 100%：
 
         # 复制本机项目到 windows 中
         shell> \cp -a --update=all -f /home/kasei/Desktop/GitLocalRepository/kh-app-client/app-yjyuan/dist/dev/mp-weixin/ /home/kasei/Desktop/WinShareDir/GitLocalRepository/app-yjyuan
+        shell> rsync -av --delete --exclude='*/node_modules/*' --exclude='.git' --exclude='*.log' source/ destination/
+        shell> rsync -av --delete --exclude={'*/node_modules/*','.git','*.log'} source/ destination/
+        shell> cd /project/app-yjyuan && find . -type f ! -ipath '*node_modules*' ! -ipath '*dist*' -exec cp --parents -a --update=all -f {} /home/kasei/Desktop/test/ \;    # 对于需要排除指定目录的情况
+
 
         # 从 windows 中复制项目到本机中
         shell> \cp -a --update=all -f /home/kasei/Desktop/WinShareDir/GitLocalRepository/ai-qcoder-boot /home/kasei/Desktop/GitLocalRepository
+
+
+        
 
 ################################ VMWare ESXi ################################
 从 ESXi 导出虚拟机：
