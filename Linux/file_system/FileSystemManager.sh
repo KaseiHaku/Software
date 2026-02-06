@@ -1,4 +1,4 @@
-################################## CentOS7 文件系统 ############################
+c################################## CentOS7 文件系统 ############################
 # 当前文档标识符介绍 ##############################
 file: 表示只能是文件
 dir: 表示只能是目录
@@ -90,8 +90,9 @@ find . ! -iregex '.*.cnf' ! -iregex '.*' -exec command {} \+    # 跟 \; 的区�
                                                             
 find . -iname 'pattern' ! -type d                           # 排除目录 
 find . -regextype egrep -iregex '.*[a-z].*'                 # 使用 egrep 类型的正则表达式匹配
-find / -path '/proc*' -prune , -path '/var*' -prune , -path '/home*' -prune , -ipath 'pattern'      # 搜索 根目录，但是排除 /proc 目录
+find / -path '/proc*' -prune , -path '/var*' -prune , -path '/home*' -prune , -ipath 'pattern'      # 搜索 根目录，但是排除 /proc 目录，-prune 表示只要匹配，则直接忽略该路径下所有文件，而不是继续深入匹配
 find / -regextype egrep -iregex '/home*|/proc*|/var*' -prune , -ipath 'pattern'                     # 同上
+cd /project/app-yjyuan && find . -type f ! -ipath '*node_modules*' -prune ! -ipath '*dist*' -prune -exec cp --parents -a --update=all -f {} /home/kasei/Desktop/test/ \;    # 对于需要排除指定目录的情况
 
 
 
@@ -149,6 +150,7 @@ cp -i /source /destination/                         # 复制过程中如果出�
 cp -v /source /destination/                         # 显示复制过程中做了哪些操作
 \cp -r /source /destination/                        # 递归复制, \ 表示不使用 alias 解析 cp 命令
 cp -aRT /source /destination                        # 这里 destination 直接就是 source 的别名，而不是目标目录
+\cp -a --update=all -f --parents /source /dest      # 复制时保持文件目录结构。如果 source 是绝对路径，那么会在 dest 中创建全路径，要想只创建相对目录结构，需要 source 本身是相对路径
 
 
 
