@@ -41,9 +41,11 @@ VMX 进程 CPU 100%：
 
         # 复制本机项目到 windows 中
         shell> \cp -a --update=all -f /home/kasei/Desktop/GitLocalRepository/kh-app-client/app-yjyuan/dist/dev/mp-weixin/ /home/kasei/Desktop/WinShareDir/GitLocalRepository/app-yjyuan
-        shell> rsync -av --delete --exclude='*/node_modules/*' --exclude='.git' --exclude='*.log' source/ destination/
-        shell> rsync -av --delete --exclude={'*/node_modules/*','.git','*.log'} source/ destination/
-        shell> cd /project/app-yjyuan && find . -type f ! -ipath '*node_modules*' ! -ipath '*dist*' -exec cp --parents -a --update=all -f {} /home/kasei/Desktop/test/ \;    # 对于需要排除指定目录的情况
+        # 对于需要排除指定目录的情况
+        shell> cd /project/src && find . -type f ! -ipath '*node_modules*' -prune ! -ipath '*dist*' -prune -exec cp --parents -a --update=all -f {} /dest/dir \;  # cp 支持 --parents 就行
+        shell> rsync -av --delete --exclude='*/node_modules/*' --exclude='.git' --exclude='*.log' source/ destination/        # 需要装 rsync
+        shell> rsync -av --delete --exclude={'*/node_modules/*','.git','*.log'} source/ destination/                          # 需要装 rsync
+       
 
 
         # 从 windows 中复制项目到本机中
