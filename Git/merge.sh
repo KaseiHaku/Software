@@ -5,6 +5,7 @@
 # 3: B 分支 mergeCommit(HEAD) 的版本
 shell> git merge B 
 shell> git merge --no-ff B                  # 手工 merge
+shell> git merge --no-commit B              # 手工 commit
 
 # 在合并过程中，将上面提到的 1,2,3 的版本，导出到指定文件
 shell> git show :1:a.txt > a.common.txt     # 共同祖先版本
