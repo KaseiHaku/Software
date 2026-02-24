@@ -4,8 +4,14 @@ APK download 网址:
     https://www.apkmirror.com
 
 
-- 翻墙下载，并安装 V2rayNG
-- 下载并安装 Firefox   
+- 翻墙下载，并安装 V2rayNG  
+    v2rayNG_1.10.32_universal.apk
+    @trap 如果提示风险，无法安装（前提是允许 从第三方源安装 App）：
+          小米        忽略风险，继续安装
+          OPPO       打开飞行模式进行安装，否则 V2rayNG 无法安装
+
+- 下载 Google Play Store
+    https://www.apkmirror.com/apk/google-inc/google-play-store/google-play-store-50-1-33-release/google-play-store-50-1-33-31-0-pr-867780628-3-android-apk-download/?redirected=thank_you_invalid_nonce
 
 # 需要先关闭 MIUI optimization 才能使用，否则会报错，安装完再开回来：
 #     Settings -> My device -> All specs -> 对着 MIUI version 疯狂点击，进入开发者模式
