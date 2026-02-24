@@ -71,7 +71,8 @@ V2Ray 启动|停止：
 android 客户端：
     https://github.com/2dust/v2rayNG
     Android 12        <= v1.8.5        https://github.com/2dust/v2rayNG/releases/download/1.8.5/v2rayNG_1.8.5.apk
-    Android 14        >= v1.8.12       
+    Android 14        >= v1.8.12     
+    Android 16        >= v1.10.32
     
     
 
