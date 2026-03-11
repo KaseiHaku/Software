@@ -62,7 +62,10 @@ Diff {
 
 Modify {
     # 该命令不建议使用，有 a glut of gotchas 并且生成 mangled(混乱的) history
-    # 推荐使用 https://github.com/newren/git-filter-repo/ 替代
+    # 推荐使用以下工具替代：
+    #     https://github.com/rtyley/bfg-repo-cleaner        只能处理简单工作
+    #     https://github.com/newren/git-filter-repo/        支持复杂操作，可替代原生 filter-branch 命令
+    #     
     # --tree-filter         检出每个 commit 到临时目录，然后执行 command，再创建一个新的 commit 
     # --index-filter        复制每个 commit 到 index 空间，然后执行 command，再创建一个新的 commit 
     # rev-list
