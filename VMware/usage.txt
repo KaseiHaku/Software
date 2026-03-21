@@ -44,12 +44,13 @@ VMX 进程 CPU 100%：
         # 对于需要排除指定目录的情况
         
         shell> cd /project/src && find . -type f \
-                ! -ipath '*deploy*' -prune \
-                ! -ipath '*.git*' -prune \
+                ! -ipath '*.git*' -prune  \
                 ! -ipath '*.idea*' -prune \
                 ! -ipath '*target*' -prune \
+                ! -ipath '*package-lock.json*' -prune  \
                 ! -ipath '*node_modules*' -prune \
-                ! -ipath '*dist*' -prune \
+                ! -ipath '*dist*' -prune  \
+                ! -ipath '*deploy*' -prune \
                 -exec cp --parents -a --update=all -f {} /dest/dir \;      # @trap 该命令需要 cp 命令支持 --parents 就行
         shell> rsync -av --delete --exclude='*/node_modules/*' --exclude='.git' --exclude='*.log' source/ destination/        # 需要装 rsync
         shell> rsync -av --delete --exclude={'*/node_modules/*','.git','*.log'} source/ destination/                          # 需要装 rsync
