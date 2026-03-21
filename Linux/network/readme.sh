@@ -171,6 +171,17 @@
 # telnet
     shell> telnet 192.12.32.44 8080     # telnet 远程登录指定 ip 地址主机的指定端口，如果没有返回错误说明该 ip 对应的主机该端口开放
 
+# netcat
+    shell> nc -l 8080           # 作为服务器监听 8080 端口
+              -v                # 详细输出
+              -p localport      # 使用指定的 本地端口 连接远程服务器
+              -u                # UDP 模式，默认 TCP
+              -k                # 持续监听
+              -c                # 发送 CRLF 作为行结束符
+              -w 1000           # 指定超时时间
+    shell> ncat              # nc 增强版
+    shell> socat             # ncat 增强版
+    
 
 ################################# 网卡查看及配置
 shell> ip a                     # 查看系统中的网卡
