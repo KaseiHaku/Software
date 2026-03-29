@@ -62,10 +62,17 @@ Merge {
     shell> git log --oneline --decorate --graph --all   # 查看分支情况
     
     Advance {
-         shell> git merge --abort                # 放弃当前合并
-        shell> git reset --hard HEAD            # 回到之前的状态
+        shell> git merge --abort                            # 放弃当前合并
+        shell> git reset --hard HEAD                        # 回到之前的状态
         shell> git merge -Xignore-all-space debug           # 忽略所有空白
         shell> git merge -Xignore-space-change debug        # 忽略所有空白的修改
+
+        # 合并策略
+        shell> git merge -s ort branch1                     # ORT(Ostensibly Recursive’s Twin),同 recursive 策略
+        shell> git merge -s ort -X ours branch1             # 使用 ORT 策略，冲突时，使用 ours 策略
+        shell> git merge -s ort -X theirs branch1           # 使用 ORT 策略，冲突时，使用 theirs 策略
+        shell> git merge -s ours branch1                    # 不管有没有冲突，都使用 ours 策略
+        shell> git merge -s octopus branch1 branch2         # 使用 octopus 策略，用于将多个分支合并到一个分支
         
         # 手工合并文件
         # 坑：merge 提交前执行以下命令才有效
