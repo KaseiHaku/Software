@@ -55,7 +55,12 @@ shell> cat <<'EOF' >> /etc/environment
     GLFW_IM_MODULE=ibus                   # 用于支持 kitty
 EOF
 
-shell> ll ~/.config/fcitx5        # 默认 fcitx5 的配置目录，可以安装 fcitx5-configtool 使用图形界面编辑
+shell> ll ~/.config/fcitx5          # 默认 fcitx5 的配置目录，可以安装 fcitx5-configtool 使用图形界面编辑
+shell> fcitx5-configtool            # 打开图形配置界面
+                                    # Configure global options...                # 全局配置
+                                    # Configure addons...                        # 插件配置，全角/半角 标点符号配置等
+                                    # 上方输入发右侧 Configure(两条杠) 按钮          # 特定输入法配置
+
 
 shell> # Add Input Method 时，不要添加 "Keyboard - Chinese" 这种的只是键盘布局，并不是输入法，只适合用于输入 普通英文字符
        # 应该搜索  "Pinyin" 然后添加 "Pinyin" 才是真的添加了 拼音输入法
