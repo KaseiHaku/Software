@@ -37,6 +37,7 @@
     shell> git add --all .      # 提交已跟踪文件的修改、新文件、删除 到 stage
     shell> git add --force .    # 添加 .gitignore 文件中忽略的文件到缓存区，-A 表示把 untracked 的文件或目录也提交到缓存区
     shell> git add --dry-run -all .         # 显示该命令执行的操作，不实际执行
+    shell> git add --renormalize .          # 当修改 .gitattributes 后，可以使用该命令统一格式化
 }    
 
 数据恢复 {
