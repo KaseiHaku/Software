@@ -64,13 +64,14 @@ Git 初始化配置 {
     shell> git config --global core.safecrlf warn   # 允许提交 irreversible 的文件，弹警告
     shell> git config --global core.safecrlf false  # 允许提交 irreversible 的文件
 
-    空白符检查配置
-    shell> git config --global core.whitespace blank-at-eol         # 检查行尾的空格，默认打开
-    shell> git config --global core.whitespace blank-at-eof         # 检查文件底部的空行，默认打开
+    空白符检查配置，如果禁用则添加 - 前缀，例如: blank-at-eol  禁用则为: -blank-at-eol
+    shell> git config --global core.whitespace blank-at-eol         # 行尾有空格，报错，默认打开
+    shell> git config --global core.whitespace blank-at-eof         # 文件尾有空行，报错，默认打开
+    shell> git config --global core.whitespace trailing-space       # 相当于同时指定 blank-at-eol, blank-at-eof
     shell> git config --global core.whitespace space-before-tab     # 警惕行头 tab 前面的空格，默认打开
     shell> git config --global core.whitespace indent-with-non-tab  # 揪出以空格而非 tab 开头的行，默认关闭
     shell> git config --global core.whitespace tab-in-indent        # 监视在行头表示缩进的 tab，默认关闭
-    shell> git config --global core.whitespace cr-at-eol            # 告诉 Git 忽略行尾的回车，默认关闭
+    shell> git config --global core.whitespace cr-at-eol            # 将行尾的回车视为行终止符的一部分，并且不触发 blank-at-eol 规则，默认关闭
     
     
     字符编码格式配置
@@ -101,6 +102,13 @@ Git 初始化配置 {
     shell> git config --global merge.my-ours.driver './git-merge-xxx.sh %O %A %B %L %P'    
     shell> git config --global merge.my-ours.driver true            # 注意这里的 true 是 linux shell 的命令, exit code 永远等于 0
     shell> git config --global merge.my-ours.recursive text         # 定义递归祖先合并的策略
+
+
+    推荐配置:
+    shell> git config --global core.autocrlf input                                                         # 提交时转换为LF，检出时不转换，Linux 或 IDEA 编辑时，推荐使用
+    shell> git config --global core.whitespace "blank-at-eol,blank-at-eof,tab-in-indent,cr-at-eol"         # 删除行尾空格，删除文件尾空行，禁用 tab 缩进，
+    shell> git config --global diff.ignoreAllSpace true                                                    # diff 时，忽略空白符修改
+    shell> git add --renormalize .                                                                         # 修改配置后执行该命令可以统一格式
     
 }
 
