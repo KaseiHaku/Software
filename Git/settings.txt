@@ -107,7 +107,6 @@ Git 初始化配置 {
     推荐配置:
     shell> git config --global core.autocrlf input                                                         # 提交时转换为LF，检出时不转换，Linux 或 IDEA 编辑时，推荐使用
     shell> git config --global core.whitespace "blank-at-eol,blank-at-eof,tab-in-indent,cr-at-eol"         # 删除行尾空格，删除文件尾空行，禁用 tab 缩进，
-    shell> git config --global diff.ignoreAllSpace true                                                    # diff 时，忽略空白符修改
     shell> git add --renormalize .                                                                         # 修改配置后执行该命令可以统一格式
     
 }
