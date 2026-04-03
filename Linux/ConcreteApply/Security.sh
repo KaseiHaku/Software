@@ -122,6 +122,8 @@ account required                        pam_faillock.so
 #     按 Enter 确认更改
 shell> pam-auth-update --force  
 
+
+# @trap 新开一个 shell（不新开 shell 锁住就没法用了），然后使用错误密码，检查配置是否生效
 shell> faillock --user username       # 可以用来解锁， Valid 列: V 代表锁定有效，I 代表锁定无效;
 shell> rm /var/run/faillock/<username> # 删除文件解锁
 shell> faillock --user username --reset # 命令解锁，推荐
