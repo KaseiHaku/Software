@@ -8,6 +8,7 @@ Create {
     shell> git clone -- url
     shell> git clone --single-branch -b branchName -- url           # clone 指定的远程分支到名为 origin 的 LocalRemoteRepo 中
     shell> git clone --depth 1 -- https://github.com/KaseiHaku/Telegraph-Image.git    # --depth 1 表示只复制当前最新文件到本地，丢弃所有历史 git 提交记录
+                                                                                      # 恢复 --depth 1 导致缺失的历史记录 shell> git fetch --unshallow                                                      
 }
 
 Delete {
