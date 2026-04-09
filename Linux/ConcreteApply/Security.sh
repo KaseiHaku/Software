@@ -27,7 +27,7 @@ UsePAM yes
 # no     禁止 root 用户远程登陆
 PermitRootLogin no
 
-# 6      密码最多错误 6 次，失败后锁定
+# 6      密码最多错误 6 次，失败后断开连接
 MaxAuthTries 6
 
 # 打印登陆日志
