@@ -14,6 +14,13 @@
     shell> git rm -r --cached /ProjectName/     # 取消跟踪，删除 git 中的历史版本，不删除硬盘上的文件
     shell> git rm -r -f --cached /ProjectName/  # 取消跟踪，删除 git 中的历史版本，不检查是否有更（第4声）新的 commit ，直接使用当前版本
 
+    # 临时忽略文件修改（适用于开发是，忽略本地配置文件的修改）
+    shell> git update-index --skip-worktree -- ./xxx/config.json            # 临时忽略指定路径
+    shell> git ls-files -v | grep '^S'                                      # 查看哪些文件被忽略了
+    shell> git update-index --no-skip-worktree -- ./xxx/config.json         # 恢复跟踪指定路径
+    
+    
+
 }
 
 清理未跟踪的文件 {
