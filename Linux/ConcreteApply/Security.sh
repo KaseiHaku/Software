@@ -50,9 +50,9 @@ PubkeyAuthentication yes
 PasswordAuthentication yes
 
 # 自动关闭空闲连接
-# ClientAliveInterval 1200    如果超过 1200 秒没有接收到 client 的数据，那么发送一个探活心跳
+# ClientAliveInterval 240     如果超过 120 秒没有接收到 client 的数据，那么发送一个探活心跳。 @trap 不能设置得太久（例如: 20 分钟），因为 防火墙/路由器NAT 的超时时间通常是 300/600 秒，设置太久会被当作空闲连接踢掉
 # ClientAliveCountMax 3       探活心跳超过 3 次还是没回应直接断开 client 连接
-ClientAliveInterval 1200
+ClientAliveInterval 240
 ClientAliveCountMax 3
 EOF
 shell> systemctl restart sshd            # 重启 ssh 服务端
