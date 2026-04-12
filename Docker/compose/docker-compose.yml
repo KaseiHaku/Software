@@ -347,7 +347,7 @@ services:
       - sftp    # 指定 groupname
       - 1000    # 指定 groupid
     # 以下参数和 shell> docker run 命令中的选项一致
-    user: 1000:1000       # 指定当前容器内 进程使用哪个 user 进行执行；格式: uid:gid
+    user: 1000:1000       # 指定当前容器内 进程使用哪个 user 进行执行；格式: uid:gid；@tips 即使 宿主机 和 容器 中 都没有对应的 uid 和 gid，也不影响使用，如果 宿主机 有，则继承宿主机 uid gid 的权限
     working_dir: /root    # 容器当中默认的工作目录
     
     
