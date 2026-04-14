@@ -1,5 +1,13 @@
 ################################################## Intelligent IDEA Settings : Begin ####################################################
 Personalize Settings {
+    数据库 xxx.sql 文件执行配置 {
+         File -> Settings -> Tools -> Query Execution 
+            Execute 保持默认即可
+            选中 Execute (2)
+                Shortcut: Ctrl+\                     # 点击 Assign 分配快捷键
+                [勾选] Open results in new tab        # 这样结果会在新的 tab 页打开
+    }
+
     彻底清理 IDEA {
         - File -> Invalidate Caches...  然后关闭项目
         - 删除项目根目录下的 .idea 文件夹
