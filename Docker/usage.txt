@@ -161,8 +161,24 @@ Container：
         # 查看容器中 进程 在 host 中的 PID
         shell> docker container top containerId -ef                 # 查看容器中进程在 host 中的 PID，其中 -ef 和 ps 明明的选项相同
         shell> docker inspect -f '{{.State.Pid}}' containerId       # 查看容器所属 docker 子进程的 PID
-        shell> docker ps -q | xargs -ri docker inspect --format '{{.State.Pid}}, {{.Name}}' {}      # 查看所有容器的 Pid
         shell> cat /sys/fs/cgroup/memory/docker/<containerId>/cgroup.procs  
+
+        # 查看 host 中的 pid 对应哪个容器
+        # 方式一
+        shell> cat /proc/<PID>/cgroup | grep docker        # 输出如下，那串数字就是容器 id
+        4:cpu:/docker/769739f359ec192edf6c565f7756bb5ecabcfac3e691c2444794ab6a7d398e39
+        # 方式二
+        shell> docker ps -q | xargs -ri docker inspect --format '{{.State.Pid}}, {{.Name}}' {}      # 查看所有容器进程在 宿主机 中的 PID（仅限容器 1 号进程的 PID）
+        # 方式三: 使用 shell> docker top containerId; 方式遍历
+        shell> export PID=353199; for c in $(docker ps -q); do
+                  if docker top $c | grep -q $PID; then
+                    echo "PID $PID 属于容器: $c"
+                    docker inspect --format '{{.Name}}' $c
+                  fi
+                done;
+                unset PID
+        
+        
     
     # 查看 container 中名为 eth0 的 veth 在 host 中 对等的 veth 是哪个？
         shell> docker exec -it ??? /bin/bash 
