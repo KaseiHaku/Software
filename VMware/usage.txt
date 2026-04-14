@@ -60,7 +60,30 @@ VMX 进程 CPU 100%：
         # 从 windows 中复制项目到本机中
         shell> \cp -a --update=all -f /home/kasei/Desktop/WinShareDir/GitLocalRepository/ai-qcoder-boot /home/kasei/Desktop/GitLocalRepository
 
+当 VPN 软件只支持 windows 时， 虚拟如何使用 VPN：
+    - 选中对应虚拟机 > 右键  > Settings...
+    - Hardware 选项卡 > Network Adapter > Network connection > [选中] NAT: Used to share to host's IP address
 
+    #### 如果需要通过其他网络访问虚拟机中的服务，怎么办????? 配置 Port Forward 即可，操作如下
+    - 点击 VMware Workstation 中的 Edit 菜单 > Virtual Network Editor... > Change Settings 
+    - 选择 Name: VMnet8   Type: NAT 类型的条目
+    - 修改以下值 Subnet IP: 192.168.23.0    Subnet mask: 255.255.255.0
+    - 点击 DHCP Settings...
+        Starting IP address: 192.168.23.128
+        Ending IP address: 192.168.23.254
+    - 点击 NAT Settings... 
+    - Gateway IP: 192.168.23.2(需要跟上面 Subnet ip/mask 在同一网段)
+    - Port Forwarding 中，点击 Add... 按钮添加如下条目
+    - Host port: 50080   Type: TCP    Virtual machine IP address: 192.168.23.106(需要跟上面 Subnet ip/mask 在同一网段) Virtual machine port: 50080
+      Host port: 50443   Type: TCP    Virtual machine IP address: 192.168.23.106(需要跟上面 Subnet ip/mask 在同一网段) Virtual machine port: 50443   
+    - 点击 OK 完成配置
+    - 启动虚拟机 > 打开网卡配置
+      Method: Manual（静态 IP）
+      DNS Servers: 8.8.8.8,223.5.5.5
+      Address: 192.168.23.106(需要跟上面 Subnet ip/mask 在同一网段，并且和 Port Forwarding 中的相同)
+      Netmask： 255.255.255.0
+      Gateway: 192.168.23.2(需要跟上面 Gateway IP 中的相同)
+    - 保存即可
         
 
 ################################ VMWare ESXi ################################
