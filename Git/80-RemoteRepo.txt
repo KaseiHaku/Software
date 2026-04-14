@@ -31,6 +31,12 @@ Create {
     shell> git pull origin master               # 从名为 origin 的 LocalRemoteRepo 关联的 RemoteRepo 中拉取 master 分支到 LocalRemoteRepo 中的 master 分支
                                                 # 并将 LocalRemoteRepo 中的 master 分支 merge 到 currentBranch
                                                 # 相当于  git fetch origin master && git merge origin/master
+
+    # 如果因为 shell> git clone --single-branch 导致本地远程库没有其他 branch 的情况，可以使用以下命令处理
+    shell> git remote set-branches origin '*'                        # 把 single branch 改成所有 branch
+    shell> git remote set-branches --add origin branch1 branch2      # 在当前的基础上，额外加两个分支
+    shell> git remote set-branches origin branch1 branch2            # 忽略当前的配置，将跟踪分支设置为指定的两个
+    shell> git fetch                                                 # 修改完，重新拉取即可
 }
 
 Delete {
