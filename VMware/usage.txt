@@ -83,8 +83,18 @@ VMX 进程 CPU 100%：
       Address: 192.168.23.106(需要跟上面 Subnet ip/mask 在同一网段，并且和 Port Forwarding 中的相同)
       Netmask： 255.255.255.0
       Gateway: 192.168.23.2(需要跟上面 Gateway IP 中的相同)
-    - 保存即可
-    - @trap 注意外部访问地址为 宿主机地址，所以微服务注册时的注册地址要改成 宿主机 的地址，不能是 虚拟机中的 IP(即：192.168.23.106 )
+    - 保存 @trap 注意外部访问地址为 宿主机地址，所以微服务注册时的注册地址要改成 宿主机 的地址，不能是 虚拟机中的 IP(即：192.168.23.106 )
+    - 修改 Windows 防火墙配置，放行 对应端口（50080,50443）
+    - Control Panel > System and Security > Windows Defender Firewall > 点击左侧 Advanced Settings
+    - 选中 Inbound Rules > 点击右侧 New Rule... 
+      Rule Type: Port    > 点击 Next 
+      Protocol And Ports: 
+        选择 TCP 或者 UDP 
+        指定端口: 50080,50443   # 也可以选全部端口
+      Action: Allow the connection
+      Profile: Domain Private Public  都选上
+      Name: 虚拟机端口映射
+    - 完成，可以手机访问测试看看
         
 
 ################################ VMWare ESXi ################################
