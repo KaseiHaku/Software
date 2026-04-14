@@ -177,6 +177,7 @@ Container：
                   fi
                 done;
                 unset PID
+        shell> export PID=353199; for c in $(docker ps -q); do if docker top $c | grep -q $PID; then echo "PID $PID 属于容器: $c"; docker inspect --format '{{.Name}}' $c; fi; done; unset PID
         
         
     
