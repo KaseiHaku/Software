@@ -35,7 +35,9 @@ Update {
     shell> git remote add --mirror=fetch                    # 添加远程库，并从 远程库 fetch 所有内容覆盖 本地库
 }
 Switch {
-    shell> git checkout debug               # 切换到当前分支上的 debug 分支
+    shell> git checkout debug                               # 切换到 debug 分支
+    shell> git checkout -b newBranch                        # 基于当前分支，创建一个名为 newBranch 的新本地分支
+    shell> git checkout -b newBranch origin/branch1         # 基于 origin/branch1 创建一个名为 newBranch 的新本地分支
 }
 
 Remote-tracking {
