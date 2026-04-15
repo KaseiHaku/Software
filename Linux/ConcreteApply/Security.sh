@@ -129,9 +129,9 @@ shell> rm /var/run/faillock/<username> # 删除文件解锁
 shell> faillock --user username --reset # 命令解锁，推荐
 
 # 创建备用 sudo 用户，方式 root 用户被攻击而进不去
-shell> useradd -M kaseihaku                # 会自动创建 用户同名组
+shell> useradd -s /bin/bash -M kaseihaku                # 会自动创建 用户同名组
 shell> passwd kaseihaku
-shell> echo 'kaseihaku ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers     # 赋予 sudo 权限
+shell> echo 'kaseihaku ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/kaseihaku     # Debian 赋予 sudo 权限
 shell> exit         # 退出并登录测试
 
 ################################ 免密登陆 配置 ################################
