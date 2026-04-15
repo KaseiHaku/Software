@@ -57,6 +57,12 @@
     replace rule [family] table chain handle handle statement ... [comment comment]
     delete rule [family] table chain handle handle
 
+    # 常用
+    shell> nft -a list chain inet filter INPUT                                            # 查看 INPUT chain，已经 chain 中 RUle 的编号
+    shell> nft insert rule inet filter INPUT handle 1217 ip saddr 攻击IP drop              # 插入到某个 rule(handle) 之前
+    shell> nft add rule inet filter INPUT handle 1217 ip saddr 攻击IP drop                 # 插入到某个 rule(handle) 之后
+    
+
 
     shell> nft add rule inet myTable counter                # 指定 table 添加 rule
 
