@@ -138,6 +138,15 @@ shell> exit         # 退出并登录测试
 shell> ssh-keygen        # client 端生成 密钥对; pubkey 一般保存在 ~/.ssh/id_rsa.pub 目录中; id 文件一般保存在 ~/.ssh/id_rsa 文件中
 shell> ssh-copy-id -l root -p 22 192.168.0.200        # 将公钥发送到 server 端
 
+
+################################ 异常攻击检查 ################################
+shell> tail -fn 500 /var/log/auth.log        # Debian
+shell> tail -fn 500 /var/log/secure          # CentOS
+shell> last -n 100 root            # 成功登录历史
+shell> lastb -n 100 root           # 失败登录历史
+shell> lastlog -u root             # 用户最近登录成功
+
+
 ################################ Troubleshoot ################################
 shell> alias -p                        # 检查是否有异常的 别名
 shell> less /var/log/auth.log            # 查看异常认证信息
