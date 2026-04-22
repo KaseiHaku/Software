@@ -24,6 +24,24 @@ for update
 ;
 
 
+-- 构建常量表，方法一
+select * from (
+  values
+    row(1, 'apple', 5.2),
+    row(2, 'banana', 3.8),
+    row(3, 'orange', 4.5)
+) as t(id, name, price);
+
+-- 构建常量表， 方法二
+with
+    aa(id, name, price) as (
+        values
+            row(1, 'apple', 5.2),
+            row(2, 'banana', 3.8),
+            row(3, 'orange', 4.5)
+    )
+select * from aa
+;
 
 
 
