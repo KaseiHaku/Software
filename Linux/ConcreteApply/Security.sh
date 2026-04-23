@@ -78,7 +78,7 @@ deny = 3                        # 允许最大错误尝试次数
 fail_interval = 900            # 900 秒内，密码错误 deny 次(不需要连续)，那么账号就会被锁定
 unlock_time = 600                # 锁定 600 秒后自动解锁
 even_deny_root                    # root 也有错误次数限制
-root_unlock_time = 900            # root 锁定 900 秒自动解锁
+root_unlock_time = 900            # root 锁定 900 秒自动解锁。@trap 一定要创建其他账号，防止被攻击后无法登录服务器
 
 # 备份配置文件
 shell> cd /etc/pam.d
