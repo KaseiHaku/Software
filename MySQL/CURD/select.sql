@@ -43,6 +43,16 @@ with
 select * from aa
 ;
 
+-- 构建常量表， 方法三
+with
+    aa(id, name, price) as (
+        select 1, 'apple', 5.2
+        union all select 2, 'banana', 3.8
+        union all select 3, 'orange', 4.5
+    )
+select * from aa
+;
+
 
 
 
