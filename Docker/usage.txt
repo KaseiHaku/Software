@@ -168,7 +168,7 @@ Container：
         shell> cat /proc/<PID>/cgroup | grep docker        # 输出如下，那串数字就是容器 id
         4:cpu:/docker/769739f359ec192edf6c565f7756bb5ecabcfac3e691c2444794ab6a7d398e39
         # 方式二
-        shell> docker ps -q | xargs -ri docker inspect --format '{{.State.Pid}}, {{.Name}}' {}      # 查看所有容器进程在 宿主机 中的 PID（仅限容器 1 号进程的 PID）
+        shell> docker ps -q | xargs -ri docker inspect --format ' {{.Name}}, {{.State.Pid}}' {}      # 查看所有容器进程在 宿主机 中的 PID（仅限容器 1 号进程的 PID）
         # 方式三: 使用 shell> docker top containerId; 方式遍历
         shell> export PID=353199; for c in $(docker ps -q); do
                   if docker top $c | grep -q $PID; then
@@ -185,7 +185,18 @@ Container：
         shell> docker exec -it ??? /bin/bash 
         shell> cat /sys/class/net/eth0/iflink   # 如果显示的值为 32，那么在 host 中的 veth 为 12 即: veth???@if31
         shell> grep '32' /sys/class/net/*/ifindex       # 出来的文件路径中的就是 对等虚拟网卡
-    
+
+    # Go Template
+    # {{ . }}                                   // 当前对象
+    # {{ .Field }}                              // 访问字段
+    # {{ .Method }}                             // 调用方法
+    # {{ $var }}                                // 访问变量
+    # {{ "string" }}                            // 字符串字面量
+    # {{ 123 }}                                 // 数字字面量
+    # {{ true }}                                // 布尔字面量
+    # {{/* 这是注释，不会输出 */}}                 // 注释
+    # 
+    shell> docker ps -q | xargs -ri docker inspect --format '{{.Name}}, {{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' {}        # 查看所有容器 IP
 
 Registry:
     shell> docker login -u kasei -p kasei localhost:5000    # 添加一个私有仓库地址和密码到 docker 中
