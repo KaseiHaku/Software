@@ -1,0 +1,22 @@
+################################ search ################################
+# @doc { 官方文档 } https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax
+# 
+# 逻辑运算符: AND  OR  NOT
+#   (language:ruby OR language:python) AND NOT path:"/tests/"
+# 
+
+repo:KaseiHaku/kh-root 
+
+path:/(^|\/)README\.md$/      # 正则表达式
+path:/src/**/*.jav?           # 通配符 
+path:"bb>aa.txt"              # 特殊字符处理
+
+
+content:"</script>"           # 只搜索内容
+
+
+symbol:WithContext            # 搜索 class function var 等多定义语句，可以使用 regexp 和 通配符
+
+
+
+
