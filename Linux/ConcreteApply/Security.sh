@@ -86,15 +86,37 @@ shell> cp /etc/pam.d/common-auth /etc/pam.d/common-auth.bak
 shell> cp /etc/pam.d/common-account /etc/pam.d/common-account.bak
 
 # 查看配置文件帮助文档
-shell> man pam.d                            # 查看 /etc/pam.d 下文件内容的格式
-shell> man pam_faillock                    # 查看 /lib/x86_64-linux-gnu/security/pam_faillock.so 怎么用
+shell> man pam.d                                                   # 查看 /etc/pam.d 下文件内容的格式
+shell> man pam_faillock                                            # 查看 /lib/x86_64-linux-gnu/security/pam_faillock.so 怎么用
+shell> /lib/x86_64-linux-gnu/security/pam_faillock.so -h           # ditto
+shell> man pam_access                                              # 查看 /lib/x86_64-linux-gnu/security/pam_access.so 怎么用
+shell> /lib/x86_64-linux-gnu/security/pam_access.so -h             # ditto
 
 # 修改认证(auth)配置
 # 文件内容格式：service type control module-path module-arguments
-# service                        # 在 /etc/pam.d 目录下，由文件名替代
-# type                            # account, auth, password, session
-# control                        # required, requisite, sufficient, optional, include, substack, [value1=action1 value2=action2 ...]
-# module-path                    # 绝对路径; 相对于 /lib/security/ or /lib64/security/ 的相对路径
+# service                         # 在 /etc/pam.d 目录下，由文件名替代，不在文件中 显式 编写
+# type                            # account(账号有效性), auth(认证（登录、密码校验）), password(修改密码), session(登录会话)
+# control                         # 可用 control
+#                                 #     required(必须成功，失败了也会继续执行后面规则,最后统一返回失败) 同 [success=ok new_authtok_reqd=ok ignore=ignore default=bad]
+#                                 #     requisite(必须成功，失败立即停止)                          同 [success=ok new_authtok_reqd=ok ignore=ignore default=die]
+#                                 #     sufficient(成功则立即通过)                                同 [success=done new_authtok_reqd=done default=ignore]
+#                                 #     optional(可选)                                          同 [success=ok new_authtok_reqd=ok default=ignore]
+#                                 #     include
+#                                 #     substack
+#                                 #     [value1=action1 value2=action2 ...]     value 表示模块处理结果; action 表示对应结果要执行的动作
+#                                 #         value 可用值 [success, ignore, abort, bad_item, default, ...] 其他值看文档。default 表示没有对应结果配置时的默认处理
+#                                 #         action 可用值 [ignore(忽略结果), bad(表示模块失败), die(模块失败，并立即停止), ok(模块校验成功), done(成功，并跳过后续校验), N(>=1,跳过后续 n 个模块), reset(清空模块校验状态)]
+#                                         
+#                                 
+# module-path                     # 绝对路径; 相对于 /lib/security/(CentOS) or /lib64/security/(CentOS) or /lib/x86_64-linux-gnu/security/(Debian) 的相对路径
+#                                 # 常用模块及其功能：
+#                                 #     pam_permit.so          直接允许所有认证，永远放行。
+#                                 #     pam_deny.so            直接拒绝所有认证，永远失败。
+#                                 #     pam_unix.so            系统用户密码认证
+#                                 #     pam_faillock.so        登录失败锁定
+#                                 #     pam_access.so          IP 黑白名单
+#                                 
+#                                 
 # module-arguments                # [query=select user_name]  如果参数包含空格，那么需要放到 [] 中
 shell> vim /etc/pam.d/common-auth  
 # 原配置
@@ -103,23 +125,24 @@ shell> vim /etc/pam.d/common-auth
 #auth    required                        pam_permit.so
 # 修改成以下内容
 # @kasei
-auth    requisite                       pam_faillock.so preauth
+auth    requisite                       pam_faillock.so preauth               # preauth 认证前检查是否已锁定
 auth    [success=1 default=ignore]      pam_unix.so nullok                    # success=1 表示 success 时，跳过下一条规则; default=ignore 表示其他情况忽略当前规则的结果
-auth    [default=die]                   pam_faillock.so authfail   
-auth    sufficient                      pam_faillock.so authsucc
+auth    [default=die]                   pam_faillock.so authfail              # 认证失败，计数+1
+auth    sufficient                      pam_faillock.so authsucc              # 认证成功，清空失败次数
 auth    requisite                       pam_deny.so
 auth    required                        pam_permit.so
 
 # 修改账号(account)配置
 shell> vim /etc/pam.d/common-account
 # @kasei 添加一行到头部
-account required                        pam_faillock.so
+account required                        pam_faillock.so                # account 段（必须加这行，否则不检查锁定状态）
 
 # 更新 PAM 配置，使配置生效
 # 交互式界面:
 #     按 方向键 移动
 #     按 空格键 选中/取消选中模块
 #     按 Enter 确认更改
+#     按 Tab 切换到按钮选项
 shell> pam-auth-update --force  
 
 # 使用错误密码，检查配置是否生效
