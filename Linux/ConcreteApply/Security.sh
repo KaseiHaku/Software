@@ -56,6 +56,7 @@ ClientAliveInterval 120
 ClientAliveCountMax 16
 EOF
 shell> systemctl restart sshd            # 重启 ssh 服务端
+shell> sshd -T | grep -E "permitrootlogin|passwordauthentication"        # 查看实际 sshd 生效的配置有哪些
 
 
 ################################ 配置多次密码失败后锁定 ################################
