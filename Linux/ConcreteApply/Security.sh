@@ -125,10 +125,12 @@ shell> vim /etc/pam.d/common-auth
 #auth    required                        pam_permit.so
 # 修改成以下内容
 # @kasei
+# @trap shelll> sudo faillock --user cur_user 命令是看不到内容的，因为 sudo 命令也会执行当前流程，成功就会清空失败次数。
+# 
 auth    requisite                       pam_faillock.so preauth               # preauth 认证前检查是否已锁定
 auth    [success=1 default=ignore]      pam_unix.so nullok                    # success=1 表示 success 时，跳过下一条规则; default=ignore 表示其他情况忽略当前规则的结果
 auth    [default=die]                   pam_faillock.so authfail              # 认证失败，计数+1
-auth    sufficient                      pam_faillock.so authsucc              # 认证成功，清空失败次数
+auth    sufficient                      pam_faillock.so authsucc              # 认证成功，清空失败次数。
 auth    requisite                       pam_deny.so
 auth    required                        pam_permit.so
 
