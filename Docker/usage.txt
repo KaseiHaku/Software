@@ -179,7 +179,9 @@ Container：
                 unset PID
         shell> export PID=353199; for c in $(docker ps -q); do if docker top $c | grep -q $PID; then echo "PID $PID 属于容器: $c"; docker inspect --format '{{.Name}}' $c; fi; done; unset PID
         
-        
+    # 查看 shell> docker ps ; 容器名称对应的 compose.yml 文件在哪里
+    shell> docker ps | grep minio                                                                               #  查看容器名称
+    shell> grep -rni --include='docker-compose*.yml' --exclude='*.log' --exclude-dir='log' -- 'minio' ./        # 查看 minio 这个容器名在哪个 compose 文件中
     
     # 查看 container 中名为 eth0 的 veth 在 host 中 对等的 veth 是哪个？
         shell> docker exec -it ??? /bin/bash 
