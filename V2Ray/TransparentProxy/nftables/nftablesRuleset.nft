@@ -1,6 +1,6 @@
 #!/usr/sbin/nft -f
 
-flush ruleset                           # 清空规则集
+#flush ruleset                           # 清空规则集；去除，防止误删 docker 的配置
 
 define var1 = 1234                      # 定义变量
 define var2 = 1234                      # 定义变量
