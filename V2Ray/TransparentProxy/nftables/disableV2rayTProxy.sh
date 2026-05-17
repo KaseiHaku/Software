@@ -4,7 +4,10 @@
 systemctl stop dig-timer.timer
 
 # 清理 nftables
-nft flush ruleset
+#nft flush ruleset
+nft delete table ip tb_v2ray
+nft delete table ip6 tb_v2ray_ip6
+nft delete table inet tb_divert
 
 # 清理 路由策略
 ip rule del fwmark 2 pref 1024 table 100
