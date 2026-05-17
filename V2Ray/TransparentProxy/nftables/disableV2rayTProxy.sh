@@ -4,7 +4,7 @@
 systemctl stop dig-timer.timer
 
 # 清理 nftables
-#nft flush ruleset
+#nft flush ruleset                        # 改为明确删除，而不是全删，防止误删 docker 的配置
 nft delete table ip tb_v2ray
 nft delete table ip6 tb_v2ray_ip6
 nft delete table inet tb_divert
