@@ -25,6 +25,9 @@ UsePAM yes
 
 # 禁止 root 直接登录
 # no     禁止 root 用户远程登陆
+# @trap 使用修改该配置前，必须创建一个其他用户(例如: kaseihaku), 并将其加入到管理员组
+#       cenos> usermod -aG wheel kaseihaku           # 把 kaseihaku 加入到 管理员组(wheel) 中
+#       debian> usermod -aG sudo kaseihaku           # 把 kaseihaku 加入到 管理员组(sudo) 中，sudo 组中的用户默认具有 shell> sudo cmd 权限
 PermitRootLogin no
 
 # 6      密码最多错误 6 次，失败后断开连接
