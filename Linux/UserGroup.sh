@@ -31,6 +31,7 @@ shell> userdel -r kasei                         # 完全删除用户账号
 shell> usermod -l haku kasei                # 修改用户名为 kasei
 shell> usermod -c -d -m -s -u               # 跟 useradd 中一样的
                -g -G -a                     # 用户组相关
+shell> usermod -aG docker kasei             # 将 kasei 用户追加到 docker 组中
 
 shell> passwd                            # 修改自己的密码
 shell> passwd -l kasei                  # 禁用该账号
