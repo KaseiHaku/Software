@@ -83,6 +83,48 @@ shell> 配置 Name:
        Program: 选择 app 启动脚本
        保存即可
 
+################################ VMware-Tools  ################################
+################ 安装 open-vm-tools 
+shell> pacman -Sl  | grep open-vm-tools                        # 查看仓库中是否有  open-vm-tools
+shell> pacman -S open-vm-tools                                 # 安装 open-vm-tools
+shell> systemctl -a list-unit-files | grep vmware              # 查看 open-vm-tools 相关服务文件
+shell> systemctl is-enabled vmware-vmblock-fuse.service        # 查看 宿主机 和 VM 剪贴板 和 文件拖拽 服务是否开机自启动
+shell> systemctl enable vmware-vmblock-fuse.service            # 设置为开机自启动
+shell> systemctl start vmware-vmblock-fuse.service             # 手动启动 
+
+################ 手动 VMware Tools(未实操)
+shell> # 首先下载 VMware Tools 的 iso 文件，通常为 linux.iso
+shell> # 将 linux.iso 作为光盘 挂载到 manjaro 中
+shell> cd /run/media/$USER/'VMware Tools'        # 进入挂载目录
+shell> mkdir -p /opt/VMwareTools                    # 创建解压保存目录
+shell> tar -xvf VMwareTools*.tar.gz -C /opt/VMwareTools    # 解压到 /opt/VMwareTools 目录下
+# 因为 Manjaro 使用 systemd 替代了 System V init ，所以需要创建 假冒的目录
+# Manjaro uses systemd instead of System V Init, so you need to create fake init directories:
+shell> for x in {0..6}; do sudo mkdir -p /etc/init.d/rc${x}.d; done
+shell> cd /opt/VMwareTools  
+shell> sudo ./vmware-install.pl            # 接受所有默认值
+# 创建服务文件，内容如下
+shell>  cat <<-'EOF' | tee /etc/systemd/system/vmwaretools.service        
+[Unit]
+Description=VMWare Tools Daemon
+[Service]
+ExecStart=/etc/init.d/vmware-tools start
+ExecStop=/etc/init.d/vmware-tools stop
+PIDFile=/var/lock/subsys/vmware
+TimeoutSec=0
+RemainAfterExit=yes
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
+
+# 系统服务配置
+shell> sudo systemctl start vmwaretools.service
+shell> sudo systemctl enable vmwaretools.service
+shell> systemctl status vmwaretools.service
+
+
 ################################ TTY(Teletype)  ################################
 # getty = get tty
 # 怎么查找 error log
