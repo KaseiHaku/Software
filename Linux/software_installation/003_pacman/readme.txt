@@ -39,11 +39,17 @@
                   -c             # 清除老包
                   -cc            # 清除所有包
                   -s             # 查询远程仓库
-    shell> pacman -Syu --noconfirm        # 更新所有更新，并且不需要每个确认
+
+    shell> pacman -Ss open-vm-tools            # 查询远程仓库中的包
+    shell> pacman -Sl | grep open-vm-tools     # ditto(同上)
+    shell> pacman -S open-vm-tools             # 安装指定包
+    shell> pacman -Syu --noconfirm             # 更新所有更新，并且不需要每个确认。@trap 必须先备份系统和数据
+    
 
                   
 
-    shell> pacman -U pkg1.tgz     # 更新指定包的指定版本
+    shell> pacman -U pkg1.tgz                     # 更新指定包的指定版本
+    shell> pacman -U /路径/包名.pkg.tar.zst        # 安装本地包
 
     shell> pacman -F            # 查看包所包含的文件
     
