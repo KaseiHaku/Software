@@ -38,6 +38,11 @@ shell> git log --find-object=object-id
 # 查看删除了 *Upload.vue 文件的 commit
 shell> git log --diff-filter=D --name-status --graph @ -- *Upload.vue
 
+# 查看变动历史中的所有文件，用于查找删除的文件
+shell> git log --name-only --pretty=format: | sort | uniq | grep -F '.html'        # 查找历史文件
+shell> git log -- uniapp/portal/src/static/biz-intro.html                          # 查找跟指定历史文件相关的 commit
+shell> git checkout commitId                                                       # 检出并恢复历史文件
+
 
 ################################ Diff ################################
 # 查看指定 commit 跟上一个 commit 的改动内容
