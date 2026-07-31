@@ -41,7 +41,7 @@ shell> git log --diff-filter=D --name-status --graph @ -- *Upload.vue
 # 查看变动历史中的所有文件，用于查找删除的文件
 shell> git log --name-only --pretty=format: | sort | uniq | grep -F '.html'        # 查找历史文件
 shell> git log -- uniapp/portal/src/static/biz-intro.html                          # 查找跟指定历史文件相关的 commit
-shell> git checkout commitId                                                       # 检出并恢复历史文件
+shell> git checkout commitId                                                       # 检出指定 commit 到工作区
 
 
 ################################ Diff ################################
