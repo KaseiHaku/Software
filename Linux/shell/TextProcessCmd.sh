@@ -18,7 +18,8 @@ shell> find 文件目录 -name '*.*' | xargs grep 'xxx' -n       # 查找多个�
 # @trap
 #   BRE 元字符: ?, +, {, |, (, )    需要使用  \?, \+, \{, \|, \(, \) 来表示
 #   传统 egrep 中，不支持 { 作为 元字符，一些实现版本使用 \{ 表示 元字符，为了兼容性考虑， ERE 中应该避免使用 {，并且用 [{] 来表示字面量
-shell> grep -P pattern file1 file2                      # 表示 pattern 是一个正则表达式
+shell> grep -P pattern file1 file2                      # 表示 pattern 是一个 Perl 正则表达式（PRE），默认为 BRE
+shell> grep -F pattern file1 file2                      # 表示 pattern 是字符串，而不是正则表达式
 shell> grep -i pattern file1 file2                      # 忽略大小写
 shell> grep -v pattern  file                            # 反选
 shell> grep -n pattern file1 file2                      # 输出匹配串在文件中的行号
