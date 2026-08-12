@@ -1,3 +1,11 @@
+Windows DLL 缺失修复：
+    # Settings -> Update Windows 安装更新
+    PowerShell 以 Administrator 权限打开
+    powershell> DISM /Online /Cleanup-Image /RestoreHealth
+    powershell> sfc /scannow
+
+    # 如果解决不了，可以到 https://www.dllme.com/dll/files/rdclientax 网站下载 DLL 文件
+
 修改输入法切换快捷键/显示位置：
     Settings -> Devices -> Typing -> Advanced keyboard settings -> Input language hot keys 
 
