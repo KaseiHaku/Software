@@ -28,6 +28,7 @@ VMX 进程 CPU 100%：
 创建 Windows 共享目录
     关闭虚拟机 -> 右键 -> Settings -> Options -> Shared Folders
         Always enabled
+            [勾选] Map as a network drive in Windows guests        # 虚拟机系统为 windows 时必须，而且需要在系统内部开打网络文件共享才行
             Add...
                 Host path: E:\
                 Name: WinShareDir                    # 这里名称必须和下面命令保持一致
