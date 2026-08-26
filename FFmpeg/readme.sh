@@ -135,4 +135,10 @@ shell> ffmpeg -n \                                                         # 全
               manifest.mpd
 
 
+# 检查 mp4 文件中的 moov(Movie Box/元数据盒子) 是否在 mdat(Media Data Box/媒体数据盒子) 之前，
+# 是则 MP4 在 web 中播放快，否则要完整读取文件才能播放
+# 如何判断: 以下命令输出结果，就是按 moov 和 mdat 的出现顺序输出的
+shell> ffmpeg -v trace -i your_video.mp4 2>&1 | grep -e type:'mdat' -e type:'moov'                # Linux
+powershell> ffmpeg -v trace -i your_video.mp4 2>&1 | findstr /l "type:'moov' type:'mdat'"         # Windows
+
 
