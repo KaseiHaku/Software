@@ -1,6 +1,7 @@
 ################################ Concept ########################
 # @doc {official} https://www.ffmpeg.org/documentation.html
 # @doc {优秀文档} https://juejin.cn/post/7064869914347044878
+# @doc {下载页面} https://ffmpeg.org/download.html#build-windows 
 # 
 # 视频转换操作:
 #     transcoding(转码)：将一个 视频流 或者 音频流 从一个编码格式转换到另一个格式
@@ -138,6 +139,10 @@ shell> ffmpeg -n \                                                         # 全
 # 检查 mp4 文件中的 moov(Movie Box/元数据盒子) 是否在 mdat(Media Data Box/媒体数据盒子) 之前，
 # 是则 MP4 在 web 中播放快，否则要完整读取文件才能播放
 # 如何判断: 以下命令输出结果，就是按 moov 和 mdat 的出现顺序输出的
+# window 版 ffmpeg 下载: 
+#     https://ffmpeg.org/download.html#build-windows  页面中选 windows ，然后点击 “Windows builds from gyan.dev” 进入下面页面
+#     https://www.gyan.dev/ffmpeg/builds/            中 release builds 下面 ffmpeg-release-full.7z 文件，点击下载
+# 
 shell> ffmpeg -v trace -i your_video.mp4 2>&1 | grep -e type:'mdat' -e type:'moov'                # Linux
 powershell> ffmpeg -v trace -i your_video.mp4 2>&1 | findstr /l "type:'moov' type:'mdat'"         # Windows
 
