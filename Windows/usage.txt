@@ -1,3 +1,7 @@
+Windows 输入法未启用，导致无法输入：
+    Win+R -> services.msc -> 搜索（直接输入）： Touch Keyboard and Handwriting Panel Service 
+        -> Startup Type: Automatic(如果当前没有启动，则点击 Service status 下面的 Start 按钮启动)
+
 Windows DLL 缺失修复：
     # Settings -> Update Windows 安装更新
     PowerShell 以 Administrator 权限打开
