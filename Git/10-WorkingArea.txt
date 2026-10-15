@@ -18,6 +18,11 @@
     shell> git update-index --skip-worktree -- ./xxx/config.json            # 临时忽略指定路径
     shell> git ls-files -v | grep '^S'                                      # 查看哪些文件被忽略了
     shell> git update-index --no-skip-worktree -- ./xxx/config.json         # 恢复跟踪指定路径
+
+    # 上述命令只能忽略文件，如果需要 本地临时忽略目录，则使用以下方法
+    shell> echo '.claude/' >> ~/.config/git/ignore                          # 忽略所有名为 .claude 的目录，对当前用户的所有仓库生效
+    shell> echo '.codex/' >> .git/info/exclude                              # 忽略所有名为 .codex 的目录，只对当前仓库生效
+    shell> vim .git/info/exclude                                            # 编辑，然后删除对应行即可，~/.config/git/ignore 同理
     
     
 
