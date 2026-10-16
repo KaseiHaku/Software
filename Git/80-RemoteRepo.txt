@@ -67,6 +67,8 @@ Delete {
     shell> git push origin :debug                   # 删除 origin 远程库中的 debug 分支
     shell> git push --delete origin dev             # 同上，删除 origin 远程库 中 dev 分支
     shell> git push --prune origin                  # 删除 origin 远程库中 在本地库 中没有的分支 
+    shell> git remote prune origin                  # 同上
+    shell> git branch -r -d origin/dev              # 删除本地远程库中的 dev 分支，不推荐使用，应该用 prune 让 Git 自动清理
 }
 
 Update {
