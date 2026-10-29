@@ -1,3 +1,20 @@
+浏览器莫名 PR_CONNECT_RESET_ERROR：
+    一般是 win10 防火墙的原因，先测试关掉防火墙，是否能正常访问，如果能，则进行防火墙规则排查：
+    方法一：用事件查看器定位“元凶”规则
+        Win+R -> eventvwr.msc 
+        -> 在左侧展开 “Windows 日志” > 点击 “安全”
+        -> 在右侧操作栏点击 “筛选当前日志”，在“事件ID”框中输入 5157，点击确定
+        -> 在筛选结果中，找到错误发生时间点附近的记录。双击打开，切换到 “详细信息” 选项卡，在其中查找 FilterName 字段，这里显示的就是导致阻止的具体规则名称。
+        -> 拿到规则名后，回到防火墙 (wf.msc)，在入站或出站规则里搜索该名称，就能看到它的具体配置（程序、端口、协议等），从而决定是修改还是禁用它。
+    方法二: 启用防火墙日志文件 (pfirewall.log)
+        这个日志主要记录连接级别的行为（源/目标 IP、端口、动作是 ALLOW 还是 DROP），但不直接包含规则名，需要结合端口和时间来推断。
+        Win+R -> wf.msc 
+        -> 点击”Windows Defender Firewall Properties” 并选择对应的选项卡（Domain/Private/Public Profile）
+        -> 找到 Logging 栏，点击“Customize...”按钮点击进入
+        -> Log Dropped packets: Yes    # 这里改成 Yes，
+        -> 复制 Name 中的文件绝对路径：%systemroot%\system32\LogFiles\Firewall\pfirewall.log
+        -> 之后打开该文件，按时间筛选出错误发生时的 DROP 记录，记下目标端口（如 443），再回到防火墙规则中查找针对该端口的阻止规则。
+
 Windows 输入法未启用，导致无法输入：
     Win+R -> services.msc -> 搜索（直接输入）： Touch Keyboard and Handwriting Panel Service 
         -> Startup Type: Automatic(如果当前没有启动，则点击 Service status 下面的 Start 按钮启动)
