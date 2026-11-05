@@ -19,6 +19,7 @@ shell> vim /etc/ssh/sshd_config
 Port 46530
 
 # 修改端口 添加自定义 sshd 配置
+# @trap /etc/ssh/sshd_config.d 下的配置文件按字典序加载，同名的 key 遵循“首次匹配”规则，使用首次获取到的值
 shell> cat <<-'EOF' | tee /etc/ssh/sshd_config.d/kh.conf
 # yes    开启 Pulggable Authentication Module interface
 UsePAM yes
@@ -160,7 +161,8 @@ shell> faillock --user username --reset # 命令解锁，推荐
 # 创建备用 sudo 用户，方式 root 用户被攻击而进不去
 shell> useradd -s /bin/bash -M kaseihaku                # 会自动创建 用户同名组
 shell> passwd kaseihaku
-shell> echo 'kaseihaku ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/kaseihaku     # Debian 赋予 sudo 权限
+shell> echo 'kaseihaku ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers.d/kaseihaku     # Debian 赋予 sudo 权限（不推荐，执行命令时不需要密码），该文件必须由 root 拥有，且权限设置为 440，否则 sudo 出于安全考虑会忽略该文件。
+shell> usermod -aG sudo kaseihaku                                               # 同上（推荐）
 shell> exit         # 退出并登录测试
 
 ################################ 免密登陆 配置 ################################
