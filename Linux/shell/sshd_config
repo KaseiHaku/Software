@@ -1,4 +1,5 @@
-# /etc/ssh/sshd_config   当前文件路径
+# /etc/ssh/sshd_config           当前文件路径
+# /etc/ssh/sshd_confid.d/*       所有分配置文件，字典序加载，相同 key 取首次出现的值
 # shell> man sshd_config
 
 # 修改默认端口，可以减少很多自动化攻击
