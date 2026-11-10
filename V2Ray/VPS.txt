@@ -17,3 +17,8 @@
     官网工具：https://kiwivm.64clouds.com/main-exec.php?mode=blacklistcheck
     IP 端口号检测（国内）：http://tool.chinaz.com/update.html
     IP 端口号检测（国外）：https://www.yougetsignal.com/tools/open-ports/
+
+VPS 访问很慢：
+    修改 /etc/resolv.conf 中的默认 dns 服务器为 1.1.1.1 和 8.8.8.8
+        
+
