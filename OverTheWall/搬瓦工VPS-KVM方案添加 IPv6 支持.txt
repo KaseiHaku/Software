@@ -5,10 +5,11 @@
 实施步骤：
     1. 申请一个 IPv4 <--> IPv6 的隧道：
         http://he.net/
-        打开该网址：https://tunnelbroker.net/ 注册一个账号：q1291114093q
+        打开该网址：https://tunnelbroker.net/ 注册一个账号：q1298222q
         登陆账号 -> 点击“Create Regular Tunnel”  -> 
-    
-        http://www.freenet6.net     另一个申请 IPv6 地址的网站，需要下载客户端
+
+        https://manager.route64.org        # HE 已废弃，使用这个替代
+        http://www.freenet6.net            # 另一个申请 IPv6 地址的网站，需要下载客户端
     
     2. 配置 VPS
         SSH 登陆 VPS
