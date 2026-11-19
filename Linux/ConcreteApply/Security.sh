@@ -59,7 +59,9 @@ PasswordAuthentication yes
 ClientAliveInterval 120
 ClientAliveCountMax 16
 EOF
-shell> systemctl restart sshd            # 重启 ssh 服务端
+shell> systemctl daemon-reload            # 重新加载 systemd 配置
+shell> systemctl restart sshd             # 重启 sshd 服务端
+shell> systemctl restart ssh.socket       # 重启 ssh.socket 端口监听服务
 shell> sshd -T | grep -E "permitrootlogin|passwordauthentication"        # 查看实际 sshd 生效的配置有哪些
 
 
