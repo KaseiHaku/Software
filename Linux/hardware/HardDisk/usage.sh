@@ -7,8 +7,8 @@
 #     - shell> mount /dev/vdb /mnt/newdisk   # 挂载
 #     - shell> vim /etc/fstab                # 配置开机自动挂载
 #     # 设备(/dev/sda1 或 UUID)    挂载点    文件系统类型    挂载选项    转储选项    文件系统检查顺序    
-#     /dev/vdb        /mnt/newdisk    xfs    defaults    0    2
-#     UUID=af2e4b0c-aa90-4dca-86fd-71c2222388c9    /mnt/newdisk    xfs    defaults    0    2
+#     /dev/vdb        /mnt/newdisk    xfs    defaults,nofail    0    2
+#     UUID=af2e4b0c-aa90-4dca-86fd-71c2222388c9    /mnt/newdisk    xfs    defaults,nofail    0    2        # 推荐使用这种
 #     - shell> df -h                         # 检查挂载是否成功
 # 
 
@@ -195,6 +195,17 @@ shell> tune2fs -l /dev/sda1 | grep "Block size"        # 用于修改 ext? 文�
 shell> blockdev --getbsz /dev/sda2
 
 
+
+
+# 数据盘挂载 ########################
+shell> mkdir -p /opt/deploy
+shell> lsblk -f                                 # 查看哪个是数据盘，通过容量看，还可以看当前挂载情况
+shell> blkid                                    # 查看硬盘设备 UUID 和 TYPE(文件系统类型)
+shell> mount -t ext4 /dev/vdb /opt/deploy       # -t 属性需要和 blkid 命令中的 TYPE 保持一致
+shell> findmnt                                  # 查看当前挂载情况及挂载选项
+# 配置开机自动挂载，注意这里的 文件系统(ext4) 必须和 blkid 命令中的 TYPE 保持一致
+shell> cp /etc/fstab /etc/fstab.bak
+shell> echo "UUID=63035e86-af6e-4f00-b066-8e92c147631a    /opt/deploy    ext4    defaults,nofail    0    2" >> /etc/fstab
 
 
 
