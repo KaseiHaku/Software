@@ -13,6 +13,9 @@ nft -f /home/kasei/Script/nftablesRuleSet.nft
 # 设置策略路由
 ip rule add fwmark 2 pref 1024 table 100     # 匹配防火墙标记为 SO_MARK=2 的数据包,优先级(preference)为 1024，用 100 号路由表路由
 # 在  100 号 路由表 中添加 路由记录: 将 local 类型，目标 IP 为 0.0.0.0/0(default 所有地址) 的数据包，使用网卡 lo 发送数据，坑：当网卡重起时，该配置失效
+# @tips 当路由结果是 local 类型的路由时，数据包 将从“要发出去的出站包”，变成了发给本机的“入站包”，入站包会重新走协议栈，即: prerouting -> input
+#       当路由结果是 unicast 类型时，继续走 postrouting，不回 prerouting
+#       当路由结果是 blackhole/unreachable 类型时，直接终止，不进任何后续钩子
 ip route add table 100 local 0.0.0.0/0 dev lo  
 
 ip -6 rule add fwmark 2 pref 1024 table 100     # 匹配防火墙标记为 SO_MARK=2 的数据包,优先级(preference)为 1024，用 100 号路由表路由
